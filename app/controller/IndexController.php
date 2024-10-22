@@ -2,6 +2,8 @@
 
 namespace app\controller;
 
+use madong\basic\Test;
+use support\App;
 use support\Request;
 
 class IndexController

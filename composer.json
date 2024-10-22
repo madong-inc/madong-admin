@@ -36,7 +36,8 @@
       "": "./",
       "app\\": "./app",
       "App\\": "./app",
-      "app\\View\\Components\\": "./app/view/components"
+      "app\\View\\Components\\": "./app/view/components",
+      "madong\\": "./madong"
     },
     "files": [
       "./support/helpers.php"
