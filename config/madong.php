@@ -17,7 +17,7 @@ return [
     'server_auth' => true,
     // 缓存配置
     'cache'       => [
-        'namespace' => 'mesh',
+        'namespace' => 'ma-dong',
         'type'      => 'redis',//redis||file
         'prefix'    => '',
     ],

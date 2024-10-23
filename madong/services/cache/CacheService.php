@@ -40,7 +40,7 @@ class CacheService
             'namespace' => '',
             'type'      => 'file',
             'prefix'    => '',
-        ], config('ingenstream.cache', []));
+        ], config('madong.cache', []));
 
         $this->adapter   = $config['type'] ?? 'file';
         $this->prefix    = $config['prefix'] ?? '';
