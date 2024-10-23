@@ -10,4 +10,11 @@
  * Official Website: http://www.madong.cn
  */
 
+use support\Request;
 use Webman\Route;
+
+
+Route::group('/test', function () {
+   Route::any('/res', function (Request $request) {return response('res');});
+
+});

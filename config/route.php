@@ -14,8 +14,17 @@
 
 use Webman\Route;
 
+/**
+ * 引入admin模块路由
+ */
+require_once app_path('admin/config/route.php');
 
 
 
+
+/**
+ * 关闭默认路由
+ */
+Route::disableDefaultRoute();
 
 
