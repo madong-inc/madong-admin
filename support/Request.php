@@ -13,7 +13,7 @@
 
 namespace support;
 
-use Spatie\Macroable;
+use Spatie\Macroable\Macroable;
 
 /**
  * Class Request
