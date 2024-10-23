@@ -20,14 +20,13 @@ use madong\utils\Json;
 use app\services\system\SystemUserService;
 
 /**
- *
  * 用户登录
+ *
  * @author Mr.April
  * @since  1.0
  */
 class LoginController extends Crud
 {
-
 
     public function __construct()
     {
@@ -90,6 +89,17 @@ class LoginController extends Crud
         } catch (\Throwable $e) {
             return Json::fail($e->getMessage());
         }
+    }
+
+    /**
+     * 注销
+     * @param \support\Request $request
+     *
+     * @return \support\Response
+     */
+    public function logout(Request $request): \support\Response
+    {
+        return Json::success('ok', []);
     }
 
 }

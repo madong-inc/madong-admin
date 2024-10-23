@@ -13,11 +13,11 @@
 use support\Request;
 use Webman\Route;
 
-
 /*
  * 无需授权的接口
  */
 Route::group(function () {
-    Route::get('/captcha', [\app\admin\controller\LoginController::class, 'captcha'])->name('验证码');
     Route::post('/auth/login', [\app\admin\controller\LoginController::class, 'login'])->name('登录');
+    Route::post('/auth/logout', [\app\admin\controller\LoginController::class, 'logout'])->name('注销');
+    Route::get('/auth/captcha', [\app\admin\controller\LoginController::class, 'captcha'])->name('验证码');
 });

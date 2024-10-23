@@ -11,6 +11,7 @@
  */
 
 namespace app\services\system;
+
 use support\Container;
 use think\facade\Db;
 use Webman\Event\Event;
@@ -18,7 +19,6 @@ use madong\utils\JwtAuth;
 use madong\basic\BaseService;
 use madong\exception\AdminException;
 use app\dao\system\SystemUserDao;
-
 
 /**
  * @method save(array $data)
@@ -88,8 +88,10 @@ class SystemUserService extends BaseService
         Event::emit('user.login', compact('username', 'status', 'message'));
 
         return [
-            'token'        => $token['token'],
-            'expires_time' => $token['params']['exp'],
+            'token'         => $token['token'],
+            'user_id'       => $adminInfo->id,
+            'refresh_token' => '',
+            'expires_time'  => $token['params']['exp'],
         ];
     }
 

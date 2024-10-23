@@ -45,10 +45,10 @@ class Json
             $data = self::convertLongNumbersToString($data);
         }
 
-        return self::make(200, $msg, $data, $replace);
+        return self::make(0, $msg, $data, $replace);
     }
 
-    public static function fail($msg = 'fail', ?array $data = null, int $code = 400, ?array $replace = []): Response
+    public static function fail($msg = 'fail', ?array $data = null, int $code = -1, ?array $replace = []): Response
     {
         if (is_array($msg)) {
             $data = $msg;
