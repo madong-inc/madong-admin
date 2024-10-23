@@ -10,16 +10,16 @@
  *
  * @return null
  */
-//function getCurrentUser(bool $returnFullInfo = false)
-//{
-//    $request = request();
-//    if (!$request->hasMacro('adminInfo')) {
-//        return null;
-//    }
-//    $adminInfo = $request->adminInfo();
-//    if (!$adminInfo) {
-//        return null;
-//    }
-//    // 根据参数决定返回值
-//    return $returnFullInfo ? $adminInfo : $adminInfo['id'];
-//}
+function getCurrentUser(bool $returnFullInfo = false):mixed
+{
+    $request = request();
+    if (!$request->hasMacro('adminInfo')) {
+        return null;
+    }
+    $adminInfo = $request->adminInfo();
+    if (!$adminInfo) {
+        return null;
+    }
+    // 根据参数决定返回值
+    return $returnFullInfo ? $adminInfo : $adminInfo['id'];
+}

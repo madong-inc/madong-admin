@@ -13,8 +13,8 @@
 
 namespace madong\trait;
 
-use ingenstream\exception\ApiException;
-use ingenstream\utils\Snowflake;
+use madong\exception\ApiException;
+use madong\utils\Snowflake;
 
 trait SnowflakeIdTrait
 {

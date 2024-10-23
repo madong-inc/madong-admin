@@ -19,5 +19,5 @@ use Webman\Route;
  */
 Route::group(function () {
     Route::get('/captcha', [\app\admin\controller\LoginController::class, 'captcha'])->name('验证码');
-    Route::post('/login', [\app\admin\controller\LoginController::class, 'login'])->name('管理员登录');
+    Route::post('/auth/login', [\app\admin\controller\LoginController::class, 'login'])->name('登录');
 });

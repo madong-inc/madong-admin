@@ -12,7 +12,7 @@
 
 namespace madong\basic;
 
-use ingenstream\exception\ApiException;
+use madong\exception\ApiException;
 use ReflectionClass;
 use think\helper\Str;
 use Webman\Container;

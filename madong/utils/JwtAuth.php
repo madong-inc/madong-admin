@@ -14,8 +14,8 @@ namespace madong\utils;
 
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
-use ingenstream\exception\AuthException;
-use ingenstream\service\cache\CacheService;
+use madong\exception\AuthException;
+use madong\services\cache\CacheService;
 use support\Container;
 
 /**
@@ -33,7 +33,7 @@ class JwtAuth
      */
     protected string $token;
 
-    public string $key = 'ingenstream';
+    public string $key = 'madong';
 
     /**
      * 获取token
@@ -49,7 +49,7 @@ class JwtAuth
     {
         $host          = request()->host();
         $time          = time();
-        $hour          = config('ingenstream.cross.token_expire', 6);
+        $hour          = config('bolt.cross.token_expire', 6);
         $params        += [
             'iss' => $host,
             'aud' => $host,

@@ -14,9 +14,9 @@
 
 namespace madong\basic;
 
-use ingenstream\exception\ApiException;
-use ingenstream\trait\ModelTrait;
-use ingenstream\utils\Snowflake;
+use madong\exception\ApiException;
+use madong\trait\ModelTrait;
+use madong\utils\Snowflake;
 use think\Model;
 use think\model\concern\SoftDelete;
 
