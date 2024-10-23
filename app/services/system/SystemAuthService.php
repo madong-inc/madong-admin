@@ -15,7 +15,7 @@ namespace app\services\system;
 use app\dao\system\SystemUserDao;
 use madong\basic\BaseService;
 use madong\exception\AuthException;
-use madong\service\cache\CacheService;
+use madong\services\cache\CacheService;
 use madong\utils\Dict;
 use madong\utils\JwtAuth;
 use support\Container;
@@ -50,7 +50,6 @@ class SystemAuthService extends BaseService
             if (!$cache->get($prefix . md5($token))) {
                 throw new AuthException('登录状态已过期，需要重新登录md00001', $code);
             }
-
             $adminInfo = $this->dao->get($id, ['*'], ['roles', 'posts', 'depts']);
             if (empty($adminInfo) || empty($adminInfo->getData('id'))) {
                 throw new AuthException('用户不存在或禁用ad00001', $code);

@@ -9,6 +9,7 @@
  *+------------------
  * Official Website: http://www.madong.tech
  */
+
 namespace app\admin\controller;
 
 use support\Request;
@@ -19,8 +20,6 @@ use madong\utils\Tree;
 use app\services\system\SystemUserService;
 
 /**
- *
- *
  * @author Mr.April
  * @since  1.0
  */
@@ -322,6 +321,12 @@ class Crud extends Base
     protected function formatNormal($items, $total): \support\Response
     {
         return Json::success('ok', compact('items', 'total'));
+    }
+
+
+    public function dev(Request $request): \support\Response
+    {
+        return Json::fail('接口开发中');
     }
 
 }
