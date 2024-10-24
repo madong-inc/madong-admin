@@ -19,7 +19,7 @@ class AdminAuthTokenMiddleware implements MiddlewareInterface
 
     public function process(Request $request, callable $handler): Response
     {
-        $token = trim(ltrim($request->header(Config('ingenstream.cross.token_name', 'Authorization')), 'Bearer'));
+        $token = trim(ltrim($request->header(Config('madong.cross.token_name', 'Authorization')), 'Bearer'));
         if (!$token) {
             $token = trim(ltrim($request->get('token')));
         }

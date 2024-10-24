@@ -34,21 +34,21 @@ class SystemDeptService extends BaseService
      *
      * @param array|string $data
      */
-    public function batchDelete(array|string $data): void
-    {
-        try {
-            if (is_string($data)) {
-                $data = array_map('trim', explode(',', $data));
-            }
-            $ret = $this->dao->count([['pid', 'in', $data]]);
-
-            if ($ret > 0) {
-                throw new AdminException('该部门下存在子部门，请先删除子部门');
-            }
-            $this->dao->destroy($data);
-        } catch (\Throwable $e) {
-            throw new AdminException($e->getMessage());
-        }
-    }
+//    public function batchDelete(array|string $data): void
+//    {
+//        try {
+//            if (is_string($data)) {
+//                $data = array_map('trim', explode(',', $data));
+//            }
+//            $ret = $this->dao->count([['pid', 'in', $data]]);
+//
+//            if ($ret > 0) {
+//                throw new AdminException('该部门下存在子部门，请先删除子部门');
+//            }
+//            $this->dao->destroy($data);
+//        } catch (\Throwable $e) {
+//            throw new AdminException($e->getMessage());
+//        }
+//    }
 
 }

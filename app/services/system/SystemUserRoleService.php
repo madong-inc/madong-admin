@@ -35,25 +35,25 @@ class SystemUserRoleService extends BaseService
      * @param string $roleId
      * @param array  $users
      */
-    public function usersToRoleById(string $roleId, array $users): void
-    {
-        try {
-            //1.0 获取当前角色已分配的$existingRoles用户
-            $existingUsers = $this->getColumn(['role_id' => $roleId], 'user_id');
-            $usersToAdd    = array_diff($users, $existingUsers);
-            if (empty($usersToAdd)) {
-                throw new AdminException('No new users to add.');
-            }
-            //2.0 增量添加用户关联角色
-            $data = [];
-            foreach ($usersToAdd as $userId) {
-                $data[] = ['user_id' => $userId, 'role_id' => $roleId];
-            }
-            $this->saveAll($data);
-        } catch (\Throwable $e) {
-            throw new AdminException($e->getMessage());
-        }
-    }
+//    public function usersToRoleById(string $roleId, array $users): void
+//    {
+//        try {
+//            //1.0 获取当前角色已分配的$existingRoles用户
+//            $existingUsers = $this->getColumn(['role_id' => $roleId], 'user_id');
+//            $usersToAdd    = array_diff($users, $existingUsers);
+//            if (empty($usersToAdd)) {
+//                throw new AdminException('No new users to add.');
+//            }
+//            //2.0 增量添加用户关联角色
+//            $data = [];
+//            foreach ($usersToAdd as $userId) {
+//                $data[] = ['user_id' => $userId, 'role_id' => $roleId];
+//            }
+//            $this->saveAll($data);
+//        } catch (\Throwable $e) {
+//            throw new AdminException($e->getMessage());
+//        }
+//    }
 
     /**
      * 用户分配多个角色

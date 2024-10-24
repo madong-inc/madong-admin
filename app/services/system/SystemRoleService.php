@@ -30,47 +30,47 @@ class SystemRoleService extends BaseService
         $this->dao = Container::make(SystemRoleDao::class);
     }
 
-    /**
-     * 通过角色获取菜单
-     *
-     * @param array $ids
-     *
-     * @return array
-     */
-    public function getMenuIdsByRoleIds(array $ids = []): array
-    {
-        if (empty($ids)) {
-            return [];
-        }
-        $where = ['id' => $ids];
-        return $this->dao->selectList($where, '*', 0, 0, '', ['menus' => function (Query $query) {
-            $query->where('status', 1)->order('sort', 'desc');
-        }], true)->toArray();
-    }
-
-    /**
-     * 批量删除角色
-     *
-     * @param array|string $data
-     */
-    public function batchDelete(array|string $data): void
-    {
-        Db::startTrans();
-        try {
-            if (is_string($data)) {
-                $data = array_map('trim', explode(',', $data));
-            }
-            $rolesToDelete = $this->selectList([['id', 'in', $data]], '*', 0, 0, '', [], false);
-            foreach ($rolesToDelete as $item) {
-                if ($item->getData('is_super_admin') == 1) {
-                    throw new AdminException('系统内置角色，不可删除');
-                }
-                $item->delete();
-            }
-            Db::commit();
-        } catch (\Throwable $e) {
-            Db::rollback();
-            throw new AdminException($e->getMessage());
-        }
-    }
+//    /**
+//     * 通过角色获取菜单
+//     *
+//     * @param array $ids
+//     *
+//     * @return array
+//     */
+//    public function getMenuIdsByRoleIds(array $ids = []): array
+//    {
+//        if (empty($ids)) {
+//            return [];
+//        }
+//        $where = ['id' => $ids];
+//        return $this->dao->selectList($where, '*', 0, 0, '', ['menus' => function (Query $query) {
+//            $query->where('status', 1)->order('sort', 'desc');
+//        }], true)->toArray();
+//    }
+//
+//    /**
+//     * 批量删除角色
+//     *
+//     * @param array|string $data
+//     */
+//    public function batchDelete(array|string $data): void
+//    {
+//        Db::startTrans();
+//        try {
+//            if (is_string($data)) {
+//                $data = array_map('trim', explode(',', $data));
+//            }
+//            $rolesToDelete = $this->selectList([['id', 'in', $data]], '*', 0, 0, '', [], false);
+//            foreach ($rolesToDelete as $item) {
+//                if ($item->getData('is_super_admin') == 1) {
+//                    throw new AdminException('系统内置角色，不可删除');
+//                }
+//                $item->delete();
+//            }
+//            Db::commit();
+//        } catch (\Throwable $e) {
+//            Db::rollback();
+//            throw new AdminException($e->getMessage());
+//        }
+//    }
 }

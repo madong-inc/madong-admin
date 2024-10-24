@@ -69,9 +69,9 @@ Route::group('/system', function () {
         Route::post('/dict', [\app\admin\controller\system\SystemDictController::class, 'store'])->name('保存');
         Route::delete('/dict/{id}', [\app\admin\controller\system\SystemDictController::class, 'destroy'])->name('删除');
 
-        Route::post('/dict/enum-dict-list', [\app\admin\controller\system\SystemDictController::class, 'dev'])->name('枚举字典');
-        Route::post('/dict/custom-dict-list', [\app\admin\controller\system\SystemDictController::class, 'dev'])->name('自定义字典');
-        Route::post('/dict/get-by-dict-type', [\app\admin\controller\system\SystemDictController::class, 'dev'])->name('根据字典编码获取字典');
+        Route::post('/dict/enum-dict-list', [\app\admin\controller\system\SystemDictController::class, 'enumDictList'])->name('枚举字典');
+        Route::post('/dict/custom-dict-list', [\app\admin\controller\system\SystemDictController::class, 'customDictList'])->name('自定义字典');
+        Route::post('/dict/get-by-dict-type', [\app\admin\controller\system\SystemDictController::class, 'getByDictType'])->name('根据字典编码获取字典');
     });
 
     /**
