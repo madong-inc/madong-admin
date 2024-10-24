@@ -46,7 +46,8 @@ Route::group('/system', function () {
      * Auth
      */
     Route::group(function () {
-        Route::get('/auth/user-info', [\app\admin\controller\system\SystemUserController::class, 'info'])->name('用户详情');
+        Route::get('/auth/user-info', [\app\admin\controller\system\SystemAuthController::class, 'dev'])->name('用户详情');
+        Route::get('/auth/user-menus', [\app\admin\controller\system\SystemAuthController::class, 'dev'])->name('用户菜单');
         Route::post('/auth/codes', [\app\admin\controller\system\SystemAuthController::class, 'dev'])->name('权限码');
         Route::post('/auth/save-role-menu', [\app\admin\controller\system\SystemAuthController::class, 'dev'])->name('保存角色菜单关系');
         Route::post('/auth/role-menu-ids', [\app\admin\controller\system\SystemAuthController::class, 'dev'])->name('根据角色ID获取菜单ID集合');
@@ -56,6 +57,80 @@ Route::group('/system', function () {
         Route::post('/auth/user-list-exclude-role-id', [\app\admin\controller\system\SystemAuthController::class, 'dev'])->name('获取用户列表-排除指定角色');
         Route::post('/auth/save-user-role', [\app\admin\controller\system\SystemAuthController::class, 'dev'])->name('添加用户角色关系');
         Route::post('/auth/remove-user-role', [\app\admin\controller\system\SystemAuthController::class, 'dev'])->name('删除用户角色关系');
+    });
+
+    /**
+     * 字典
+     */
+    Route::group(function () {
+        Route::get('/dict', [\app\admin\controller\system\SystemDictController::class, 'index'])->name('列表');
+        Route::get('/dict/{id}', [\app\admin\controller\system\SystemDictController::class, 'show'])->name('详情');
+        Route::put('/dict/{id}', [\app\admin\controller\system\SystemDictController::class, 'update'])->name('更新');
+        Route::post('/dict', [\app\admin\controller\system\SystemDictController::class, 'store'])->name('保存');
+        Route::delete('/dict/{id}', [\app\admin\controller\system\SystemDictController::class, 'destroy'])->name('删除');
+
+        Route::post('/dict/enum-dict-list', [\app\admin\controller\system\SystemDictController::class, 'dev'])->name('枚举字典');
+        Route::post('/dict/custom-dict-list', [\app\admin\controller\system\SystemDictController::class, 'dev'])->name('自定义字典');
+        Route::post('/dict/get-by-dict-type', [\app\admin\controller\system\SystemDictController::class, 'dev'])->name('根据字典编码获取字典');
+    });
+
+    /**
+     * 字典数据
+     */
+    Route::group(function () {
+        Route::get('/dict-item', [\app\admin\controller\system\SystemDictItemController::class, 'index'])->name('列表');
+        Route::get('/dict-item/{id}', [\app\admin\controller\system\SystemDictItemController::class, 'show'])->name('详情');
+        Route::put('/dict-item/{id}', [\app\admin\controller\system\SystemDictItemController::class, 'update'])->name('更新');
+        Route::post('/dict-item', [\app\admin\controller\system\SystemDictItemController::class, 'store'])->name('保存');
+        Route::delete('/dict-item/{id}', [\app\admin\controller\system\SystemDictItemController::class, 'destroy'])->name('删除');
+    });
+
+    /**
+     * 菜单
+     */
+    Route::group(function () {
+        Route::get('/menu', [\app\admin\controller\system\SystemMenuController::class, 'index'])->name('列表');
+        Route::get('/menu/{id}', [\app\admin\controller\system\SystemMenuController::class, 'show'])->name('详情');
+        Route::put('/menu/{id}', [\app\admin\controller\system\SystemMenuController::class, 'update'])->name('更新');
+        Route::post('/menu', [\app\admin\controller\system\SystemMenuController::class, 'store'])->name('保存');
+        Route::delete('/menu/{id}', [\app\admin\controller\system\SystemMenuController::class, 'destroy'])->name('删除');
+        Route::post('/menu/tree', [\app\admin\controller\system\SystemMenuController::class, 'dev'])->name('菜单Tree');
+        Route::post('/menu/app-list', [\app\admin\controller\system\SystemMenuController::class, 'dev'])->name('应用列表');
+    });
+
+    /**
+     * 角色
+     */
+    Route::group(function () {
+        Route::get('/role', [\app\admin\controller\system\SystemRoleController::class, 'index'])->name('列表');
+        Route::get('/role/{id}', [\app\admin\controller\system\SystemRoleController::class, 'show'])->name('详情');
+        Route::put('/role/{id}', [\app\admin\controller\system\SystemRoleController::class, 'update'])->name('更新');
+        Route::post('/role', [\app\admin\controller\system\SystemRoleController::class, 'store'])->name('保存');
+        Route::delete('/role/{id}', [\app\admin\controller\system\SystemRoleController::class, 'destroy'])->name('删除');
+    });
+
+    /**
+     * 部门
+     */
+    Route::group(function () {
+        Route::get('/dept', [\app\admin\controller\system\SystemDeptController::class, 'index'])->name('列表');
+        Route::get('/dept/{id}', [\app\admin\controller\system\SystemDeptController::class, 'show'])->name('详情');
+        Route::put('/dept/{id}', [\app\admin\controller\system\SystemDeptController::class, 'update'])->name('更新');
+        Route::post('/dept', [\app\admin\controller\system\SystemDeptController::class, 'store'])->name('保存');
+        Route::delete('/dept/{id}', [\app\admin\controller\system\SystemDeptController::class, 'destroy'])->name('删除');
+        Route::post('/dept-tree', [\app\admin\controller\system\SystemDeptController::class, 'dev'])->name('部门Tree');
+    });
+
+    /**
+     * 职位
+     */
+    Route::group(function () {
+        Route::get('/post', [\app\admin\controller\system\SystemPostController::class, 'index'])->name('列表');
+        Route::get('/post/{id}', [\app\admin\controller\system\SystemPostController::class, 'show'])->name('详情');
+        Route::put('/post/{id}', [\app\admin\controller\system\SystemPostController::class, 'update'])->name('更新');
+        Route::post('/post', [\app\admin\controller\system\SystemPostController::class, 'store'])->name('保存');
+        Route::delete('/post/{id}', [\app\admin\controller\system\SystemPostController::class, 'destroy'])->name('删除');
+        Route::post('/post-select', [\app\admin\controller\system\SystemPostController::class, 'dev'])->name('部门列表');
     });
 
 })->middleware([
