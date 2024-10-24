@@ -86,11 +86,11 @@ class SystemDict extends BaseModel
      * @param $query
      * @param $value
      */
-    public function searchStatusAttr($query, $value)
+    public function searchEnableAttr($query, $value)
     {
         if ($value !== '') {
             $queryMethod = is_array($value) ? 'whereIn' : 'where';
-            $query->$queryMethod('status', $value);
+            $query->$queryMethod('enable', $value);
         }
     }
 

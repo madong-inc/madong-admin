@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8acf221e3c75826be6b80b28a3c2cd59",
+    "content-hash": "b5805917e77248532556425db4ac224a",
     "packages": [
         {
             "name": "brick/math",
@@ -1782,6 +1782,52 @@
             "time": "2024-05-31T14:57:53+00:00"
         },
         {
+            "name": "topthink/think-container",
+            "version": "v2.0.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/top-think/think-container.git",
+                "reference": "2189b39e42af2c14203ed4372b92e38989e9dabb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/top-think/think-container/zipball/2189b39e42af2c14203ed4372b92e38989e9dabb",
+                "reference": "2189b39e42af2c14203ed4372b92e38989e9dabb",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2.0",
+                "psr/container": "^1.0|^2.0",
+                "topthink/think-helper": "^3.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^7.0|^8.0"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [],
+                "psr-4": {
+                    "think\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "liu21st",
+                    "email": "liu21st@gmail.com"
+                }
+            ],
+            "description": "PHP Container & Facade Manager",
+            "support": {
+                "issues": "https://github.com/top-think/think-container/issues",
+                "source": "https://github.com/top-think/think-container/tree/v2.0.5"
+            },
+            "time": "2022-05-23T06:24:54+00:00"
+        },
+        {
             "name": "topthink/think-helper",
             "version": "v3.1.9",
             "source": {
@@ -1884,6 +1930,48 @@
                 "source": "https://github.com/top-think/think-orm/tree/v3.0.28"
             },
             "time": "2024-10-10T02:14:17+00:00"
+        },
+        {
+            "name": "topthink/think-validate",
+            "version": "v2.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/top-think/think-validate.git",
+                "reference": "857f9bffc1a09a41e3969a19726cb04315848f0f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/top-think/think-validate/zipball/857f9bffc1a09a41e3969a19726cb04315848f0f",
+                "reference": "857f9bffc1a09a41e3969a19726cb04315848f0f",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1.0",
+                "topthink/think-container": "~2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [],
+                "psr-4": {
+                    "think\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "liu21st",
+                    "email": "liu21st@gmail.com"
+                }
+            ],
+            "description": "think validate",
+            "support": {
+                "issues": "https://github.com/top-think/think-validate/issues",
+                "source": "https://github.com/top-think/think-validate/tree/2.0"
+            },
+            "time": "2019-05-15T06:58:23+00:00"
         },
         {
             "name": "webman/captcha",

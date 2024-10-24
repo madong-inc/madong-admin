@@ -78,7 +78,12 @@ class Crud extends Base
     public function store(Request $request): \support\Response
     {
         try {
-            $data  = $this->insertInput($request);
+            $data = $this->insertInput($request);
+            if (isset($this->validate) && $this->validate) {
+                if (!$this->validate->scene('store')->check($data)) {
+                    throw new \Exception($this->validate->getError());
+                }
+            }
             $model = $this->service->save($data);
             if (empty($model)) {
                 throw new AdminException('插入失败');
@@ -102,9 +107,12 @@ class Crud extends Base
         try {
             $id   = $request->route->param('id');
             $data = $this->service->get($id);
+            if (empty($data)) {
+                throw new AdminException('数据未找到', 400);
+            }
             return Json::success('ok', $data->toArray());
         } catch (\Throwable $e) {
-            return Json::fail($e->getMessage());
+            return Json::fail($e->getMessage(), [], $e->getCode());
         }
     }
 
@@ -130,6 +138,11 @@ class Crud extends Base
         try {
             $id   = $request->route->param('id');
             $data = $this->insertInput($request);
+            if (isset($this->validate) && $this->validate) {
+                if (!$this->validate->scene('update')->check($data)) {
+                    throw new \Exception($this->validate->getError());
+                }
+            }
             $this->service->update($id, $data);
             return Json::success('ok', []);
         } catch (\Throwable $e) {
@@ -185,7 +198,7 @@ class Crud extends Base
         $limit        = (int)$request->input('limit', $format === 'tree' ? 1000 : 10);
         $limit        = $limit <= 0 ? 10 : $limit;
         $order        = $order === 'asc' ? 'asc' : 'desc';
-        $where        = $request->all();
+        $param        = $request->all();
         $page         = (int)$request->input('page');
         $page         = $page > 0 ? $page : 1;
         $model        = $this->service->getModel();
@@ -194,17 +207,53 @@ class Crud extends Base
         if (!in_array($field, $allow_column)) {
             $field = '*';
         }
-        foreach ($where as $column => $value) {
+
+        $where = [];
+        foreach ($param as $column => $value) {
+            $prefix       = '';
+            $actualColumn = $column;
+            if (preg_match('/^([A-Z_]+)_(.*)$/', $column, $matches)) {
+                $prefix       = $matches[1]; // 前缀，包括下划线
+                $actualColumn = strtolower($matches[2]); // 实际字段名并转为小写
+            }
+
             // 检查值是否为 null，或者不是允许的列，或者是数组且不符合条件
-            if (
-                $value === null || // 明确检查 null
-                !in_array($column, $allow_column) ||
-                (is_array($value) && (
-                        !isset($value[0]) || // 确保 $value[0] 被定义
-                        !in_array($value[0], ['null', 'not null']) && !isset($value[1])
-                    ))
-            ) {
-                unset($where[$column]);
+            if ($value === null || !in_array($actualColumn, $allow_column) || (is_array($value) && (!isset($value[0]) || !in_array($value[0], ['null', 'not null']) && !isset($value[1])))) {
+                continue; // 跳过不符合条件的字段
+            }
+
+            // 根据前缀构建查询条件
+            switch ($prefix) {
+                case 'IN':
+                    $where[] = [$actualColumn, 'IN', $value]; // 处理 IN 条件
+                    break;
+                case 'LIKE':
+                    $where[] = [$actualColumn, 'LIKE', $value . '%']; // 处理 LIKE 条件
+                    break;
+                case 'GT':
+                    $where[] = [$actualColumn, '>', $value]; // 处理大于条件
+                    break;
+                case 'LT':
+                    $where[] = [$actualColumn, '<', $value]; // 处理小于条件
+                    break;
+                case 'GTE':
+                    $where[] = [$actualColumn, '>=', $value]; // 处理大于等于条件
+                    break;
+                case 'LTE':
+                    $where[] = [$actualColumn, '<=', $value]; // 处理小于等于条件
+                    break;
+                case 'NE':
+                    $where[] = [$actualColumn, '!=', $value]; // 处理不等于条件
+                    break;
+                case 'BETWEEN':
+                    // 处理 BETWEEN 条件，假设值为数组
+                    if (is_array($value) && count($value) === 2) {
+                        $where[] = [$actualColumn, 'BETWEEN', $value]; // 处理 BETWEEN 条件
+                    }
+                    break;
+                default:
+                    $where[] = [$actualColumn, '=', $value]; // 默认处理
+                    break;
             }
         }
         return [$where, $format, $limit, $field, $order, $page];
@@ -322,7 +371,6 @@ class Crud extends Base
     {
         return Json::success('ok', compact('items', 'total'));
     }
-
 
     public function dev(Request $request): \support\Response
     {

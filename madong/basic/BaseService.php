@@ -14,10 +14,13 @@
 namespace madong\basic;
 
 
+use madong\trait\ServicesTrait;
 use think\facade\Db;
 
 abstract class BaseService
 {
+
+    use ServicesTrait;
 
     /**
      * 模型注入

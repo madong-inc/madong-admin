@@ -24,7 +24,6 @@ abstract class BaseController
      */
     protected \support\Request $request;
 
-
     /**
      * 控制器中间件
      *
@@ -36,6 +35,11 @@ abstract class BaseController
      * @var object|null
      */
     protected ?object $service;
+
+    /**
+     * @var object|null
+     */
+    protected ?object $validate;
 
     /**
      * 需要授权的接口地址
@@ -58,6 +62,6 @@ abstract class BaseController
     /**
      * @return void
      */
-    abstract protected function initialize():void;
+    abstract protected function initialize(): void;
 
 }

@@ -118,7 +118,7 @@ Route::group('/system', function () {
         Route::put('/dept/{id}', [\app\admin\controller\system\SystemDeptController::class, 'update'])->name('更新');
         Route::post('/dept', [\app\admin\controller\system\SystemDeptController::class, 'store'])->name('保存');
         Route::delete('/dept/{id}', [\app\admin\controller\system\SystemDeptController::class, 'destroy'])->name('删除');
-        Route::post('/dept-tree', [\app\admin\controller\system\SystemDeptController::class, 'dev'])->name('部门Tree');
+        Route::post('/dept-tree', [\app\admin\controller\system\SystemDeptController::class, 'getDepartmentTree'])->name('部门Tree');
     });
 
     /**

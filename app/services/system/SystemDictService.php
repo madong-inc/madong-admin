@@ -35,7 +35,32 @@ class SystemDictService extends BaseService
     }
 
     /**
+     * 字典项获取
+     *
+     * @param string $code
+     *
+     * @return array
+     */
+    public function findItemsByCode(string $code): array
+    {
+        $map1   = [
+            'code'   => $code,
+            'enable' => 1,
+        ];
+        $result = $this->get($map1, ['*'], ['items']);
+        if (empty($result)) {
+            return [];
+        }
+        $item = $result->getData('items');
+        if (empty($item)) {
+            return [];
+        }
+        return $item->visible(['label', 'value', 'ext'])->toArray();
+    }
+
+    /**
      * 扫描枚举目录
+     *
      * @param array $directories
      *
      * @return array

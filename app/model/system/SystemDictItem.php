@@ -9,10 +9,10 @@
  *+------------------
  * Official Website: http://www.madong.cn
  */
+
 namespace app\model\system;
 
 use madong\basic\BaseModel;
-
 
 /**
  * 字典数据
@@ -22,7 +22,6 @@ use madong\basic\BaseModel;
  */
 class SystemDictItem extends BaseModel
 {
-
 
     /**
      * 数据表主键
@@ -109,6 +108,21 @@ class SystemDictItem extends BaseModel
         if (!empty($value)) {
             $query->where('label', 'LIKE', "%$value%");
         }
+    }
+
+    /**
+     * 获取器-扩展属性
+     *
+     * @param $value
+     *
+     * @return mixed|object
+     */
+    public function getExtAttr($value): mixed
+    {
+        if (is_null($value) || $value === '') {
+            return (object)[];
+        }
+        return json_decode($value, 1);
     }
 
 }

@@ -13,6 +13,7 @@
 namespace app\admin\controller\system;
 
 use app\admin\controller\Crud;
+use app\admin\validate\system\SystemDictValidate;
 use app\services\system\SystemDictService;
 use madong\utils\Json;
 use support\Container;
@@ -23,20 +24,30 @@ class SystemDictController extends Crud
     public function __construct()
     {
         parent::__construct();
-        $this->service = Container::make(SystemDictService::class);
+        $this->service  = Container::make(SystemDictService::class);
+        $this->validate = Container::make(SystemDictValidate::class);
     }
-
-
-
-
-    public function getByDictType(Request $request){
-
-
-    }
-
 
     /**
-     * 获取枚举字典列表
+     * 字典获取
+     *
+     * @param \support\Request $request
+     *
+     * @return \support\Response
+     */
+    public function getByDictType(Request $request): \support\Response
+    {
+        try {
+            $dictType = $request->input('dict_type');
+            $data     = $this->service->findItemsByCode($dictType);
+            return Json::success('ok', $data);
+        } catch (\Exception $e) {
+            return Json::fail($e->getMessage());
+        }
+    }
+
+    /**
+     * 枚举字典列表
      *
      * @param \support\Request $request
      *
@@ -49,7 +60,8 @@ class SystemDictController extends Crud
     }
 
     /**
-     * 自定义枚举-添加对应的目录path就会扫描
+     * 自定义字典
+     *
      * @param \support\Request $request
      *
      * @return \support\Response

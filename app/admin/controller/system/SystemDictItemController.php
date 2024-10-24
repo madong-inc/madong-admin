@@ -13,8 +13,19 @@
 namespace app\admin\controller\system;
 
 use app\admin\controller\Crud;
+use app\admin\validate\system\SystemDictItemValidate;
+use app\services\system\SystemDictItemService;
+use support\Container;
 
 class SystemDictItemController extends Crud
 {
+    public function __construct()
+    {
+        parent::__construct();
+        $this->service  = Container::make(SystemDictItemService::class);
+        $this->validate = Container::make(SystemDictItemValidate::class);
+    }
+
+
 
 }

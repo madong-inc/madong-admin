@@ -11,7 +11,7 @@
  Target Server Version : 80012
  File Encoding         : 65001
 
- Date: 23/10/2024 17:34:35
+ Date: 25/10/2024 00:02:15
 */
 
 SET NAMES utf8mb4;
@@ -26,7 +26,7 @@ CREATE TABLE `ma_cache`  (
   `result` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL,
   `expire_time` int(10) NULL DEFAULT 0,
   `create_time` int(10) NULL DEFAULT NULL
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of ma_cache
@@ -43,7 +43,7 @@ CREATE TABLE `ma_system_dept`  (
   `name` varchar(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '部门名称',
   `leader` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '负责人',
   `phone` varchar(11) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '联系电话',
-  `status` smallint(6) NULL DEFAULT 1 COMMENT '状态 (1正常 2停用)',
+  `enable` smallint(6) NULL DEFAULT 1 COMMENT '状态 (1正常 0停用)',
   `sort` smallint(5) UNSIGNED NULL DEFAULT 0 COMMENT '排序',
   `created_by` bigint(20) NULL DEFAULT NULL COMMENT '创建者',
   `updated_by` bigint(20) NULL DEFAULT NULL COMMENT '更新者',
@@ -53,7 +53,7 @@ CREATE TABLE `ma_system_dept`  (
   `remark` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL COMMENT '备注',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `parent_id`(`pid`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_unicode_ci COMMENT = '部门信息表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_unicode_ci COMMENT = '部门信息表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of ma_system_dept
@@ -72,7 +72,7 @@ DROP TABLE IF EXISTS `ma_system_dept_leader`;
 CREATE TABLE `ma_system_dept_leader`  (
   `dept_id` bigint(20) UNSIGNED NOT NULL COMMENT '部门主键',
   `user_id` bigint(20) UNSIGNED NOT NULL COMMENT '角色主键'
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_unicode_ci COMMENT = '部门领导关联表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_unicode_ci COMMENT = '部门领导关联表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of ma_system_dept_leader
@@ -87,14 +87,14 @@ CREATE TABLE `ma_system_dict`  (
   `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '字典名称',
   `code` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '字典标示',
   `description` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL COMMENT '描述',
-  `status` smallint(6) NULL DEFAULT 1 COMMENT '状态 (1正常 0停用)',
+  `enable` smallint(6) NULL DEFAULT 1 COMMENT '状态 (1正常 0停用)',
   `created_by` int(11) NULL DEFAULT NULL COMMENT '创建者',
   `updated_by` int(11) NULL DEFAULT NULL COMMENT '更新者',
   `create_time` int(11) NULL DEFAULT NULL COMMENT '创建时间',
   `update_time` int(11) NULL DEFAULT NULL COMMENT '修改时间',
   `delete_time` int(11) NULL DEFAULT NULL COMMENT '删除时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_unicode_ci COMMENT = '字典类型表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_unicode_ci COMMENT = '字典类型表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of ma_system_dict
@@ -116,8 +116,9 @@ CREATE TABLE `ma_system_dict_item`  (
   `label` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '字典标签',
   `value` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '字典值',
   `code` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '字典标示',
+  `ext` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL COMMENT '扩展',
   `sort` smallint(5) UNSIGNED NULL DEFAULT 0 COMMENT '排序',
-  `status` smallint(6) NULL DEFAULT 1 COMMENT '状态 (1正常 0停用)',
+  `enable` smallint(6) NULL DEFAULT 1 COMMENT '状态 (1正常 0停用)',
   `created_by` int(11) NULL DEFAULT NULL COMMENT '创建者',
   `updated_by` int(11) NULL DEFAULT NULL COMMENT '更新者',
   `create_time` int(11) NULL DEFAULT NULL COMMENT '创建时间',
@@ -126,25 +127,25 @@ CREATE TABLE `ma_system_dict_item`  (
   `delete_time` int(11) NULL DEFAULT NULL COMMENT '删除时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `dict_id`(`dict_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_unicode_ci COMMENT = '字典数据表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_unicode_ci COMMENT = '字典数据表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of ma_system_dict_item
 -- ----------------------------
-INSERT INTO `ma_system_dict_item` VALUES (88578995842584576, 88578904129933312, '男', '1', 'sex', 1, 1, 1, 1, 1725157278, 1725157278, NULL, NULL);
-INSERT INTO `ma_system_dict_item` VALUES (88579062112587776, 88578904129933312, '女', '2', 'sex', 1, 1, 1, 1, 1725157294, 1725157294, NULL, NULL);
-INSERT INTO `ma_system_dict_item` VALUES (88591661264932864, 88591570181427200, '是', '1', 'yes_no', 1, 1, 1, 1, 1725160297, 1725698842, '12', NULL);
-INSERT INTO `ma_system_dict_item` VALUES (88591702603993088, 88591570181427200, '否', '0', 'yes_no', 1, 1, 1, 1, 1725160307, 1725698849, NULL, NULL);
-INSERT INTO `ma_system_dict_item` VALUES (90849849347543040, 90849132335468544, '启用', '1', 'data_status', 1, 1, 1, 1, 1725698691, 1725699368, NULL, NULL);
-INSERT INTO `ma_system_dict_item` VALUES (90849915600769024, 90849132335468544, '禁用', '0', 'data_status', 1, 1, 1, 1, 1725698707, 1725698825, NULL, NULL);
-INSERT INTO `ma_system_dict_item` VALUES (90856804183052288, 90856624532623360, '目录', '1', 'menu_type', 1, 1, 1, 1, 1725700350, 1725700350, NULL, NULL);
-INSERT INTO `ma_system_dict_item` VALUES (90856848336490496, 90856624532623360, '菜单', '2', 'menu_type', 1, 1, 1, 1, 1725700360, 1725700369, NULL, NULL);
-INSERT INTO `ma_system_dict_item` VALUES (90856942716719104, 90856624532623360, '按钮', '3', 'menu_type', 1, 1, 1, 1, 1725700383, 1725700383, NULL, NULL);
-INSERT INTO `ma_system_dict_item` VALUES (90856988103282688, 90856624532623360, '接口', '4', 'menu_type', 1, 1, 1, 1, 1725700394, 1725700394, NULL, NULL);
-INSERT INTO `ma_system_dict_item` VALUES (90906894809567232, 90906778199527424, 'GET', 'GET', 'request_mode', 1, 1, 1, 1, 1725712292, 1725712292, NULL, NULL);
-INSERT INTO `ma_system_dict_item` VALUES (90906939730563072, 90906778199527424, 'POST', 'POST', 'request_mode', 1, 1, 1, 1, 1725712303, 1725712303, NULL, NULL);
-INSERT INTO `ma_system_dict_item` VALUES (90906983342936064, 90906778199527424, 'PUT', 'PUT', 'request_mode', 1, 1, 1, 1, 1725712313, 1725712313, NULL, NULL);
-INSERT INTO `ma_system_dict_item` VALUES (90907033418731520, 90906778199527424, 'DELETE', 'DELETE', 'request_mode', 1, 1, 1, 1, 1725712325, 1725712325, NULL, NULL);
+INSERT INTO `ma_system_dict_item` VALUES (88578995842584576, 88578904129933312, '男', '1', 'sex', NULL, 1, 1, 1, 1, 1725157278, 1725157278, NULL, NULL);
+INSERT INTO `ma_system_dict_item` VALUES (88579062112587776, 88578904129933312, '女', '2', 'sex', NULL, 1, 1, 1, 1, 1725157294, 1725157294, NULL, NULL);
+INSERT INTO `ma_system_dict_item` VALUES (88591661264932864, 88591570181427200, '是', '1', 'yes_no', NULL, 1, 1, 1, 1, 1725160297, 1725698842, '12', NULL);
+INSERT INTO `ma_system_dict_item` VALUES (88591702603993088, 88591570181427200, '否', '0', 'yes_no', NULL, 1, 1, 1, 1, 1725160307, 1725698849, NULL, NULL);
+INSERT INTO `ma_system_dict_item` VALUES (90849849347543040, 90849132335468544, '启用', '1', 'data_status', NULL, 1, 1, 1, 1, 1725698691, 1725699368, NULL, NULL);
+INSERT INTO `ma_system_dict_item` VALUES (90849915600769024, 90849132335468544, '禁用', '0', 'data_status', NULL, 1, 1, 1, 1, 1725698707, 1725698825, NULL, NULL);
+INSERT INTO `ma_system_dict_item` VALUES (90856804183052288, 90856624532623360, '目录', '1', 'menu_type', NULL, 1, 1, 1, 1, 1725700350, 1725700350, NULL, NULL);
+INSERT INTO `ma_system_dict_item` VALUES (90856848336490496, 90856624532623360, '菜单', '2', 'menu_type', NULL, 1, 1, 1, 1, 1725700360, 1725700369, NULL, NULL);
+INSERT INTO `ma_system_dict_item` VALUES (90856942716719104, 90856624532623360, '按钮', '3', 'menu_type', NULL, 1, 1, 1, 1, 1725700383, 1725700383, NULL, NULL);
+INSERT INTO `ma_system_dict_item` VALUES (90856988103282688, 90856624532623360, '接口', '4', 'menu_type', NULL, 1, 1, 1, 1, 1725700394, 1725700394, NULL, NULL);
+INSERT INTO `ma_system_dict_item` VALUES (90906894809567232, 90906778199527424, 'GET', 'GET', 'request_mode', NULL, 1, 1, 1, 1, 1725712292, 1725712292, NULL, NULL);
+INSERT INTO `ma_system_dict_item` VALUES (90906939730563072, 90906778199527424, 'POST', 'POST', 'request_mode', NULL, 1, 1, 1, 1, 1725712303, 1725712303, NULL, NULL);
+INSERT INTO `ma_system_dict_item` VALUES (90906983342936064, 90906778199527424, 'PUT', 'PUT', 'request_mode', NULL, 1, 1, 1, 1, 1725712313, 1725712313, NULL, NULL);
+INSERT INTO `ma_system_dict_item` VALUES (90907033418731520, 90906778199527424, 'DELETE', 'DELETE', 'request_mode', NULL, 1, 1, 1, 1, 1725712325, 1725712325, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for ma_system_login_log
@@ -163,10 +164,10 @@ CREATE TABLE `ma_system_login_log`  (
   `remark` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '备注',
   `create_time` int(11) NULL DEFAULT NULL COMMENT '创建时间',
   `update_time` int(11) NULL DEFAULT NULL COMMENT '更新时间',
-  `delete_time` datetime(0) NULL DEFAULT NULL COMMENT '删除时间',
+  `delete_time` datetime NULL DEFAULT NULL COMMENT '删除时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `username`(`user_name`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_unicode_ci COMMENT = '登录日志表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_unicode_ci COMMENT = '登录日志表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of ma_system_login_log
@@ -183,6 +184,23 @@ INSERT INTO `ma_system_login_log` VALUES (107527684472573952, 'admin', '127.0.0.
 INSERT INTO `ma_system_login_log` VALUES (107527713597820928, 'admin', '127.0.0.1', '未知', 'Other', 'Other', 0, '账号或密码错误，请重新输入!', 1729675004, NULL, 1729675004, 1729675004, NULL);
 INSERT INTO `ma_system_login_log` VALUES (107527844330082304, 'admin', '127.0.0.1', '未知', 'Other', 'Other', 0, '账号或密码错误，请重新输入!', 1729675035, NULL, 1729675035, 1729675035, NULL);
 INSERT INTO `ma_system_login_log` VALUES (107527858062233600, 'admin', '127.0.0.1', '未知', 'Other', 'Other', 1, '登录成功', 1729675039, NULL, 1729675039, 1729675039, NULL);
+INSERT INTO `ma_system_login_log` VALUES (107559070575235072, 'admin', '127.0.0.1', '未知', 'Other', 'Other', 1, '登录成功', 1729682480, NULL, 1729682480, 1729682480, NULL);
+INSERT INTO `ma_system_login_log` VALUES (107559707505463296, 'admin', '127.0.0.1', '未知', 'Other', 'Other', 1, '登录成功', 1729682632, NULL, 1729682632, 1729682632, NULL);
+INSERT INTO `ma_system_login_log` VALUES (107559870559031296, 'admin', '127.0.0.1', '未知', 'Other', 'Other', 1, '登录成功', 1729682671, NULL, 1729682671, 1729682671, NULL);
+INSERT INTO `ma_system_login_log` VALUES (107560110766821376, 'admin', '127.0.0.1', '未知', 'Other', 'Other', 1, '登录成功', 1729682728, NULL, 1729682728, 1729682728, NULL);
+INSERT INTO `ma_system_login_log` VALUES (107560600057548800, 'admin', '127.0.0.1', '未知', 'Other', 'Other', 1, '登录成功', 1729682845, NULL, 1729682845, 1729682845, NULL);
+INSERT INTO `ma_system_login_log` VALUES (107560999258820608, 'admin', '127.0.0.1', '未知', 'Other', 'Other', 1, '登录成功', 1729682940, NULL, 1729682940, 1729682940, NULL);
+INSERT INTO `ma_system_login_log` VALUES (107584054777483264, 'admin', '127.0.0.1', '未知', 'Other', 'Other', 1, '登录成功', 1729688437, NULL, 1729688437, 1729688437, NULL);
+INSERT INTO `ma_system_login_log` VALUES (107585870072254464, 'admin', '127.0.0.1', '未知', 'Other', 'Other', 1, '登录成功', 1729688870, NULL, 1729688870, 1729688870, NULL);
+INSERT INTO `ma_system_login_log` VALUES (107599888149254144, 'admin', '127.0.0.1', '未知', 'Other', 'Other', 1, '登录成功', 1729692212, NULL, 1729692212, 1729692212, NULL);
+INSERT INTO `ma_system_login_log` VALUES (107600604599291904, 'admin', '127.0.0.1', '未知', 'Other', 'Other', 1, '登录成功', 1729692383, NULL, 1729692383, 1729692383, NULL);
+INSERT INTO `ma_system_login_log` VALUES (107600799638622208, 'admin', '127.0.0.1', '未知', 'Other', 'Other', 1, '登录成功', 1729692429, NULL, 1729692429, 1729692429, NULL);
+INSERT INTO `ma_system_login_log` VALUES (107605884670185472, 'admin', '127.0.0.1', '未知', 'Other', 'Other', 1, '登录成功', 1729693642, NULL, 1729693642, 1729693642, NULL);
+INSERT INTO `ma_system_login_log` VALUES (107605911232712704, 'admin', '127.0.0.1', '未知', 'Other', 'Other', 1, '登录成功', 1729693648, NULL, 1729693648, 1729693648, NULL);
+INSERT INTO `ma_system_login_log` VALUES (107606461110161408, 'admin', '127.0.0.1', '未知', 'Other', 'Other', 1, '登录成功', 1729693779, NULL, 1729693779, 1729693779, NULL);
+INSERT INTO `ma_system_login_log` VALUES (107606772793085952, 'admin', '127.0.0.1', '未知', 'Other', 'Other', 1, '登录成功', 1729693853, NULL, 1729693853, 1729693853, NULL);
+INSERT INTO `ma_system_login_log` VALUES (107607877082025984, 'admin', '127.0.0.1', '未知', 'Other', 'Other', 1, '登录成功', 1729694117, NULL, 1729694117, 1729694117, NULL);
+INSERT INTO `ma_system_login_log` VALUES (107932118469971968, 'admin', '127.0.0.1', '未知', 'Other', 'Other', 1, '登录成功', 1729771422, NULL, 1729771422, 1729771422, NULL);
 
 -- ----------------------------
 -- Table structure for ma_system_menu
@@ -215,12 +233,12 @@ CREATE TABLE `ma_system_menu`  (
   `create_by` bigint(20) NULL DEFAULT NULL COMMENT '创建用户',
   `update_time` int(11) NULL DEFAULT NULL COMMENT '更新时间',
   `update_by` bigint(20) NULL DEFAULT NULL COMMENT '更新用户',
-  `delete_time` datetime(0) NULL DEFAULT NULL COMMENT '是否删除',
+  `delete_time` datetime NULL DEFAULT NULL COMMENT '是否删除',
   `methods` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT 'get' COMMENT '请求方法',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_sys_menu_code`(`code`) USING BTREE,
   INDEX `idx_sys_menu_app_code`(`app`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '菜单' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '菜单' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of ma_system_menu
@@ -287,7 +305,7 @@ CREATE TABLE `ma_system_operate_log`  (
   `remark` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL COMMENT '备注',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `username`(`username`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_unicode_ci COMMENT = '操作日志表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_unicode_ci COMMENT = '操作日志表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of ma_system_operate_log
@@ -310,7 +328,7 @@ CREATE TABLE `ma_system_post`  (
   `delete_time` int(11) NULL DEFAULT NULL COMMENT '删除时间',
   `remark` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 80634467957477377 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci COMMENT = '岗位信息表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_unicode_ci COMMENT = '岗位信息表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of ma_system_post
@@ -336,7 +354,7 @@ CREATE TABLE `ma_system_role`  (
   `update_time` int(11) NULL DEFAULT NULL COMMENT '修改时间',
   `delete_time` int(11) NULL DEFAULT NULL COMMENT '删除时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 87663847934136321 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci COMMENT = '角色信息表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_unicode_ci COMMENT = '角色信息表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of ma_system_role
@@ -350,7 +368,7 @@ CREATE TABLE `ma_system_role_dept`  (
   `role_id` bigint(20) UNSIGNED NOT NULL COMMENT '用户主键',
   `dept_id` bigint(20) UNSIGNED NOT NULL COMMENT '角色主键',
   PRIMARY KEY (`role_id`, `dept_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_unicode_ci COMMENT = '角色与部门关联表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_unicode_ci COMMENT = '角色与部门关联表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of ma_system_role_dept
@@ -367,7 +385,7 @@ CREATE TABLE `ma_system_role_menu`  (
   `role_id` bigint(20) UNSIGNED NOT NULL COMMENT '角色主键',
   `menu_id` bigint(20) UNSIGNED NOT NULL COMMENT '菜单主键',
   PRIMARY KEY (`role_id`, `menu_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_unicode_ci COMMENT = '角色与菜单关联表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_unicode_ci COMMENT = '角色与菜单关联表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of ma_system_role_menu
@@ -435,12 +453,12 @@ CREATE TABLE `ma_system_user`  (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `username`(`user_name`) USING BTREE,
   INDEX `dept_id`(`dept_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_unicode_ci COMMENT = '用户信息表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_unicode_ci COMMENT = '用户信息表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of ma_system_user
 -- ----------------------------
-INSERT INTO `ma_system_user` VALUES (1, 'admin', 'Mesh Admin', '$2y$10$Q70WC9RBqMSS72DmppsbIuQtyAydXSmeD.Ae6W8YhmE/w15uLLpiy', 1, '13888888888', 'admin@admin.com', '', 'Today is very good！', 'statistics', 4, 1, '127.0.0.1', 1729675039, '{\"mode\":\"light\",\"tag\":true,\"menuCollapse\":false,\"menuWidth\":230,\"layout\":\"classic\",\"skin\":\"mine\",\"i18n\":true,\"language\":\"zh_CN\",\"animation\":\"ma-slide-down\",\"color\":\"#165DFF\"}', 1, 1, NULL, 1729675039, NULL, 2, NULL, '2024-08-15 23:52:01', NULL);
+INSERT INTO `ma_system_user` VALUES (1, 'admin', 'Mesh Admin', '$2y$10$Q70WC9RBqMSS72DmppsbIuQtyAydXSmeD.Ae6W8YhmE/w15uLLpiy', 1, '13888888888', 'admin@admin.com', '', 'Today is very good！', 'statistics', 4, 1, '127.0.0.1', 1729771422, '{\"mode\":\"light\",\"tag\":true,\"menuCollapse\":false,\"menuWidth\":230,\"layout\":\"classic\",\"skin\":\"mine\",\"i18n\":true,\"language\":\"zh_CN\",\"animation\":\"ma-slide-down\",\"color\":\"#165DFF\"}', 1, 1, NULL, 1729771422, NULL, 2, NULL, '2024-08-15 23:52:01', NULL);
 INSERT INTO `ma_system_user` VALUES (73421010136862720, 'test', '测试用户', '$2y$10$Q70WC9RBqMSS72DmppsbIuQtyAydXSmeD.Ae6W8YhmE/w15uLLpiy', 2, '18888888888', '405784684@qq.com', NULL, NULL, NULL, 4, 1, '127.0.0.1', 1723990671, NULL, NULL, NULL, 1721543332, 1723990730, NULL, 1, NULL, '2024-08-11', NULL);
 INSERT INTO `ma_system_user` VALUES (73421384377831424, '12对对对4', NULL, '$2y$10$Q70WC9RBqMSS72DmppsbIuQtyAydXSmeD.Ae6W8YhmE/w15uLLpiy', 2, NULL, NULL, NULL, NULL, NULL, 4, 1, NULL, NULL, NULL, NULL, NULL, 1721543422, 1723646485, 1723646485, 1, NULL, '2024-08-11', NULL);
 INSERT INTO `ma_system_user` VALUES (73421690444582912, '12对对对45', NULL, '$2y$10$Q70WC9RBqMSS72DmppsbIuQtyAydXSmeD.Ae6W8YhmE/w15uLLpiy', 2, NULL, NULL, NULL, NULL, NULL, 5, 1, NULL, NULL, NULL, NULL, NULL, 1721543495, 1723646489, 1723646489, 1, NULL, '2024-08-11', NULL);
@@ -461,7 +479,7 @@ CREATE TABLE `ma_system_user_post`  (
   `user_id` bigint(20) UNSIGNED NOT NULL COMMENT '用户主键',
   `post_id` bigint(20) UNSIGNED NOT NULL COMMENT '岗位主键',
   PRIMARY KEY (`user_id`, `post_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_unicode_ci COMMENT = '用户与岗位关联表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_unicode_ci COMMENT = '用户与岗位关联表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of ma_system_user_post
@@ -484,7 +502,7 @@ CREATE TABLE `ma_system_user_role`  (
   `user_id` bigint(20) UNSIGNED NOT NULL COMMENT '用户主键',
   `role_id` bigint(20) UNSIGNED NOT NULL COMMENT '角色主键',
   PRIMARY KEY (`user_id`, `role_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_unicode_ci COMMENT = '用户与角色关联表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_unicode_ci COMMENT = '用户与角色关联表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of ma_system_user_role
