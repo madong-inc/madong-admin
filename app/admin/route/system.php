@@ -48,7 +48,7 @@ Route::group('/system', function () {
     Route::group(function () {
         Route::get('/auth/user-info', [\app\admin\controller\system\SystemAuthController::class, 'getUserInfo'])->name('获取用户详情');
         Route::get('/auth/user-menus', [\app\admin\controller\system\SystemAuthController::class, 'getUserMenus'])->name('获取用户菜单');
-        Route::get('/auth/codes', [\app\admin\controller\system\SystemAuthController::class, 'getUserCodes'])->name('权限码');
+        Route::get('/auth/perm-code', [\app\admin\controller\system\SystemAuthController::class, 'getUserCodes'])->name('权限码');
         Route::post('/auth/save-role-menu', [\app\admin\controller\system\SystemAuthController::class, 'dev'])->name('保存角色菜单关系');
         Route::post('/auth/role-menu-ids', [\app\admin\controller\system\SystemAuthController::class, 'dev'])->name('根据角色ID获取菜单ID集合');
         Route::post('/auth/role-menu-list', [\app\admin\controller\system\SystemAuthController::class, 'dev'])->name('获取角色菜单列表');
@@ -137,5 +137,6 @@ Route::group('/system', function () {
     app\admin\middleware\AdminAuthTokenMiddleware::class,
     app\admin\middleware\AdminAuthPermissionMiddleware::class,
     app\admin\middleware\AdminLogMiddleware::class,
+//    app\admin\middleware\RouteRestrictionMiddleware::class//演示系统拦截不允许操作路由
 ]);
 

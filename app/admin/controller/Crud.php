@@ -204,6 +204,7 @@ class Crud extends Base
         $allow_column = $model->getTableFields();
 
         $parts = explode(' ', $sort);
+        $order = '';
         if (in_array($parts[0], $allow_column)) {
             $rank  = $parts[1] ?? 'asc';
             $order = $parts[0] . ' ' . $rank;

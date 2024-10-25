@@ -45,7 +45,7 @@ class SystemDictService extends BaseService
     {
         $map1   = [
             'code'   => $code,
-            'enable' => 1,
+            'enabled' => 1,
         ];
         $result = $this->get($map1, ['*'], ['items']);
         if (empty($result)) {

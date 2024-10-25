@@ -22,7 +22,6 @@ class SystemRoleValidate extends Validate
     protected $rule = [
         'code'    => 'require|alpha',
         'name'    => 'require|max:16',
-        'enabled' => 'require',
     ];
 
     /**
@@ -33,7 +32,6 @@ class SystemRoleValidate extends Validate
         'code.alpha'   => '角色标识只能由英文字母组成',
         'name.require' => '角色名称必须填写',
         'name.max'     => '角色名称最多不能超过16个字符',
-        'enabled'      => '状态必须填写',
     ];
 
     /**
@@ -43,12 +41,10 @@ class SystemRoleValidate extends Validate
         'store'  => [
             'code',
             'name',
-            'enabled',
         ],
         'update' => [
             'code',
             'name',
-            'enabled',
         ],
     ];
 }

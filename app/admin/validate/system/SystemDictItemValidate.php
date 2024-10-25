@@ -22,8 +22,8 @@ class SystemDictItemValidate extends Validate
     protected $rule = [
         'label'   => 'require',
         'value'   => 'require',
-        'enable'  => 'require',
-        'type_id' => 'require',
+        'enabled' => 'require',
+        'dict_id' => 'require',
         'code'    => 'require',
     ];
 
@@ -33,8 +33,8 @@ class SystemDictItemValidate extends Validate
     protected $message = [
         'label'   => '字典名称必须填写',
         'value'   => '字典标识必须填写',
-        'enable'  => '状态必须填写',
-        'type_id' => '字典类型必须填写',
+        'enabled' => '状态必须填写',
+        'dict_id' => '字典类型必须填写',
         'code'    => '字典标识必须填写',
     ];
 
@@ -42,18 +42,18 @@ class SystemDictItemValidate extends Validate
      * 定义场景
      */
     protected $scene = [
-        'store'   => [
+        'store'  => [
             'label',
             'value',
-            'enable',
-            'type_id',
+            'enabled',
+            'dict_id',
             'code',
         ],
         'update' => [
             'label',
             'value',
-            'enable',
-            'type_id',
+            'enabled',
+            'dict_id',
             'code',
         ],
     ];
