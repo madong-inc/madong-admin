@@ -46,9 +46,9 @@ Route::group('/system', function () {
      * Auth
      */
     Route::group(function () {
-        Route::get('/auth/user-info', [\app\admin\controller\system\SystemAuthController::class, 'dev'])->name('用户详情');
-        Route::get('/auth/user-menus', [\app\admin\controller\system\SystemAuthController::class, 'dev'])->name('用户菜单');
-        Route::post('/auth/codes', [\app\admin\controller\system\SystemAuthController::class, 'dev'])->name('权限码');
+        Route::get('/auth/user-info', [\app\admin\controller\system\SystemAuthController::class, 'getUserInfo'])->name('获取用户详情');
+        Route::get('/auth/user-menus', [\app\admin\controller\system\SystemAuthController::class, 'getUserMenus'])->name('获取用户菜单');
+        Route::get('/auth/codes', [\app\admin\controller\system\SystemAuthController::class, 'getUserCodes'])->name('权限码');
         Route::post('/auth/save-role-menu', [\app\admin\controller\system\SystemAuthController::class, 'dev'])->name('保存角色菜单关系');
         Route::post('/auth/role-menu-ids', [\app\admin\controller\system\SystemAuthController::class, 'dev'])->name('根据角色ID获取菜单ID集合');
         Route::post('/auth/role-menu-list', [\app\admin\controller\system\SystemAuthController::class, 'dev'])->name('获取角色菜单列表');
@@ -68,7 +68,6 @@ Route::group('/system', function () {
         Route::put('/dict/{id}', [\app\admin\controller\system\SystemDictController::class, 'update'])->name('更新');
         Route::post('/dict', [\app\admin\controller\system\SystemDictController::class, 'store'])->name('保存');
         Route::delete('/dict/{id}', [\app\admin\controller\system\SystemDictController::class, 'destroy'])->name('删除');
-
         Route::post('/dict/enum-dict-list', [\app\admin\controller\system\SystemDictController::class, 'enumDictList'])->name('枚举字典');
         Route::post('/dict/custom-dict-list', [\app\admin\controller\system\SystemDictController::class, 'customDictList'])->name('自定义字典');
         Route::post('/dict/get-by-dict-type', [\app\admin\controller\system\SystemDictController::class, 'getByDictType'])->name('根据字典编码获取字典');
@@ -94,7 +93,7 @@ Route::group('/system', function () {
         Route::put('/menu/{id}', [\app\admin\controller\system\SystemMenuController::class, 'update'])->name('更新');
         Route::post('/menu', [\app\admin\controller\system\SystemMenuController::class, 'store'])->name('保存');
         Route::delete('/menu/{id}', [\app\admin\controller\system\SystemMenuController::class, 'destroy'])->name('删除');
-        Route::post('/menu/tree', [\app\admin\controller\system\SystemMenuController::class, 'dev'])->name('菜单Tree');
+        Route::post('/menu/tree', [\app\admin\controller\system\SystemMenuController::class, 'buildMenuTree'])->name('菜单Tree');
         Route::post('/menu/app-list', [\app\admin\controller\system\SystemMenuController::class, 'dev'])->name('应用列表');
     });
 
@@ -130,7 +129,7 @@ Route::group('/system', function () {
         Route::put('/post/{id}', [\app\admin\controller\system\SystemPostController::class, 'update'])->name('更新');
         Route::post('/post', [\app\admin\controller\system\SystemPostController::class, 'store'])->name('保存');
         Route::delete('/post/{id}', [\app\admin\controller\system\SystemPostController::class, 'destroy'])->name('删除');
-        Route::post('/post-select', [\app\admin\controller\system\SystemPostController::class, 'dev'])->name('部门列表');
+        Route::post('/post-select', [\app\admin\controller\system\SystemPostController::class, 'select'])->name('部门下拉列表');
     });
 
 })->middleware([
