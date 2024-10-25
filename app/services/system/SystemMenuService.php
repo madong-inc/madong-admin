@@ -31,47 +31,36 @@ class SystemMenuService extends BaseService
     }
 
     /**
-     * 获取后台管理菜单
+     * 获取菜单树
      *
-     * @param array $where
+     * @param array  $where
+     * @param string $order
+     *
+     * @return array|null
+     */
+    public function menuTree(array $where, string $order = 'sort'): ?array
+    {
+        $list = $this->dao->selectList($where, '*', 0, 0, $order, [], true);
+        $tree = new Tree($list);
+        return $tree->getTree();
+    }
+
+    /**
+     * 通过角色筛选菜单ID集合并去重
+     *
+     * @param array $roleData
      *
      * @return array
      */
-//    public function getAdminMenu(array $where = []): array
-//    {
-//        $list = $this->dao->selectList($where, '*', 0, 0, 'sort asc', [], true);
-//        foreach ($list as $item) {
-//            $item->set('meta', $item->meta);
-//        }
-//        $list->visible(['id', 'pid', 'type', 'sort', 'redirect', 'path', 'name', 'meta', 'component']);
-//        $tree = new Tree($list);
-//        return $tree->getTree();
-//    }
-//
-//    public function getButtonPermissionsList(array &$where = [])
-//    {
-//        $where['enabled'] = 1;
-//
-//    }
-//
-//    /**
-//     * 通过角色筛选菜单ID集合并去重
-//     *
-//     * @param array $roleData
-//     *
-//     * @return array
-//     */
-//    public function filterMenuIds(array &$roleData): array
-//    {
-//        $idBundle = [];
-//        foreach ($roleData as $val) {
-//            foreach ($val['menus'] as $menu) {
-//                $idBundle[] = $menu['id'];
-//            }
-//        }
-//        unset($roleData);
-//        return array_unique($idBundle);
-//    }
-
-
+    public function filterMenuIds(array &$roleData): array
+    {
+        $idBundle = [];
+        foreach ($roleData as $val) {
+            foreach ($val['menus'] as $menu) {
+                $idBundle[] = $menu['id'];
+            }
+        }
+        unset($roleData);
+        return array_unique($idBundle);
+    }
 }

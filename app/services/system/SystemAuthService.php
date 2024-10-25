@@ -13,11 +13,14 @@
 namespace app\services\system;
 
 use app\dao\system\SystemUserDao;
+use app\model\system\SystemUser;
 use madong\basic\BaseService;
 use madong\exception\AuthException;
 use madong\services\cache\CacheService;
 use madong\utils\Dict;
+use madong\utils\Json;
 use madong\utils\JwtAuth;
+use madong\utils\Tree;
 use support\Container;
 use support\Request;
 
@@ -101,6 +104,92 @@ class SystemAuthService extends BaseService
     }
 
     /**
+     * 获取后台管理菜单
+     *
+     * @param array $where
+     *
+     * @return array
+     */
+    public function getAllMenus(array $where = []): array
+    {
+        $systemMenuService = Container::make(SystemMenuService::class);
+        $list              = $systemMenuService->selectList($where, '*', 0, 0, 'sort asc', [], true);
+        foreach ($list as $item) {
+            $item->set('name', $item->getData('code'));
+            $item->set('meta', $item->meta);
+        }
+        $list->visible(['id', 'pid', 'type', 'sort', 'redirect', 'path', 'name', 'meta', 'component']);
+        $tree = new Tree($list);
+        return $tree->getTree();
+    }
+
+    /**
+     * 获取用户角色获取对应的菜单
+     *
+     * @param \madong\utils\Dict $userDict
+     *
+     * @return array
+     */
+    public function getMenusByUserRoles(Dict $userDict): array
+    {
+        try {
+            $role    = $userDict->get('roles', []);
+            $roleIds = array_column($role, 'id');
+            if (empty($roleIds)) {
+                return [];
+            }
+            $systemRoleServices = new SystemRoleService();
+            $menuIds            = $systemRoleServices->getMenuIdsByRoleIds($roleIds);
+            $systemMenuService  = Container::make(SystemMenuService::class);
+            $filteredMenuIds    = $systemMenuService->filterMenuIds($menuIds); // 菜单 ID 集合
+            if (empty($filteredMenuIds)) {
+                return [];
+            }
+            $map1 = [
+                'type'    => [1, 2],//目录&菜单类型
+                'enabled' => 1,
+                'id'      => $filteredMenuIds,
+            ];
+            return $this->getAllMenus($map1);
+        } catch (\Exception $e) {
+            throw new AuthException($e->getMessage());
+        }
+    }
+
+    /**
+     * 获取用户角色-菜单权限码
+     *
+     * @param \madong\utils\Dict $userDict
+     *
+     * @return array
+     */
+    public function getCodesByUserRoles(Dict $userDict): array
+    {
+        try {
+            $role    = $userDict->get('roles', []);
+            $roleIds = array_column($role, 'id');
+            if (empty($roleIds)) {
+                return [];
+            }
+            $systemRoleServices = new SystemRoleService();
+            $menuIds            = $systemRoleServices->getMenuIdsByRoleIds($roleIds);
+            $systemMenuService  = Container::make(SystemMenuService::class);
+            $filteredMenuIds    = $systemMenuService->filterMenuIds($menuIds); // 菜单 ID 集合
+            if (empty($filteredMenuIds)) {
+                return [];
+            }
+            $map1 = [
+                'type'    => 3,//按钮
+                'enabled' => 1,
+                'id'      => $filteredMenuIds,
+            ];
+            return $systemMenuService->getColumn($map1, 'code');
+        } catch (\Exception $e) {
+            throw new AuthException($e->getMessage());
+        }
+    }
+
+    /**
      * 获取所有权限 || 根据$menuIds获取对应权限
      *
      * @param \app\service\system\SystemMenuService $systemMenuService
@@ -155,4 +244,5 @@ class SystemAuthService extends BaseService
         $data              = $systemRoleService->getMenuIdsByRoleIds($roleIds);
         return $systemMenuService->filterMenuIds($data);
     }
+
 }

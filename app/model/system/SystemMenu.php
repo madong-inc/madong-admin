@@ -9,10 +9,10 @@
  *+------------------
  * Official Website: http://www.madong.cn
  */
+
 namespace app\model\system;
 
 use madong\basic\BaseModel;
-
 
 /**
  * 菜单模型
@@ -45,20 +45,24 @@ class SystemMenu extends BaseModel
 
         // 2.添加fixed锁定菜单标记
         if (isset($data['is_affix']) && ($data['is_affix'] === 1 || $data['is_affix'] === '1')) {
-            $newData['affix']             = true;
-            $newData['currentActiveMenu'] = '/dashboard';//如果不标记选中没办法同步
+            $newData['order']    = -1;
+            $newData['affixTab'] = true;
         }
 
         // 3.是否隐藏菜单
         if (isset($data['is_show']) && $data['is_show'] == 0) {
-            $newData['hideMenu'] = true;
+            $newData['hideInMenu'] = true;
         }
 
         // 4.是否缓存
         if (isset($data['is_cache']) && $data['is_cache'] == 1) {
-            $newData['ignoreKeepAlive'] = true;
+            $newData['keepAlive'] = true;
         }
 
+        //5.是否外链在新窗口打开
+        if (isset($data['open_type']) && $data['open_type'] == 1) {
+            $newData['link'] = true;
+        }
         // 更多参数可以在这边添加
         return $newData;
     }

@@ -30,23 +30,23 @@ class SystemRoleService extends BaseService
         $this->dao = Container::make(SystemRoleDao::class);
     }
 
-//    /**
-//     * 通过角色获取菜单
-//     *
-//     * @param array $ids
-//     *
-//     * @return array
-//     */
-//    public function getMenuIdsByRoleIds(array $ids = []): array
-//    {
-//        if (empty($ids)) {
-//            return [];
-//        }
-//        $where = ['id' => $ids];
-//        return $this->dao->selectList($where, '*', 0, 0, '', ['menus' => function (Query $query) {
-//            $query->where('status', 1)->order('sort', 'desc');
-//        }], true)->toArray();
-//    }
+    /**
+     * 通过角色获取菜单
+     *
+     * @param array $ids
+     *
+     * @return array
+     */
+    public function getMenuIdsByRoleIds(array $ids = []): array
+    {
+        if (empty($ids)) {
+            return [];
+        }
+        $where = ['id' => $ids];
+        return $this->dao->selectList($where, '*', 0, 0, '', ['menus' => function (Query $query) {
+            $query->where('status', 1)->order('sort', 'asc');
+        }], true)->toArray();
+    }
 //
 //    /**
 //     * 批量删除角色

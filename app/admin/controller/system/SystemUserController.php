@@ -117,27 +117,6 @@ class SystemUserController extends Crud
     }
 
     /**
-     * 当前登录用户
-     *
-     * @param \support\Request $request
-     *
-     * @return \support\Response
-     */
-    public function userInfo(Request $request): \support\Response
-    {
-        try {
-            $data = $this->adminInfo;
-            if (empty($data)) {
-                throw new AdminException(
-                    '用户凭证失效请重新登录', 401);
-            }
-            return Json::success('ok', $data);
-        } catch (\Throwable $e) {
-            return Json::fail($e->getMessage(), null, 401);
-        }
-    }
-
-    /**
      * 详情
      *
      * @param \support\Request $request
@@ -304,7 +283,5 @@ class SystemUserController extends Crud
             return Json::fail($e->getMessage());
         }
     }
-
-
 
 }
