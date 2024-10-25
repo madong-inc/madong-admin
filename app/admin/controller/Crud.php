@@ -46,7 +46,7 @@ class Crud extends Base
 
             $format_function = $methods[$format] ?? 'formatNormal';
             $total           = $this->service->count($where, true);
-            $list            = $this->service->selectList($where, $field, 0, 0, '', [], true);
+            $list            = $this->service->selectList($where, $field, $page, $limit, $order, [], true);
             return call_user_func([$this, $format_function], $list, $total);
         } catch (\Throwable $e) {
             return Json::fail($e->getMessage());
@@ -193,16 +193,21 @@ class Crud extends Base
     protected function selectInput(Request $request): array
     {
         $field        = $request->input('field', '*');
-        $order        = $request->input('order', 'asc');
+        $sort         = $request->input('order', 'sort');
         $format       = $request->input('format', 'normal');
-        $limit        = (int)$request->input('limit', $format === 'tree' ? 1000 : 10);
+        $limit        = (int)$request->input('limit', $format === 'tree' ? 10000 : 10);
         $limit        = $limit <= 0 ? 10 : $limit;
-        $order        = $order === 'asc' ? 'asc' : 'desc';
         $param        = $request->all();
         $page         = (int)$request->input('page');
         $page         = $page > 0 ? $page : 1;
         $model        = $this->service->getModel();
         $allow_column = $model->getTableFields();
+
+        $parts = explode(' ', $sort);
+        if (in_array($parts[0], $allow_column)) {
+            $rank  = $parts[1] ?? 'asc';
+            $order = $parts[0] . ' ' . $rank;
+        }
 
         if (!in_array($field, $allow_column)) {
             $field = '*';
@@ -336,7 +341,7 @@ class Crud extends Base
     {
         $tree  = new Tree($data);
         $items = $tree->getTree();
-        return Json::success('ok', compact('items', 'total'));
+        return Json::success('ok', $items);
     }
 
     /**
@@ -351,7 +356,7 @@ class Crud extends Base
         $formatted_items = [];
         foreach ($items as $item) {
             $formatted_items[] = [
-                'name'  => $item->title ?? $item->name ?? $item->id,
+                'label' => $item->title ?? $item->name ?? $item->id,
                 'value' => $item->id,
             ];
         }
