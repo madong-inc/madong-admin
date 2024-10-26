@@ -44,18 +44,29 @@ class SystemDictService extends BaseService
     public function findItemsByCode(string $code): array
     {
         $map1   = [
-            'code'   => $code,
+            'code'    => $code,
             'enabled' => 1,
         ];
         $result = $this->get($map1, ['*'], ['items']);
         if (empty($result)) {
             return [];
         }
-        $item = $result->getData('items');
-        if (empty($item)) {
+        $items = $result->getData('items');
+        if (empty($items)) {
             return [];
         }
-        return $item->visible(['label', 'value', 'ext'])->toArray();
+        foreach ($items as $item) {
+            //转字符串
+            if ($result->getData('data_type') == 1) {
+                $item->set('value', (string)$item->getData('value'));
+            }
+            //整型
+            if ($result->getData('data_type') == 2) {
+                $item->set('value', (int)$item->getData('value'));
+            }
+        }
+
+        return $items->visible(['label', 'value', 'ext'])->toArray();
     }
 
     /**

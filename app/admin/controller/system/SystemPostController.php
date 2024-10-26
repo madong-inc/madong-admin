@@ -15,8 +15,10 @@ namespace app\admin\controller\system;
 use app\admin\controller\Crud;
 use app\admin\validate\system\SystemPostValidate;
 use app\services\system\SystemPostService;
+use madong\utils\Json;
 use support\Container;
 use support\Request;
+use Throwable;
 
 class SystemPostController extends Crud
 {
@@ -29,23 +31,19 @@ class SystemPostController extends Crud
 
     /**
      * 下拉列表
+     *
      * @param \support\Request $request
      *
-     * @return \support\Request
+     * @return \support\Response
      */
-    public function select(Request $request):\support\Request
+    public function select(Request $request): \support\Response
     {
-        [$where, $format, $limit, $field, $order, $page] = $this->selectInput($request);
-        $format          = 'select';
-        $methods         = [
-            'select'     => 'formatSelect',
-            'tree'       => 'formatTree',
-            'table_tree' => 'formatTableTree',
-            'normal'     => 'formatNormal',
-        ];
-        $format_function = $methods[$format] ?? 'formatNormal';
-        $total           = $this->service->count($where, true);
-        $list            = $this->service->selectList($where, $field, 0, 0, '', [], true);
-        return call_user_func([$this, $format_function], $list, $total);
+        try {
+            [$where, $format, $limit, $field, $order, $page] = $this->selectInput($request);
+            $data = $this->service->selectList($where, $field, 0, 0, '', [], true)->toArray();
+            return Json::success('ok', $data);
+        } catch (Throwable $e) {
+            return Json::fail($e->getMessage());
+        }
     }
 }

@@ -47,6 +47,7 @@ class Crud extends Base
             $format_function = $methods[$format] ?? 'formatNormal';
             $total           = $this->service->count($where, true);
             $list            = $this->service->selectList($where, $field, $page, $limit, $order, [], true);
+
             return call_user_func([$this, $format_function], $list, $total);
         } catch (\Throwable $e) {
             return Json::fail($e->getMessage());

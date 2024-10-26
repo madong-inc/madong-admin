@@ -20,9 +20,9 @@ class SystemDeptValidate extends Validate
      * 定义验证规则
      */
     protected $rule = [
-        'code'   => 'require|alphaDash',
-        'name'   => 'require|max:16',
-        'enable' => 'require',
+        'code'      => 'require|alphaDash',
+        'name'      => 'require|max:16',
+        'enable'    => 'require',
     ];
 
     /**

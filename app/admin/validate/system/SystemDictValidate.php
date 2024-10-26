@@ -20,22 +20,24 @@ class SystemDictValidate extends Validate
      * 定义验证规则
      */
     protected $rule = [
-        'name'   => 'require|max:16',
-        'code'   => 'require|alphaDash',
-        'enabled' => 'require',
-        'sort'   => 'number',
+        'name'      => 'require|max:16',
+        'code'      => 'require|alphaDash',
+        'enabled'   => 'require',
+        'data_type' => 'require',
+        'sort'      => 'number',
     ];
 
     /**
      * 定义错误信息
      */
     protected $message = [
-        'name.require'   => '字典名称必须填写',
-        'name.max'       => '字典名称最多不能超过16个字符',
-        'code.require'   => '字典标识必须填写',
-        'code.alphaDash' => '字典标识只能由英文字母组成',
-        'enabled'         => '状态必须填写',
-        'sort.number'    => '排序只能是数字',
+        'name.require'      => '字典名称必须填写',
+        'name.max'          => '字典名称最多不能超过16个字符',
+        'code.require'      => '字典标识必须填写',
+        'code.alphaDash'    => '字典标识只能由英文字母组成',
+        'data_type.require' => '字典数据类型必须填写',
+        'enabled'           => '状态必须填写',
+        'sort.number'       => '排序只能是数字',
     ];
 
     /**
@@ -46,11 +48,13 @@ class SystemDictValidate extends Validate
             'name',
             'code',
             'enabled',
+            'data_type',
             'sort',
         ],
         'update' => [
             'name',
             'code',
+            'data_type',
             'enabled',
             'sort',
         ],

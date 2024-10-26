@@ -23,7 +23,7 @@ class SystemPostValidate extends Validate
      * 定义验证规则
      */
     protected $rule = [
-        'code'    => 'require|alpha',
+        'code'    => 'require|alphaNum',
         'name'    => 'require|max:16',
         'sort'    => 'number',
         'enabled' => 'require',
@@ -33,11 +33,11 @@ class SystemPostValidate extends Validate
      * 定义错误信息
      */
     protected $message = [
-        'code.require' => '职位标识必须填写',
-        'code.alpha'   => '职位标识只能由英文字母组成',
-        'name.require' => '职位名称必须填写',
-        'name.max'     => '职位名称最多不能超过16个字符',
-        'enabled'      => '状态必须填写',
+        'code.require'  => '职位标识必须填写',
+        'code.alphaNum' => '职位标识只能由英文字或者数字母组成',
+        'name.require'  => '职位名称必须填写',
+        'name.max'      => '职位名称最多不能超过16个字符',
+        'enabled'       => '状态必须填写',
     ];
 
     /**
