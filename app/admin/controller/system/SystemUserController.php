@@ -13,7 +13,7 @@
 namespace app\admin\controller\system;
 
 use app\admin\controller\Crud;
-use app\services\system\SystemDeptService;
+use app\admin\validate\system\SystemUserValidate;
 use app\services\system\SystemUserRoleService;
 use app\services\system\SystemUserService;
 use madong\exception\AdminException;
@@ -27,7 +27,8 @@ class SystemUserController extends Crud
     public function __construct()
     {
         parent::__construct();
-        $this->service = Container::make(SystemUserService::class);
+        $this->service  = Container::make(SystemUserService::class);
+        $this->validate = Container::make(SystemUserValidate::class);
     }
 
     public function index(Request $request): \support\Response
@@ -42,6 +43,13 @@ class SystemUserController extends Crud
         }
     }
 
+    /**
+     * 下拉列表
+     *
+     * @param \support\Request $request
+     *
+     * @return \support\Response
+     */
     public function select(Request $request): \support\Response
     {
         try {
@@ -57,7 +65,12 @@ class SystemUserController extends Crud
     {
 
         try {
-            $data   = $request->all();
+            $data = $request->all();
+            if (isset($this->validate) && $this->validate) {
+                if (!$this->validate->scene('store')->check($data)) {
+                    throw new \Exception($this->validate->getError());
+                }
+            }
             $result = $this->service->add($data);
             if (empty($result)) {
                 throw new AdminException('插入失败');
@@ -131,19 +144,6 @@ class SystemUserController extends Crud
             return Json::success('ok', $data);
         } catch (\Throwable $e) {
             return Json::fail($e->getMessage());
-        }
-    }
-
-    public function info(Request $request): \support\Response
-    {
-        try {
-            $result = $this->adminInfo ?? '';
-            if (empty($result)) {
-                throw new \Exception('登录过期');
-            }
-            return Json::success('ok', $result);
-        } catch (\Throwable $e) {
-            return Json::fail($e->getMessage(), [], 401);
         }
     }
 
@@ -252,12 +252,12 @@ class SystemUserController extends Crud
             }
 
             // 获取状态
-            $status = $request->input('status');
+            $status = $request->input('enabled');
             if (empty($status)) {
                 return Json::fail('Status must be provided.');
             }
             // 锁定用户
-            $this->service->lockMultiple($id, ['status' => $status]);
+            $this->service->lockMultiple($id, ['enabled' => $status]);
             return Json::success('ok');
         } catch (\Throwable $e) {
             return Json::fail($e->getMessage());
@@ -274,10 +274,10 @@ class SystemUserController extends Crud
     public function changePassword(Request $request): \support\Response
     {
         try {
-            $where    = $request->more(['user_name']);
-            $password = $request->input('password');
+            $ids      = $request->input('ids');
+            $password = $request->input('password', 123456);
             $data     = ['password' => password_hash($password, PASSWORD_DEFAULT)];
-            $this->service->update($where, $data);
+            $this->service->update(['id' => $ids], $data);
             return Json::success('ok');
         } catch (\Exception $e) {
             return Json::fail($e->getMessage());

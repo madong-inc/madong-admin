@@ -38,8 +38,7 @@ Route::group('/system', function () {
         Route::post('/user/update-avatar', [\app\admin\controller\system\SystemUserController::class, 'dev'])->name('修改头像');
         Route::post('/user/update-info', [\app\admin\controller\system\SystemUserController::class, 'dev'])->name('修改个人信息');
         Route::post('/user/update-pwd', [\app\admin\controller\system\SystemUserController::class, 'dev'])->name('修改个人密码');
-        Route::post('/user/perm-code', [\app\admin\controller\system\SystemUserController::class, 'dev'])->name('权限标识');
-        Route::post('/user/reset-password', [\app\admin\controller\system\SystemUserController::class, 'dev'])->name('重置密码');
+        Route::post('/user/reset-password', [\app\admin\controller\system\SystemUserController::class, 'changePassword'])->name('重置密码');
     });
 
     /**
@@ -137,6 +136,6 @@ Route::group('/system', function () {
     app\admin\middleware\AdminAuthTokenMiddleware::class,
     app\admin\middleware\AdminAuthPermissionMiddleware::class,
     app\admin\middleware\AdminLogMiddleware::class,
-    app\admin\middleware\RouteRestrictionMiddleware::class//演示系统拦截不允许操作路由
+//    app\admin\middleware\RouteRestrictionMiddleware::class//演示系统拦截不允许操作路由
 ]);
 
