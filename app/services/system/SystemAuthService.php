@@ -23,6 +23,7 @@ use madong\utils\JwtAuth;
 use madong\utils\Tree;
 use support\Container;
 use support\Request;
+use think\db\Query;
 
 class SystemAuthService extends BaseService
 {
@@ -189,11 +190,44 @@ class SystemAuthService extends BaseService
         }
     }
 
+//    /**
+//     * 获取角色-菜单id集合
+//     *
+//     * @param string|int $roleId
+//     *
+//     * @return array
+//     */
+//    public function getMenuIdsByRole(string|int $roleId): array
+//    {
+//        $systemRoleService = Container::make(SystemRoleService::class);
+//        $systemMenuService = Container::make(SystemMenuService::class);
+//        $roleData          = $systemRoleService->get($roleId, ['*'], ['menus' => function (Query $query) {
+//            $query->where('enabled', 1)->order('sort', 'asc');
+//        }]);
+//        $data              = [];
+//        if (empty($roleData)) {
+//            return $data;
+//        }
+//        $isSuperAdmin = $roleData->getData('is_super_admin');
+//        if ($isSuperAdmin === 1) {
+//            //超级管理员角色提供所有菜单
+//            $data = $systemMenuService->getColumn([], 'id');
+//        }
+//        if ($isSuperAdmin !== 1) {
+//            //普通管理员提供设定的权限id集合
+//            $menuData = $roleData->getData('menus');
+//            if (!empty($menuData)) {
+//                $data = array_column($menuData->toArray(), 'id');
+//            }
+//        }
+//        return $data ?? [];
+//    }
+
     /**
      * 获取所有权限 || 根据$menuIds获取对应权限
      *
-     * @param \app\service\system\SystemMenuService $systemMenuService
-     * @param array                                 $menuIds
+     * @param \app\services\system\SystemMenuService $systemMenuService
+     * @param array                                  $menuIds
      *
      * @return array
      */

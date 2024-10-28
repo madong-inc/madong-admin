@@ -13,14 +13,12 @@
 namespace app\services\system;
 
 use app\dao\system\SystemDeptDao;
+use app\model\system\SystemDept;
 use madong\basic\BaseService;
 use madong\exception\AdminException;
 use support\Container;
 use think\facade\Db;
 
-/**
- * @method save(array $data)
- */
 class SystemDeptService extends BaseService
 {
 
@@ -30,25 +28,102 @@ class SystemDeptService extends BaseService
     }
 
     /**
-     * 删除部门
+     * save
      *
-     * @param array|string $data
+     * @param array $data
+     *
+     * @return mixed
      */
-//    public function batchDelete(array|string $data): void
-//    {
-//        try {
-//            if (is_string($data)) {
-//                $data = array_map('trim', explode(',', $data));
-//            }
-//            $ret = $this->dao->count([['pid', 'in', $data]]);
-//
-//            if ($ret > 0) {
-//                throw new AdminException('该部门下存在子部门，请先删除子部门');
-//            }
-//            $this->dao->destroy($data);
-//        } catch (\Throwable $e) {
-//            throw new AdminException($e->getMessage());
-//        }
-//    }
+    public function save(array $data): mixed
+    {
+        Db::startTrans();
+        try {
+            $leaders = $data['leader_id_list'] ?? [];//部门领导
+            $model   = $this->dao->save($data);
+            if (!empty($leaders)) {
+                $model->leader()->save($leaders);
+            }
+            Db::commit();
+            return $model;
+        } catch (\Throwable $e) {
+            Db::rollback();
+            throw new AdminException($e->getMessage());
+        }
+    }
+
+    /**
+     * update
+     *
+     * @param $id
+     * @param $data
+     *
+     * @return void
+     */
+    public function update($id, $data): void
+    {
+        try {
+            $this->transaction(function () use ($id, $data) {
+                $this->dao->update($id, $data);
+                $leaders                 = $data['leader_id_list'] ?? [];//部门领导
+                $systemDeptLeaderService = Container::make(SystemDeptLeaderService::class);
+                $systemDeptLeaderService->dao->delete(['dept_id' => $id]);
+                if (!empty($leaders)) {
+                    $insert = [];
+                    foreach ($leaders as $item) {
+                        $row      = [
+                            'dept_id' => $id,
+                            'user_id' => $item,
+                        ];
+                        $insert[] = $row;
+                    }
+                    $systemDeptLeaderService->saveAll($insert);
+                }
+            });
+        } catch (\Throwable $e) {
+            throw new AdminException($e->getMessage());
+        }
+    }
+
+    /**
+     * get
+     *
+     * @param $id
+     *
+     * @return \app\model\system\SystemDept|null
+     */
+    public function get($id): ?SystemDept
+    {
+        $model = $this->dao->get($id, ['*'], ['leader']);
+        if (!empty($model)) {
+            $leader = $model->getData('leader');
+            $model->set('leader_id_list', array_column($leader->toArray() ?? [], 'id'));
+        }
+        return $model;
+    }
+
+    /**
+     * destroy
+     *
+     * @param $id
+     * @param $force
+     *
+     * @return void
+     */
+    public function destroy($id, $force): void
+    {
+        try {
+            $this->transaction(function () use ($id, $force) {
+                $res = $this->dao->count(['pid' => $id], true);
+                if ($res > 0) {
+                    throw new AdminException('该部门下存在子部门，请先删除子部门');
+                }
+                $this->dao->destroy($id);
+                $systemDeptLeaderService = Container::make(SystemDeptLeaderService::class);
+                $systemDeptLeaderService->dao->delete(['dept_id' => $id]);
+            });
+        } catch (\Throwable $e) {
+            throw new AdminException($e->getMessage());
+        }
+    }
 
 }

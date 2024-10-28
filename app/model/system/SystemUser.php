@@ -11,14 +11,12 @@
  */
 namespace app\model\system;
 
-use madong\basic\BaseModel;
-
-
+use madong\basic\BaseSoftDeleteModel;
 
 /**
  * 用户信息模型
  */
-class SystemUser extends BaseModel
+class SystemUser extends BaseSoftDeleteModel
 {
 
 

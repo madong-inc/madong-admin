@@ -9,6 +9,7 @@
  *+------------------
  * Official Website: http://www.madong.cn
  */
+
 namespace app\model\system;
 
 use madong\basic\BaseModel;
@@ -51,6 +52,20 @@ class SystemDept extends BaseModel
     {
         if (!empty($value)) {
             $query->where('name', 'like', $value . '%');
+        }
+    }
+
+    public function searchPidAttr($query, $value)
+    {
+        if (!empty($value)) {
+            if (is_string($value)) {
+                $value = array_map('trim', explode(',', $value));
+            }
+            if (is_array($value)) {
+                $query->whereIn('pid', $value);
+            } else {
+                $query->where('pid', $value);
+            }
         }
     }
 

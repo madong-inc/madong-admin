@@ -15,6 +15,7 @@ namespace app\admin\controller\system;
 use app\admin\controller\Crud;
 use app\admin\validate\system\SystemDeptValidate;
 use app\services\system\SystemDeptService;
+use madong\exception\AdminException;
 use madong\utils\Json;
 use support\Container;
 use support\Request;
@@ -29,44 +30,54 @@ class SystemDeptController extends Crud
     }
 
     /**
-     * 部门列表
+     * store
      *
      * @param \support\Request $request
      *
      * @return \support\Response
      */
-    public function index(Request $request): \support\Response
+    public function store(Request $request): \support\Response
     {
         try {
-            [$where, $format, $limit, $field, $order, $page] = $this->selectInput($request);
-            $data = $this->service->selectList($where, $field, 0, 0, '', [], false)->toArray();
-            return Json::success('ok', $data);
+            $data = $this->inputFilter($request->all(), ['leader_id_list']);
+            if (isset($this->validate) && $this->validate) {
+                if (!$this->validate->scene('store')->check($data)) {
+                    throw new \Exception($this->validate->getError());
+                }
+            }
+            $model = $this->service->save($data);
+            if (empty($model)) {
+                throw new AdminException('插入失败');
+            }
+            $pk = $model->getPk();
+            return Json::success('ok', [$pk => $model->getData($pk)]);
         } catch (\Throwable $e) {
             return Json::fail($e->getMessage());
         }
     }
 
     /**
-     * 获取部门树
+     * update
      *
      * @param \support\Request $request
      *
      * @return \support\Response
      */
-    public function getDepartmentTree(Request $request): \support\Response
+    public function update(Request $request): \support\Response
     {
-        [$where, $format, $limit, $field, $order, $page] = $this->selectInput($request);
-        $format          = 'tree';
-        $methods         = [
-            'select'     => 'formatSelect',
-            'tree'       => 'formatTree',
-            'table_tree' => 'formatTableTree',
-            'normal'     => 'formatNormal',
-        ];
-        $format_function = $methods[$format] ?? 'formatNormal';
-        $total           = $this->service->count($where, true);
-        $list            = $this->service->selectList($where, $field, 0, 0, '', [], true);
-        return call_user_func([$this, $format_function], $list, $total);
+        try {
+            $id   = $request->route->param('id');
+            $data = $this->inputFilter($request->all(), ['leader_id_list']);
+            if (isset($this->validate) && $this->validate) {
+                if (!$this->validate->scene('update')->check($data)) {
+                    throw new \Exception($this->validate->getError());
+                }
+            }
+            $this->service->update($id, $data);
+            return Json::success('ok');
+        } catch (\Throwable $e) {
+            return Json::fail($e->getMessage());
+        }
     }
 
 }

@@ -29,21 +29,4 @@ class SystemPostController extends Crud
         $this->validate = Container::make(SystemPostValidate::class);
     }
 
-    /**
-     * 下拉列表
-     *
-     * @param \support\Request $request
-     *
-     * @return \support\Response
-     */
-    public function select(Request $request): \support\Response
-    {
-        try {
-            [$where, $format, $limit, $field, $order, $page] = $this->selectInput($request);
-            $data = $this->service->selectList($where, $field, 0, 0, '', [], true)->toArray();
-            return Json::success('ok', $data);
-        } catch (Throwable $e) {
-            return Json::fail($e->getMessage());
-        }
-    }
 }

@@ -29,41 +29,4 @@ class SystemMenuController extends Crud
         $this->validate = Container::make(SystemMenuValidate::class);
     }
 
-    /**
-     * 数据列表
-     *
-     * @param \support\Request $request
-     *
-     * @return \support\Response
-     */
-    public function index(Request $request): \support\Response
-    {
-        try {
-            [$where, $format, $limit, $field, $order, $page] = $this->selectInput($request);
-            $where[] = ['enabled', '=', 1];
-            $list    = $this->service->selectList($where, $field, $page, $limit, $order, [], true)->toArray();
-            return Json::success('ok', $list);
-        } catch (\Throwable $e) {
-            return Json::fail($e->getMessage());
-        }
-    }
-
-    /**
-     * 获取菜单树
-     *
-     * @param \support\Request $request
-     *
-     * @return \support\Response
-     */
-    public function buildMenuTree(Request $request): \support\Response
-    {
-        try {
-            [$where, $format, $limit, $field, $order, $page] = $this->selectInput($request);
-            $list = $this->service->menuTree($where);
-            return Json::success('ok', $list);
-        } catch (\Throwable $e) {
-            return Json::fail($e->getMessage());
-        }
-    }
-
 }

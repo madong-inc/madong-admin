@@ -26,6 +26,4 @@ class SystemDictItemController extends Crud
         $this->validate = Container::make(SystemDictItemValidate::class);
     }
 
-
-
 }

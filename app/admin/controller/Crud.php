@@ -47,11 +47,27 @@ class Crud extends Base
             $format_function = $methods[$format] ?? 'formatNormal';
             $total           = $this->service->count($where, true);
             $list            = $this->service->selectList($where, $field, $page, $limit, $order, [], true);
-
             return call_user_func([$this, $format_function], $list, $total);
         } catch (\Throwable $e) {
             return Json::fail($e->getMessage());
         }
+    }
+
+    /**
+     * @param \support\Request $request
+     *
+     * @return \support\Response
+     */
+    public function select(Request $request): \support\Response
+    {
+        try {
+            [$where, $format, $limit, $field, $order, $page] = $this->selectInput($request);
+            $data = $this->service->selectList($where, $field, 0, 99999, $order, [], true);
+            return Json::success('ok', $data);
+        } catch (\Throwable $e) {
+            return Json::fail($e->getMessage());
+        }
+
     }
 
     /**
@@ -161,7 +177,7 @@ class Crud extends Base
     public function destroy(Request $request): \support\Response
     {
         try {
-            $id   = $request->route->param('id'); // 获取路由地址 id
+            $id   = $request->route->param('id'); // 获取路由地址 id从
             $data = $request->input('data', []);
             $id   = !empty($id) && $id !== '0' ? $id : $data;
             if (empty($id)) {
@@ -235,7 +251,7 @@ class Crud extends Base
                     $where[] = [$actualColumn, 'IN', $value]; // 处理 IN 条件
                     break;
                 case 'LIKE':
-                    $where[] = [$actualColumn, 'LIKE', $value . '%']; // 处理 LIKE 条件
+                    $where[] = [$actualColumn, 'LIKE', '%'.$value . '%']; // 处理 LIKE 条件
                     break;
                 case 'GT':
                     $where[] = [$actualColumn, '>', $value]; // 处理大于条件
@@ -287,25 +303,31 @@ class Crud extends Base
      * 对用户输入表单过滤
      *
      * @param array $data
+     * @param array $skipKeys
      *
      * @return array
      */
-    protected function inputFilter(array $data): array
+    protected function inputFilter(array $data, array $skipKeys = []): array
     {
         $model   = $this->service->getModel();
         $columns = $model->getTableFields();
+
         foreach ($data as $col => $item) {
-            if (!in_array($col, $columns)) {
+            // 检查是否在跳过的键中，或者不在列中
+            if (!in_array($col, $columns) && !in_array($col, $skipKeys)) {
                 unset($data[$col]);
                 continue;
             }
         }
-        if (empty($data['created_time'])) {
+
+        // 处理时间字段
+        if (empty($data['created_time']) && !in_array('created_time', $skipKeys)) {
             unset($data['created_time']);
         }
-        if (empty($data['updated_time'])) {
+        if (empty($data['updated_time']) && !in_array('updated_time', $skipKeys)) {
             unset($data['updated_time']);
         }
+
         return $data;
     }
 
@@ -328,7 +350,7 @@ class Crud extends Base
             ];
         }
         $tree = new Tree($format_items);
-        return Json::success('ok', $tree->getTree());
+        return Json::success('ok1', $tree->getTree());
     }
 
     /**
@@ -351,14 +373,14 @@ class Crud extends Base
      *
      * @param $items
      *
-     * @return \support\Response
+     * @return \support\Respons
      */
     protected function formatSelect($items): \support\Response
     {
         $formatted_items = [];
         foreach ($items as $item) {
             $formatted_items[] = [
-                'label' => $item->title ?? $item->name ?? $item->id,
+                'label' => $item->title ?? $item->name ?? $item->real_name ?? $item->id,
                 'value' => $item->id,
             ];
         }

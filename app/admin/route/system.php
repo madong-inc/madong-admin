@@ -39,6 +39,10 @@ Route::group('/system', function () {
         Route::post('/user/update-info', [\app\admin\controller\system\SystemUserController::class, 'dev'])->name('修改个人信息');
         Route::post('/user/update-pwd', [\app\admin\controller\system\SystemUserController::class, 'dev'])->name('修改个人密码');
         Route::post('/user/reset-password', [\app\admin\controller\system\SystemUserController::class, 'changePassword'])->name('重置密码');
+        Route::post('/user/locked', [\app\admin\controller\system\SystemUserController::class, 'locked'])->name('锁定用户');
+        Route::post('/user/un-locked', [\app\admin\controller\system\SystemUserController::class, 'unLocked'])->name('取消锁定用户');
+        Route::post('/user/grant-role', [\app\admin\controller\system\SystemUserController::class, 'grantRole'])->name('授权角色');
+
     });
 
     /**
@@ -48,14 +52,14 @@ Route::group('/system', function () {
         Route::get('/auth/user-info', [\app\admin\controller\system\SystemAuthController::class, 'getUserInfo'])->name('获取用户详情');
         Route::get('/auth/user-menus', [\app\admin\controller\system\SystemAuthController::class, 'getUserMenus'])->name('获取用户菜单');
         Route::get('/auth/perm-code', [\app\admin\controller\system\SystemAuthController::class, 'getUserCodes'])->name('权限码');
-        Route::post('/auth/save-role-menu', [\app\admin\controller\system\SystemAuthController::class, 'dev'])->name('保存角色菜单关系');
-        Route::post('/auth/role-menu-ids', [\app\admin\controller\system\SystemAuthController::class, 'dev'])->name('根据角色ID获取菜单ID集合');
-        Route::post('/auth/role-menu-list', [\app\admin\controller\system\SystemAuthController::class, 'dev'])->name('获取角色菜单列表');
-        Route::post('/auth/role-menu-tree', [\app\admin\controller\system\SystemAuthController::class, 'dev'])->name('获取角色菜单树');
-        Route::post('/auth/user-list-by-role-id', [\app\admin\controller\system\SystemAuthController::class, 'dev'])->name('通过角色ID获取用户列表');
-        Route::post('/auth/user-list-exclude-role-id', [\app\admin\controller\system\SystemAuthController::class, 'dev'])->name('获取用户列表-排除指定角色');
-        Route::post('/auth/save-user-role', [\app\admin\controller\system\SystemAuthController::class, 'dev'])->name('添加用户角色关系');
-        Route::post('/auth/remove-user-role', [\app\admin\controller\system\SystemAuthController::class, 'dev'])->name('删除用户角色关系');
+        Route::get('/auth/role-menu-ids', [\app\admin\controller\system\SystemAuthController::class, 'roleMenuIds'])->name('根据角色ID获取菜单ID集合');
+        Route::get('/auth/role-menu-list', [\app\admin\controller\system\SystemAuthController::class, 'dev'])->name('获取角色菜单列表');
+        Route::get('/auth/role-menu-tree', [\app\admin\controller\system\SystemAuthController::class, 'dev'])->name('获取角色菜单树');
+        Route::get('/auth/user-list-by-role-id', [\app\admin\controller\system\SystemAuthController::class, 'getUsersByRoleId'])->name('通过角色ID获取用户列表');
+        Route::get('/auth/user-list-exclude-role-id', [\app\admin\controller\system\SystemAuthController::class, 'getUsersExcludingRole'])->name('获取用户列表-排除指定角色');
+        Route::post('/auth/save-role-menu', [\app\admin\controller\system\SystemAuthController::class, 'saveRoleMenuRelation'])->name('保存角色菜单关系');
+        Route::post('/auth/save-user-role', [\app\admin\controller\system\SystemAuthController::class, 'saveUserRoles'])->name('添加用户角色关系');
+        Route::post('/auth/remove-user-role', [\app\admin\controller\system\SystemAuthController::class, 'removeUserRole'])->name('删除用户角色关系');
     });
 
     /**
@@ -92,7 +96,7 @@ Route::group('/system', function () {
         Route::put('/menu/{id}', [\app\admin\controller\system\SystemMenuController::class, 'update'])->name('更新');
         Route::post('/menu', [\app\admin\controller\system\SystemMenuController::class, 'store'])->name('保存');
         Route::delete('/menu/{id}', [\app\admin\controller\system\SystemMenuController::class, 'destroy'])->name('删除');
-        Route::post('/menu/tree', [\app\admin\controller\system\SystemMenuController::class, 'buildMenuTree'])->name('菜单Tree');
+//        Route::post('/menu/tree', [\app\admin\controller\system\SystemMenuController::class, 'buildMenuTree'])->name('菜单Tree');
         Route::post('/menu/app-list', [\app\admin\controller\system\SystemMenuController::class, 'dev'])->name('应用列表');
     });
 
@@ -105,6 +109,7 @@ Route::group('/system', function () {
         Route::put('/role/{id}', [\app\admin\controller\system\SystemRoleController::class, 'update'])->name('更新');
         Route::post('/role', [\app\admin\controller\system\SystemRoleController::class, 'store'])->name('保存');
         Route::delete('/role/{id}', [\app\admin\controller\system\SystemRoleController::class, 'destroy'])->name('删除');
+        Route::post('/role-tree', [\app\admin\controller\system\SystemRoleController::class, 'store'])->name('保存');
     });
 
     /**
@@ -116,7 +121,6 @@ Route::group('/system', function () {
         Route::put('/dept/{id}', [\app\admin\controller\system\SystemDeptController::class, 'update'])->name('更新');
         Route::post('/dept', [\app\admin\controller\system\SystemDeptController::class, 'store'])->name('保存');
         Route::delete('/dept/{id}', [\app\admin\controller\system\SystemDeptController::class, 'destroy'])->name('删除');
-        Route::post('/dept-tree', [\app\admin\controller\system\SystemDeptController::class, 'getDepartmentTree'])->name('部门Tree');
     });
 
     /**
@@ -128,7 +132,6 @@ Route::group('/system', function () {
         Route::put('/post/{id}', [\app\admin\controller\system\SystemPostController::class, 'update'])->name('更新');
         Route::post('/post', [\app\admin\controller\system\SystemPostController::class, 'store'])->name('保存');
         Route::delete('/post/{id}', [\app\admin\controller\system\SystemPostController::class, 'destroy'])->name('删除');
-        Route::post('/post-select', [\app\admin\controller\system\SystemPostController::class, 'select'])->name('部门下拉列表');
     });
 
 })->middleware([
@@ -136,6 +139,6 @@ Route::group('/system', function () {
     app\admin\middleware\AdminAuthTokenMiddleware::class,
     app\admin\middleware\AdminAuthPermissionMiddleware::class,
     app\admin\middleware\AdminLogMiddleware::class,
-//    app\admin\middleware\RouteRestrictionMiddleware::class//演示系统拦截不允许操作路由
+    //    app\admin\middleware\RouteRestrictionMiddleware::class//演示系统拦截不允许操作路由
 ]);
 

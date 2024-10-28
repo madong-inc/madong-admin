@@ -22,7 +22,7 @@ class SystemDeptValidate extends Validate
     protected $rule = [
         'code'      => 'require|alphaDash',
         'name'      => 'require|max:16',
-        'enable'    => 'require',
+        'enabled'    => 'require',
     ];
 
     /**
@@ -33,7 +33,7 @@ class SystemDeptValidate extends Validate
         'code.alphaDash' => '部门标识只能由英文字母组成',
         'name.require'   => '部门名称必须填写',
         'name.max'       => '部门名称最多不能超过16个字符',
-        'enable'         => '状态必须填写',
+        'enabled'         => '状态必须填写',
     ];
 
     /**
@@ -43,12 +43,12 @@ class SystemDeptValidate extends Validate
         'store'  => [
             'code',
             'name',
-            'enable',
+            'enabled',
         ],
         'update' => [
             'code',
             'name',
-            'enable',
+            'enabled',
         ],
     ];
 

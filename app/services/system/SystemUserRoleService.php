@@ -16,10 +16,13 @@ use app\dao\system\SystemUserRoleDao;
 use madong\basic\BaseService;
 use madong\exception\AdminException;
 use support\Container;
-use think\facade\Db;
+
 
 /**
- * @method save(array $data)
+ *
+ *
+ * @author Mr.April
+ * @since  1.0
  */
 class SystemUserRoleService extends BaseService
 {
@@ -30,52 +33,41 @@ class SystemUserRoleService extends BaseService
     }
 
     /**
-     * 角色分配用户
+     * 更新设置角色权限
      *
-     * @param string $roleId
-     * @param array  $users
+     * @param $data
      */
-//    public function usersToRoleById(string $roleId, array $users): void
-//    {
-//        try {
-//            //1.0 获取当前角色已分配的$existingRoles用户
-//            $existingUsers = $this->getColumn(['role_id' => $roleId], 'user_id');
-//            $usersToAdd    = array_diff($users, $existingUsers);
-//            if (empty($usersToAdd)) {
-//                throw new AdminException('No new users to add.');
-//            }
-//            //2.0 增量添加用户关联角色
-//            $data = [];
-//            foreach ($usersToAdd as $userId) {
-//                $data[] = ['user_id' => $userId, 'role_id' => $roleId];
-//            }
-//            $this->saveAll($data);
-//        } catch (\Throwable $e) {
-//            throw new AdminException($e->getMessage());
-//        }
-//    }
-
-    /**
-     * 用户分配多个角色
-     *
-     * @param string $userId
-     * @param array  $roles
-     */
-    public function assignUserToRolesById(string $userId, array $roles): void
+    public function save($data): void
     {
         try {
-            //1.0 获取当前用户已分配的$existingRoles用户
-            $existingRoles = $this->getColumn(['user_id' => $userId], 'role_id');
-            $rolesToAdd    = array_diff($roles, $existingRoles);
-            if (empty($usersToAdd)) {
-                throw new AdminException('No new users to add.');
-            }
-            //2.0 增量添加用户关联角色
-            $data = [];
-            foreach ($rolesToAdd as $roleId) {
-                $data[] = ['user_id' => $userId, 'role_id' => $roleId];
-            }
-            $this->saveAll($data);
+            $this->transaction(function () use ($data) {
+                $userId   = $data['user_id'] ?? '';
+                $newRoles = $data['role_id_list'] ?? [];
+                if (empty($userId)) {
+                    throw new AdminException('参数错误缺少user_id', -1);
+                } // 获取当前权限
+                $currentRoles = $this->getColumn(['user_id' => $userId], 'role_id');
+
+                // 计算需要添加和删除的权限
+                $userRoleIdsToAdd    = array_diff($newRoles, $currentRoles);
+                $userRoleIdsToRemove = array_diff($currentRoles, $newRoles);
+
+                // 批量删除权限
+                if (!empty($userRoleIdsToRemove)) {
+                    $this->dao->delete([
+                        ['role_id', 'in', $userRoleIdsToRemove],
+                        ['user_id', '=', $userId],
+                    ]);
+                }
+
+                // 批量添加权限
+                if (!empty($userRoleIdsToAdd)) {
+                    $data = array_map(function ($roleId) use ($userId) {
+                        return ['role_id' => $roleId, 'user_id' => $userId];
+                    }, $userRoleIdsToAdd);
+                    $this->dao->saveAll($data);
+                }
+            });
         } catch (\Throwable $e) {
             throw new AdminException($e->getMessage());
         }
@@ -84,31 +76,34 @@ class SystemUserRoleService extends BaseService
     /**
      * 移除用户-关联角色
      *
-     * @param string|int       $roleId
-     * @param string|int|array $data
+     * @param array $data
      */
-    public function removeUserRole(string|int $roleId, string|int|array $data)
+    public function removeUserRole(array $data)
     {
         try {
-            // 构建查询条件
-            $map = [['role_id', '=', $roleId]];
+            $this->transaction(function () use ($data) {
+                foreach ($data as $item) {
+                    $this->dao->delete($item);
+                }
+            });
+        } catch (\Throwable $e) {
+            throw new AdminException($e->getMessage());
+        }
+    }
 
-            // 处理 $data
-            if (is_string($data)) {
-                $data = array_map('trim', explode(',', $data));
-            }
-
-            // 根据 $data 的类型构建条件
-            if (is_array($data) && !empty($data)) {
-                $map[] = ['user_id', 'in', $data];
-            } elseif (!empty($data)) {
-                $map[] = ['user_id', '=', $data];
-            } else {
-                throw new AdminException('无效的用户数据。');
-            }
-
-            // 执行删除操作
-            $this->delete($map);
+    /**
+     * 保存用户-关联角色
+     *
+     * @param array $data
+     *
+     * @return \think\model\Collection|null
+     */
+    public function saveUserRoles(array $data): \think\model\Collection|null
+    {
+        try {
+            return $this->transaction(function () use ($data) {
+                return $this->dao->saveAll($data);
+            });
         } catch (\Throwable $e) {
             throw new AdminException($e->getMessage());
         }

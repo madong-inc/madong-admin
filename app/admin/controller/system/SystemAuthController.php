@@ -15,7 +15,9 @@ namespace app\admin\controller\system;
 use app\admin\controller\Crud;
 use app\admin\validate\system\SystemAuthValidate;
 use app\services\system\SystemAuthService;
-use app\services\system\SystemRoleService;
+use app\services\system\SystemRoleMenuService;
+use app\services\system\SystemUserRoleService;
+use app\services\system\SystemUserService;
 use madong\exception\AuthException;
 use madong\utils\Dict;
 use madong\utils\Json;
@@ -105,4 +107,122 @@ class SystemAuthController extends Crud
             return Json::fail($e->getMessage(), [], $e->getCode());
         }
     }
+
+    /**
+     * 通过角色ID获取权限ID集合
+     *
+     * @param \support\Request $request
+     *
+     * @return \support\Response
+     */
+    public function roleMenuIds(Request $request): \support\Response
+    {
+        try {
+            $roleId                = $request->input('role_id');
+            $systemRoleMenuService = Container::make(SystemRoleMenuService::class);
+            $data                  = $systemRoleMenuService->getColumn(['role_id' => $roleId], 'menu_id');
+            return Json::success('ok', $data);
+        } catch (\Throwable $e) {
+            return Json::fail($e->getMessage(), [], $e->getCode());
+        }
+    }
+
+    /**
+     * 保存角色菜单关系
+     *
+     * @param \support\Request $request
+     *
+     * @return \support\Response
+     */
+    public function saveRoleMenuRelation(Request $request): \support\Response
+    {
+        try {
+            $data                  = $request->all();
+            $systemRoleMenuService = Container::make(SystemRoleMenuService::class);
+            $systemRoleMenuService->save($data);
+            return Json::success('ok');
+        } catch (\Throwable $e) {
+            return Json::fail($e->getMessage(), [], $e->getCode());
+        }
+    }
+
+    /**
+     * 获取角色-关联用户列表
+     *
+     * @param \support\Request $request
+     *
+     * @return \support\Response
+     */
+    public function getUsersByRoleId(Request $request): \support\Response
+    {
+        try {
+            [$where, $format, $limit, $field, $order, $page] = $this->selectInput($request);
+            $where['role_id']  = $request->input('role_id');
+            $systemUserService = Container::make(SystemUserService::class);
+            $data              = $systemUserService->getUsersListByRoleId($where, $field, $page, $limit);
+            return Json::success('ok', $data);
+        } catch (\Throwable $e) {
+            return Json::fail($e->getMessage(), [], $e->getCode());
+        }
+
+    }
+
+    /**
+     * 保存用户-关联角色
+     *
+     * @param \support\Request $request
+     *
+     * @return \support\Response
+     */
+    public function saveUserRoles(Request $request): \support\Response
+    {
+        try {
+            $data                  = $request->all();
+            $systemUserRoleService = Container::make(SystemUserRoleService::class);
+            $systemUserRoleService->saveUserRoles($data);
+            return Json::success('ok');
+        } catch (\Throwable $e) {
+            return Json::fail($e->getMessage(), [], $e->getCode());
+        }
+    }
+
+    /**
+     * 移除用户-关联角色
+     *
+     * @param \support\Request $request
+     *
+     * @return \support\Response
+     */
+    public function removeUserRole(Request $request): \support\Response
+    {
+        try {
+            $data                  = $request->all();
+            $systemUserRoleService = Container::make(SystemUserRoleService::class);
+            $systemUserRoleService->removeUserRole($data);
+            return Json::success('ok');
+        } catch (\Throwable $e) {
+            return Json::fail($e->getMessage(), [], $e->getCode());
+        }
+    }
+
+    /**
+     * 获取用户列表-排除指定角色id
+     *
+     * @param \support\Request $request
+     *
+     * @return \support\Response
+     */
+    public function getUsersExcludingRole(Request $request): \support\Response
+    {
+        try {
+            [$where, $format, $limit, $field, $order, $page] = $this->selectInput($request);
+            $where['role_id']  = $request->input('role_id');
+            $systemUserService = Container::make(SystemUserService::class);
+            $data              = $systemUserService->getUsersExcludingRole($where, $field, $page, $limit);
+            return Json::success('ok', $data);
+        } catch (\Throwable $e) {
+            return Json::fail($e->getMessage(), [], $e->getCode());
+        }
+    }
+
 }

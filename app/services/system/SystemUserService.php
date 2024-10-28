@@ -13,16 +13,12 @@
 namespace app\services\system;
 
 use support\Container;
-use think\facade\Db;
 use Webman\Event\Event;
 use madong\utils\JwtAuth;
 use madong\basic\BaseService;
 use madong\exception\AdminException;
 use app\dao\system\SystemUserDao;
 
-/**
- * @method save(array $data)
- */
 class SystemUserService extends BaseService
 {
 
@@ -36,14 +32,160 @@ class SystemUserService extends BaseService
      *
      * @param $id
      *
-     * @return array
+     * @return \app\model\system\SystemUser|null
      */
-    public function read($id): array
+    public function get($id): \app\model\system\SystemUser|null
     {
-        $result                  = $this->dao->get($id, ['*'], ['roles', 'posts', 'depts'])->hidden(['password'])->toArray();
-        $result['selected_role'] = array_column($result['roles'] ?? [], 'id');
-        $result['selected_post'] = array_column($result['posts'] ?? [], 'id');
-        return $result;
+        $model = $this->dao->get($id, ['*'], ['roles', 'posts', 'depts']);
+        if (!empty($model)) {
+            $roles = $model->getData('roles');
+            $posts = $model->getData('posts');
+            $model->set('role_id_list', []);
+            $model->set('post_id_list', []);
+            if (!empty($roles)) {
+                $model->set('role_id_list', array_column($roles->toArray(), 'id'));
+            }
+            if (!empty($posts)) {
+                $model->set('post_id_list', array_column($posts->toArray(), 'id'));
+            }
+            $model->hidden(['password']);
+        }
+        return $model;
+    }
+
+    /**
+     * selectList
+     *
+     * @param array  $where
+     * @param string $field
+     * @param int    $page
+     * @param int    $limit
+     * @param string $order
+     * @param array  $with
+     * @param bool   $search
+     *
+     * @return \think\Collection|null
+     */
+    public function selectList(array $where, string $field = '*', int $page = 0, int $limit = 0, string $order = '', array $with = [], bool $search = false): \think\Collection|null
+    {
+        return $this->dao->selectList($where, $field, $page, $limit, $order, ['depts', 'posts', 'roles'], $search)->hidden(['password']);
+    }
+
+    /**
+     * save
+     *
+     * @param array $data
+     *
+     * @return \app\model\system\SystemUser|null
+     */
+    public function save(array $data): \app\model\system\SystemUser|null
+    {
+        try {
+            return $this->transaction(function () use ($data) {
+                $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+                $roles            = $data['role_id_list'] ?? [];
+                $posts            = $data['post_id_list'] ?? [];
+                $model            = $this->dao->save($data);
+                if (!empty($roles)) {
+                    $model->roles()->saveAll($roles);
+                }
+                if (!empty($posts)) {
+                    $model->posts()->save($posts);
+                }
+                return $model;
+            });
+        } catch (\Throwable $e) {
+            throw new AdminException($e->getMessage());
+        }
+    }
+
+    /**
+     * 编辑
+     *
+     * @param $id
+     * @param $data
+     *
+     * @return void
+     */
+    public function update($id, $data): void
+    {
+        try {
+            $this->transaction(function () use ($id, $data) {
+                unset($data['password']);
+                $roles  = $data['role_id_list'] ?? [];
+                $posts  = $data['post_id_list'] ?? [];
+                $result = $this->dao->update(['id' => $id], $data);
+                $user   = $this->dao->get($id);
+                if ($result && $user) {
+                    $user->roles()->detach();
+                    $user->posts()->detach();
+                    if (!empty($roles)) {
+                        $user->roles()->saveAll($roles);
+                    }
+                    if (!empty($posts)) {
+                        $user->posts()->save($posts);
+                    }
+                }
+            });
+        } catch (\Throwable $e) {
+            throw new AdminException($e->getMessage());
+        }
+
+    }
+
+    /**
+     * destroy
+     *
+     * @param $id
+     * @param $force
+     *
+     * @return mixed
+     */
+    public function destroy($id, $force): mixed
+    {
+        $ret = $this->dao->count([['id', 'in', $id], ['is_super', '=', 1]]);
+        if ($ret > 0) {
+            throw new AdminException('系统内置用户，不允许删除');
+        }
+        return $this->dao->destroy($id);
+    }
+
+    /**
+     * 用户-冻结
+     *
+     * @param array|string $id
+     */
+    public function locked(array|string $id): void
+    {
+        try {
+            if (is_string($id)) {
+                $id = array_map('trim', explode(',', $id));
+            }
+            $ret = $this->dao->count([['id', 'in', $id], ['is_super', '=', 1]]);
+            if ($ret > 0) {
+                throw new AdminException('系统内置用户，不允许冻结');
+            }
+            $this->dao->batchUpdate($id, ['is_locked' => 1]);
+        } catch (\Throwable $e) {
+            throw new AdminException($e->getMessage());
+        }
+    }
+
+    /**
+     * 用户-解除冻结
+     *
+     * @param array|string $id
+     */
+    public function unLocked(array|string $id): void
+    {
+        try {
+            if (is_string($id)) {
+                $id = array_map('trim', explode(',', $id));
+            }
+            $this->dao->batchUpdate($id, ['is_locked' => 0]);
+        } catch (\Throwable $e) {
+            throw new AdminException($e->getMessage());
+        }
     }
 
     /**
@@ -98,23 +240,22 @@ class SystemUserService extends BaseService
     /**
      * 获取用户列表-角色id
      *
-     * @param array $where
+     * @param array  $where
+     * @param string $field
+     * @param int    $page
+     * @param int    $limit
      *
      * @return array
      */
-    public function getUsersListByRoleId(array $where): array
+    public function getUsersListByRoleId(array $where, string $field, int $page, int $limit): array
     {
-        [$page, $limit, $defaultLimit, $limitMax] = $this->getPageValue();
         $roleId = $where['role_id'];
         //1.0 获取总数
         $total = $this->dao->getModel()->hasWhere('userRoles', function ($query) use ($roleId) {
             $query->where('role_id', $roleId);
         })->when(!empty($where), function ($query) use ($where) {
-            foreach ($where as $key => $value) {
-                if (in_array($key, ['user_name', 'real_name']) && $value !== null && $value !== '') {
-                    $query->where($key, 'like', $value . '%');
-                }
-            }
+            unset($where['role_id']);
+            $query->where($where);
         })->count();
 
         //2.0 获取列表
@@ -123,77 +264,65 @@ class SystemUserService extends BaseService
         })->when($page && $limit, function ($query) use ($page, $limit) {
             $query->page($page, $limit);
         })->when(!empty($where), function ($query) use ($where) {
-            foreach ($where as $key => $value) {
-                if (in_array($key, ['user_name', 'real_name']) && $value !== null && $value !== '') {
-                    $query->where($key, 'like', $value . '%');
-                }
-            }
+            unset($where['role_id']);
+            $query->where($where);
         })->select()->toArray();
 
         return compact('total', 'items');
     }
 
     /**
-     * 添加用户
+     * 排除角色ID-用户列表
      *
-     * @param $data
+     * @param array  $where
+     * @param string $field
+     * @param int    $page
+     * @param int    $limit
      *
-     * @return mixed
+     * @return array
      */
-    public function add($data): mixed
+    public function getUsersExcludingRole(array $where, string $field, int $page, int $limit): array
     {
-        Db::startTrans();
-        try {
-            $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
-            $roles            = $data['selected_role'] ?? [];
-            $posts            = $data['selected_post'] ?? [];
-            $model            = $this->save($data);
-            if (!empty($roles)) {
-                $model->roles()->saveAll($roles);
-            }
-            if (!empty($posts)) {
-                $model->posts()->saveAll($roles);
-            }
-            Db::commit();
-            return [$model->getPk() => $model->getKey()];
-        } catch (\Throwable $e) {
-            Db::rollback();
-            throw new AdminException($e->getMessage());
-        }
-    }
-
-    /**
-     * 编辑
-     *
-     * @param $id
-     * @param $data
-     *
-     * @return mixed
-     */
-    public function edit($id, $data): mixed
-    {
-        Db::startTrans();
-        try {
-            unset($data['password']);
-            $roles  = $data['selected_role'] ?? [];
-            $posts  = $data['selected_post'] ?? [];
-            $result = $this->dao->update(['id' => $id], $data);
-            $user   = $this->dao->get($id);
-            if ($result && $user) {
-                $user->roles()->detach();
-                $user->posts()->detach();
-                $user->roles()->saveAll($roles);
-                if (!empty($posts)) {
-                    $user->posts()->save($posts);
+        $roleId = $where['role_id'];
+        // 1.0 获取总数
+        $total = $this->dao->getModel()
+            ->with(['roles'])
+            ->when(!empty($where), function ($query) use ($where) {
+                unset($where['role_id']);
+                $query->where($where);
+            })
+            ->filter(function ($user) use ($roleId) {
+                $roles = $user->roles ?? null;
+                if (empty($roles)) {
+                    return true;
                 }
-            }
-            Db::commit();
-            return [$result->getPk() => $result->getKey()];
-        } catch (\Throwable $e) {
-            Db::rollback();
-            throw new AdminException($e->getMessage());
-        }
+                $array = $roles->toArray();
+                return !in_array($roleId, array_column($array, 'id'));
+            })
+            ->count();
 
+        // 2.0 获取列表
+        $items = $this->dao->getModel()
+            ->with(['roles'])
+            ->when($page && $limit, function ($query) use ($page, $limit) {
+                $query->page($page, $limit);
+            })
+            ->when(!empty($where), function ($query) use ($where) {
+                unset($where['role_id']);
+                $query->where($where);
+            })
+            ->filter(function ($user) use ($roleId) {
+                $roles = $user->roles ?? null;
+                if (empty($roles)) {
+                    return true;
+                }
+                $array = $roles->toArray();
+                return !in_array($roleId, array_column($array, 'id'));
+            })
+            ->select()
+            ->toArray();
+
+        return compact('total', 'items');
     }
 
     /**
@@ -201,43 +330,22 @@ class SystemUserService extends BaseService
      *
      * @param array|string $data
      */
-    public function batchDelete(array|string $data): void
-    {
-        try {
-            if (is_string($data)) {
-                $data = array_map('trim', explode(',', $data));
-            }
-            $ret = $this->dao->count([['id', 'in', $data], ['is_super', '=', 1]]);
 
-            if ($ret > 0) {
-                throw new AdminException('系统内置用户，不允许删除');
-            }
-            $this->dao->destroy($data);
-        } catch (\Throwable $e) {
-            throw new AdminException($e->getMessage());
-        }
-    }
-
-    /**
-     * 用户冻结
-     *
-     * @param array|string $id
-     * @param string|int   $status
-     */
-    public function lockMultiple(array|string $id, string|int $status)
-    {
-        try {
-            if (is_string($id)) {
-                $id = array_map('trim', explode(',', $id));
-            }
-            $ret = $this->dao->count([['id', 'in', $id], ['is_super', '=', 1]]);
-            if ($ret > 0 && $status == 2) {
-                throw new AdminException('系统内置用户，不允许冻结');
-            }
-            $this->dao->batchUpdate($id, ['status' => $status]);
-        } catch (\Throwable $e) {
-            throw new AdminException($e->getMessage());
-        }
-    }
+//    public function batchDelete(array|string $data): void
+//    {
+//        try {
+//            if (is_string($data)) {
+//                $data = array_map('trim', explode(',', $data));
+//            }
+//            $ret = $this->dao->count([['id', 'in', $data], ['is_super', '=', 1]]);
+//
+//            if ($ret > 0) {
+//                throw new AdminException('系统内置用户，不允许删除');
+//            }
+//            $this->dao->destroy($data);
+//        } catch (\Throwable $e) {
+//            throw new AdminException($e->getMessage());
+//        }
+//    }
 
 }

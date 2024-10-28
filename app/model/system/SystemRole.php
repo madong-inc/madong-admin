@@ -9,10 +9,10 @@
  *+------------------
  * Official Website: http://www.madong.cn
  */
+
 namespace app\model\system;
 
 use madong\basic\BaseModel;
-
 
 /**
  * 角色模型

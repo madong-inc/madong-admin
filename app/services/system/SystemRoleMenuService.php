@@ -9,6 +9,7 @@
  *+------------------
  * Official Website: http://www.madong.tech
  */
+
 namespace app\services\system;
 
 use app\dao\system\SystemRoleMenuDao;
@@ -29,58 +30,45 @@ class SystemRoleMenuService extends BaseService
         $this->dao = Container::make(SystemRoleMenuDao::class);
     }
 
-    /**
-     * 获取角色权限集合
-     * @param int|string $roleId
-     *
-     * @return array
-     */
-    public function rolePermission(int|string $roleId): array
-    {
-        try {
-            return $this->getColumn(['role_id' => $roleId], 'menu_id');
-        } catch (AdminException $e) {
-            return [];
-        }
-    }
 
     /**
      * 更新设置角色权限
      *
-     * @param int|string $roleId
-     * @param array      $newPermissions
+     * @param $data
      */
-    public function updateRolePermission(int|string $roleId, array $newPermissions): void
+    public function save($data): void
     {
-        Db::startTrans();
         try {
-            // 获取当前权限
-            $currentPermissions = $this->getColumn(['role_id' => $roleId], 'menu_id');
+            $this->transaction(function () use ($data) {
+                $roleId         = $data['role_id'] ?? '';
+                $newPermissions = $data['menu_id'] ?? [];
+                if (empty($roleId)) {
+                    throw new AdminException('参数错误缺少role_id', -1);
+                } // 获取当前权限
+                $currentPermissions = $this->getColumn(['role_id' => $roleId], 'menu_id');
 
-            // 计算需要添加和删除的权限
-            $roleMenuIdsToAdd    = array_diff($newPermissions, $currentPermissions);
-            $roleMenuIdsToRemove = array_diff($currentPermissions, $newPermissions);
+                // 计算需要添加和删除的权限
+                $roleMenuIdsToAdd    = array_diff($newPermissions, $currentPermissions);
+                $roleMenuIdsToRemove = array_diff($currentPermissions, $newPermissions);
 
-            // 批量删除权限
-            if (!empty($roleMenuIdsToRemove)) {
-                $this->dao->delete([
-                    ['menu_id', 'in', $roleMenuIdsToRemove],
-                    ['role_id', '=', $roleId],
-                ]);
-            }
+                // 批量删除权限
+                if (!empty($roleMenuIdsToRemove)) {
+                    $this->dao->delete([
+                        ['menu_id', 'in', $roleMenuIdsToRemove],
+                        ['role_id', '=', $roleId],
+                    ]);
+                }
 
-            // 批量添加权限
-            if (!empty($roleMenuIdsToAdd)) {
-                $data = array_map(function ($menuId) use ($roleId) {
-                    return ['role_id' => $roleId, 'menu_id' => $menuId];
-                }, $roleMenuIdsToAdd);
+                // 批量添加权限
+                if (!empty($roleMenuIdsToAdd)) {
+                    $data = array_map(function ($menuId) use ($roleId) {
+                        return ['role_id' => $roleId, 'menu_id' => $menuId];
+                    }, $roleMenuIdsToAdd);
 
-                $this->dao->saveAll($data);
-            }
-
-            Db::commit();
+                    $this->dao->saveAll($data);
+                }
+            });
         } catch (\Throwable $e) {
-            Db::rollback();
             throw new AdminException($e->getMessage());
         }
     }
