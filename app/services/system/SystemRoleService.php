@@ -44,7 +44,7 @@ class SystemRoleService extends BaseService
         }
         $where = ['id' => $ids];
         return $this->dao->selectList($where, '*', 0, 0, '', ['menus' => function (Query $query) {
-            $query->where('status', 1)->order('sort', 'asc');
+            $query->where('enabled', 1)->order('sort', 'asc');
         }], true)->toArray();
     }
 //

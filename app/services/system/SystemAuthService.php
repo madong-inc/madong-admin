@@ -80,14 +80,13 @@ class SystemAuthService extends BaseService
             $method = strtolower(trim($request->method()));
 
             // 判断接口是特定几种时放行
-            if (in_array($rule, ['/system/user_info', '/system/logout', '/system/permissions', '/system/button-permissions'])) {
+            if (in_array($rule, ['/system/auth/user-info', '/system/logout', '/system/auth/user-menus', '/system/auth/perm-code','/system/dict/get-by-dict-type'])) {
                 return true;
             }
 
             // 获取所有接口类型及对应的接口
             $systemMenuService = Container::make(SystemMenuService::class);
             $allAuth           = $this->getAllAuth($systemMenuService);
-
             // 权限菜单未添加时放行
             if (!isset($allAuth[$method]) || !in_array($rule, $allAuth[$method])) {
                 // 获取管理员角色权限

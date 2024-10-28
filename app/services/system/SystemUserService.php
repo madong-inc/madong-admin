@@ -68,6 +68,7 @@ class SystemUserService extends BaseService
      */
     public function selectList(array $where, string $field = '*', int $page = 0, int $limit = 0, string $order = '', array $with = [], bool $search = false): \think\Collection|null
     {
+        $where['enabled'] = 1;
         return $this->dao->selectList($where, $field, $page, $limit, $order, ['depts', 'posts', 'roles'], $search)->hidden(['password']);
     }
 

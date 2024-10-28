@@ -350,7 +350,7 @@ class Crud extends Base
             ];
         }
         $tree = new Tree($format_items);
-        return Json::success('ok1', $tree->getTree());
+        return Json::success('ok', $tree->getTree());
     }
 
     /**
@@ -363,7 +363,7 @@ class Crud extends Base
      */
     protected function formatTableTree($data, $total): \support\Response
     {
-        $tree  = new Tree($data);
+        $tree  = new Tree($data->toArray());
         $items = $tree->getTree();
         return Json::success('ok', $items);
     }
