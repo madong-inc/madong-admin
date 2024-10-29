@@ -20,7 +20,7 @@ class AdminLogMiddleware implements MiddlewareInterface
     public function process(Request $request, callable $handler): Response
     {
         $response = $handler($request);
-        Event::emit('user.action', true);
+        Event::emit('user.action', $response,true);
         return $response;
     }
 }

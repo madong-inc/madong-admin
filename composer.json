@@ -37,7 +37,8 @@
     "psr/simple-cache": "^3.0",
     "webman/captcha": "^1.0",
     "ramsey/uuid": "^4.7",
-    "topthink/think-validate": "^2.0"
+    "topthink/think-validate": "^2.0",
+    "jenssegers/agent": "^2.6"
   },
   "suggest": {
     "ext-event": "For better performance. "
