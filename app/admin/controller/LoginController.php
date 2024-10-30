@@ -102,4 +102,10 @@ class LoginController extends Crud
         return Json::success('ok', []);
     }
 
+
+    public function test(Request $request){
+        var_dump(123);
+
+    }
+
 }

@@ -13,7 +13,6 @@
 
 use Webman\Route;
 
-
 /**
  * 动态加载route目录下的路由文件
  */
@@ -24,7 +23,10 @@ Route::group(function () {
         foreach ($files as $file) {
             if ($file !== '.' && $file !== '..' && pathinfo($file, PATHINFO_EXTENSION) === 'php') {
                 require $path . DIRECTORY_SEPARATOR . $file;
+//                 echo "Loaded route file: $file\n"; // 调试信息
             }
         }
     }
 });
+
+

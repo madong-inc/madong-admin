@@ -48,7 +48,7 @@ class Json
         return self::make(0, $msg, $data, $replace);
     }
 
-    public static function fail($msg = 'fail', ?array $data = null, int $code = -1, ?array $replace = []): Response
+    public static function fail($msg = 'fail', ?array $data = null, int|string $code = -1, ?array $replace = []): Response
     {
         if (is_array($msg)) {
             $data = $msg;
@@ -67,7 +67,6 @@ class Json
         }
         return self::success($msg, compact('status', 'result'));
     }
-
 
     /**
      *  数据输出雪花id 转字符串
