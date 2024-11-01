@@ -24,4 +24,9 @@ Route::group(function () {
      */
     Route::get('/monitor/server', [\app\admin\controller\monitor\ServerController::class, 'index'])->name('性能监控');
 
-});
+})->middleware([
+    app\middleware\AllowCrossOriginMiddleware::class,
+    app\admin\middleware\AdminAuthTokenMiddleware::class,
+    app\admin\middleware\AdminAuthPermissionMiddleware::class,
+    app\admin\middleware\AdminLogMiddleware::class,
+]);

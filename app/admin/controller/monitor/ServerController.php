@@ -35,6 +35,7 @@ class ServerController extends Crud
         $this->service = Container::make(ServerMonitor::class);
     }
 
+
     /**
      * 性能监控
      *

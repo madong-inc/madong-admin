@@ -13,7 +13,6 @@
 namespace app\services\system;
 
 use app\dao\system\SystemUserDao;
-use app\model\system\SystemUser;
 use madong\basic\BaseService;
 use madong\exception\AuthException;
 use madong\services\cache\CacheService;
@@ -45,8 +44,8 @@ class SystemAuthService extends BaseService
     {
         try {
             $cache = Container::make(CacheService::class);
-            if (!$token || $token === 'undefined') {
-                throw new AuthException('', $code);
+            if (empty($token) || $token === 'undefined') {
+                throw new AuthException('Token is required.', $code);
             }
             $jwtAuth = Container::make(JwtAuth::class);
             [$id, $type] = $jwtAuth->parseToken($token);
@@ -60,7 +59,7 @@ class SystemAuthService extends BaseService
             }
             $adminInfo->set('type', $type);
             return $adminInfo->hidden(['password', 'delete_time', 'status'])->toArray();
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             throw new AuthException($e->getMessage(), 401);
         }
     }
@@ -80,7 +79,7 @@ class SystemAuthService extends BaseService
             $method = strtolower(trim($request->method()));
 
             // 判断接口是特定几种时放行
-            if (in_array($rule, ['/system/auth/user-info', '/system/logout', '/system/auth/user-menus', '/system/auth/perm-code','/system/dict/get-by-dict-type'])) {
+            if (in_array($rule, ['/system/auth/user-info', '/system/logout', '/system/auth/user-menus', '/system/auth/perm-code', '/system/dict/get-by-dict-type'])) {
                 return true;
             }
 

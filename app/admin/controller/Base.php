@@ -49,9 +49,13 @@ class Base extends BaseController
      */
     protected function initialize(): void
     {
-        $this->adminId   = request()->adminId();//管理员id
-        $this->adminInfo = request()->adminInfo();//管理员详情
-        $this->auth      = $this->adminInfo['rules'] ?? [];//管理员权限
+        $request = request();
+        if ($request->hasMacro('adminId')) {
+            $this->adminId = request()->adminId();//管理员id
+        }
+        if ($request->hasMacro('adminInfo')) {
+            $this->adminInfo = request()->adminInfo();//管理员详情
+            $this->auth      = $this->adminInfo['rules'] ?? [];//管理员权限
+        }
     }
-
 }

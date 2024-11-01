@@ -3,6 +3,7 @@
 namespace app\admin\middleware;
 
 use app\services\system\SystemAuthService;
+use madong\utils\Json;
 use support\Container;
 use Webman\Http\Request;
 use Webman\Http\Response;
@@ -19,14 +20,25 @@ class AdminAuthTokenMiddleware implements MiddlewareInterface
 
     public function process(Request $request, callable $handler): Response
     {
-        $token = trim(ltrim($request->header(Config('madong.cross.token_name', 'Authorization')), 'Bearer'));
+        $tokenHeader = $request->header(Config('madong.cross.token_name', 'Authorization'));
+        $token       = '';
+        if ($tokenHeader) {
+            $token = trim(ltrim($tokenHeader, 'Bearer'));
+        }
         if (!$token) {
-            $token = trim(ltrim($request->get('token')));
+            $tokenParam = $request->get('token');
+            if ($tokenParam) {
+                $token = trim($tokenParam);
+            }
         }
 
         /** @var SystemAuthService $service */
-        $service   = Container::make(SystemAuthService::class);
-        $adminInfo = $service->parseToken($token);
+        $service = Container::make(SystemAuthService::class);
+        try {
+            $adminInfo = $service->parseToken($token);
+        } catch (\Throwable $e) {
+            return Json::fail($e->getMessage(), [], $e->getCode());
+        }
 
         $request->macro('isAdminLogin', function () use (&$adminInfo) {
             return !is_null($adminInfo);
