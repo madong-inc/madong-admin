@@ -7,12 +7,12 @@
  *+------------------
  * Author: Mr. April (405784684@qq.com)
  *+------------------
- * Official Website: http://www.madong.cn
+ * Official Website: http://www.madong.tech
  */
-namespace madong\services\quartz\event;
+namespace madong\services\scheduler;
 
 
-class EvalTask implements EventBootstrap
+class EvalTask implements CronTaskParser
 {
     /**
      * @param $crontab
