@@ -10,16 +10,17 @@
  * Official Website: http://www.madong.tech
  */
 
-namespace app\dao\monitor;
+namespace app\dao\system;
 
-use app\model\monitor\Crontab;
+
+use app\model\system\SystemCrontabLog;
 use madong\basic\BaseDao;
 
-class SystemCrontabDao extends BaseDao
+class SystemCrontabLogDao extends BaseDao
 {
 
     protected function setModel(): string
     {
-        return Crontab::class;
+        return SystemCrontabLog::class;
     }
 }

@@ -1,7 +1,6 @@
 <?php
 /**
  * This file is part of webman.
- *
  * Licensed under The MIT License
  * For full copyright and license information, please see the MIT-LICENSE.txt
  * Redistributions of files must retain the above copyright notice.
@@ -16,12 +15,12 @@ global $argv;
 
 return [
     // File update detection and automatic reload
-    'monitor' => [
-        'handler' => process\Monitor::class,
-        'reloadable' => false,
+    'monitor'        => [
+        'handler'     => process\Monitor::class,
+        'reloadable'  => false,
         'constructor' => [
             // Monitor these directories
-            'monitorDir' => array_merge([
+            'monitorDir'        => array_merge([
                 app_path(),
                 config_path(),
                 base_path() . '/process',
@@ -31,13 +30,19 @@ return [
             ], glob(base_path() . '/plugin/*/app'), glob(base_path() . '/plugin/*/config'), glob(base_path() . '/plugin/*/api')),
             // Files with these suffixes will be monitored
             'monitorExtensions' => [
-                'php', 'html', 'htm', 'env'
+                'php', 'html', 'htm', 'env',
             ],
-            'options' => [
-                'enable_file_monitor' => !in_array('-d', $argv) && DIRECTORY_SEPARATOR === '/',
+            'options'           => [
+                'enable_file_monitor'   => !in_array('-d', $argv) && DIRECTORY_SEPARATOR === '/',
                 'enable_memory_monitor' => DIRECTORY_SEPARATOR === '/',
-            ]
-        ]
+            ],
+        ],
+    ],
+    //定时任务
+    'webman-scheduler' => [
+        'handler' => \madong\services\scheduler\SchedulerServer::class,
+        'count'   => 1,
+        'listen'  => 'text://127.0.0.1:' . '2345',
     ],
 
 ];

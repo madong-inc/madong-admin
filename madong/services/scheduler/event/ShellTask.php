@@ -1,8 +1,8 @@
 <?php
 
-namespace madong\services\scheduler;
+namespace madong\services\scheduler\event;
 
-class ShellTask implements CronTaskParser
+class ShellTask implements EventBootstrap
 {
     /**
      * @param $crontab

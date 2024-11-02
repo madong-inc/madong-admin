@@ -9,9 +9,9 @@
  *+------------------
  * Official Website: http://www.madong.tech
  */
-namespace madong\services\scheduler;
+namespace madong\services\scheduler\event;
 
-class SchedulingTask implements CronTaskParser
+class SchedulingTask implements EventBootstrap
 {
     /**
      * @param $crontab

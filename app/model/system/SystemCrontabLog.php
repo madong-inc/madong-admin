@@ -10,14 +10,14 @@
  * Official Website: http://www.madong.cn
  */
 
-namespace app\model\monitor;
+namespace app\model\system;
 
 use madong\basic\BaseModel;
 
 /**
  *定时任务日志
  */
-class CrontabLog extends BaseModel
+class SystemCrontabLog extends BaseModel
 {
 
     /**
@@ -25,7 +25,7 @@ class CrontabLog extends BaseModel
      *
      * @var string
      */
-    protected $name = 'crontab_log';
+    protected $name = 'system_crontab_log';
 
     /**
      * The primary key associated with the table

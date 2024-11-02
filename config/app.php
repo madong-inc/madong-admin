@@ -1,7 +1,6 @@
 <?php
 /**
  * This file is part of webman.
- *
  * Licensed under The MIT License
  * For full copyright and license information, please see the MIT-LICENSE.txt
  * Redistributions of files must retain the above copyright notice.
@@ -13,14 +12,18 @@
  */
 
 use support\Request;
+use madong\services\scheduler\event\EvalTask;
+use madong\services\scheduler\event\ShellTask;
+use madong\services\scheduler\event\UrlTask;
+use madong\services\scheduler\event\SchedulingTask;
 
 return [
-    'debug' => true,
-    'error_reporting' => E_ALL,
-    'default_timezone' => 'Asia/Shanghai',
-    'request_class' => Request::class,
-    'public_path' => base_path() . DIRECTORY_SEPARATOR . 'public',
-    'runtime_path' => base_path(false) . DIRECTORY_SEPARATOR . 'runtime',
+    'debug'             => true,
+    'error_reporting'   => E_ALL,
+    'default_timezone'  => 'Asia/Shanghai',
+    'request_class'     => Request::class,
+    'public_path'       => base_path() . DIRECTORY_SEPARATOR . 'public',
+    'runtime_path'      => base_path(false) . DIRECTORY_SEPARATOR . 'runtime',
     'controller_suffix' => 'Controller',
-    'controller_reuse' => false,
+    'controller_reuse'  => false,
 ];

@@ -9,10 +9,15 @@
  *+------------------
  * Official Website: http://www.madong.tech
  */
+namespace madong\services\scheduler\event;
 
-namespace app\services\monitor;
-
-class CrontabService
+/**
+ * 解析任务
+ *
+ * @author Mr.April
+ * @since  1.0
+ */
+interface EventBootstrap
 {
-
+    public static function parse($crontab): mixed;
 }

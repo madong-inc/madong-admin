@@ -31,21 +31,6 @@ class SystemMenuService extends BaseService
     }
 
     /**
-     * 获取菜单树
-     *
-     * @param array  $where
-     * @param string $order
-     *
-     * @return array|null
-     */
-//    public function menuTree(array $where, string $order = 'sort'): ?array
-//    {
-//        $list = $this->dao->selectList($where, '*', 0, 0, $order, [], true);
-//        $tree = new Tree($list);
-//        return $tree->getTree();
-//    }
-
-    /**
      * 通过角色筛选菜单ID集合并去重
      *
      * @param array $roleData

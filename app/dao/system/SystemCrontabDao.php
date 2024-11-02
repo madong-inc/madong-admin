@@ -9,15 +9,17 @@
  *+------------------
  * Official Website: http://www.madong.tech
  */
-namespace madong\services\scheduler;
 
-/**
- * 解析任务
- *
- * @author Mr.April
- * @since  1.0
- */
-interface CronTaskParser
+namespace app\dao\system;
+
+use app\model\system\SystemCrontab;
+use madong\basic\BaseDao;
+
+class SystemCrontabDao extends BaseDao
 {
-    public static function parse($crontab): mixed;
+
+    protected function setModel(): string
+    {
+        return SystemCrontab::class;
+    }
 }

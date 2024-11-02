@@ -10,7 +10,7 @@
  * Official Website: http://www.madong.cn
  */
 
-namespace app\model\monitor;
+namespace app\model\system;
 
 use madong\basic\BaseModel;
 
@@ -20,10 +20,10 @@ use madong\basic\BaseModel;
  * @author Mr.April
  * @since  1.0
  */
-class Crontab extends BaseModel
+class SystemCrontab extends BaseModel
 {
 
-    protected $name = 'wf_crontab';
+    protected $name = 'system_crontab';
 
 
     protected $pk = 'id';
@@ -104,6 +104,6 @@ class Crontab extends BaseModel
      */
     public function logs(): \think\model\relation\HasMany
     {
-        return $this->hasMany(CrontabLog::class, 'crontab_id', 'id');
+        return $this->hasMany(SystemCrontabLog::class, 'crontab_id', 'id');
     }
 }

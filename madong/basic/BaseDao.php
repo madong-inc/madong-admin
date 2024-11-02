@@ -79,10 +79,10 @@ abstract class BaseDao
      * @param array  $with
      * @param bool   $search
      *
-     * @return \think\Collection
+     * @return \think\Collection|null
      * @throws \ReflectionException
      */
-    public function selectList(array $where, string $field = '*', int $page = 0, int $limit = 0, string $order = '', array $with = [], bool $search = false)
+    public function selectList(array $where, string $field = '*', int $page = 0, int $limit = 0, string $order = '', array $with = [], bool $search = false): \think\Collection|null
     {
         return $this->selectModel($where, $field, $page, $limit, $order, $with, $search)->select();
     }
@@ -285,13 +285,13 @@ abstract class BaseDao
     /**
      * 删除
      *
-     * @param int|string|array $id
+     * @param array|int|string $id
      * @param string|null      $key
      *
      * @return mixed
      * @throws \ReflectionException
      */
-    public function delete($id, ?string $key = null): mixed
+    public function delete(array|int|string $id, ?string $key = null): mixed
     {
         if (is_array($id)) {
             $where = $id;
