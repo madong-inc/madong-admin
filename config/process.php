@@ -42,7 +42,7 @@ return [
     'webman-scheduler' => [
         'handler' => \madong\services\scheduler\SchedulerServer::class,
         'count'   => 1,
-        'listen'  => 'text://127.0.0.1:' . '2345',
+        'listen'  => 'text://127.0.0.1:' . '2346',
     ],
 
 ];

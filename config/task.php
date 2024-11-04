@@ -19,7 +19,7 @@ return [
     'debug'       => config('app.debug'),
     'enable'      => true,// 是否启用定时器  修改此参数后，需要重启
     'write_log'   => true,
-    'listen'      => '127.0.0.1:' . '2345',// 注意此端口用于任务通讯，一个项目一个端口，请勿占用
+    'listen'      => '127.0.0.1:' . '2346',// 注意此端口用于任务通讯，一个项目一个端口，请勿占用
     'task_handle' => [
         //任务操作类
         1 => UrlTask::class,
