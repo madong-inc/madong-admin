@@ -31,7 +31,14 @@ class Json
 //            $res['msg']  = getLang($res['msg'], $replace);
             $res['msg'] = $res['msg'];
         }
-        return new Response(self::$code, ['Content-Type' => 'application/json'], json_encode($res));
+
+        $defaultHttpCode = self::$code;
+        // 如果 code 不是 -1 或 400，设置 HTTP 状态码
+        if (!in_array($code, [-1, 0, 200, 400]) && $code >= 100 && $code < 600) {
+            $defaultHttpCode = $code;
+        }
+
+        return new Response($defaultHttpCode, ['Content-Type' => 'application/json'], json_encode($res));
     }
 
     public static function success($msg = 'success', ?array $data = [], ?array $replace = []): Response
@@ -54,7 +61,6 @@ class Json
             $data = $msg;
             $msg  = 'fail';
         }
-
         return self::make($code, $msg, $data, $replace);
     }
 

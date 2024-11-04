@@ -142,13 +142,15 @@ Route::group('/system', function () {
          * 登录日志
          */
         Route::get('/login', [\app\admin\controller\system\SystemLoginLogController::class, 'index'])->name('登录日志列表');
+        Route::get('/login/{id}', [\app\admin\controller\system\SystemLoginLogController::class, 'show'])->name('登录日志详情');
         Route::delete('/login/{id}', [\app\admin\controller\system\SystemLoginLogController::class, 'destroy'])->name('登录日志删除');
 
         /**
          * 操作日志
          */
-        Route::get('/op', [\app\admin\controller\system\SystemOperateLogController::class, 'index'])->name('操作日志列表');
-        Route::delete('/op/{id}', [\app\admin\controller\system\SystemOperateLogController::class, 'destroy'])->name('操作日志删除');
+        Route::get('/operate', [\app\admin\controller\system\SystemOperateLogController::class, 'index'])->name('操作日志列表');
+        Route::get('/operate/{id}', [\app\admin\controller\system\SystemOperateLogController::class, 'show'])->name('操作日志详情');
+        Route::delete('/operate/{id}', [\app\admin\controller\system\SystemOperateLogController::class, 'destroy'])->name('操作日志删除');
     });
 
 })->middleware([

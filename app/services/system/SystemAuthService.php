@@ -118,7 +118,7 @@ class SystemAuthService extends BaseService
             $item->set('meta', $item->meta);
         }
         $list->visible(['id', 'pid', 'type', 'sort', 'redirect', 'path', 'name', 'meta', 'component']);
-        $tree = new Tree($list);
+        $tree  = new Tree($list);
         return $tree->getTree();
     }
 

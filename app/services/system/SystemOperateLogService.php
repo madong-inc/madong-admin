@@ -12,7 +12,7 @@
 
 namespace app\services\system;
 
-use app\model\system\SystemOperateLog;
+use app\dao\system\SystemOperateLogDao;
 use madong\basic\BaseService;
 use support\Container;
 
@@ -24,7 +24,7 @@ class SystemOperateLogService extends BaseService
 
     public function __construct()
     {
-        $this->dao = Container::make(SystemOperateLog::class);
+        $this->dao = Container::make(SystemOperateLogDao::class);
     }
 
 }

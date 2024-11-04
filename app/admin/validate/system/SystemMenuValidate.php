@@ -47,7 +47,6 @@ class SystemMenuValidate extends Validate
      */
     protected $scene = [
         'store'  => [
-            'pid',
             'code',
             'title',
             'type',
@@ -55,7 +54,6 @@ class SystemMenuValidate extends Validate
             'enabled',
         ],
         'update' => [
-            'pid',
             'code',
             'title',
             'type',

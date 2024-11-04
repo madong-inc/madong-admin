@@ -39,8 +39,9 @@ class SystemMenu extends BaseModel
     {
         // 1.构建mate数组
         $newData = [
-            'icon'  => $data['icon'] ?? '',
-            'title' => $data['title'] ?? '',
+            'icon'                     => $data['icon'] ?? '',
+            'title'                    => $data['title'] ?? '',
+            'menuVisibleWithForbidden' => true,
         ];
 
         // 2.添加fixed锁定菜单标记

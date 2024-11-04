@@ -31,7 +31,6 @@ class AdminAuthTokenMiddleware implements MiddlewareInterface
                 $token = trim($tokenParam);
             }
         }
-
         /** @var SystemAuthService $service */
         $service = Container::make(SystemAuthService::class);
         try {

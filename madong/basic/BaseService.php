@@ -32,7 +32,7 @@ abstract class BaseService
     /**
      * 缓存管理
      *
-     * @return \app\common\CacheService
+     * @return \madong\basic\CacheService
      */
     public function cacheDriver(): CacheService
     {
