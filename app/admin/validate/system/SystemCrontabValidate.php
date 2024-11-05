@@ -20,7 +20,7 @@ class SystemCrontabValidate extends Validate
      * 定义验证规则
      */
     protected $rule = [
-        'id'      => 'require',
+        'data'    => 'require',
         'title'   => 'require',
         'type'    => 'require',
         'rule'    => 'require',
@@ -32,7 +32,7 @@ class SystemCrontabValidate extends Validate
      * 定义错误信息
      */
     protected $message = [
-        'id.require'      => '唯一标识ID不能为空',
+        'data.require'    => '唯一标识ID不能为空',
         'title.require'   => '任务名称必须填写',
         'type.require'    => '任务类型必须填写',
         'rule.require'    => '任务规则必须填写',
@@ -45,33 +45,32 @@ class SystemCrontabValidate extends Validate
      */
     protected $scene = [
         'start'   => [
-            'id',
+            'data',
         ],
         'resume'  => [
-            'id',
+            'data',
         ],
         'pause'   => [
-            'id',
+            'data',
         ],
         'execute' => [
-            'id',
+            'data',
         ],
         'destroy' => [
-            'id',
+            'data',
         ],
         'store'   => [
             'title',
             'type',
-            'rule',
             'target',
-            'status',
+            'enabled',
         ],
         'update'  => [
             'title',
             'type',
             'rule',
             'target',
-            'status',
+            'enabled',
         ],
     ];
 }

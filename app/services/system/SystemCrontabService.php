@@ -60,101 +60,108 @@ class SystemCrontabService extends BaseService
     public function save(array $data): mixed
     {
         try {
-            $title      = $data['title'] ?? '';
-            $type       = $data['type'] ?? '';
-            $target     = $data['target'] ?? '';
-            $status     = $data['enabled'] ?? 1;
-            $singleton  = $data['singleton'] ?? 1;
-            $task_cycle = $data['task_cycle'] ?? '';
-            $month      = $data['month'] ?? '';
-            $week       = $data['week'] ?? '';
-            $day        = $data['day'] ?? '';
-            $hour       = $data['hour'] ?? '';
-            $minute     = $data['minute'] ?? '';
-            $second     = $data['second'] ?? '';
-            $check_arr  = [
-                'second' => function () use ($second) {
-                    //注意，这里秒数必须是60的因数，由于workerman/crontab解析问题，秒级任务的话，每一分钟他会直接重置一次计时器
-                    $second = (int)$second;
-                    if (60 % $second !== 0) {
-                        throw new \Exception('秒级任务必须是60的因数');
-                    }
-                },
-                'minute' => function () use ($minute) {
-                    //  Validate::make()->isRequire("请输入执行分钟")->isInteger('分钟必须为整数')->isElt(59, "分钟不能大于59")->check($minute);
-                },
-                'hour'   => function () use ($hour) {
-                    //    Validate::make()->isRequire("请输入执行小时")->isInteger('小时必须为整数')->isElt(59, "小时不能大于59")->check($hour);
-                },
-                'day'    => function () use ($day) {
-                    //  Validate::make()->isRequire("请输入执行天数")->isInteger('天数必须为整数')->isElt(31, "天数不能大于31")->check($day);
-                },
-                'week'   => function () use ($week) {
-                    //   Validate::make()->isRequire("请输入星期几执行")->isInteger('星期几必须为整数')->isElt(6, "星期几不能大于6")->check($week);
-                },
-                'month'  => function () use ($month) {
-                    //   Validate::make()->isRequire("请输入执行月份")->isInteger('月份必须为整数')->isElt(12, "月份不能大于12")->check($month);
-                },
-            ];
-            switch ($task_cycle) {
-                case 1:
-                    $check_arr['minute']();
-                    $check_arr['hour']();
-                    $rule = "{$minute} {$hour} * * *";
-                    break;
-                case 2:
-                    $check_arr['minute']();
-                    $rule = "{$minute} * * * *";
-                    break;
-                case 3:
-                    $check_arr['minute']();
-                    $check_arr['hour']();
-                    $rule = "{$minute} */{$hour} * * *";
-                    break;
-                case 4:
-                    $check_arr['minute']();
-                    $rule = "*/{$minute} * * * *";
-                    break;
-                case 5:
-                    $check_arr['second']();
-                    $rule = "*/{$second} * * * * *";
-                    break;
-                case 6:
-                    $check_arr['week']();
-                    $check_arr['hour']();
-                    $check_arr['minute']();
-                    $rule = "{$minute} {$hour} * * {$week}";
-                    break;
-                case 7:
-                    $check_arr['day']();
-                    $check_arr['hour']();
-                    $check_arr['minute']();
-                    $rule = "{$minute} {$hour} {$day} * *";
-                    break;
-                case 8:
-                    $check_arr['month']();
-                    $check_arr['day']();
-                    $check_arr['hour']();
-                    $check_arr['minute']();
-                    $rule = "{$minute} {$hour} {$day} {$month} *";
-                    break;
-                default:
-                    throw new  \Exception("任务周期不正确");
-            }
-            //更新到数据库
-            $model = $this->dao->save([
-                'title'      => $title, 'type' => $type, 'rule' => $rule, 'target' => $target,
-                'status'     => $status, 'singleton' => $singleton,
-                'task_cycle' => $task_cycle, 'cycle_rule' => json_encode([
-                    'month' => $month, 'week' => $week, 'day' => $day, 'hour' => $hour, 'minute' => $minute, 'second' => $second,
-                ]),
-            ]);
-            //添加定时任务重启服务
-            if (!empty($model)) {
-                $pk = $model->getPk();
-                $this->requestData($model->getData($pk));
-            }
-            return $model;
+            return $this->transaction(function () use ($data) {
+                $title      = $data['title'] ?? '';
+                $type       = $data['type'] ?? '';
+                $target     = $data['target'] ?? '';
+                $status     = $data['enabled'] ?? 1;
+                $singleton  = $data['singleton'] ?? 1;
+                $task_cycle = $data['task_cycle'] ?? '';
+                $month      = $data['month'] ?? '';
+                $week       = $data['week'] ?? '';
+                $day        = $data['day'] ?? '';
+                $hour       = $data['hour'] ?? '';
+                $minute     = $data['minute'] ?? '';
+                $second     = $data['second'] ?? '';
+                $check_arr  = [
+                    'second' => function () use ($second) {
+                        //注意，这里秒数必须是60的因数，由于workerman/crontab解析问题，秒级任务的话，每一分钟他会直接重置一次计时器
+                        $second = (int)$second;
+                        if (60 % $second !== 0) {
+                            throw new \Exception('秒级任务必须是60的因数');
+                        }
+                    },
+                    'minute' => function () use ($minute) {
+                        //  Validate::make()->isRequire("请输入执行分钟")->isInteger('分钟必须为整数')->isElt(59, "分钟不能大于59")->check($minute);
+                    },
+                    'hour'   => function () use ($hour) {
+                        //    Validate::make()->isRequire("请输入执行小时")->isInteger('小时必须为整数')->isElt(59, "小时不能大于59")->check($hour);
+                    },
+                    'day'    => function () use ($day) {
+                        //  Validate::make()->isRequire("请输入执行天数")->isInteger('天数必须为整数')->isElt(31, "天数不能大于31")->check($day);
+                    },
+                    'week'   => function () use ($week) {
+                        //   Validate::make()->isRequire("请输入星期几执行")->isInteger('星期几必须为整数')->isElt(6, "星期几不能大于6")->check($week);
+                    },
+                    'month'  => function () use ($month) {
+                        //   Validate::make()->isRequire("请输入执行月份")->isInteger('月份必须为整数')->isElt(12, "月份不能大于12")->check($month);
+                    },
+                ];
+                switch ($task_cycle) {
+                    case 1:
+                        $check_arr['minute']();
+                        $check_arr['hour']();
+                        $rule = "{$minute} {$hour} * * *";
+                        break;
+                    case 2:
+                        $check_arr['minute']();
+                        $rule = "{$minute} * * * *";
+                        break;
+                    case 3:
+                        $check_arr['minute']();
+                        $check_arr['hour']();
+                        $rule = "{$minute} */{$hour} * * *";
+                        break;
+                    case 4:
+                        $check_arr['minute']();
+                        $rule = "*/{$minute} * * * *";
+                        break;
+                    case 5:
+                        $check_arr['second']();
+                        $rule = "*/{$second} * * * * *";
+                        break;
+                    case 6:
+                        $check_arr['week']();
+                        $check_arr['hour']();
+                        $check_arr['minute']();
+                        $rule = "{$minute} {$hour} * * {$week}";
+                        break;
+                    case 7:
+                        $check_arr['day']();
+                        $check_arr['hour']();
+                        $check_arr['minute']();
+                        $rule = "{$minute} {$hour} {$day} * *";
+                        break;
+                    case 8:
+                        $check_arr['month']();
+                        $check_arr['day']();
+                        $check_arr['hour']();
+                        $check_arr['minute']();
+                        $rule = "{$minute} {$hour} {$day} {$month} *";
+                        break;
+                    default:
+                        throw new  \Exception("任务周期不正确");
+                }
+                //更新到数据库
+                $model = $this->dao->save([
+                    'title'      => $title,
+                    'type'       => $type,
+                    'rule'       => $rule,
+                    'target'     => $target,
+                    'enabled'    => $status,
+                    'singleton'  => $singleton,
+                    'task_cycle' => $task_cycle,
+                    'cycle_rule' => json_encode([
+                        'month' => $month, 'week' => $week, 'day' => $day, 'hour' => $hour, 'minute' => $minute, 'second' => $second,
+                    ]),
+                ]);
+                //添加定时任务重启服务
+                if (!empty($model)) {
+                    $pk = $model->getPk();
+                    $this->requestData($model->getData($pk));
+                }
+                return $model;
+            });
         } catch (\Exception $e) {
             throw new AdminException($e->getMessage());
         }
@@ -169,97 +176,132 @@ class SystemCrontabService extends BaseService
     public function update($id, array $data): void
     {
         try {
-            $title      = $data['title'] ?? '';
-            $type       = $data['type'] ?? '';
-            $target     = $data['target'] ?? '';
-            $status     = $data['enabled'] ?? 1;
-            $singleton  = $data['singleton'] ?? 1;
-            $task_cycle = $data['task_cycle'] ?? '';
-            $month      = $data['month'] ?? '';
-            $week       = $data['week'] ?? '';
-            $day        = $data['day'] ?? '';
-            $hour       = $data['hour'] ?? '';
-            $minute     = $data['minute'] ?? '';
-            $second     = $data['second'] ?? '';
-            $check_arr  = [
-                'second' => function () use ($second) {
-                    //注意，这里秒数必须是60的因数，由于workerman/crontab解析问题，秒级任务的话，每一分钟他会直接重置一次计时器
-                    $second = (int)$second;
-                    if (60 % $second !== 0) {
-                        throw new \Exception('秒级任务必须是60的因数');
-                    }
-                },
-                'minute' => function () use ($minute) {
-                    //  Validate::make()->isRequire("请输入执行分钟")->isInteger('分钟必须为整数')->isElt(59, "分钟不能大于59")->check($minute);
-                },
-                'hour'   => function () use ($hour) {
-                    //    Validate::make()->isRequire("请输入执行小时")->isInteger('小时必须为整数')->isElt(59, "小时不能大于59")->check($hour);
-                },
-                'day'    => function () use ($day) {
-                    //  Validate::make()->isRequire("请输入执行天数")->isInteger('天数必须为整数')->isElt(31, "天数不能大于31")->check($day);
-                },
-                'week'   => function () use ($week) {
-                    //   Validate::make()->isRequire("请输入星期几执行")->isInteger('星期几必须为整数')->isElt(6, "星期几不能大于6")->check($week);
-                },
-                'month'  => function () use ($month) {
-                    //   Validate::make()->isRequire("请输入执行月份")->isInteger('月份必须为整数')->isElt(12, "月份不能大于12")->check($month);
-                },
-            ];
-            switch ($task_cycle) {
-                case 1:
-                    $check_arr['minute']();
-                    $check_arr['hour']();
-                    $rule = "{$minute} {$hour} * * *";
-                    break;
-                case 2:
-                    $check_arr['minute']();
-                    $rule = "{$minute} * * * *";
-                    break;
-                case 3:
-                    $check_arr['minute']();
-                    $check_arr['hour']();
-                    $rule = "{$minute} */{$hour} * * *";
-                    break;
-                case 4:
-                    $check_arr['minute']();
-                    $rule = "*/{$minute} * * * *";
-                    break;
-                case 5:
-                    $check_arr['second']();
-                    $rule = "*/{$second} * * * * *";
-                    break;
-                case 6:
-                    $check_arr['week']();
-                    $check_arr['hour']();
-                    $check_arr['minute']();
-                    $rule = "{$minute} {$hour} * * {$week}";
-                    break;
-                case 7:
-                    $check_arr['day']();
-                    $check_arr['hour']();
-                    $check_arr['minute']();
-                    $rule = "{$minute} {$hour} {$day} * *";
-                    break;
-                case 8:
-                    $check_arr['month']();
-                    $check_arr['day']();
-                    $check_arr['hour']();
-                    $check_arr['minute']();
-                    $rule = "{$minute} {$hour} {$day} {$month} *";
-                    break;
-                default:
-                    throw new  \Exception("任务周期不正确");
-            }
-            //更新到数据库
-            $this->dao->update($id, [
-                'title'      => $title, 'type' => $type, 'rule' => $rule, 'target' => $target,
-                'status'     => $status, 'singleton' => $singleton,
-                'task_cycle' => $task_cycle, 'cycle_rule' => json_encode([
-                    'month' => $month, 'week' => $week, 'day' => $day, 'hour' => $hour, 'minute' => $minute, 'second' => $second,
-                ]),
-            ]);
-            //更新之后重启服务
-            $this->requestData($id);
+            $this->transaction(function () use ($id, $data) {
+                $title      = $data['title'] ?? '';
+                $type       = $data['type'] ?? '';
+                $target     = $data['target'] ?? '';
+                $status     = $data['enabled'] ?? 1;
+                $singleton  = $data['singleton'] ?? 1;
+                $task_cycle = $data['task_cycle'] ?? '';
+                $month      = $data['month'] ?? '';
+                $week       = $data['week'] ?? '';
+                $day        = $data['day'] ?? '';
+                $hour       = $data['hour'] ?? '';
+                $minute     = $data['minute'] ?? '';
+                $second     = $data['second'] ?? '';
+                $check_arr  = [
+                    'second' => function () use ($second) {
+                        //注意，这里秒数必须是60的因数，由于workerman/crontab解析问题，秒级任务的话，每一分钟他会直接重置一次计时器
+                        $second = (int)$second;
+                        if (60 % $second !== 0) {
+                            throw new \Exception('秒级任务必须是60的因数');
+                        }
+                    },
+                    'minute' => function () use ($minute) {
+                        //  Validate::make()->isRequire("请输入执行分钟")->isInteger('分钟必须为整数')->isElt(59, "分钟不能大于59")->check($minute);
+                    },
+                    'hour'   => function () use ($hour) {
+                        //    Validate::make()->isRequire("请输入执行小时")->isInteger('小时必须为整数')->isElt(59, "小时不能大于59")->check($hour);
+                    },
+                    'day'    => function () use ($day) {
+                        //  Validate::make()->isRequire("请输入执行天数")->isInteger('天数必须为整数')->isElt(31, "天数不能大于31")->check($day);
+                    },
+                    'week'   => function () use ($week) {
+                        //   Validate::make()->isRequire("请输入星期几执行")->isInteger('星期几必须为整数')->isElt(6, "星期几不能大于6")->check($week);
+                    },
+                    'month'  => function () use ($month) {
+                        //   Validate::make()->isRequire("请输入执行月份")->isInteger('月份必须为整数')->isElt(12, "月份不能大于12")->check($month);
+                    },
+                ];
+                switch ($task_cycle) {
+                    case 1:
+                        $check_arr['minute']();
+                        $check_arr['hour']();
+                        $rule = "{$minute} {$hour} * * *";
+                        break;
+                    case 2:
+                        $check_arr['minute']();
+                        $rule = "{$minute} * * * *";
+                        break;
+                    case 3:
+                        $check_arr['minute']();
+                        $check_arr['hour']();
+                        $rule = "{$minute} */{$hour} * * *";
+                        break;
+                    case 4:
+                        $check_arr['minute']();
+                        $rule = "*/{$minute} * * * *";
+                        break;
+                    case 5:
+                        $check_arr['second']();
+                        $rule = "*/{$second} * * * * *";
+                        break;
+                    case 6:
+                        $check_arr['week']();
+                        $check_arr['hour']();
+                        $check_arr['minute']();
+                        $rule = "{$minute} {$hour} * * {$week}";
+                        break;
+                    case 7:
+                        $check_arr['day']();
+                        $check_arr['hour']();
+                        $check_arr['minute']();
+                        $rule = "{$minute} {$hour} {$day} * *";
+                        break;
+                    case 8:
+                        $check_arr['month']();
+                        $check_arr['day']();
+                        $check_arr['hour']();
+                        $check_arr['minute']();
+                        $rule = "{$minute} {$hour} {$day} {$month} *";
+                        break;
+                    default:
+                        throw new  \Exception("任务周期不正确");
+                }
+                //更新到数据库
+                $this->dao->update($id, [
+                    'title'      => $title,
+                    'type'       => $type,
+                    'rule'       => $rule,
+                    'target'     => $target,
+                    'enabled'    => $status,
+                    'singleton'  => $singleton,
+                    'task_cycle' => $task_cycle,
+                    'cycle_rule' => json_encode([
+                        'month' => $month, 'week' => $week, 'day' => $day, 'hour' => $hour, 'minute' => $minute, 'second' => $second,
+                    ]),
+                ]);
+                //更新之后重启服务
+                $this->requestData($id);
+
+            });
+
+        } catch (\Exception $e) {
+            throw new AdminException($e->getMessage());
+        }
+    }
+
+    /**
+     * 定时任务删除
+     *
+     * @param array|int|string $id
+     *
+     * @return bool
+     */
+    public function destroy(array|int|string $id): bool
+    {
+        try {
+            return $this->transaction(function () use ($id) {
+                //1.0 先关闭再删除,避免删了后直接连不上服务的情况出现
+                $this->dao->update([['id', 'in', $id]], ['enabled' => 0]);
+                //2.0 重启任务
+                $this->requestData($id);
+                //3.0 删除定时任务跟日志数据
+                $this->dao->destroy($id);
+                $systemCrontabLogService = Container::make(SystemCrontabLogService::class);
+                $systemCrontabLogService->delete(['crontab_id' => $id]);
+                return true;
+            });
         } catch (\Exception $e) {
             throw new AdminException($e->getMessage());
         }

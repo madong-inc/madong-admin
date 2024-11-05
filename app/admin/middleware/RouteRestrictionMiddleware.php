@@ -35,6 +35,8 @@ class RouteRestrictionMiddleware implements MiddlewareInterface
             '/system/dict/\d+',
             '/system/dict-item',
             '/system/dict-item/\d+',
+            '/monitor/crontab',
+            '/monitor/crontab/\d+',
         ];
         $currentPath      = $request->path();
 

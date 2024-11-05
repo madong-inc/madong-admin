@@ -50,12 +50,12 @@ class CrontabController extends Crud
             $data = $this->inputFilter($request->all());
             if (isset($this->validate) && $this->validate) {
                 if (!$this->validate->scene('start')->check($data)) {
-                    throw new \Exception($this->validate->getError());
+                    throw new \Exception($this->validate->getError(),-1);
                 }
             }
-            $result = $this->service->runOneTask($data['id']);
+            $result = $this->service->runOneTask($data['data']);
             if ($result['code'] == 1) {
-                throw new AdminException('执行失败' . $result['log']);
+                throw new AdminException('执行失败' . $result['data']);
             }
             return Json::success('执行完成', $result);
         } catch (\Exception $e) {
@@ -76,11 +76,11 @@ class CrontabController extends Crud
             $data = $this->inputFilter($request->all());
             if (isset($this->validate) && $this->validate) {
                 if (!$this->validate->scene('resume')->check($data)) {
-                    throw new \Exception($this->validate->getError());
+                    throw new \Exception($this->validate->getError(),-1);
                 }
             }
-            $this->service->update($data['id'], ['enabled' => 1]);//更改启用
-            $result = $this->service->requestData($data['id']);
+            $this->service->update($data['data'], ['enabled' => 1]);//更改启用
+            $result = $this->service->requestData($data['data']);
             if (!$result) {
                 throw new AdminException('恢复失败');
             }
@@ -103,11 +103,11 @@ class CrontabController extends Crud
             $data = $this->inputFilter($request->all());
             if (isset($this->validate) && $this->validate) {
                 if (!$this->validate->scene('pause')->check($data)) {
-                    throw new \Exception($this->validate->getError());
+                    throw new \Exception($this->validate->getError(),-1);
                 }
             }
-            $this->service->update($data['id'], ['enabled' => 0]);//更改禁用
-            $result = $this->service->requestData($data['id']);
+            $this->service->update($data['data'], ['enabled' => 0]);//更改禁用
+            $result = $this->service->requestData($data['data']);
             if (!$result) {
                 throw new AdminException('重启失败');
             }
@@ -130,10 +130,10 @@ class CrontabController extends Crud
             $data = $this->inputFilter($request->all());
             if (isset($this->validate) && $this->validate) {
                 if (!$this->validate->scene('execute')->check($data)) {
-                    throw new \Exception($this->validate->getError());
+                    throw new \Exception($this->validate->getError(),-1);
                 }
             }
-            $result = $this->service->runOneTask($data['id']);
+            $result = $this->service->runOneTask($data['data']);
             if ($result['code'] == 1) {
                 throw new AdminException('执行失败' . $result['log']);
             }
@@ -142,36 +142,4 @@ class CrontabController extends Crud
             return Json::fail($e->getMessage(), [], $e->getCode());
         }
     }
-
-    /**
-     * 定时任务删除
-     *
-     * @param \support\Request $request
-     *
-     * @return \support\Response
-     */
-    public function destroy(Request $request): \support\Response
-    {
-        try {
-            $id   = $request->route->param('id'); // 获取路由地址 id从
-            $data = $request->input('data', []);
-            $id   = !empty($id) && $id !== '0' ? $id : $data;
-            if (empty($id)) {
-                throw new AdminException('参数错误');
-            }
-            //1.0 先关闭再删除,避免删了后直接连不上服务的情况出现
-            $this->service->update($id, ['enabled' => 0]);
-            //2.0 重启任务
-            $this->service->requestData($id);
-
-            //3.0 删除定时任务跟日志数据
-            $this->service->destroy($id);
-            $systemCrontabLogService = Container::make(SystemCrontabLogService::class);
-            $systemCrontabLogService->delete(['crontab_id' => $id]);
-            return Json::success('删除成功');
-        } catch (\Exception $e) {
-            return Json::fail($e->getMessage(), [], $e->getCode());
-        }
-    }
-
 }
