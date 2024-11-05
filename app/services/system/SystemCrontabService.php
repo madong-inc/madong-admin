@@ -308,6 +308,47 @@ class SystemCrontabService extends BaseService
     }
 
     /**
+     * 恢复任务
+     *
+     * @param string|int|array $data
+     */
+    public function resumeCrontab(string|int|array $data): void
+    {
+        try {
+            $this->transaction(function () use ($data) {
+                $this->dao->update([['id', 'in', $data]], ['enabled' => 1]);//更改启用
+                $result = $this->requestData($data);
+                if (!$result) {
+                    throw new AdminException('恢复失败');
+                }
+            });
+        } catch (\Exception $e) {
+            throw new AdminException($e->getMessage());
+        }
+    }
+
+    /**
+     *暂停任务
+     *
+     * @param string|int|array $data
+     */
+    public function pauseCrontab(string|int|array $data):void
+    {
+        try {
+            $this->transaction(function () use ($data) {
+                var_dump($data);
+                $this->dao->update([['id', 'in', $data]], ['enabled' => 0]);//更改禁用
+                $result = $this->requestData($data);
+                if (!$result) {
+                    throw new AdminException('重启失败');
+                }
+            });
+        } catch (\Exception $e) {
+            throw new AdminException($e->getMessage());
+        }
+    }
+
+    /**
      * 获取所有任务
      *
      * @param string $field
