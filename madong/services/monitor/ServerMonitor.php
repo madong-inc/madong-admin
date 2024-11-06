@@ -192,6 +192,7 @@ class ServerMonitor
             'keyspace_misses'            => $info['keyspace_misses'], // 键空间未命中次数
             'hit_rate'                   => $this->calculateHitRate($info), // 命中率
             'variable'                   => $info ?? [],
+            'data'                       => $this->getRedisKeysAndValues($redis),
         ];
     }
 
@@ -215,6 +216,27 @@ class ServerMonitor
             'extension_dir'       => ini_get('extension_dir'),
             'loaded_extensions'   => implode(', ', get_loaded_extensions()),
         ];
+    }
+
+    /**
+     * 扫描redis数据
+     *
+     * @param $redis
+     *
+     * @return array
+     */
+    private function getRedisKeysAndValues($redis): array
+    {
+
+        $keyValues = [];
+        $iterator  = null;
+        do {
+            $keys = $redis->scan($iterator);
+            foreach ($keys as $key) {
+                $keyValues[$key] = $redis->get($key);
+            }
+        } while ($iterator > 0);
+        return $keyValues;
     }
 
     /**
