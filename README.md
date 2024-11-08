@@ -13,7 +13,7 @@ Redis`
 
 #### 系统演示
 
-管理后台： http://antd-vben5.ingenstream.cn 账号：admin 密码：123456
+管理后台： http://antd-vben5.madong.tech 账号：admin 密码：123456
 
 
 #### 官方论坛
