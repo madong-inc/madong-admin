@@ -153,6 +153,12 @@ Route::group('/system', function () {
         Route::delete('/operate/{id}', [\app\admin\controller\system\SystemOperateLogController::class, 'destroy'])->name('操作日志删除');
     });
 
+    /**
+     * 附件管理
+     */
+    Route::group(function () {
+        Route::get('/upload', [\app\admin\controller\system\SystemUploadController::class, 'index'])->name('附件列表');
+    });
 })->middleware([
     app\middleware\AllowCrossOriginMiddleware::class,
     app\admin\middleware\AdminAuthTokenMiddleware::class,

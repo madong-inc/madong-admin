@@ -261,7 +261,7 @@ abstract class BaseDao
      * @return mixed
      * @throws \ReflectionException
      */
-    public function value($where, ?string $field = '')
+    public function value($where, ?string $field = ''): mixed
     {
         $pk = $this->getPk();
         return $this->search($this->setWhere($where))->value($field ?: $pk);

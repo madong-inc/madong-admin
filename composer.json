@@ -41,7 +41,11 @@
     "jenssegers/agent": "^2.6",
     "vlucas/phpdotenv": "^5.6",
     "workerman/crontab": "^1.0",
-    "webman-tech/symfony-lock": "^2.0"
+    "webman-tech/symfony-lock": "^2.0",
+    "aliyuncs/oss-sdk-php": "^2.7",
+    "qcloud/cos-sdk-v5": "^2.6",
+    "qiniu/php-sdk": "^7.14",
+    "league/flysystem-aws-s3-v3": "^3.29"
   },
   "suggest": {
     "ext-event": "For better performance. "
