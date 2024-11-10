@@ -32,4 +32,14 @@ class SystemUpload extends BaseModel
 
     protected $name = 'system_upload';
 
+    public function created(): \think\model\relation\hasOne
+    {
+        return $this->hasOne(SystemUser::class, 'id', 'created_by')->bind(['created_name' => 'real_name']);
+    }
+
+    public function updated(): \think\model\relation\hasOne
+    {
+        return $this->hasOne(SystemUser::class, 'id', 'updated_by')->bind(['updated_name' => 'real_name']);
+    }
+
 }

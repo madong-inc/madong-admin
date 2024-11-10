@@ -14,6 +14,7 @@
 namespace madong\basic;
 
 
+use madong\services\cache\CacheService;
 use madong\trait\ServicesTrait;
 use think\facade\Db;
 
@@ -32,7 +33,7 @@ abstract class BaseService
     /**
      * 缓存管理
      *
-     * @return \madong\basic\CacheService
+     * @return \madong\services\cache\CacheService
      */
     public function cacheDriver(): CacheService
     {

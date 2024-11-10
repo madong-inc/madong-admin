@@ -7,10 +7,11 @@ use madong\exception\UploadException;
 use support\Container;
 
 /**
- *
  * 文件上传
+ *
  * @author Mr.April
  * @since  1.0
+ * @method static uploadFile()
  */
 class UploadFile
 {
@@ -46,7 +47,8 @@ class UploadFile
     }
 
     /**
-     * @desc 获取默认配置
+     * 获取默认配置
+     *
      * @return array
      */
     public static function getDefaultConfig(): array
@@ -92,4 +94,5 @@ class UploadFile
     {
         return static::disk()->{$name}(...$arguments);
     }
+
 }

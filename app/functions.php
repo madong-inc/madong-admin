@@ -71,3 +71,19 @@ function getDateText($time = NULL, int $type = 1): bool|string
     }
     return $text;
 }
+
+/**
+ * 根据字节计算大小
+ *
+ * @param string|int $bytes
+ *
+ * @return string
+ */
+function formatBytes(string|int $bytes): string
+{
+    $units = ['B', 'KB', 'MB', 'GB', 'TB'];
+    for ($i = 0; $bytes > 1024; $i++) {
+        $bytes /= 1024;
+    }
+    return round($bytes, 2) . ' ' . $units[$i];
+}

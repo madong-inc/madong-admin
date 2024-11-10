@@ -1,7 +1,7 @@
 # Bolt Admin
 
 #### Introduction
-Bolt Admin is a backend project built on the Webman rapid development platform framework.
+MaDong Admin is a backend project built on the Webman rapid development platform framework.
 
 #### Environment Requirements
 - `Nginx/Apache`

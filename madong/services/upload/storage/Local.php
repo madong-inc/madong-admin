@@ -71,4 +71,14 @@ class Local extends BaseUpload
             'default' => runtime_path(),
         };
     }
+
+    function uploadServerFile(string $filePath): mixed
+    {
+        // TODO: Implement uploadServerFile() method.
+    }
+
+    public function uploadBase64(string $base64, string $extension = 'JPEG'): mixed
+    {
+        // TODO: Implement uploadBase64() method.
+    }
 }

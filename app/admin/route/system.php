@@ -157,8 +157,16 @@ Route::group('/system', function () {
      * 附件管理
      */
     Route::group(function () {
-        Route::get('/upload', [\app\admin\controller\system\SystemUploadController::class, 'index'])->name('附件列表');
+        Route::get('/files', [\app\admin\controller\system\SystemUploadController::class, 'index'])->name('附件列表');
+        Route::get('/files/download-by-id/{id}', [\app\admin\controller\system\SystemUploadController::class, 'downloadResourceById'])->name('通过id下载文件');
+        Route::get('/files/download-by-hash/{hash}', [\app\admin\controller\system\SystemUploadController::class, 'downloadResourceByHash'])->name('通过hash下载文件');
+        Route::get('/files/{id}', [\app\admin\controller\system\SystemUploadController::class, 'show'])->name('附件详情');
+        Route::post('/files/fetch-and-save-image', [\app\admin\controller\system\SystemUploadController::class, 'downloadNetworkImage'])->name('上传网络图片');
+        Route::post('/files/upload-image', [\app\admin\controller\system\SystemUploadController::class, 'uploadImage'])->name('上传图片');
+        Route::post('/files/upload-file', [\app\admin\controller\system\SystemUploadController::class, 'uploadFile'])->name('上传文件');
+        Route::delete('/files/{id}', [\app\admin\controller\system\SystemUploadController::class, 'destroy'])->name('删除文件');
     });
+
 })->middleware([
     app\middleware\AllowCrossOriginMiddleware::class,
     app\admin\middleware\AdminAuthTokenMiddleware::class,
