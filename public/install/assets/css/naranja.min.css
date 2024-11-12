@@ -1,0 +1,202 @@
+.naranja-notification {
+    height: 0;
+    box-sizing: content-box;
+    padding: 10px 0;
+    transition: padding .7s cubic-bezier(0, .5, 0, 1),height .7s cubic-bezier(0, .5, 0, 1)
+}
+
+.naranja-notification * {
+    box-sizing: border-box
+}
+
+.naranja-notification .narj-log {
+    background-color: #F9F9F9
+}
+
+.naranja-notification .narj-log button {
+    border: 1px solid #D2D2D2;
+    background-color: white
+}
+
+.naranja-notification .narj-log button:first-of-type {
+    color: #0099E5
+}
+
+.naranja-notification .narj-success {
+    background-color: #B8F4BC
+}
+
+.naranja-notification .narj-success button {
+    border: 1px solid #6ED69A;
+    background-color: #B8F4BC;
+    opacity: .9;
+    color: #11B674
+}
+
+.naranja-notification .narj-success button:first-of-type {
+    opacity: 1
+}
+
+.naranja-notification .narj-warn {
+    background-color: #FFDD85
+}
+
+.naranja-notification .narj-warn button {
+    border: 1px solid #F5CE69;
+    background-color: #FFDD85;
+    opacity: .9;
+    color: #D9993F
+}
+
+.naranja-notification .narj-warn button:first-of-type {
+    opacity: 1
+}
+
+.naranja-notification .narj-error {
+    background-color: #ED9286
+}
+
+.naranja-notification .narj-error button {
+    border: 1px solid #ED8476;
+    background-color: #ED9286;
+    opacity: .9;
+    color: #C24343
+}
+
+.naranja-notification .narj-error button:first-of-type {
+    opacity: 1
+}
+
+.naranja-notification .naranja-body-notification {
+    animation: .4s fadeUpIn 1 cubic-bezier(0, .5, 0, 1);
+    position: relative;
+    display: flex;
+    width: 310px;
+    border-radius: 4px;
+    padding: 7px;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.16);
+    margin-bottom: 7px;
+    margin-top: 12px;
+    opacity: 1;
+    transition: opacity .15s ease,marginTop .3s ease,marginBottom .3s ease,padding .3s ease
+}
+
+.naranja-notification .naranja-body-notification:hover .naranja-close-icon {
+    opacity: .7
+}
+
+.naranja-notification .naranja-body-notification:hover .naranja-close-icon:hover {
+    opacity: 1
+}
+
+.naranja-notification .naranja-body-notification>div {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center
+}
+
+.naranja-notification .naranja-body-notification .naranja-text-and-title {
+    padding-left: 15px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start
+}
+
+.naranja-notification .naranja-body-notification .naranja-text-and-title>p {
+    margin: 5px;
+    font-family: 'Open Sans'
+}
+
+.naranja-notification .naranja-body-notification .naranja-text-and-title>div {
+    width: 100%
+}
+
+.naranja-notification .naranja-body-notification .naranja-text-and-title>div button {
+    float: right;
+    margin-left: 6px;
+    margin-top: 10px;
+    margin-bottom: 2px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    -o-appearance: none;
+    border-radius: 3px;
+    padding: 2px 11px;
+    font-size: 14px;
+    text-align: center;
+    outline: none;
+    border-width: 1px;
+    box-shadow: 0 2px 4px -2px rgba(0,0,0,0.2);
+    cursor: pointer
+}
+
+.naranja-notification .naranja-body-notification .naranja-text-and-title>div button:active {
+    opacity: .7
+}
+
+.naranja-notification .naranja-body-notification .naranja-title {
+    font-size: 20px;
+    opacity: 1
+}
+
+.naranja-notification .naranja-body-notification .naranja-parragraph {
+    font-size: 14px;
+    opacity: .6;
+    padding-right: 30px;
+    line-height: 1.4em
+}
+
+.naranja-close-icon {
+    position: absolute;
+    right: 7px;
+    top: 7px;
+    opacity: 0;
+    cursor: pointer;
+    transition: opacity .25s ease
+}
+
+@keyframes fadeUpIn {
+    from {
+        opacity: .2;
+        box-shadow: 0 0 0 rgba(0,0,0,0.5);
+        transform: scale(.95)
+    }
+
+    75% {
+        opacity: 1
+    }
+
+    to {
+        opacity: 1;
+        box-shadow: 0 5px 10px rgba(0,0,0,0.16);
+        transform: scale(1)
+    }
+}
+
+.naranja-notification-box {
+    box-sizing: content-box;
+    display: flex;
+    flex-direction: column-reverse;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: 315px;
+    height: auto;
+    max-height: 100vh;
+    overflow: auto;
+    padding: 8px;
+    padding-top: 20px
+}
+
+.naranja-notification-box .naranja-notification-advice {
+    position: fixed;
+    right: 138px;
+    top: -39px;
+    transform: translateY(0);
+    cursor: pointer;
+    transition: transform .3s ease
+}
+
+.naranja-notification-box .naranja-notification-advice.active {
+    transform: translateY(60px)
+}
