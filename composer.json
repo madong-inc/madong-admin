@@ -45,7 +45,8 @@
     "aliyuncs/oss-sdk-php": "^2.7",
     "qcloud/cos-sdk-v5": "^2.6",
     "qiniu/php-sdk": "^7.14",
-    "league/flysystem-aws-s3-v3": "^3.29"
+    "league/flysystem-aws-s3-v3": "^3.29",
+    "erusev/parsedown": "^1.7"
   },
   "suggest": {
     "ext-event": "For better performance. "

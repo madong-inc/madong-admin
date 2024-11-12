@@ -10,14 +10,19 @@
     <link href="/install/assets/favicon.ico" rel="icon">
     <link rel="stylesheet" href="/install/assets/layui/css/layui.css">
     <link rel="stylesheet" href="/install/assets/css/step.css">
-    <style>
 
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+
+        }
     </style>
 </head>
 
 <body>
 
-<div class="layui-row layui-col-space10">
+<div class="layui-row">
     <div class="layui-col-md12">
         <div class="layui-card">
             <div class="layui-card">
@@ -67,8 +72,8 @@
 
                                     <div class="layui-form-item">
                                         <div class="layui-input-block">
-                                            <button type="button" class="pear-btn next">跳过此步骤</button>
-                                            <button class="pear-btn pear-btn-primary" lay-submit lay-filter="formStep">
+                                            <button type="button" class="layui-btn next">跳过此步骤</button>
+                                            <button class="layui-btn layui-btn-primary" lay-submit lay-filter="formStep">
                                                 &emsp;下一步&emsp;
                                             </button>
                                         </div>
@@ -97,8 +102,8 @@
                                     </div>
                                     <div class="layui-form-item">
                                         <div class="layui-input-block">
-                                            <button type="button" class="pear-btn pre">上一步</button>
-                                            <button class="pear-btn pear-btn-primary" lay-submit lay-filter="formStep2">
+                                            <button type="button" class="layui-btn pre">上一步</button>
+                                            <button class="layui-btn layui-btn-primary" lay-submit lay-filter="formStep2">
                                                 &emsp;提交&emsp;
                                             </button>
                                         </div>
@@ -114,7 +119,7 @@
                                     <div style="font-size: 14px;color: #666;margin-top: 20px;">需要重启才能生效</div>
                                 </div>
                                 <div style="text-align: center;margin-top: 50px;">
-                                    <button class="pear-btn pear-btn-primary finish">进入后台</button>
+                                    <button class="layui-btn layui-btn-primary finish">进入首页</button>
                                 </div>
                             </div>
                         </div>
@@ -142,6 +147,7 @@
         var $ = layui.$, form = layui.form, step = layui.step;
 
         layui.code();
+
 
         step.render({
             elem: "#stepForm",
@@ -213,7 +219,25 @@
         });
 
         $(".finish").click(function () {
-            location.reload();
+            setTimeout(function () {
+                window.location.href = '/';
+            }, 1000);
+        });
+
+
+        fetch('/install/index')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('网络响应错误');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.code == '-1' || data.code == -1) {
+                    return layui.popup.failure(data.msg);
+                }
+            }).catch(error => {
+            console.error('请求失败:', error); // 处理错误
         });
     })
 

@@ -2,14 +2,31 @@
 
 namespace app\admin\controller;
 
-use app\admin\controller\Base;
 use madong\utils\Json;
 use madong\utils\JwtAuth;
+use madong\utils\Snowflake;
+use support\Container;
 use support\Request;
 use think\facade\Db;
 
 class InstallController extends Base
 {
+
+    /**
+     * 无需登录初始化
+     */
+    public function initialize(): void
+    {
+    }
+
+    public function index(Request $request): \support\Response
+    {
+        $is_install_file = base_path() . '/install.lock';
+        if ($is_install_file) {
+            return Json::fail('管理后台已经安装！如需重新安装，请删除该根目录下的install.lock文件并重启: ', []);
+        }
+        return Json::success('ok', []);
+    }
 
     /**
      * 设置数据库
@@ -58,6 +75,7 @@ class InstallController extends Base
 
         // 3.0数据库配置
         Db::setConfig($database_config);
+        $db = Db::connect('mysql');
 
         // 4.0链接数据库
         try {
@@ -125,16 +143,16 @@ class InstallController extends Base
             $db->execute($sql);
         }
 
-//        try {
-//            foreach ($sql_query as $sql) {
-//                $db->execute($sql); // 使用 Db::execute()
-//            }
-//        } catch (\Exception $e) {
-//            return Json::fail('安装过程中发生错误: ' . $e->getMessage());
-//        }
         // 导入菜单
-//        $menus = include base_path() . '/plugin/admin/config/menu.php';
-//        $this->importMenu($menus, $db);
+        $menus = include base_path() . '/config/menu.php';
+        $db->startTrans();
+        try {
+            $this->importMenu($menus, $db);
+            $db->commit();
+        } catch (\Exception $e) {
+            $db->rollback();
+            return Json::fail('导入菜单失败: ' . $e->getMessage());
+        }
 
         // 写入数据库配置文件
         $config['database'] = $database;
@@ -147,6 +165,52 @@ class InstallController extends Base
             restore_error_handler();
         }
         return Json::success('操作成功');
+    }
+
+    protected function addMenu(array $menu, $db, int|string $pid = 0): int|string
+    {
+        $tableName = 'ma_system_menu';
+        $id        = $this->generateSnowflakeID(); // 生成 ID
+        // 准备数据
+        $data = [
+            'id'          => $id,
+            'title'       => $menu['title'],
+            'app'         => $menu['app'],
+            'code'        => $menu['code'],
+            'icon'        => $menu['icon'],
+            'sort'        => $menu['sort'],
+            'type'        => $menu['type'],
+            'is_show'     => $menu['is_show'],
+            'is_link'     => $menu['is_link'],
+            'is_cache'    => $menu['is_cache'],
+            'path'        => $menu['path'],
+            'component'   => $menu['component'],
+            'redirect'    => $menu['redirect'],
+            'pid'         => $pid, // 关联父 ID
+            'create_by'   => 1,
+            'update_by'   => 1,
+            'create_time' => time(),
+            'update_time' => time(),
+        ];
+
+        // 插入数据并返回新插入的 ID
+        $db->table($tableName)->insert($data);
+        return $id; // 返回生成的 ID
+    }
+
+    protected function importMenu(array $menu_tree, $db, int|string $pid = 0)
+    {
+        foreach ($menu_tree as $menu) {
+            // 添加当前菜单并获取当前菜单的 ID
+            $currentId = $this->addMenu($menu, $db, $pid);
+
+            // 处理子菜单
+            $children = $menu['children'] ?? [];
+            if (!empty($children)) {
+                // 递归调用处理子菜单，传递当前菜单的 ID 作为父 ID
+                $this->importMenu($children, $db, $currentId);
+            }
+        }
     }
 
     /**
@@ -168,26 +232,19 @@ class InstallController extends Base
         }
 
         // 检查数据库配置文件是否存在
-        if (!is_file($config_file = base_path() . '/config/thinkorm1.php')) {
+        $config_file = base_path() . '/config/thinkorm1.php';
+        // 检查配置文件是否存在
+        if (!is_file($config_file)) {
             return Json::fail('请先完成第一步数据库配置');
         }
-        $config          = [
-            'type'     => 'mysql',
-            'hostname' => '127.0.0.1',
-            'hostport' => '3306',
-            'username' => 'root',
-            'password' => 'root',
-            'database' => 'madong_admin',
-            'charset'  => 'utf8mb4',
-            'prefix'   => 'ma_',
-            'debug'    => true,
-        ];
-        $database_config = [
-            'default'     => 'mysql',
-            'connections' => [
-                'mysql' => $config,
-            ],
-        ];
+
+        // 引入配置文件
+        $database_config = include $config_file;
+
+        // 检查配置是否有效
+        if (!is_array($database_config)) {
+            return Json::fail('数据库配置文件格式错误');
+        }
         Db::setConfig($database_config);
         $db = Db::connect('mysql');
         // 检查是否已经存在管理员
@@ -225,18 +282,32 @@ class InstallController extends Base
                                     return  [
                                         'default' => 'mysql',
                                         'connections' => [
-                                            'mysql' => [
-                                                'driver'      => 'mysql',
-                                                'host'        => '{$config['hostname']}',
-                                                'port'        => '{$config['hostport']}',
-                                                'database'    => '{$config['database']}',
-                                                'username'    => '{$config['username']}',
-                                                'password'    => '{$config['password']}',
-                                                'charset'     => 'utf8mb4',
-                                                'collation'   => 'utf8mb4_general_ci',
-                                                'prefix'      => '',
-                                                'strict'      => true,
-                                                'engine'      => null,
+                                            'mysql' => [                            
+                                                    // 数据库类型
+                                                    'type' => 'mysql',
+                                                    // 服务器地址
+                                                    'hostname' => '{$config['hostname']}',
+                                                    // 数据库名
+                                                    'database' => '{$config['database']}',
+                                                    // 数据库用户名
+                                                    'username' => '{$config['username']}',
+                                                    // 数据库密码
+                                                    'password' => '{$config['password']}',
+                                                    // 数据库连接端口
+                                                    'hostport' => '{$config['hostport']}',
+                                                    // 数据库连接参数
+                                                    'params' => [
+                                                        // 连接超时3秒
+                                                        \PDO::ATTR_TIMEOUT => 3,
+                                                    ],
+                                                    // 数据库编码默认采用utf8
+                                                    'charset' => 'utf8',
+                                                    // 数据库表前缀
+                                                    'prefix' => 'ma_',
+                                                    // 断线重连
+                                                    'break_reconnect' => true,
+                                                    // 自定义分页类
+                                                    'bootstrap' =>  ''                                                                    
                                             ],
                                         ],
                                     ];
@@ -256,6 +327,18 @@ class InstallController extends Base
     {
         // 根据分隔符分割 SQL 语句
         return array_filter(array_map('trim', explode($delimiter, $sql)));
+    }
+
+    /**
+     * 生成雪花ID
+     *
+     * @return int
+     */
+    private  function generateSnowflakeID(): int
+    {
+//        $snowflake = new Snowflake(1, 1);
+//        return $snowflake->nextId();
+        return random_int(1000000000000, 9999999999999); // 生成一个 13 位随机数
     }
 
 }
