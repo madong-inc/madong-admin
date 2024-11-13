@@ -37,7 +37,7 @@ Route::get('/', function() {
             <head>
                 <meta charset='UTF-8'>
                 <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-                <title>MaDong Admin管理系统</title>
+                <title>MaDong Admin快速开发框架</title>
                 <style>
                     body {
                         font-family: Arial, sans-serif;

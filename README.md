@@ -11,6 +11,16 @@ MySQL 8.0
 Redis`
 
 
+#### 后端安装
+- 获取代码：https://gitee.com/motion-code/MaDong.git
+- cd MaDong 
+- composer install
+- http://127.0.0.1:8899/install/index.html 
+
+
+
+
+
 #### 系统演示
 
 管理后台： http://antd-vben5.madong.tech 账号：admin 密码：123456
