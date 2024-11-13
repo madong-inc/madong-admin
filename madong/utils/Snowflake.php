@@ -25,7 +25,7 @@ class Snowflake
     const EPOCH = 1704038400000; // 2024-01-01 00:00:00 的 Unix 时间戳（毫秒）
     const WORKER_ID_BITS = 5;
     const DATA_CENTER_ID_BITS = 5;
-    const SEQUENCE_BITS = 12;
+    const SEQUENCE_BITS = 13;
 
     const MAX_WORKER_ID = (1 << self::WORKER_ID_BITS) - 1;
     const MAX_DATA_CENTER_ID = (1 << self::DATA_CENTER_ID_BITS) - 1;

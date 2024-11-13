@@ -22,7 +22,7 @@ class InstallController extends Base
     public function index(Request $request): \support\Response
     {
         $is_install_file = base_path() . '/install.lock';
-        if ($is_install_file) {
+        if (is_file($is_install_file)) {
             return Json::fail('管理后台已经安装！如需重新安装，请删除该根目录下的install.lock文件并重启: ', []);
         }
         return Json::success('ok', []);
@@ -146,13 +146,18 @@ class InstallController extends Base
         // 导入菜单
         $menus = include base_path() . '/config/menu.php';
         $db->startTrans();
-        try {
-            $this->importMenu($menus, $db);
-            $db->commit();
-        } catch (\Exception $e) {
-            $db->rollback();
-            return Json::fail('导入菜单失败: ' . $e->getMessage());
+        for ($i = 1; $i <= 10; $i++) {
+            $res = $this->generateSnowflakeID();
+            echo "数字: $res\n";
         }
+        eixt();
+//        try {
+//            $this->importMenu($menus, $db);
+//            $db->commit();
+//        } catch (\Exception $e) {
+//            $db->rollback();
+//            return Json::fail('导入菜单失败: ' . $e->getMessage());
+//        }
 
         // 写入数据库配置文件
         $config['database'] = $database;
@@ -334,11 +339,11 @@ class InstallController extends Base
      *
      * @return int
      */
-    private  function generateSnowflakeID(): int
+    private function generateSnowflakeID(): int
     {
-//        $snowflake = new Snowflake(1, 1);
-//        return $snowflake->nextId();
-        return random_int(1000000000000, 9999999999999); // 生成一个 13 位随机数
+        $snowflake = new Snowflake(1, 1);
+        return $snowflake->nextId();
+//        return random_int(1000000000000, 9999999999999); // 生成一个 13 位随机数
     }
 
 }
