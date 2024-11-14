@@ -334,7 +334,7 @@ class InstallController extends Base
      *
      * @return int|string
      */
-    protected function addDictItem(array $itemData, $db, int|string $dictId, $tableName = "ma_system_dict_item"): int|string
+    protected function addDictItem(array $itemData, $db, int|string $dictId, string $tableName = "ma_system_dict_item"): int|string
     {
         $id   = $this->generateSnowflakeID(); // 生成 ID
         $data = [
