@@ -11,7 +11,7 @@
  Target Server Version : 80012
  File Encoding         : 65001
 
- Date: 12/11/2024 17:50:18
+ Date: 17/11/2024 17:04:02
 */
 
 SET NAMES utf8mb4;
@@ -44,7 +44,7 @@ CREATE TABLE `ma_system_config`  (
   `create_user` bigint(20) NULL DEFAULT NULL COMMENT '创建用户',
   `update_time` bigint(20) NULL DEFAULT NULL COMMENT '更新时间',
   `update_user` bigint(20) NULL DEFAULT NULL COMMENT '更新用户',
-  `delete_time` timestamp(0) NULL DEFAULT NULL COMMENT '是否删除',
+  `delete_time` timestamp NULL DEFAULT NULL COMMENT '是否删除',
   `remark` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '备注',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_config_code`(`code`) USING BTREE,
@@ -182,10 +182,12 @@ CREATE TABLE `ma_system_login_log`  (
   `status` smallint(6) NULL DEFAULT 1 COMMENT '登录状态 (1成功 2失败)',
   `message` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '提示消息',
   `login_time` int(11) NULL DEFAULT NULL COMMENT '登录时间',
-  `remark` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '备注',
+  `key` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL COMMENT 'key',
   `create_time` int(11) NULL DEFAULT NULL COMMENT '创建时间',
+  `expires_time` int(11) NULL DEFAULT NULL COMMENT '过期时间',
   `update_time` int(11) NULL DEFAULT NULL COMMENT '更新时间',
-  `delete_time` datetime(0) NULL DEFAULT NULL COMMENT '删除时间',
+  `delete_time` datetime NULL DEFAULT NULL COMMENT '删除时间',
+  `remark` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `username`(`user_name`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_unicode_ci COMMENT = '登录日志表' ROW_FORMAT = Dynamic;
@@ -220,7 +222,7 @@ CREATE TABLE `ma_system_menu`  (
   `create_by` bigint(20) NULL DEFAULT NULL COMMENT '创建用户',
   `update_time` int(11) NULL DEFAULT NULL COMMENT '更新时间',
   `update_by` bigint(20) NULL DEFAULT NULL COMMENT '更新用户',
-  `delete_time` datetime(0) NULL DEFAULT NULL COMMENT '是否删除',
+  `delete_time` datetime NULL DEFAULT NULL COMMENT '是否删除',
   `methods` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT 'get' COMMENT '请求方法',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_sys_menu_code`(`code`) USING BTREE,
@@ -317,9 +319,10 @@ CREATE TABLE `ma_system_role_menu`  (
 DROP TABLE IF EXISTS `ma_system_upload`;
 CREATE TABLE `ma_system_upload`  (
   `id` bigint(20) NOT NULL COMMENT '文件信息ID',
-  `url` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '文件访问地址',
+  `url` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '文件访问地址',
   `size` bigint(20) NULL DEFAULT NULL COMMENT '文件大小，单位字节',
   `size_info` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '文件大小，有单位',
+  `hash` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '文件hash',
   `filename` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '文件名称',
   `original_filename` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '原始文件名',
   `base_path` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '基础存储路径',
@@ -336,9 +339,9 @@ CREATE TABLE `ma_system_upload`  (
   `object_type` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '文件所属对象类型，例如用户头像，评价图片',
   `attr` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '附加属性',
   `create_time` bigint(20) NULL DEFAULT NULL COMMENT '创建时间',
-  `create_user` bigint(20) NULL DEFAULT NULL COMMENT '创建用户',
+  `created_by` bigint(20) NULL DEFAULT NULL COMMENT '创建用户',
   `update_time` bigint(20) NULL DEFAULT NULL COMMENT '更新时间',
-  `update_user` bigint(20) NULL DEFAULT NULL COMMENT '更新用户',
+  `updated_by` bigint(20) NULL DEFAULT NULL COMMENT '更新用户',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '文件信息' ROW_FORMAT = Dynamic;
 
@@ -348,8 +351,9 @@ CREATE TABLE `ma_system_upload`  (
 DROP TABLE IF EXISTS `ma_system_user`;
 CREATE TABLE `ma_system_user`  (
   `id` bigint(20) UNSIGNED NOT NULL COMMENT '用户ID,主键',
-  `user_name` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '用户名',
-  `real_name` varchar(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '用户昵称',
+  `user_name` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '账号',
+  `real_name` varchar(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '用户',
+  `nick_name` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '昵称',
   `password` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '密码',
   `is_super` tinyint(4) NULL DEFAULT 2 COMMENT '用户类型:(1系统用户 2普通用户)',
   `mobile_phone` varchar(11) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '手机',

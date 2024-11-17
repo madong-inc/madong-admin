@@ -814,12 +814,12 @@ class Arr
     /**
      * 数组中根据key值获取value
      *
-     * @param $array
-     * @param $key
+     * @param array      $array
+     * @param string|int $key
      *
      * @return mixed|string
      */
-    public static function getConfigValue($array, $key): mixed
+    public static function findConfigValue(array $array, string|int $key): mixed
     {
         foreach ($array as $item) {
             if ($item['key'] === $key) {
@@ -827,6 +827,19 @@ class Arr
             }
         }
         return '';
+    }
+
+    /**
+     * 数组中根据key值获取对应的值
+     *
+     * @param array  $array
+     * @param string $key
+     *
+     * @return mixed
+     */
+    public static function fetchConfigValue(array $array, string $key): mixed
+    {
+        return $array[$key] ?? ''; // 如果键不存在，返回 null
     }
 
 }

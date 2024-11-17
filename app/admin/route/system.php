@@ -19,7 +19,9 @@ use Webman\Route;
 Route::group(function () {
     Route::post('/system/login', [\app\admin\controller\LoginController::class, 'login'])->name('登录');
     Route::post('/system/logout', [\app\admin\controller\LoginController::class, 'logout'])->name('注销');
-    Route::get('/auth/captcha', [\app\admin\controller\LoginController::class, 'captcha'])->name('验证码');
+    Route::post('/system/send-sms', [\app\admin\controller\LoginController::class, 'sendSms'])->name('发送手机验证码');
+    Route::get('/system/captcha', [\app\admin\controller\LoginController::class, 'captcha'])->name('验证码');
+    Route::get('/system/get-captcha-open-flag', [\app\admin\controller\LoginController::class, 'getCaptchaOpenFlag'])->name('是否开启验证码');
 });
 
 Route::group('/system', function () {
@@ -35,10 +37,12 @@ Route::group('/system', function () {
         Route::post('/user-select', [\app\admin\controller\system\SystemUserController::class, 'select'])->name('下拉列表');
         Route::delete('/user/{id}', [\app\admin\controller\system\SystemUserController::class, 'destroy'])->name('删除');
 
-        Route::post('/user/update-avatar', [\app\admin\controller\system\SystemUserController::class, 'dev'])->name('修改头像');
-        Route::post('/user/update-info', [\app\admin\controller\system\SystemUserController::class, 'dev'])->name('修改个人信息');
-        Route::post('/user/update-pwd', [\app\admin\controller\system\SystemUserController::class, 'dev'])->name('修改个人密码');
+        Route::post('/user/update-avatar', [\app\admin\controller\system\SystemUserController::class, 'updateAvatar'])->name('修改头像');
+        Route::post('/user/update-info', [\app\admin\controller\system\SystemUserController::class, 'updateInfo'])->name('修改个人信息');
+        Route::post('/user/update-pwd', [\app\admin\controller\system\SystemUserController::class, 'updatePwd'])->name('修改个人密码');
+        Route::post('/user/online-device', [\app\admin\controller\system\SystemUserController::class, 'onlineDevice'])->name('在线设备');
         Route::post('/user/reset-password', [\app\admin\controller\system\SystemUserController::class, 'changePassword'])->name('重置密码');
+        Route::post('/user/kickout-by-token-value', [\app\admin\controller\system\SystemUserController::class, 'kickoutByTokenValue'])->name('强制下线');
         Route::post('/user/locked', [\app\admin\controller\system\SystemUserController::class, 'locked'])->name('锁定用户');
         Route::post('/user/un-locked', [\app\admin\controller\system\SystemUserController::class, 'unLocked'])->name('取消锁定用户');
         Route::post('/user/grant-role', [\app\admin\controller\system\SystemUserController::class, 'grantRole'])->name('授权角色');
