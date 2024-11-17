@@ -14,6 +14,7 @@ namespace app\admin\controller\system;
 
 use app\admin\controller\Crud;
 use app\admin\validate\system\SystemUserValidate;
+use app\services\system\SystemLoginLogService;
 use app\services\system\SystemUserRoleService;
 use app\services\system\SystemUserService;
 use madong\exception\AdminException;
@@ -170,6 +171,111 @@ class SystemUserController extends Crud
             $data                  = $this->inputFilter($request->all(), ['user_id', 'role_id_list']);
             $systemUserRoleService = Container::make(SystemUserRoleService::class);
             $systemUserRoleService->save($data);
+            return Json::success('ok');
+        } catch (\Exception $e) {
+            return Json::fail($e->getMessage());
+        }
+    }
+
+    public function updateInfo(Request $request): \support\Response
+    {
+        try {
+            $uid  = getCurrentUser();
+            $data = $this->inputFilter($request->all());
+            if (isset($this->validate) && $this->validate) {
+                $data['id'] = $uid;
+                if (!$this->validate->scene('update-info')->check($data)) {
+                    throw new \Exception($this->validate->getError());
+                }
+            }
+            $this->service->updateUserInfo($uid, $data);
+            return Json::success('ok');
+        } catch (\Exception $e) {
+            return Json::fail($e->getMessage());
+        }
+    }
+
+    /**
+     * 更新头像
+     *
+     * @param \support\Request $request
+     *
+     * @return \support\Response
+     */
+    public function updateAvatar(Request $request): \support\Response
+    {
+        try {
+            $uid  = getCurrentUser();
+            $data = $request->input('avatar');
+            $this->service->updateAvatarUser($uid, $data);
+            return Json::success('ok');
+        } catch (\Exception $e) {
+            return Json::fail($e->getMessage());
+        }
+    }
+
+    /**
+     * 更新个人密码
+     *
+     * @param \support\Request $request
+     *
+     * @return \support\Response
+     */
+    public function updatePwd(Request $request): \support\Response
+    {
+        try {
+            $uid  = getCurrentUser();
+            $data = $this->inputFilter($request->all(), ['confirm_password', 'new_password']);
+            if (isset($this->validate) && $this->validate) {
+                $data['id'] = $uid;
+                if (!$this->validate->scene('update-pwd')->check($data)) {
+                    throw new \Exception($this->validate->getError());
+                }
+            }
+            $this->service->updateUserPwd($uid, $data);
+            return Json::success('ok');
+        } catch (\Exception $e) {
+            return Json::fail($e->getMessage());
+        }
+    }
+
+    /**
+     * 我的在线用户
+     *
+     * @param \support\Request $request
+     *
+     * @return \support\Response
+     */
+    public function onlineDevice(Request $request): \support\Response
+    {
+        try {
+            [$where, $format, $limit, $field, $order, $page] = $this->selectInput($request);
+            $adminInfo             = getCurrentUser(true);
+            $where                 = [
+                ['user_name', '=', $adminInfo['user_name']],
+                ['expires_time', '>', time()],
+            ];
+            $systemLoginLogService = Container::make(SystemLoginLogService::class);
+            $total                 = $systemLoginLogService->getCount($where);
+            $items                 = $systemLoginLogService->selectList($where, $field, $page, $limit, 'login_time desc', [], false);
+            return Json::success('ok', compact('total', 'items'));
+        } catch (\Exception $e) {
+            return Json::fail($e->getMessage());
+        }
+    }
+
+    /**
+     * 强制下线
+     *
+     * @param \support\Request $request
+     *
+     * @return \support\Response
+     */
+    public function kickoutByTokenValue(Request $request): \support\Response
+    {
+        try {
+            $data = $request->input('data', []);
+            $this->service->kickoutByTokenValueUser($data);
             return Json::success('ok');
         } catch (\Exception $e) {
             return Json::fail($e->getMessage());

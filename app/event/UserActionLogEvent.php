@@ -19,20 +19,22 @@ class UserActionLogEvent
      */
     public function logLogin($item): void
     {
-
-        $ip                  = request()->getRealIp();
-        $http_user_agent     = request()->header('user-agent');
-        $data['user_name']   = $item['username'];
-        $data['ip']          = $ip;
-        $data['ip_location'] = '未知';
-        $data['os']          = self::getOs($http_user_agent);
-        $data['browser']     = self::getBrowser($http_user_agent);
-        $data['status']      = $item['status'];
-        $data['message']     = $item['message'];
-        $data['login_time']  = time();
-        $service             = new SystemLoginLogService();
+        $token                = $item['token'];
+        $key                  = 'token_' . $item['type'] . '_' . md5($token['token'] ?? '');
+        $ip                   = request()->getRealIp();
+        $http_user_agent      = request()->header('user-agent');
+        $data['user_name']    = $item['username'];
+        $data['ip']           = $ip;
+        $data['ip_location']  = '未知';
+        $data['os']           = self::getOs($http_user_agent);
+        $data['browser']      = self::getBrowser($http_user_agent);
+        $data['status']       = $item['status'];
+        $data['message']      = $item['message'];
+        $data['login_time']   = time();
+        $data['key']          = $key;
+        $data['expires_time'] = $token['params']['exp'] ?? time();
+        $service              = new SystemLoginLogService();
         $service->save($data);
-
     }
 
     /**

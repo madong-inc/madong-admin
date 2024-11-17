@@ -56,7 +56,7 @@ class SystemUploadController extends Crud
             if (empty($data)) {
                 throw new AdminException('数据未找到', -1);
             }
-            return response()->download($data->path,$data->filename);
+            return response()->download($data->path, $data->filename);
         } catch (\Throwable $e) {
             return Json::fail($e->getMessage(), [], $e->getCode());
         }
@@ -94,7 +94,7 @@ class SystemUploadController extends Crud
     {
         try {
             $result = $this->service->upload();
-            return Json::success('ok', $result);
+            return Json::success('ok', $result->toArray());
         } catch (\Exception $e) {
             return Json::fail($e->getMessage());
         }

@@ -29,13 +29,11 @@ class Local extends BaseUpload
             $saveFilename = $uniqueId . '.' . $file->getUploadExtension();
             $savePath     = $basePath . $saveFilename;
             $url          = $domain . $this->dirSeparator . $saveFilename;
-
             if (!empty($dirname)) {
-                $savePath = $basePath . $dirname . $this->dirSeparator . $saveFilename;
+                $savePath = $root . $this->dirSeparator . $dirname . $this->dirSeparator . $saveFilename;
                 $url      = $domain . $this->dirSeparator . $dirname . $this->dirSeparator . $saveFilename;
             }
-            $file->move($savePath);
-            $result[] = [
+            $temp = [
                 'key'         => $key,
                 'origin_name' => $file->getUploadName(),
                 'save_name'   => $saveFilename,
@@ -46,6 +44,8 @@ class Local extends BaseUpload
                 'mime_type'   => $file->getUploadMimeType(),
                 'extension'   => $file->getUploadExtension(),
             ];
+            $file->move($savePath);
+            $result[] = $temp;
         }
         return $result;
     }

@@ -13,6 +13,7 @@
 namespace app\services\system;
 
 use app\dao\system\SystemUserDao;
+use app\model\system\SystemUser;
 use madong\basic\BaseService;
 use madong\exception\AuthException;
 use madong\services\cache\CacheService;
@@ -57,7 +58,20 @@ class SystemAuthService extends BaseService
             if (empty($adminInfo) || empty($adminInfo->getData('id'))) {
                 throw new AuthException('用户不存在或禁用ad00001', $code);
             }
+
+            $depts = $adminInfo->getData('depts');
+            if (!empty($depts)) {
+                $adminInfo->set('dept_name', $depts->getData('name'));
+            }
+
+            $roles = $adminInfo->getData('roles');
+            if (!empty($roles)) {
+                $adminInfo->set('role_names', array_column($roles->toArray(), 'name'));
+            }
+            $adminInfo->set('login_date', date('Y-m-d H:i:s', $adminInfo->getData('login_time')));
             $adminInfo->set('type', $type);
+            $avatar = $this->getAvatarUrl($adminInfo);
+            $adminInfo->set('avatar', $avatar);
             return $adminInfo->hidden(['password', 'delete_time', 'status'])->toArray();
         } catch (\Throwable $e) {
             throw new AuthException($e->getMessage(), 401);
@@ -118,7 +132,7 @@ class SystemAuthService extends BaseService
             $item->set('meta', $item->meta);
         }
         $list->visible(['id', 'pid', 'type', 'sort', 'redirect', 'path', 'name', 'meta', 'component']);
-        $tree  = new Tree($list);
+        $tree = new Tree($list);
         return $tree->getTree();
     }
 
@@ -277,4 +291,27 @@ class SystemAuthService extends BaseService
         return $systemMenuService->filterMenuIds($data);
     }
 
+    /**
+     * 获取头像
+     *
+     * @param \app\model\system\SystemUser $adminInfo
+     *
+     * @return string
+     */
+    private function getAvatarUrl(SystemUser $adminInfo): string
+    {
+        $systemConfigService = Container::make(SystemConfigService::class);
+        $url                 = $systemConfigService->getConfig('site_url', 'system_config');
+        if (empty($url)) {
+            $url = config('server.listen');
+        }
+        if (substr($url, -1) !== '/') {
+            $url .= '/';
+        }
+        $avatar = 'upload/avatar.jpg';
+        if (!empty($adminInfo->getData('avatar'))) {
+            $avatar = $adminInfo->getData('avatar');
+        }
+        return $url . $avatar;
+    }
 }

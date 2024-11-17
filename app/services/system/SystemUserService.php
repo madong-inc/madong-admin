@@ -12,6 +12,7 @@
 
 namespace app\services\system;
 
+use madong\services\cache\CacheService;
 use support\Container;
 use Webman\Event\Event;
 use madong\utils\JwtAuth;
@@ -131,7 +132,6 @@ class SystemUserService extends BaseService
         } catch (\Throwable $e) {
             throw new AdminException($e->getMessage());
         }
-
     }
 
     /**
@@ -192,13 +192,14 @@ class SystemUserService extends BaseService
     /**
      * 用户登录
      *
-     * @param string $username
-     * @param string $password
-     * @param string $type
+     * @param string      $username
+     * @param string|null $password
+     * @param string      $type
+     * @param string      $grantType
      *
      * @return array
      */
-    public function login(string $username, string $password, string $type): array
+    public function login(string $username, string $password = '', string $type='admin', string $grantType = 'default'): array
     {
         $adminInfo = $this->dao->get(['user_name' => $username]);
         $status    = 1;
@@ -212,7 +213,8 @@ class SystemUserService extends BaseService
             $status  = 0;
             $message = '您已被禁止登录!';
         }
-        if (!password_verify($password, $adminInfo->password)) {
+        $noPassword = ['sms', 'refresh_token'];//特殊第三方登录不验证密码
+        if (!in_array($grantType, $noPassword) && !password_verify($password, $adminInfo->password)) {
             $status  = 0;
             $message = '账号或密码错误，请重新输入!';
         }
@@ -228,7 +230,7 @@ class SystemUserService extends BaseService
         $jwt   = new JwtAuth();
         $token = $jwt->createToken($adminInfo->id, $adminInfo->user_name, $type);
         // 登录事件
-        Event::emit('user.login', compact('username', 'status', 'message'));
+        Event::emit('user.login', compact('username', 'status', 'message', 'token', 'type'));
 
         return [
             'token'         => $token['token'],
@@ -327,26 +329,84 @@ class SystemUserService extends BaseService
     }
 
     /**
-     * 删除用户
+     * 更新用户信息
      *
-     * @param array|string $data
+     * @param string|int $id
+     * @param array      $data
+     *
+     * @return mixed
      */
+    public function updateUserInfo(string|int $id, array $data)
+    {
+        return $this->dao->update(['id' => $id], $data);
+    }
 
-//    public function batchDelete(array|string $data): void
-//    {
-//        try {
-//            if (is_string($data)) {
-//                $data = array_map('trim', explode(',', $data));
-//            }
-//            $ret = $this->dao->count([['id', 'in', $data], ['is_super', '=', 1]]);
-//
-//            if ($ret > 0) {
-//                throw new AdminException('系统内置用户，不允许删除');
-//            }
-//            $this->dao->destroy($data);
-//        } catch (\Throwable $e) {
-//            throw new AdminException($e->getMessage());
-//        }
-//    }
+    /**
+     * 更新用户头像
+     *
+     * @param string|int $id
+     * @param string     $avatar
+     *
+     * @return mixed
+     */
+    public function updateAvatarUser(string|int $id, string $avatar)
+    {
+        return $this->dao->update(['id' => $id], ['avatar' => $this->getPathFromUrl($avatar)]);
+    }
 
+    /**
+     * 更新个人用户密码
+     *
+     * @param string|int $id
+     * @param array      $data
+     *
+     * @return mixed
+     */
+    public function updateUserPwd(string|int $id, array $data): void
+    {
+        $this->transaction(function () use ($id, $data) {
+            $info = $this->dao->get($id);
+            if (empty($info)) {
+                throw new AdminException('用户不存在或被删除');
+            }
+            if (!password_verify($data['password'], $info->password)) {
+                throw new AdminException('旧密码错误，请重新输入!');
+            }
+            return $this->dao->update(['id' => $id], ['password' => $this->passwordHash($data['new_password'])]);
+        });
+    }
+
+    /**
+     * 强制下线
+     *
+     * @param $data
+     */
+    public function kickoutByTokenValueUser($data): void
+    {
+        $this->transaction(function () use ($data) {
+            $systemLoginLogService = Container::make(SystemLoginLogService::class);
+            $cacheService          = Container::make(CacheService::class);
+            $systemLoginLogService->update([['key', 'in', $data]], ['expires_time' => time() - 1, 'remark' => '强制下线']);
+            foreach ($data as $key => $value) {
+                $cacheService->delete($value);
+            }
+        });
+    }
+
+    /**
+     * 入参移除url
+     *
+     * @param string $url
+     *
+     * @return string
+     */
+    private function getPathFromUrl(string $url): string
+    {
+        // 如果没有协议，添加 http:// 作为默认
+        if (!preg_match('#^https?://#', $url)) {
+            $url = 'http://' . $url; // 或者根据需要选择 https
+        }
+        preg_match('#^https?://[^/]+(/.*)$#', $url, $matches);
+        return isset($matches[1]) ? ltrim($matches[1], '/') : '';
+    }
 }

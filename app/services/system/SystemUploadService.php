@@ -27,7 +27,6 @@ class SystemUploadService extends BaseService
         $this->dao = Container::make(SystemUploadDao::class);
     }
 
-
     /**
      * 远程下载图片到本地
      *
@@ -92,7 +91,7 @@ class SystemUploadService extends BaseService
             throw new AdminException('缺少本地上传配置信息');
         }
         $content  = json_decode($local['content'], 1);
-        $root     = Arr::getConfigValue($content, 'root');
+        $root     = Arr::fetchConfigValue($content, 'root');
         $folder   = date('Ymd');
         $full_dir = base_path() . DIRECTORY_SEPARATOR . $root . $folder . DIRECTORY_SEPARATOR;
         if (!is_dir($full_dir)) {
@@ -103,8 +102,8 @@ class SystemUploadService extends BaseService
 
         copy($save_path, $newPath);
         unlink($save_path);
-        $domain  = Arr::getConfigValue($content, 'domain');
-        $dirname = Arr::getConfigValue($content, 'dirname');
+        $domain  = Arr::fetchConfigValue($content, 'domain');
+        $dirname = Arr::fetchConfigValue($content, 'dirname');
         $baseUrl = $domain . $dirname . $folder . '/';
 
         $info['platform']          = 'local';
@@ -140,8 +139,9 @@ class SystemUploadService extends BaseService
                     throw new AdminException('缺少上传配置信息');
                 }
 
-                $content = json_decode($config['content'], true);
-                $type    = Arr::getConfigValue($content, 'default') ?: 'local';
+                $content = json_decode($config->getData('content'), true);
+                $type    = Arr::fetchConfigValue($content, 'default') ?: 'local';
+
                 if ($isLocal) {
                     $type = 'local';
                 }
@@ -155,8 +155,8 @@ class SystemUploadService extends BaseService
                     return $filesInfo;
                 }
 
-                $url  = str_replace('\\', '/', $data['url']);
-                $path = str_replace('\\', '/', $data['save_path']);
+                $url    = str_replace('\\', '/', $data['url']);
+                $path   = str_replace('\\', '/', $data['save_path']);
                 $inData = [
                     'platform'          => $type,
                     'original_filename' => $data['origin_name'] ?? '',

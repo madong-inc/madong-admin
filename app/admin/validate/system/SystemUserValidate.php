@@ -22,9 +22,11 @@ class SystemUserValidate extends Validate
      */
     protected $rule = [
         'user_name'    => 'require|max:18|unique',
+        'real_name'    => 'require',
         'password'     => 'require|min:5|max:18',
         'dept_id'      => 'require',
         'mobile_phone' => 'require|mobile',
+        'new_password' => 'require|min:5|max:18',
     ];
 
     /**
@@ -33,10 +35,14 @@ class SystemUserValidate extends Validate
     protected $message = [
         'user_name.require'    => '用户名必须填写',
         'user_name.max'        => '用户名最多不能超过18个字符',
-        'user_name.unique'     => '用户名已被占用',
+        'user_name.unique'     => '用户名已被占用', 'user_name.require' => '用户名必须填写',
+        'real_name.require'    => '姓名必须填写',
         'password.require'     => '密码必须填写',
         'password.min'         => '密码最少为5位',
         'password.max'         => '密码长度不能超过18位',
+        'new_password.require' => '密码必须填写',
+        'new_password.min'     => '密码最少为5位',
+        'new_password.max'     => '密码长度不能超过18位',
         'dept_id'              => '部门必须填写',
         'mobile_phone.require' => '手机号码必须填写',
         'mobile_phone.mobile'  => '无效手机号码',
@@ -65,16 +71,24 @@ class SystemUserValidate extends Validate
      * 定义场景
      */
     protected $scene = [
-        'store'  => [
+        'store'       => [
             'user_name',
             'password',
             'dept_id',
             'mobile_phone',
         ],
-        'update' => [
+        'update'      => [
             'user_name',
             'dept_id',
             'mobile_phone',
+        ],
+        'update-info' => [
+            'user_name',
+            'user_name',
+            'mobile_phone',
+        ],
+        'update-pwd'  => [
+            'new_password',
         ],
     ];
 }
