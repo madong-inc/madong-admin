@@ -24,44 +24,40 @@ class CacheService
     private string $adapter; // 缓存适配器类型
     private ?\Redis $redis; // Redis 实例
 
-    // 构造函数，初始化缓存服务
+    /**
+     * @throws \RedisException
+     */
     public function __construct(array $options = [])
     {
         // 获取框架的 Redis 配置
-        $options = array_merge([
+        $options         = array_merge([
             'host'     => '127.0.0.1',
             'password' => null,
             'port'     => 6379,
             'database' => 0,
-        ], config('redis.default', []));
-
-        // 获取扩展配置信息
-        $config = array_merge([
-            'namespace' => '',
-            'type'      => 'file',
-            'prefix'    => '',
-        ], config('madong.cache', []));
-
-        $this->adapter   = $config['type'] ?? 'file';
-        $this->prefix    = $config['prefix'] ?? '';
-        $this->namespace = $config['namespace'] ?? '';
+        ], config('cache.default', []));
+        $this->adapter   = config('cache.type', 'file');
+        $this->prefix    = config('cache.prefix', '');
+        $this->namespace = config('cache.namespace', '');
         $this->redis     = null;
-
         $this->initialize($options);
     }
 
+    /**
+     * @throws \RedisException
+     */
     private function initialize(array $options): void
     {
-        switch ($this->adapter) {
-            case 'redis':
-                $this->redis = new \Redis();
-                $this->redis->connect($options['host'], $options['port'] ?? 6379); // 连接到 Redis
-                $this->cache = new RedisAdapter($this->redis, $this->namespace);
-                break;
-            case 'file':
-            default:
-                $this->cache = new FilesystemAdapter($this->prefix);
-                break;
+        if ($this->adapter === 'redis') {
+            $this->redis = new \Redis();
+            $this->redis->connect($options['host'], $options['port'] ?? 6379); // 默认端口6379
+            if (!empty($options['password'])) {
+                $this->redis->auth($options['password']);
+            }
+            $this->cache = new RedisAdapter($this->redis, $this->namespace);
+        } else {
+            //默认file模式
+            $this->cache = new FilesystemAdapter($this->prefix);
         }
     }
 
@@ -73,7 +69,7 @@ class CacheService
     }
 
     // 写入缓存
-    public function set(string $key, $value, int $ttl = 3600)
+    public function set(string $key, $value, int $ttl = 3600): void
     {
         $item = $this->cache->getItem($this->prefix . $key);
         $item->set($value);
