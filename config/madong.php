@@ -17,12 +17,6 @@ return [
     ],
     // 是否开启后端接口权限认证
     'server_auth'       => true,
-    // 缓存配置
-    'cache'             => [
-        'namespace' => 'ma-dong',
-        'type'      => 'redis',//redis||file
-        'prefix'    => '',
-    ],
     // 验证码存储模式
     'captcha'           => [
         // 验证码存储模式 session或者redis
