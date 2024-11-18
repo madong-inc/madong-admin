@@ -179,6 +179,9 @@ class ServerMonitor
         $config = config('redis.default');
         $redis  = new \Redis();
         $redis->connect($config['host'], $config['port']);
+        if (!empty($config['password'])) {
+            $redis->auth($config['password']);
+        }
         $info = $redis->info(); // 获取 Redis 监控信息
 
         return [
