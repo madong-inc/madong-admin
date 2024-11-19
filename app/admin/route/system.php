@@ -176,6 +176,7 @@ Route::group('/system', function () {
      */
     Route::group(function () {
         Route::get('/config/info', [\app\admin\controller\system\SystemConfigController::class, 'getConfigInfo'])->name('配置获取');
+        Route::post('/config', [\app\admin\controller\system\SystemConfigController::class, 'store'])->name('保存配置');
     });
 
 })->middleware([

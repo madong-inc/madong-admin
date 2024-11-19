@@ -43,4 +43,15 @@ class SystemConfigController extends Crud
             return Json::fail($e->getMessage());
         }
     }
+
+    public function store(Request $request): \support\Response
+    {
+        try {
+            $data   = $request->all();
+            $result = $this->service->batchUpdateConfig($data);
+            return Json::success('保存成功', $result);
+        } catch (\Exception $e) {
+            return Json::fail($e->getMessage());
+        }
+    }
 }

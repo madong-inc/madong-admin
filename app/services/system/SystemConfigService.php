@@ -14,6 +14,7 @@ namespace app\services\system;
 
 use app\dao\system\SystemConfigDao;
 use madong\basic\BaseService;
+use madong\exception\AdminException;
 use support\Container;
 
 class SystemConfigService extends BaseService
@@ -53,6 +54,33 @@ class SystemConfigService extends BaseService
             $data = $this->transformToKeyValue($this->template($groupCode));
         }
         return $data;
+    }
+
+    /**
+     * 批量添加配置
+     *
+     * @param array $data
+     */
+    public function batchUpdateConfig(array $data = []): void
+    {
+        try {
+            $this->transaction(function () use ($data) {
+                foreach ($data as $item) {
+                    $configModel = $this->dao->get([
+                        'code'       => $item['code'],
+                        'group_code' => $item['group_code'],
+                    ]);
+                    if (!empty($configModel)) {
+                        $configModel->set('content', $item['content']);
+                        $configModel->save();
+                    } else {
+                        $this->dao->save($item);
+                    }
+                }
+            });
+        } catch (\Exception $e) {
+            throw new AdminException($e->getMessage());
+        }
     }
 
     /**
