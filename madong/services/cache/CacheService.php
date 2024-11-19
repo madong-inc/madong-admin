@@ -35,10 +35,10 @@ class CacheService
             'password' => null,
             'port'     => 6379,
             'database' => 0,
-        ], config('cache.default', []));
-        $this->adapter   = config('cache.type', 'file');
-        $this->prefix    = config('cache.prefix', '');
-        $this->namespace = config('cache.namespace', '');
+        ], config('cache.custom.default', []));
+        $this->adapter   = config('cache.custom.type', 'file');
+        $this->prefix    = config('cache.custom.prefix', '');
+        $this->namespace = config('cache.custom.namespace', '');
         $this->redis     = null;
         $this->initialize($options);
     }

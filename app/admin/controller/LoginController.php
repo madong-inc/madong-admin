@@ -116,7 +116,7 @@ class LoginController extends Crud
 
             $service = Container::make(SystemUserService::class);
             $captcha = new Captcha();
-            if (config('madong.captcha_open_flag') && $grantType === 'default') {
+            if (config('captcha.captcha_open_flag') && $grantType === 'default') {
                 if (!$captcha->check($uuid, $code)) {
                     throw new AdminException('图片验证码错误！');
                 }

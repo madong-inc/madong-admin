@@ -5,7 +5,7 @@
 require_once __DIR__ . '/vendor/autoload.php';
 
 use Dotenv\Dotenv;
-use process\Monitor;
+use app\process\Monitor;
 use support\App;
 use Workerman\Worker;
 
@@ -31,9 +31,10 @@ $runtimeProcessPath = runtime_path() . DIRECTORY_SEPARATOR . '/windows';
 if (!is_dir($runtimeProcessPath)) {
     mkdir($runtimeProcessPath);
 }
-$processFiles = [
-    __DIR__ . DIRECTORY_SEPARATOR . 'start.php'
-];
+$processFiles = [];
+if (config('server.listen')) {
+    $processFiles[] = __DIR__ . DIRECTORY_SEPARATOR . 'start.php';
+}
 foreach (config('process', []) as $processName => $config) {
     $processFiles[] = write_process_file($runtimeProcessPath, $processName, '');
 }
@@ -70,6 +71,14 @@ error_reporting(E_ALL);
 
 if (is_callable('opcache_reset')) {
     opcache_reset();
+}
+
+if (!\$appConfigFile = config_path('app.php')) {
+    throw new RuntimeException('Config file not found: app.php');
+}
+\$appConfig = require \$appConfigFile;
+if (\$timezone = \$appConfig['default_timezone'] ?? '') {
+    date_default_timezone_set(\$timezone);
 }
 
 App::loadAllConfig(['route']);

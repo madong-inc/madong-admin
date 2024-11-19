@@ -44,6 +44,7 @@ class SystemAuthService extends BaseService
     public function parseToken(string $token, int $code = 401): array
     {
         try {
+
             $cache = Container::make(CacheService::class);
             if (empty($token) || $token === 'undefined') {
                 throw new AuthException('Token is required.', $code);
@@ -303,9 +304,12 @@ class SystemAuthService extends BaseService
         $systemConfigService = Container::make(SystemConfigService::class);
         $url                 = $systemConfigService->getConfig('site_url', 'system_config');
         if (empty($url)) {
-            $url = config('server.listen');
+            $url        = config('process.webman.listen');
+            $parsed_url = parse_url($url);
+            $port       = $parsed_url['port'] ?? 8787; // 使用 null 合并运算符
+            $url        = '127.0.0.1:' . $port;
         }
-        if (substr($url, -1) !== '/') {
+        if (!str_ends_with($url, '/')) {
             $url .= '/';
         }
         $avatar = 'upload/avatar.jpg';
