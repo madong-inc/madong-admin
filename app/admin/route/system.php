@@ -171,6 +171,13 @@ Route::group('/system', function () {
         Route::delete('/files/{id}', [\app\admin\controller\system\SystemUploadController::class, 'destroy'])->name('删除文件');
     });
 
+    /**
+     * 配置管理
+     */
+    Route::group(function () {
+        Route::get('/config/info', [\app\admin\controller\system\SystemConfigController::class, 'getConfigInfo'])->name('配置获取');
+    });
+
 })->middleware([
     app\middleware\AllowCrossOriginMiddleware::class,
     app\admin\middleware\AdminAuthTokenMiddleware::class,
