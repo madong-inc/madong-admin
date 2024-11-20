@@ -45,8 +45,8 @@ class Crud extends Base
             ];
 
             $format_function = $methods[$format] ?? 'formatNormal';
-            $total           = $this->service->count($where, true);
-            $list            = $this->service->selectList($where, $field, $page, $limit, $order, [], true);
+            $total           = $this->service->getCount($where);
+            $list            = $this->service->selectList($where, $field, $page, $limit, $order, [], false);
             return call_user_func([$this, $format_function], $list, $total);
         } catch (\Throwable $e) {
             return Json::fail($e->getMessage());
@@ -251,7 +251,7 @@ class Crud extends Base
                     $where[] = [$actualColumn, 'IN', $value]; // 处理 IN 条件
                     break;
                 case 'LIKE':
-                    $where[] = [$actualColumn, 'LIKE', '%'.$value . '%']; // 处理 LIKE 条件
+                    $where[] = [$actualColumn, 'LIKE', '%' . $value . '%']; // 处理 LIKE 条件
                     break;
                 case 'GT':
                     $where[] = [$actualColumn, '>', $value]; // 处理大于条件

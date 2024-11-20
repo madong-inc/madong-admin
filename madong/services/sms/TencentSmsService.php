@@ -26,12 +26,17 @@ use support\Container;
  */
 class TencentSmsService
 {
+
+    /**
+     * config表的group_cod字段值
+     */
+    const SETTING_GROUP_CODE = 'sms_setting';
     protected ?EasySms $easySms;
 
     public function __construct()
     {
         $systemConfigService = Container::make(SystemConfigService::class);
-        $config              = $systemConfigService->getConfigContentValue('sms_setting');
+        $config              = $systemConfigService->getConfigContentValue(self::SETTING_GROUP_CODE);
         $this->easySms       = new EasySms([
             'default' => [
                 'driver' => 'tencent',
