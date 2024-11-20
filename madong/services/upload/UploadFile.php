@@ -16,8 +16,6 @@ use support\Container;
 class UploadFile
 {
 
-    const CONFIG_GROUP_CODE = 'system_storage';
-
     static array $allowStorage = [];
 
     protected static function init(): void
@@ -42,8 +40,8 @@ class UploadFile
     public static function getConfig(string $name = ''): ?array
     {
         $systemConfigService = Container::make(SystemConfigService::class);
-        $config              = $systemConfigService->getConfig($name, self::CONFIG_GROUP_CODE);
-        return $config ? json_decode($config, true) : [];
+        $config              = $systemConfigService->getConfigContentValue($name);
+        return $config ?? [];
     }
 
     /**
@@ -54,10 +52,10 @@ class UploadFile
     public static function getDefaultConfig(): array
     {
         $systemConfigService = Container::make(SystemConfigService::class);
-        $basicConfig         = $systemConfigService->getConfig('basic', self::CONFIG_GROUP_CODE);
+        $basicConfig         = $systemConfigService->getConfig('basic_upload_setting');
         if (empty($basicConfig)) {
             return [
-                'default'      => 'local',
+                'mode'         => 'local',
                 'single_limit' => 1024,
                 'total_limit'  => 1024,
                 'nums'         => 1,
@@ -65,7 +63,7 @@ class UploadFile
                 'exclude'      => ['mp4'],
             ];
         }
-        return json_decode($basicConfig, true);
+        return $basicConfig;
     }
 
     public static function disk(string|null $storage = null, bool $is_file_upload = true): UploadFileInterface
@@ -73,7 +71,7 @@ class UploadFile
         self::init();
         $defaultConfig = self::getDefaultConfig();
         if (empty($storage)) {
-            $adapter       = $defaultConfig['default'];
+            $adapter       = $defaultConfig['mode'];
             $adapterConfig = self::getConfig($adapter);
         } else {
             $adapter       = $storage;
