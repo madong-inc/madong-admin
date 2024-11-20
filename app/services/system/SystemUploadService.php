@@ -90,8 +90,7 @@ class SystemUploadService extends BaseService
         if (empty($local)) {
             throw new AdminException('缺少本地上传配置信息');
         }
-        $content  = json_decode($local['content'], 1);
-        $root     = Arr::fetchConfigValue($content, 'root');
+        $root     = Arr::fetchConfigValue($config, 'root');
         $folder   = date('Ymd');
         $full_dir = base_path() . DIRECTORY_SEPARATOR . $root . $folder . DIRECTORY_SEPARATOR;
         if (!is_dir($full_dir)) {
@@ -102,8 +101,8 @@ class SystemUploadService extends BaseService
 
         copy($save_path, $newPath);
         unlink($save_path);
-        $domain  = Arr::fetchConfigValue($content, 'domain');
-        $dirname = Arr::fetchConfigValue($content, 'dirname');
+        $domain  = Arr::fetchConfigValue($config, 'domain');
+        $dirname = Arr::fetchConfigValue($config, 'dirname');
         $baseUrl = $domain . $dirname . $folder . '/';
 
         $info['platform']          = 'local';
@@ -128,20 +127,16 @@ class SystemUploadService extends BaseService
      *
      * @return mixed
      */
-    public function upload(string $upload = '', bool $isLocal = false)
+    public function upload(string $upload = '', bool $isLocal = false): mixed
     {
         try {
             return $this->transaction(function () use ($upload, $isLocal) {
                 $systemConfigService = Container::make(SystemConfigService::class);
-                $config              = $systemConfigService->dao->get(['code' => 'basic', 'group_code' => 'system_storage']);
-
-                if (empty($config)) {
+                $baseConfig          = $systemConfigService->getConfigContentValue('basic_upload_setting');//获取上次配置
+                if (empty($baseConfig)) {
                     throw new AdminException('缺少上传配置信息');
                 }
-
-                $content = json_decode($config->getData('content'), true);
-                $type    = Arr::fetchConfigValue($content, 'default') ?: 'local';
-
+                $type    = Arr::fetchConfigValue($baseConfig, 'mode') ?: 'local';//上次模式默认本地
                 if ($isLocal) {
                     $type = 'local';
                 }

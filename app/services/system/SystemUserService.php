@@ -38,6 +38,7 @@ class SystemUserService extends BaseService
     public function get($id): \app\model\system\SystemUser|null
     {
         $model = $this->dao->get($id, ['*'], ['roles', 'posts', 'depts']);
+//        var_dump($model->getLastSql());
         if (!empty($model)) {
             $roles = $model->getData('roles');
             $posts = $model->getData('posts');

@@ -75,6 +75,7 @@ class SystemConfigService extends BaseService
                         $configModel->save();
                     } else {
                         $this->dao->save($item);
+                         usleep(10);
                     }
                 }
             });
