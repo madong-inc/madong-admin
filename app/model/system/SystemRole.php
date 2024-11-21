@@ -12,7 +12,7 @@
 
 namespace app\model\system;
 
-use madong\basic\BaseModel;
+use madong\basic\BaseLaORMModel;
 
 /**
  * 角色模型
@@ -20,7 +20,7 @@ use madong\basic\BaseModel;
  * @author Mr.April
  * @since  1.0
  */
-class SystemRole extends BaseModel
+class SystemRole extends BaseLaORMModel
 {
 
     /**
@@ -28,9 +28,9 @@ class SystemRole extends BaseModel
      *
      * @var string
      */
-    protected $pk = 'id';
+    protected $primaryKey = 'id';
 
-    protected $name = 'system_role';
+    protected $table = 'system_role';
 
     /**
      * Id搜索

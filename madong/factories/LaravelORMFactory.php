@@ -1,15 +1,14 @@
 <?php
 
-namespace madong\adapter;
+namespace madong\factories;
 
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Str;
 use madong\exception\MadongException;
-use ReflectionClass;
 use support\Container;
 use support\Model;
 
-class LaravelRepository
+class LaravelORMFactory
 {
     private mixed $model;
 
@@ -35,6 +34,39 @@ class LaravelRepository
     }
 
     /**
+     * 查询列表
+     *
+     * @param array  $where
+     * @param string $field
+     * @param int    $page
+     * @param int    $limit
+     * @param string $order
+     * @param array  $with
+     * @param bool   $search
+     *
+     * @return array|null
+     * @throws \Exception
+     */
+    public function selectList(array $where, string $field = '*', int $page = 0, int $limit = 0, string $order = '', array $with = [], bool $search = false)
+    {
+        // 使用 selectModel 方法获取查询构建器
+        $query = $this->selectModel($where, $field, $page, $limit, $order, $with, $search);
+
+        // 如果字段不是 '*'，则应用 selectRaw()
+        if ($field !== '*') {
+            $query->selectRaw($field); // 确保在查询构建器上调用
+        }
+
+        // 应用分页
+        if ($page > 0 && $limit > 0) {
+            return $query->paginate($limit, ['*'], 'page', $page)->toArray(); // 返回分页结果的数组
+        }
+
+        // 返回结果集的数组
+        return $query->get(); // 获取结果并返回数组
+    }
+
+    /**
      * 获取某些条件数据
      *
      * @param array  $where
@@ -48,65 +80,37 @@ class LaravelRepository
      * @return \Illuminate\Database\Eloquent\Collection
      * @throws \Exception
      */
-    public function selectList(array $where, string $field = '*', int $page = 0, int $limit = 0, string $order = '', array $with = [], bool $search = false): \Illuminate\Database\Eloquent\Collection
+    public function selectModel(array $where, string $field = '*', int $page = 0, int $limit = 0, string $order = '', array $with = [], bool $search = false)
     {
-        // 构建查询
-        $query = $this->getModel()->with($with);
+        // 获取模型的查询构建器
+        $query = $this->getModel()->query();
 
-        // 应用搜索条件
+        // 根据是否需要搜索来决定查询条件
         if ($search) {
-            $query = $this->search($query, $where);
+            $query = $this->search($where); // 假设 search 返回的是一个查询构建器
         } else {
-            $query = $query->where($where);
+            $query->where($where); // 应用 where 条件
         }
-        // 应用排序
-        if ($order) {
-            $query = $query->orderByRaw($order);
-        }
-        // 应用分页
-        if ($page > 0 && $limit > 0) {
-            return $query->paginate($limit, [$field], 'page', $page);
-        }
-        // 返回所有记录
-        return $query->get([$field]);
-    }
 
-    /**
-     * 构建查询模型
-     *
-     * @param array  $where
-     * @param string $field
-     * @param int    $page
-     * @param int    $limit
-     * @param string $order
-     * @param array  $with
-     * @param bool   $search
-     *
-     * @return mixed
-     * @throws \Exception
-     */
-    public function selectModel(array $where, string $field = '*', int $page = 0, int $limit = 0, string $order = '', array $with = [], bool $search = false): mixed
-    {
-        // 构建查询
-        $query = $this->getModel()->with($with);
-
-        // 应用搜索条件
-        if ($search) {
-            $query = $this->search($query, $where);
-        } else {
-            $query = $query->where($where);
-        }
         // 应用字段选择
-        $query->select($field);
-        // 应用分页
-        if ($page > 0 && $limit > 0) {
-            $query->offset(($page - 1) * $limit)->limit($limit);
+        if ($field !== '*') {
+            $query->selectRaw($field); // 在这里应用 selectRaw
         }
-        // 应用排序
-        if ($order) {
+
+        // 应用分页和其他查询条件
+        if ($page > 0 && $limit > 0) {
+            $query->paginate($limit, ['*'], 'page', $page);
+        }
+
+        if ($order !== '') {
             $query->orderByRaw($order);
         }
-        return $query;
+
+        if (!empty($with)) {
+            $query->with($with);
+        }
+
+        return $query; // 返回查询构建器
     }
 
     /**
@@ -473,15 +477,18 @@ class LaravelRepository
      * @return \Illuminate\Database\Query\Builder
      * @throws \Exception
      */
-    protected function withSearchSelect(array $where, bool $search): Builder
+    protected function withSearchSelect(array $where, bool $search): mixed
     {
         [$with, $otherWhere] = $this->getSearchData($where);
         $query = $this->getModel()->with($with); // 使用 Eloquent 的 with 方法
 
         if ($search) {
-            $query->where($this->filterWhere($otherWhere)); // 应用过滤条件
+            $filteredWhere = $this->filterWhere($otherWhere);
+            if (!empty($filteredWhere)) {
+                $query->where($filteredWhere); // 应用过滤条件
+            }
         }
-        return $query;
+        return $query; // 返回查询构建器
     }
 
     /**
@@ -496,11 +503,12 @@ class LaravelRepository
     {
         $fields = $this->getModel()->getFillable(); // 获取模型的可填充字段
         foreach ($where as $key => $item) {
-            if (!in_array($item[0], $fields)) {
+            // 检查键是否在可填充字段中
+            if (!in_array($key, $fields)) {
                 unset($where[$key]); // 过滤掉不存在的字段
             }
         }
-        return $where;
+        return $where; // 返回过滤后的条件
     }
 
     /**

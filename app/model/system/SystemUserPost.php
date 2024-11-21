@@ -9,17 +9,25 @@
  *+------------------
  * Official Website: http://www.madong.cn
  */
+
 namespace app\model\system;
 
 use think\model\Pivot;
 
 /**
- *
  * 用户管理岗位-中间模型
+ *
  * @author Mr.April
  * @since  1.0
  */
 class SystemUserPost extends Pivot
 {
-    protected $name = 'system_user_post';
+    protected $table = 'system_user_post';
+
+    /**
+     * 指示是否自动维护时间戳
+     *
+     * @var bool
+     */
+    public $timestamps = false;
 }

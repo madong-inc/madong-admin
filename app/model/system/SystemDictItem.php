@@ -12,7 +12,7 @@
 
 namespace app\model\system;
 
-use madong\basic\BaseModel;
+use madong\basic\BaseLaORMModel;
 
 /**
  * 字典数据
@@ -20,7 +20,7 @@ use madong\basic\BaseModel;
  * @author Mr.April
  * @since  1.0
  */
-class SystemDictItem extends BaseModel
+class SystemDictItem extends BaseLaORMModel
 {
 
     /**
@@ -28,9 +28,9 @@ class SystemDictItem extends BaseModel
      *
      * @var string
      */
-    protected $pk = 'id';
+    protected $primaryKey = 'id';
 
-    protected $name = 'system_dict_item';
+    protected $table = 'system_dict_item';
 
     /**
      * 关键字搜索

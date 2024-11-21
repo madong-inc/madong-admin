@@ -11,10 +11,10 @@
  */
 namespace app\model\system;
 
-use madong\basic\BaseModel;
+use madong\basic\BaseLaORMModel;
 
 
-class SystemLoginLog extends BaseModel
+class SystemLoginLog extends BaseLaORMModel
 {
 
     /**
@@ -22,8 +22,8 @@ class SystemLoginLog extends BaseModel
      *
      * @var string
      */
-    protected $pk = 'id';
+    protected $primaryKey = 'id';
 
-    protected $name = 'system_login_log';
+    protected $table = 'system_login_log';
 
 }

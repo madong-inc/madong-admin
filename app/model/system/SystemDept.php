@@ -12,7 +12,7 @@
 
 namespace app\model\system;
 
-use madong\basic\BaseModel;
+use madong\basic\BaseLaORMModel;
 use madong\trait\ModelTrait;
 use madong\trait\SnowflakeIdTrait;
 use think\model\concern\SoftDelete;
@@ -23,7 +23,7 @@ use think\model\concern\SoftDelete;
  * @author Mr.April
  * @since  1.0
  */
-class SystemDept extends BaseModel
+class SystemDept extends BaseLaORMModel
 {
 
     /**
@@ -31,9 +31,9 @@ class SystemDept extends BaseModel
      *
      * @var string
      */
-    protected $pk = 'id';
+    protected $primaryKey = 'id';
 
-    protected $name = 'system_dept';
+    protected $table = 'system_dept';
 
 //    protected $deleteTime = 'delete_time';
 //    protected $defaultSoftDelete = null;

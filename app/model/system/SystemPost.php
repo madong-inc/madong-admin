@@ -11,7 +11,7 @@
  */
 namespace app\model\system;
 
-use madong\basic\BaseModel;
+use madong\basic\BaseLaORMModel;
 
 /**
  * 岗位模型
@@ -19,7 +19,7 @@ use madong\basic\BaseModel;
  * @author Mr.April
  * @since  1.0
  */
-class SystemPost extends BaseModel
+class SystemPost extends BaseLaORMModel
 {
 
 
@@ -28,8 +28,8 @@ class SystemPost extends BaseModel
      *
      * @var string
      */
-    protected $pk = 'id';
+    protected $primaryKey = 'id';
 
-    protected $name = 'system_post';
+    protected $table = 'system_post';
 
 }

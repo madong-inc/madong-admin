@@ -22,7 +22,7 @@ use think\model\Pivot;
  */
 class SystemDeptLeader extends Pivot
 {
-    protected $name = 'system_dept_leader';
+    protected $table = 'system_dept_leader';
 
 
 }

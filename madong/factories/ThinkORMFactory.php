@@ -1,14 +1,13 @@
 <?php
 
-namespace madong\adapter;
+namespace madong\factories;
 
 use madong\exception\MadongException;
-use madong\trait\ModelTrait;
-use madong\utils\Snowflake;
 use support\Container;
+use think\helper\Str;
 use think\Model;
 
-class ThinkRepository
+class ThinkORMFactory
 {
 
     private mixed $model;
@@ -389,7 +388,8 @@ class ThinkRepository
     {
         $with       = [];
         $otherWhere = [];
-        $responses  = new \ReflectionClass($this->setModel());
+        $className  = $this->model;
+        $responses  = new \ReflectionClass($className);
         foreach ($where as $key => $value) {
             $method = 'search' . Str::studly($key) . 'Attr';
             if ($responses->hasMethod($method)) {

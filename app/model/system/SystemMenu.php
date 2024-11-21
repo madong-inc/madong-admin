@@ -12,7 +12,7 @@
 
 namespace app\model\system;
 
-use madong\basic\BaseModel;
+use madong\basic\BaseLaORMModel;
 
 /**
  * 菜单模型
@@ -20,12 +20,12 @@ use madong\basic\BaseModel;
  * @author Mr.April
  * @since  1.0
  */
-class SystemMenu extends BaseModel
+class SystemMenu extends BaseLaORMModel
 {
 
-    protected $name = 'system_menu';
+    protected $table = 'system_menu';
 
-    protected $pk = 'id';
+    protected $primaryKey = 'id';
 
     /**
      * 菜单meta属性

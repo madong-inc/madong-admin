@@ -12,7 +12,7 @@
 
 namespace app\admin\controller;
 
-use madong\adapter\TestAbd;
+use madong\adapters\TestAbd;
 use support\Container;
 use support\Request;
 

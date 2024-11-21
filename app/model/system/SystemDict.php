@@ -11,9 +11,8 @@
  */
 namespace app\model\system;
 
-use madong\basic\BaseModel;
-use madong\trait\ModelTrait;
-use madong\trait\SnowflakeIdTrait;
+use madong\basic\BaseLaORMModel;
+
 
 /**
  * 字典模型
@@ -21,7 +20,7 @@ use madong\trait\SnowflakeIdTrait;
  * @author Mr.April
  * @since  1.0
  */
-class SystemDict extends BaseModel
+class SystemDict extends BaseLaORMModel
 {
 
     /**
@@ -29,9 +28,9 @@ class SystemDict extends BaseModel
      *
      * @var string
      */
-    protected $pk = 'id';
+    protected $primaryKey = 'id';
 
-    protected $name = 'system_dict';
+    protected $table = 'system_dict';
 
     public function setIdAttr($value)
     {

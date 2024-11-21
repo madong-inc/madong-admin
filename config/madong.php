@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'model_type'        => 'thinkORM',//thinkORM||laravelORM
+    'model_type'        => 'laravelORM',//thinkORM||laravelORM
     //是否开启验证码
     'captcha_open_flag' => true,
     // 跨域配置

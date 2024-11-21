@@ -12,7 +12,8 @@
 
 namespace app\model\system;
 
-use madong\basic\BaseModel;
+use madong\basic\BaseLaORMModel;
+
 
 /**
  * 配置模型
@@ -20,7 +21,7 @@ use madong\basic\BaseModel;
  * @author Mr.April
  * @since  1.0
  */
-class SystemConfig extends BaseModel
+class SystemConfig extends BaseLaORMModel
 {
 
     /**
@@ -28,9 +29,11 @@ class SystemConfig extends BaseModel
      *
      * @var string
      */
-    protected $pk = 'id';
+    protected $primaryKey = 'id';
 
-    protected $name = 'system_config';
+    protected $table  = 'system_config';
+
+
 
     /**
      * 分组代码-搜索器

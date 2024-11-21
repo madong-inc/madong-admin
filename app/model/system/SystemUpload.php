@@ -12,7 +12,7 @@
 
 namespace app\model\system;
 
-use madong\basic\BaseModel;
+use madong\basic\BaseLaORMModel;
 
 /**
  * 附件模型
@@ -20,7 +20,7 @@ use madong\basic\BaseModel;
  * @author Mr.April
  * @since  1.0
  */
-class SystemUpload extends BaseModel
+class SystemUpload extends BaseLaORMModel
 {
 
     /**
@@ -28,9 +28,9 @@ class SystemUpload extends BaseModel
      *
      * @var string
      */
-    protected $pk = 'id';
+    protected $primaryKey = 'id';
 
-    protected $name = 'system_upload';
+    protected $table = 'system_upload';
 
     public function created(): \think\model\relation\hasOne
     {

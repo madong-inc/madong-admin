@@ -26,7 +26,7 @@ return [
             'unix_socket' => '',
             'charset'     => 'utf8',
             'collation'   => 'utf8_unicode_ci',
-            'prefix'      => '',
+            'prefix'      => 'ma_',
             'strict'      => true,
             'engine'      => null,
         ],
