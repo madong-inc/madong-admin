@@ -59,7 +59,7 @@ class LaravelORMFactory
         // 应用分页
         if ($page > 0 && $limit > 0) {
             // 只返回数据部分
-            return $query->paginate($limit, ['*'], 'page', $page)->getCollection()->toArray();
+            return $query->paginate($limit, ['*'], 'page', $page)->getCollection();
         }
         return $query->get(); // 返回所有数据
     }

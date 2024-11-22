@@ -12,12 +12,12 @@
 
 namespace app\model\system;
 
-use madong\basic\BaseLaORMModel;
+use madong\basic\BaseTpORMModel;
 
 /**
  *定时任务日志
  */
-class SystemCrontabLog extends BaseLaORMModel
+class SystemCrontabLog extends BaseTpORMModel
 {
 
     /**
@@ -25,14 +25,14 @@ class SystemCrontabLog extends BaseLaORMModel
      *
      * @var string
      */
-    protected $table = 'system_crontab_log';
+    protected $name = 'system_crontab_log';
 
     /**
      * The primary key associated with the table
      *
      * @var string
      */
-    protected $primaryKey = 'id';
+    protected $pk = 'id';
 
     /**
      * 获取 create_time 属性的访问器。

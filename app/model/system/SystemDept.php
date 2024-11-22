@@ -12,7 +12,7 @@
 
 namespace app\model\system;
 
-use madong\basic\BaseLaORMModel;
+use madong\basic\BaseTpORMModel;
 use madong\trait\ModelTrait;
 use madong\trait\SnowflakeIdTrait;
 use think\model\concern\SoftDelete;
@@ -23,7 +23,7 @@ use think\model\concern\SoftDelete;
  * @author Mr.April
  * @since  1.0
  */
-class SystemDept extends BaseLaORMModel
+class SystemDept extends BaseTpORMModel
 {
 
     /**
@@ -31,9 +31,12 @@ class SystemDept extends BaseLaORMModel
      *
      * @var string
      */
-    protected $primaryKey = 'id';
+    protected $pk = 'id';
 
-    protected $table = 'system_dept';
+    protected $name = 'system_dept';
+
+//    protected $deleteTime = 'delete_time';
+//    protected $defaultSoftDelete = null;
 
     protected $createTime = 'create_time';
     protected $updateTime = 'update_time';
@@ -45,14 +48,14 @@ class SystemDept extends BaseLaORMModel
      * @param $query
      * @param $value
      */
-    public function scopeName($query, $value)
+    public function searchNameAttr($query, $value)
     {
         if (!empty($value)) {
             $query->where('name', 'like', $value . '%');
         }
     }
 
-    public function scopePid($query, $value)
+    public function searchPidAttr($query, $value)
     {
         if (!empty($value)) {
             if (is_string($value)) {
@@ -72,7 +75,7 @@ class SystemDept extends BaseLaORMModel
      * @param $query
      * @param $value
      */
-    public function scopeStatus($query, $value)
+    public function searchStatusAttr($query, $value)
     {
         if ($value !== '') {
             $query->where('status', $value);

@@ -12,7 +12,7 @@
 
 namespace app\model\system;
 
-use madong\basic\BaseLaORMModel;
+use madong\basic\BaseTpORMModel;
 
 /**
  * 定时任务
@@ -20,13 +20,13 @@ use madong\basic\BaseLaORMModel;
  * @author Mr.April
  * @since  1.0
  */
-class SystemCrontab extends BaseLaORMModel
+class SystemCrontab extends BaseTpORMModel
 {
 
-    protected $table = 'system_crontab';
+    protected $name = 'system_crontab';
 
 
-    protected $primaryKey = 'id';
+    protected $pk = 'id';
 
     /**
      * 获取器-创建时间

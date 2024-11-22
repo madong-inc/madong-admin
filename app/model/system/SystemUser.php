@@ -9,28 +9,22 @@
  *+------------------
  * Official Website: http://www.madong.cn
  */
-
 namespace app\model\system;
 
-use madong\basic\BaseLaORMModel;
+use madong\basic\BaseTpORMModel;
 
 /**
  * 用户信息模型
  */
-class SystemUser extends BaseLaORMModel
+class SystemUser extends BaseTpORMModel
 {
 
-    // 完整数据库表名称
-    protected $table = 'system_user';
-    // 主键
-    protected $primaryKey = 'id';
 
-    /**
-     * 指示是否自动维护时间戳
-     *
-     * @var bool
-     */
-    public $timestamps = false;
+
+    // 完整数据库表名称
+    protected $name = 'system_user';
+    // 主键
+    protected $pk = 'id';
 
     /**
      * 账号-搜索器
@@ -82,42 +76,38 @@ class SystemUser extends BaseLaORMModel
         return json_encode($value, JSON_UNESCAPED_UNICODE);
     }
 
+
     /**
      * 定义与 UserRole 的关系
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \think\model\relation\HasMany
      */
-    public function userRoles(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function userRoles(): \think\model\relation\HasMany
     {
         return $this->hasMany(SystemUserRole::class, 'user_id', 'id');
     }
 
+
     /**
-     * 通过中间表关联角色
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * 通过中间表-关联角色
      */
-    public function roles(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    public function roles(): \think\model\relation\BelongsToMany
     {
-        return $this->belongsToMany(SystemRole::class, 'system_user_role', 'user_id', 'role_id');
+        return $this->belongsToMany(SystemRole::class, SystemUserRole::class, 'role_id', 'user_id');
     }
 
     /**
-     * 通过中间表关联岗位
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * 通过中间表-关联岗位
      */
-    public function posts(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    public function posts(): \think\model\relation\BelongsToMany
     {
-        return $this->belongsToMany(SystemPost::class, 'system_user_post', 'user_id', 'post_id');
+        return $this->belongsToMany(SystemPost::class, SystemUserPost::class, 'post_id', 'user_id');
     }
 
     /**
      * 反向关联部门
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function depts(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function depts(): \think\model\relation\BelongsTo
     {
         return $this->belongsTo(SystemDept::class, 'dept_id', 'id');
     }

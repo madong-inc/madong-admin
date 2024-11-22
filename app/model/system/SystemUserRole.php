@@ -9,7 +9,6 @@
  *+------------------
  * Official Website: http://www.madong.cn
  */
-
 namespace app\model\system;
 
 use think\model\Pivot;
@@ -22,14 +21,7 @@ use think\model\Pivot;
  */
 class SystemUserRole extends Pivot
 {
-    protected $table = 'system_user_role';
-
-    /**
-     * 指示是否自动维护时间戳
-     *
-     * @var bool
-     */
-    public $timestamps = false;
+    protected $name = 'system_user_role';
 
     /**
      * 用户Id搜索器

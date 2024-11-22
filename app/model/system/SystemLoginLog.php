@@ -9,13 +9,12 @@
  *+------------------
  * Official Website: http://www.madong.cn
  */
-
 namespace app\model\system;
 
-use Illuminate\Support\Carbon;
-use madong\basic\BaseLaORMModel;
+use madong\basic\BaseTpORMModel;
 
-class SystemLoginLog extends BaseLaORMModel
+
+class SystemLoginLog extends BaseTpORMModel
 {
 
     /**
@@ -23,16 +22,8 @@ class SystemLoginLog extends BaseLaORMModel
      *
      * @var string
      */
-    protected $primaryKey = 'id';
+    protected $pk = 'id';
 
-    protected $table = 'system_login_log';
-
-    protected $dates = ['create_time', 'update_time'];
-
-    protected $casts = [
-        'create_time'  => 'datetime',
-        'expires_time' => 'datetime',
-        'update_time'  => 'datetime',
-    ];
+    protected $name = 'system_login_log';
 
 }

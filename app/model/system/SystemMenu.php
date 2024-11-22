@@ -12,7 +12,7 @@
 
 namespace app\model\system;
 
-use madong\basic\BaseLaORMModel;
+use madong\basic\BaseTpORMModel;
 
 /**
  * 菜单模型
@@ -20,21 +20,22 @@ use madong\basic\BaseLaORMModel;
  * @author Mr.April
  * @since  1.0
  */
-class SystemMenu extends BaseLaORMModel
+class SystemMenu extends BaseTpORMModel
 {
 
-    protected $table = 'system_menu';
+    protected $name = 'system_menu';
 
-    protected $primaryKey = 'id';
+    protected $pk = 'id';
 
     /**
      * 菜单meta属性
      *
+     * @param $value
      * @param $data
      *
      * @return array
      */
-    public static function getMetaAttribute($data): array
+    public function getMetaAttr($value, $data): array
     {
         // 1.构建mate数组
         $newData = [
@@ -70,7 +71,7 @@ class SystemMenu extends BaseLaORMModel
     /**
      * Id搜索
      */
-    public function scopeId($query, $value)
+    public function searchIdAttr($query, $value)
     {
         if (is_array($value)) {
             $query->whereIn('id', $value);
@@ -82,7 +83,7 @@ class SystemMenu extends BaseLaORMModel
     /**
      * Type搜索
      */
-    public function scopeType($query, $value)
+    public function searchTypeAttr($query, $value)
     {
         if (is_array($value)) {
             $query->whereIn('type', $value);
@@ -91,12 +92,4 @@ class SystemMenu extends BaseLaORMModel
         }
     }
 
-    public function scopeEnabled($query, $value)
-    {
-        if (is_array($value)) {
-            $query->whereIn('enabled', $value);
-        } else {
-            $query->where('enabled', $value);
-        }
-    }
 }

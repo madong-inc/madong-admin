@@ -363,10 +363,7 @@ class Crud extends Base
      */
     protected function formatTableTree($data, $total): \support\Response
     {
-        if (Config('app.model_type', 'thinkORM') == 'thinkORM') {
-            $data = $data->toArray();
-        };
-        $tree  = new Tree($data);
+        $tree  = new Tree($data->toArray());
         $items = $tree->getTree();
         return Json::success('ok', $items);
     }
@@ -376,7 +373,7 @@ class Crud extends Base
      *
      * @param $items
      *
-     * @return \support\Respons
+     * @return \support\Response
      */
     protected function formatSelect($items): \support\Response
     {

@@ -17,7 +17,6 @@ use madong\utils\Snowflake;
 use support\Db;
 use support\Model;
 
-
 class BaseLaORMModel extends Model
 {
     private const WORKER_ID = 1;
@@ -31,7 +30,14 @@ class BaseLaORMModel extends Model
     public $incrementing = false;
 
     const CREATED_AT = 'create_time';
-    const UPDATED_AT = 'updated_time';
+    const UPDATED_AT = 'update_time';
+
+    /**
+     * 模型日期字段的存储格式。
+     *
+     * @var string
+     */
+    protected $dateFormat = 'U';
 
     /**
      * 指示模型是否主动维护时间戳。
@@ -46,7 +52,6 @@ class BaseLaORMModel extends Model
      * @var array
      */
     protected array $dynamicHidden = [];
-
 
     protected static function boot()
     {

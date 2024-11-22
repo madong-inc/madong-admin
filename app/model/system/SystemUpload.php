@@ -12,7 +12,7 @@
 
 namespace app\model\system;
 
-use madong\basic\BaseLaORMModel;
+use madong\basic\BaseTpORMModel;
 
 /**
  * 附件模型
@@ -20,7 +20,7 @@ use madong\basic\BaseLaORMModel;
  * @author Mr.April
  * @since  1.0
  */
-class SystemUpload extends BaseLaORMModel
+class SystemUpload extends BaseTpORMModel
 {
 
     /**
@@ -28,29 +28,18 @@ class SystemUpload extends BaseLaORMModel
      *
      * @var string
      */
-    protected $primaryKey = 'id';
+    protected $pk = 'id';
 
-    protected $table = 'system_upload';
+    protected $name = 'system_upload';
 
-    public function getCreatedNameAttribute()
+    public function created(): \think\model\relation\hasOne
     {
-        return $this->createds ? $this->createds->created_name : null; // 获取用户名称
+        return $this->hasOne(SystemUser::class, 'id', 'created_by')->bind(['created_name' => 'real_name']);
     }
 
-    public function getUpdatedNameAttribute()
+    public function updated(): \think\model\relation\hasOne
     {
-        return $this->updateds ? $this->updateds->updated_name : null; // 获取用户名称
-    }
-
-    // 定义与 SystemUser 的关系
-    public function createds(): \Illuminate\Database\Eloquent\Relations\HasOne
-    {
-        return $this->hasOne(SystemUser::class, 'id', 'created_by')->select('id', 'real_name as created_name');
-    }
-
-    public function updateds(): \Illuminate\Database\Eloquent\Relations\HasOne
-    {
-        return $this->hasOne(SystemUser::class, 'id', 'updated_by')->select('id', 'real_name as updated_name');
+        return $this->hasOne(SystemUser::class, 'id', 'updated_by')->bind(['updated_name' => 'real_name']);
     }
 
 }
