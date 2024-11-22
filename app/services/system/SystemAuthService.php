@@ -13,6 +13,7 @@
 namespace app\services\system;
 
 use app\dao\system\SystemUserDao;
+use app\model\system\SystemMenu;
 use app\model\system\SystemUser;
 use madong\basic\BaseService;
 use madong\exception\AuthException;
@@ -127,12 +128,23 @@ class SystemAuthService extends BaseService
     public function getAllMenus(array $where = []): array
     {
         $systemMenuService = Container::make(SystemMenuService::class);
-        $list              = $systemMenuService->selectList($where, '*', 0, 0, 'sort asc', [], true);
-        foreach ($list as $item) {
-            $item->set('name', $item->getData('code'));
-            $item->set('meta', $item->meta);
+        $list  = $systemMenuService->dao->selectList($where, '*', 0, 0, 'sort asc', [], true);
+        //兼容LaORM
+        if ($list instanceof \Illuminate\Database\Eloquent\Collection) {
+            foreach ($list as $item) {
+                $item->set('name', $item->code);
+                $item->set('meta', SystemMenu::getMetaAttribute($item));
+            }
+            $list->makeVisible(['id', 'pid', 'type', 'sort', 'redirect', 'path', 'name', 'meta', 'component']);
+        } else {
+            //默认tp模型
+            foreach ($list as $item) {
+                $item->set('name', $item->getData('code'));
+                $item->set('meta', $item->meta);
+            }
+            $list->visible(['id', 'pid', 'type', 'sort', 'redirect', 'path', 'name', 'meta', 'component']);
         }
-        $list->visible(['id', 'pid', 'type', 'sort', 'redirect', 'path', 'name', 'meta', 'component']);
+
         $tree = new Tree($list);
         return $tree->getTree();
     }

@@ -41,33 +41,47 @@ class SystemDictService extends BaseService
      *
      * @return array
      */
-    public function findItemsByCode(string $code): array
-    {
-        $map1   = [
-            'code'    => $code,
-            'enabled' => 1,
-        ];
-        $result = $this->get($map1, ['*'], ['items']);
-        if (empty($result)) {
-            return [];
-        }
-        $items = $result->getData('items');
-        if (empty($items)) {
-            return [];
-        }
-        foreach ($items as $item) {
-            //转字符串
-            if ($result->getData('data_type') == 1) {
-                $item->set('value', (string)$item->getData('value'));
-            }
-            //整型
-            if ($result->getData('data_type') == 2) {
-                $item->set('value', (int)$item->getData('value'));
-            }
-        }
-
-        return $items->visible(['label', 'value', 'ext'])->toArray();
-    }
+//    public function findItemsByCode(string $code): array
+//    {
+//        $map1   = [
+//            'code'    => $code,
+//            'enabled' => 1,
+//        ];
+//        $result = $this->get($map1, ['*'], ['items']);
+//        if (empty($result)) {
+//            return [];
+//        }
+//        $items = Config('app.model_type', 'thinkORM') == 'laravelORM' ? $result->items : $result->getData('items');
+//        if (empty($items)) {
+//            return [];
+//        }
+//        $dataType = Config('app.model_type', 'thinkORM') == 'laravelORM' ? $result->data_type : $result->getData('data_type');
+//        foreach ($items as $item) {
+//            $value = Config('app.model_type', 'thinkORM') == 'laravelORM' ? $item->value : $item->getData('value');
+//            if ($dataType == 1) {
+//                $item->value = (string)$value; // 转换为字符串
+//            } elseif ($dataType == 2) {
+//                $item->value = (int)$value; // 转换为整型
+//            }
+//        }
+//        if (Config('app.model_type', 'thinkORM') == 'laravelORM') {
+//            return $items->makeHidden(['id'])->map(function ($item) {
+//                return [
+//                    'label' => $item->label,
+//                    'value' => $item->value,
+//                    'ext'   => $item->ext,
+//                ];
+//            })->toArray();
+//        } else {
+//            return array_map(function ($item) {
+//                return [
+//                    'label' => $item->getData('label'),
+//                    'value' => $item->getData('value'),
+//                    'ext'   => $item->getData('ext'),
+//                ];
+//            }, $items);
+//        }
+//    }
 
     /**
      * 扫描枚举目录
@@ -138,38 +152,4 @@ class SystemDictService extends BaseService
         }
         return $enumInfo; // 返回构建的枚举类信息
     }
-
-    /**
-     * updated
-     *
-     * @param $id
-     * @param $data
-     *
-     * @return bool
-     */
-//    public function updated($id, $data): bool
-//    {
-//        $this->update($id, $data);
-//        $systemDictItemService = Container::make(SystemDictItemService::class);
-//        $systemDictItemService->update(['dict_id' => $id], ['code' => $data['code']]);
-//        return true;
-//    }
-//
-//    /**
-//     * 数据删除
-//     *
-//     * @param string|array $ids
-//     * @param bool         $force
-//     *
-//     * @return mixed
-//     */
-//    public function destroy(string|array $ids, bool $force = false): mixed
-//    {
-//        $result = $this->dao->destroy($ids, $force);
-//        if ($force) {
-//            $systemDictItemService = Container::make(SystemDictItemService::class);
-//            $systemDictItemService->delete([['dict_id', 'in', $ids]]);
-//        }
-//        return $result ?? [];
-//    }
 }

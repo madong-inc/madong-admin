@@ -11,12 +11,12 @@
  */
 namespace app\model\system;
 
-use madong\basic\BaseSoftDeleteModel;
+use madong\basic\BaseTpORMModel;
 
 /**
  * 用户信息模型
  */
-class SystemUser extends BaseSoftDeleteModel
+class SystemUser extends BaseTpORMModel
 {
 
 

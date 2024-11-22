@@ -34,17 +34,35 @@ class SystemCrontabService extends BaseService
      * @param array  $with
      * @param bool   $search
      *
-     * @return \think\Collection|null
+     * @return \madong\trait\Model
      */
-    public function selectList(array $where, string $field = '*', int $page = 0, int $limit = 0, string $order = '', array $with = [], bool $search = false): \think\Collection|null
+    public function selectList(array $where, string $field = '*', int $page = 0, int $limit = 0, string $order = '', array $with = [], bool $search = false)
     {
-        $result                  = $this->dao->selectList($where, $field, $page, $limit, $order, $with, $search);
+        $result = parent::selectList($where, $field, $page, $limit, $order, [], $search);
+        //兼容处理
+        if (config('app.model_type', 'thinkORM') === 'laravelORM') {
+            if (!empty($result)) {
+                foreach ($result as $item) {
+                    // 设置最后运行时间
+                    $item->last_running_time = $item->getData('last_running_time')
+                        ? date('Y-m-d H:i:s', $item->getData('last_running_time'))
+                        : null;
+                    // 获取相关日志并设置到项中
+                    $item->log = $item->getData('log');
+                }
+            }
+            return $result;
+        }
+
         $systemCrontabLogService = Container::make(SystemCrontabLogService::class);
         if (!empty($result)) {
             foreach ($result as $item) {
                 $item->rule_name .= '';
                 $item->set('last_running_time', date('Y-m-d H:i:s', $item->getData('last_running_time')));
-                $item->logs = $systemCrontabLogService->dao->getModel()->where(['crontab_id' => $item->id])->order('create_time desc')->find();
+                $item->logs = $systemCrontabLogService->dao->getModel()
+                    ->where(['crontab_id' => $item->id])
+                    ->order('create_time', 'desc')
+                    ->find();
             }
         }
         return $result;
@@ -332,7 +350,7 @@ class SystemCrontabService extends BaseService
      *
      * @param string|int|array $data
      */
-    public function pauseCrontab(string|int|array $data):void
+    public function pauseCrontab(string|int|array $data): void
     {
         try {
             $this->transaction(function () use ($data) {

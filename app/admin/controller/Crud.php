@@ -18,6 +18,7 @@ use madong\exception\AdminException;
 use madong\utils\Json;
 use madong\utils\Tree;
 use app\services\system\SystemUserService;
+use think\Model;
 
 /**
  * @author Mr.April
@@ -218,10 +219,9 @@ class Crud extends Base
         $page         = (int)$request->input('page');
         $page         = $page > 0 ? $page : 1;
         $model        = $this->service->getModel();
-        $allow_column = $model->getTableFields();
-
-        $parts = explode(' ', $sort);
-        $order = '';
+        $allow_column = $model->getFields();
+        $parts        = explode(' ', $sort);
+        $order        = '';
         if (in_array($parts[0], $allow_column)) {
             $rank  = $parts[1] ?? 'asc';
             $order = $parts[0] . ' ' . $rank;
@@ -373,7 +373,7 @@ class Crud extends Base
      *
      * @param $items
      *
-     * @return \support\Respons
+     * @return \support\Response
      */
     protected function formatSelect($items): \support\Response
     {

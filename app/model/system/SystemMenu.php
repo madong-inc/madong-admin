@@ -12,7 +12,7 @@
 
 namespace app\model\system;
 
-use madong\basic\BaseModel;
+use madong\basic\BaseTpORMModel;
 
 /**
  * 菜单模型
@@ -20,7 +20,7 @@ use madong\basic\BaseModel;
  * @author Mr.April
  * @since  1.0
  */
-class SystemMenu extends BaseModel
+class SystemMenu extends BaseTpORMModel
 {
 
     protected $name = 'system_menu';

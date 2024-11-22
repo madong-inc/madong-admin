@@ -49,7 +49,12 @@
         "erusev/parsedown": "^1.7",
         "ext-redis": "*",
         "overtrue/easy-sms": "^3.0",
-        "phpmailer/phpmailer": "^6.9"
+        "phpmailer/phpmailer": "^6.9",
+        "illuminate/database": "^11.33",
+        "illuminate/pagination": "^11.33",
+        "illuminate/events": "^11.33",
+        "symfony/var-dumper": "^7.1",
+        "laravel/serializable-closure": "^2.0"
     },
     "suggest": {
         "ext-event": "For better performance. "
