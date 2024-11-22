@@ -34,6 +34,7 @@ abstract class BaseService
      * 缓存管理
      *
      * @return \madong\services\cache\CacheService
+     * @throws \RedisException
      */
     public function cacheDriver(): CacheService
     {
@@ -76,7 +77,7 @@ abstract class BaseService
      */
     public function transaction(callable $closure, bool $isTran = true, ?string $framework = null): mixed
     {
-        $framework = $framework ?? Config('madong.model_type', 'thinkORM'); // 默认使用 'thinkORM'
+        $framework = $framework ?? Config('app.model_type', 'thinkORM'); // 默认使用 'thinkORM'
         return match ($framework) {
             'thinkORM' => $isTran ? $this->runThinkPhpTransaction($closure) : $closure(),
             'laravelORM' => $isTran ? $this->runLaravelTransaction($closure) : $closure(),

@@ -30,12 +30,11 @@ class SystemMenu extends BaseLaORMModel
     /**
      * 菜单meta属性
      *
-     * @param $value
      * @param $data
      *
      * @return array
      */
-    public function getMetaAttr($value, $data): array
+    public static function getMetaAttribute($data): array
     {
         // 1.构建mate数组
         $newData = [
@@ -71,7 +70,7 @@ class SystemMenu extends BaseLaORMModel
     /**
      * Id搜索
      */
-    public function searchIdAttr($query, $value)
+    public function scopeId($query, $value)
     {
         if (is_array($value)) {
             $query->whereIn('id', $value);
@@ -83,7 +82,7 @@ class SystemMenu extends BaseLaORMModel
     /**
      * Type搜索
      */
-    public function searchTypeAttr($query, $value)
+    public function scopeType($query, $value)
     {
         if (is_array($value)) {
             $query->whereIn('type', $value);
@@ -92,4 +91,12 @@ class SystemMenu extends BaseLaORMModel
         }
     }
 
+    public function scopeEnabled($query, $value)
+    {
+        if (is_array($value)) {
+            $query->whereIn('enabled', $value);
+        } else {
+            $query->where('enabled', $value);
+        }
+    }
 }

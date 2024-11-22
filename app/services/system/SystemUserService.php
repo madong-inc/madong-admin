@@ -68,10 +68,11 @@ class SystemUserService extends BaseService
      *
      * @return \think\Collection|null
      */
-    public function selectList(array $where, string $field = '*', int $page = 0, int $limit = 0, string $order = '', array $with = [], bool $search = false): \think\Collection|null
+    public function selectList(array $where, string $field = '*', int $page = 0, int $limit = 0, string $order = '', array $with = [], bool $search = false)
     {
         $where['enabled'] = 1;
-        return $this->dao->selectList($where, $field, $page, $limit, $order, ['depts', 'posts', 'roles'], $search)->hidden(['password']);
+        $result           = $this->dao->selectList($where, $field, $page, $limit, $order, ['depts', 'posts', 'roles'], $search);
+        return [];
     }
 
     /**
@@ -200,7 +201,7 @@ class SystemUserService extends BaseService
      *
      * @return array
      */
-    public function login(string $username, string $password = '', string $type='admin', string $grantType = 'default'): array
+    public function login(string $username, string $password = '', string $type = 'admin', string $grantType = 'default'): array
     {
         $adminInfo = $this->dao->get(['user_name' => $username]);
         $status    = 1;

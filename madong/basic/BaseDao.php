@@ -15,7 +15,6 @@ namespace madong\basic;
 use BadMethodCallException;
 use madong\adapters\ORMAdapterFactory;
 
-
 /**
  * @method count(array $where = [], bool $search = true)
  * @method selectList(array $where, string $field = '*', int $page = 0, int $limit = 0, string $order = '', array $with = [], bool $search = false)
@@ -60,9 +59,9 @@ abstract class BaseDao
 
     public function __construct(string|null $mode = null, string|object|null $modelClass = null)
     {
-        $mode           = $mode ?? config('madong.model_type', 'thinkORM');
+        $mode           = $mode ?? config('app.model_type', 'thinkORM');
         $modelClass     = $modelClass ?? $this->setModel();
-        $this->instance = ORMAdapterFactory::create($mode, $modelClass);
+        $this->instance = ORMAdapterFactory::createAdapter($mode, $modelClass);
     }
 
     public function __call($name, $arguments)

@@ -12,8 +12,11 @@
 
 namespace madong\basic;
 
+use Illuminate\Support\Carbon;
 use madong\utils\Snowflake;
+use support\Db;
 use support\Model;
+
 
 class BaseLaORMModel extends Model
 {
@@ -37,8 +40,13 @@ class BaseLaORMModel extends Model
      */
     public $timestamps = true;
 
-    // 存储动态隐藏字段
+    /**
+     * 存储动态隐藏字段
+     *
+     * @var array
+     */
     protected array $dynamicHidden = [];
+
 
     protected static function boot()
     {
@@ -81,6 +89,27 @@ class BaseLaORMModel extends Model
     }
 
     /**
+     * 获取当前模型的字段列表
+     *
+     * @return array
+     */
+    public function getFields(): array
+    {
+        try {
+            $tableName     = $this->getTable();
+            $connection    = DB::connection();
+            $prefix        = $connection->getTablePrefix();
+            $fullTableName = $prefix . $tableName;
+            $fields        = DB::select("SHOW COLUMNS FROM `{$fullTableName}`");
+            return array_map(function ($column) {
+                return $column->Field;
+            }, $fields);
+        } catch (\Exception $e) {
+            return [];
+        }
+    }
+
+    /**
      * 兼容tp 重写动态输出隐藏
      *
      * @param array $fields
@@ -91,6 +120,21 @@ class BaseLaORMModel extends Model
     {
         $this->dynamicHidden = array_merge($this->dynamicHidden, $fields);
         return $this; // 支持链式调用
+    }
+
+    public function getCreateTimeAttribute($value): string
+    {
+        return Carbon::parse($value)->format('Y-m-d H:i:s');
+    }
+
+    public function getExpiresTimeAttribute($value): string
+    {
+        return Carbon::parse($value)->format('Y-m-d H:i:s');
+    }
+
+    public function getUpdateTimeAttribute($value): string
+    {
+        return Carbon::parse($value)->format('Y-m-d H:i:s');
     }
 
     /**

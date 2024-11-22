@@ -9,10 +9,10 @@
  *+------------------
  * Official Website: http://www.madong.cn
  */
+
 namespace app\model\system;
 
 use madong\basic\BaseLaORMModel;
-
 
 /**
  * 字典模型
@@ -95,12 +95,9 @@ class SystemDict extends BaseLaORMModel
 
     /**
      * 字典数据
-     *
-     * @return \think\model\relation\HasMany
      */
-    public function items(): \think\model\relation\HasMany
+    public function items(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(SystemDictItem::class, 'dict_id', 'id');
     }
-
 }

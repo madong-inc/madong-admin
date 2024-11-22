@@ -32,14 +32,25 @@ class SystemUpload extends BaseLaORMModel
 
     protected $table = 'system_upload';
 
-    public function created(): \think\model\relation\hasOne
+    public function getCreatedNameAttribute()
     {
-        return $this->hasOne(SystemUser::class, 'id', 'created_by')->bind(['created_name' => 'real_name']);
+        return $this->createds ? $this->createds->created_name : null; // 获取用户名称
     }
 
-    public function updated(): \think\model\relation\hasOne
+    public function getUpdatedNameAttribute()
     {
-        return $this->hasOne(SystemUser::class, 'id', 'updated_by')->bind(['updated_name' => 'real_name']);
+        return $this->updateds ? $this->updateds->updated_name : null; // 获取用户名称
+    }
+
+    // 定义与 SystemUser 的关系
+    public function createds(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(SystemUser::class, 'id', 'created_by')->select('id', 'real_name as created_name');
+    }
+
+    public function updateds(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(SystemUser::class, 'id', 'updated_by')->select('id', 'real_name as updated_name');
     }
 
 }

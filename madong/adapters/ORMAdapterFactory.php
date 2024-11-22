@@ -22,15 +22,7 @@ use think\Model as thinkModel;
 class ORMAdapterFactory
 {
 
-    /**
-     * 模型
-     *
-     * @param string                                  $mode
-     * @param string|\think\Model|\support\Model|null $model
-     *
-     * @return mixed
-     */
-    public static function create(string $mode, string|thinkModel|laravelModel|null $model = null): mixed
+    public static function createAdapter(string $mode, string|thinkModel|laravelModel|null $model = null): mixed
     {
         return match ($mode) {
             'thinkORM' => Container::make(ThinkORMFactory::class, ['context' => $model]),

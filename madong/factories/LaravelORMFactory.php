@@ -44,7 +44,7 @@ class LaravelORMFactory
      * @param array  $with
      * @param bool   $search
      *
-     * @return array|null
+     * @return \Illuminate\Database\Eloquent\Collection|\madong\factories\Illuminate\Database\Eloquent\Builder|null
      * @throws \Exception
      */
     public function selectList(array $where, string $field = '*', int $page = 0, int $limit = 0, string $order = '', array $with = [], bool $search = false)
@@ -56,14 +56,12 @@ class LaravelORMFactory
         if ($field !== '*') {
             $query->selectRaw($field); // 确保在查询构建器上调用
         }
-
         // 应用分页
         if ($page > 0 && $limit > 0) {
-            return $query->paginate($limit, ['*'], 'page', $page)->toArray(); // 返回分页结果的数组
+            // 只返回数据部分
+            return $query->paginate($limit, ['*'], 'page', $page)->getCollection()->toArray();
         }
-
-        // 返回结果集的数组
-        return $query->get(); // 获取结果并返回数组
+        return $query->get(); // 返回所有数据
     }
 
     /**
@@ -77,7 +75,7 @@ class LaravelORMFactory
      * @param array  $with
      * @param bool   $search
      *
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Database\Eloquent\Collection|\madong\factories\Illuminate\Database\Eloquent\Builder|null
      * @throws \Exception
      */
     public function selectModel(array $where, string $field = '*', int $page = 0, int $limit = 0, string $order = '', array $with = [], bool $search = false)
@@ -87,29 +85,24 @@ class LaravelORMFactory
 
         // 根据是否需要搜索来决定查询条件
         if ($search) {
-            $query = $this->search($where); // 假设 search 返回的是一个查询构建器
+            $query = $this->search($where); // search 返回的是一个查询构建器
         } else {
             $query->where($where); // 应用 where 条件
         }
-
         // 应用字段选择
         if ($field !== '*') {
             $query->selectRaw($field); // 在这里应用 selectRaw
         }
-
         // 应用分页和其他查询条件
         if ($page > 0 && $limit > 0) {
             $query->paginate($limit, ['*'], 'page', $page);
         }
-
         if ($order !== '') {
             $query->orderByRaw($order);
         }
-
         if (!empty($with)) {
             $query->with($with);
         }
-
         return $query; // 返回查询构建器
     }
 
@@ -446,14 +439,16 @@ class LaravelORMFactory
     private function getSearchData(array $where): array
     {
         $with       = [];
+        $withValues = []; // 用于存储与 $with 对应的值
         $otherWhere = [];
         $model      = $this->getModel();
         $responses  = new \ReflectionClass($model);
 
         foreach ($where as $key => $value) {
-            $method = 'search' . Str::studly($key) . 'Attr';
+            $method = 'scope' . Str::studly($key);
             if ($responses->hasMethod($method)) {
-                $with[] = $key; // 将搜索器方法的键加入 $with
+                $with[]           = $key; // 将搜索器方法的键加入 $with
+                $withValues[$key] = $value; // 将对应的值存储到 $withValues
             } else {
                 // 过滤不在搜索器中的条件
                 if (!in_array($key, ['timeKey', 'store_stock', 'integral_time'])) {
@@ -465,7 +460,7 @@ class LaravelORMFactory
                 }
             }
         }
-        return [$with, $otherWhere];
+        return [$with, $withValues, $otherWhere]; // 返回 $with, $withValues 和 $otherWhere
     }
 
     /**
@@ -479,14 +474,20 @@ class LaravelORMFactory
      */
     protected function withSearchSelect(array $where, bool $search): mixed
     {
-        [$with, $otherWhere] = $this->getSearchData($where);
-        $query = $this->getModel()->with($with); // 使用 Eloquent 的 with 方法
-
-        if ($search) {
-            $filteredWhere = $this->filterWhere($otherWhere);
-            if (!empty($filteredWhere)) {
-                $query->where($filteredWhere); // 应用过滤条件
+        [$with, $withValues, $otherWhere] = $this->getSearchData($where);
+        $query = $this->getModel()->query();
+        foreach ($with as $item) {
+            $func = Str::studly($item);
+            if (method_exists($this->getModel(), 'scope' . $func)) {
+                $value = $withValues[$item] ?? null;
+                if ($value !== null) {
+                    $query->$func($value);
+                }
             }
+        }
+        $filteredWhere = $this->filterWhere($otherWhere);
+        if (!empty($filteredWhere)) {
+            $query->where($filteredWhere);
         }
         return $query; // 返回查询构建器
     }
@@ -501,7 +502,7 @@ class LaravelORMFactory
      */
     protected function filterWhere(array $where = []): array
     {
-        $fields = $this->getModel()->getFillable(); // 获取模型的可填充字段
+        $fields = $this->getModel()->getFields(); // 获取模型的可填充字段
         foreach ($where as $key => $item) {
             // 检查键是否在可填充字段中
             if (!in_array($key, $fields)) {

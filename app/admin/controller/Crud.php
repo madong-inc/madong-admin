@@ -18,6 +18,7 @@ use madong\exception\AdminException;
 use madong\utils\Json;
 use madong\utils\Tree;
 use app\services\system\SystemUserService;
+use think\Model;
 
 /**
  * @author Mr.April
@@ -218,10 +219,9 @@ class Crud extends Base
         $page         = (int)$request->input('page');
         $page         = $page > 0 ? $page : 1;
         $model        = $this->service->getModel();
-        $allow_column = $model->getTableFields();
-
-        $parts = explode(' ', $sort);
-        $order = '';
+        $allow_column = $model->getFields();
+        $parts        = explode(' ', $sort);
+        $order        = '';
         if (in_array($parts[0], $allow_column)) {
             $rank  = $parts[1] ?? 'asc';
             $order = $parts[0] . ' ' . $rank;
@@ -363,7 +363,10 @@ class Crud extends Base
      */
     protected function formatTableTree($data, $total): \support\Response
     {
-        $tree  = new Tree($data->toArray());
+        if (Config('app.model_type', 'thinkORM') == 'thinkORM') {
+            $data = $data->toArray();
+        };
+        $tree  = new Tree($data);
         $items = $tree->getTree();
         return Json::success('ok', $items);
     }

@@ -9,10 +9,11 @@
  *+------------------
  * Official Website: http://www.madong.cn
  */
+
 namespace app\model\system;
 
+use Illuminate\Support\Carbon;
 use madong\basic\BaseLaORMModel;
-
 
 class SystemLoginLog extends BaseLaORMModel
 {
@@ -25,5 +26,13 @@ class SystemLoginLog extends BaseLaORMModel
     protected $primaryKey = 'id';
 
     protected $table = 'system_login_log';
+
+    protected $dates = ['create_time', 'update_time'];
+
+    protected $casts = [
+        'create_time'  => 'datetime',
+        'expires_time' => 'datetime',
+        'update_time'  => 'datetime',
+    ];
 
 }

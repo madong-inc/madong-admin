@@ -35,9 +35,6 @@ class SystemDept extends BaseLaORMModel
 
     protected $table = 'system_dept';
 
-//    protected $deleteTime = 'delete_time';
-//    protected $defaultSoftDelete = null;
-
     protected $createTime = 'create_time';
     protected $updateTime = 'update_time';
     protected $autoWriteTimestamp = true;
@@ -48,14 +45,14 @@ class SystemDept extends BaseLaORMModel
      * @param $query
      * @param $value
      */
-    public function searchNameAttr($query, $value)
+    public function scopeName($query, $value)
     {
         if (!empty($value)) {
             $query->where('name', 'like', $value . '%');
         }
     }
 
-    public function searchPidAttr($query, $value)
+    public function scopePid($query, $value)
     {
         if (!empty($value)) {
             if (is_string($value)) {
@@ -75,7 +72,7 @@ class SystemDept extends BaseLaORMModel
      * @param $query
      * @param $value
      */
-    public function searchStatusAttr($query, $value)
+    public function scopeStatus($query, $value)
     {
         if ($value !== '') {
             $query->where('status', $value);
