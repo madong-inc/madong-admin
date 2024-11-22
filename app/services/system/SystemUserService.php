@@ -73,8 +73,7 @@ class SystemUserService extends BaseService
     public function selectList(array $where, string $field = '*', int $page = 0, int $limit = 0, string $order = '', array $with = [], bool $search = false)
     {
         $where['enabled'] = 1;
-        $result           = $this->dao->selectList($where, $field, $page, $limit, $order, ['depts', 'posts', 'roles'], $search);
-        return [];
+        return $this->dao->selectList($where, $field, $page, $limit, $order, ['depts', 'posts', 'roles'], $search);
     }
 
     /**
@@ -292,15 +291,15 @@ class SystemUserService extends BaseService
     {
         $roleId = $where['role_id'];
 
-        /**@var SystemUserRoleService $systemUserRoleService*/
+        /**@var SystemUserRoleService $systemUserRoleService */
         $systemUserRoleService = Container::make(SystemUserRoleService::class);
 
-        $excludUserIds=$systemUserRoleService->getColumn( ['role_id' => $roleId],'user_id');
+        $excludUserIds = $systemUserRoleService->getColumn(['role_id' => $roleId], 'user_id');
 
         // 1.0 获取总数
         $total = $this->dao->getModel()
             ->with(['roles'])
-            ->whereNotIn('id',$excludUserIds)
+            ->whereNotIn('id', $excludUserIds)
             ->when(!empty($where), function ($query) use ($where) {
                 unset($where['role_id']);
                 $query->where($where);
@@ -310,7 +309,7 @@ class SystemUserService extends BaseService
         // 2.0 获取列表
         $items = $this->dao->getModel()
             ->with(['roles'])
-            ->whereNotIn('id',$excludUserIds)
+            ->whereNotIn('id', $excludUserIds)
             ->when($page && $limit, function ($query) use ($page, $limit) {
                 $query->page($page, $limit);
             })
