@@ -11,7 +11,7 @@
  */
 namespace app\model\system;
 
-use madong\basic\BaseModel;
+use madong\basic\BaseTpORMModel;
 use madong\trait\ModelTrait;
 use madong\trait\SnowflakeIdTrait;
 
@@ -21,7 +21,7 @@ use madong\trait\SnowflakeIdTrait;
  * @author Mr.April
  * @since  1.0
  */
-class SystemDict extends BaseModel
+class SystemDict extends BaseTpORMModel
 {
 
     /**

@@ -12,7 +12,7 @@
 
 namespace app\model\system;
 
-use madong\basic\BaseModel;
+use madong\basic\BaseTpORMModel;
 
 /**
  * 定时任务
@@ -20,7 +20,7 @@ use madong\basic\BaseModel;
  * @author Mr.April
  * @since  1.0
  */
-class SystemCrontab extends BaseModel
+class SystemCrontab extends BaseTpORMModel
 {
 
     protected $name = 'system_crontab';

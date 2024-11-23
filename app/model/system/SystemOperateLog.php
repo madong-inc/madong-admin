@@ -11,10 +11,10 @@
  */
 namespace app\model\system;
 
-use madong\basic\BaseModel;
+use madong\basic\BaseTpORMModel;
 
 
-class SystemOperateLog extends BaseModel
+class SystemOperateLog extends BaseTpORMModel
 {
 
     /**

@@ -23,8 +23,12 @@ class SystemUploadDao extends BaseDao
         return SystemUpload::class;
     }
 
-    public function selectList(array $where, string $field = '*', int $page = 0, int $limit = 0, string $order = '', array $with = [], bool $search = false): \think\Collection|null
+    public function selectList(array $where, string $field = '*', int $page = 0, int $limit = 0, string $order = '', array $with = [], bool $search = false)
     {
-        return parent::selectList($where, $field, $page, $limit, $order, ['created', 'updated'], $search);
+        if (Config('app.model_type', 'thinkORM') == 'thinkORM') {
+            return parent::selectList($where, $field, $page, $limit, $order, ['created', 'updated'], $search)->toArray();
+        } else {
+            return parent::selectList($where, $field, $page, $limit, $order, ['createds', 'updateds'], $search);
+        }
     }
 }

@@ -36,7 +36,6 @@ class SystemUserValidate extends Validate
         'user_name.require'    => '用户名必须填写',
         'user_name.max'        => '用户名最多不能超过18个字符',
         'user_name.unique'     => '用户名已被占用',
-        'user_name.require' => '用户名必须填写',
         'real_name.require'    => '姓名必须填写',
         'password.require'     => '密码必须填写',
         'password.min'         => '密码最少为5位',
@@ -58,7 +57,7 @@ class SystemUserValidate extends Validate
      *
      * @return bool
      */
-    protected function unique($value, $rule, $data = []): bool
+    protected function unique($value, $rule, array $data = []): bool
     {
         $query = SystemUser::where('user_name', $value)->withTrashed();
         // 如果是更新操作，可以排除当前记录

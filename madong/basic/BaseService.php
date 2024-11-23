@@ -13,10 +13,10 @@
 
 namespace madong\basic;
 
-
 use madong\services\cache\CacheService;
 use madong\trait\ServicesTrait;
-use think\facade\Db;
+use support\Db as LaravelDb;
+use think\facade\DB as ThinkDb;
 
 abstract class BaseService
 {
@@ -34,6 +34,7 @@ abstract class BaseService
      * 缓存管理
      *
      * @return \madong\services\cache\CacheService
+     * @throws \RedisException
      */
     public function cacheDriver(): CacheService
     {
@@ -66,6 +67,25 @@ abstract class BaseService
     }
 
     /**
+     * 执行指定框架的事务
+     *
+     * @param callable    $closure
+     * @param bool        $isTran 是否启用事务
+     * @param string|null $framework
+     *
+     * @return mixed
+     */
+    public function transaction(callable $closure, bool $isTran = true, ?string $framework = null): mixed
+    {
+        $framework = $framework ?? Config('app.model_type', 'thinkORM'); // 默认使用 'thinkORM'
+        return match ($framework) {
+            'thinkORM' => $isTran ? $this->runThinkPhpTransaction($closure) : $closure(),
+            'laravelORM' => $isTran ? $this->runLaravelTransaction($closure) : $closure(),
+            default => throw new \InvalidArgumentException("Unsupported framework: $framework"),
+        };
+    }
+
+    /**
      * 数据库事务操作
      *
      * @param callable $closure
@@ -73,9 +93,22 @@ abstract class BaseService
      *
      * @return mixed
      */
-    public function transaction(callable $closure, bool $isTran = true): mixed
+    public function runThinkPhpTransaction(callable $closure, bool $isTran = true): mixed
     {
-        return $isTran ? DB::transaction($closure) : $closure();
+        return $isTran ? ThinkDB::transaction($closure) : $closure();
+    }
+
+    /**
+     * 执行 Laravel 事务
+     *
+     * @param callable $closure
+     * @param bool     $isTran
+     *
+     * @return mixed
+     */
+    private function runLaravelTransaction(callable $closure, bool $isTran = true): mixed
+    {
+        return $isTran ? LaravelDb::transaction($closure) : $closure();
     }
 
     /**
@@ -94,7 +127,6 @@ abstract class BaseService
         $jwtAuth = Container::make(JwtAuth::class);
         return $jwtAuth->createToken($id, $type, ['pwd' => md5($pwd)]);
     }
-
 
     /**
      * 密码hash加密

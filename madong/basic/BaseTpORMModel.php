@@ -1,5 +1,4 @@
 <?php
-
 /**
  *+------------------
  * madong
@@ -18,17 +17,20 @@ use madong\exception\ApiException;
 use madong\trait\ModelTrait;
 use madong\utils\Snowflake;
 use think\Model;
-use think\model\concern\SoftDelete;
 
-class BaseSoftDeleteModel extends Model
+class BaseTpORMModel extends Model
 {
     use ModelTrait;
-    use SoftDelete;
 
+    // 删除时间
     protected $deleteTime = 'delete_time';
+    // 添加时间
     protected $createTime = 'create_time';
+    // 更新时间
     protected $updateTime = 'update_time';
+    // 隐藏字段
     protected $hidden = ['delete_time'];
+    // 只读字段
     protected $readonly = ['created_by', 'create_time'];
 
     private const WORKER_ID = 1;
@@ -69,7 +71,7 @@ class BaseSoftDeleteModel extends Model
             self::setCreatedBy($model);
             self::setPrimaryKey($model);
         } catch (\Exception $e) {
-            throw new ApiException($e->getMessage());
+            throw new MadongException($e->getMessage());
         }
     }
 
@@ -89,6 +91,7 @@ class BaseSoftDeleteModel extends Model
      * 设置创建人
      *
      * @param Model $model
+     *
      * @return void
      */
     private static function setCreatedBy(Model $model): void
@@ -103,6 +106,7 @@ class BaseSoftDeleteModel extends Model
      * 设置更新人
      *
      * @param Model $model
+     *
      * @return void
      */
     private static function setUpdatedBy(Model $model): void
@@ -117,11 +121,12 @@ class BaseSoftDeleteModel extends Model
      * 设置主键
      *
      * @param Model $model
+     *
      * @return void
      */
     private static function setPrimaryKey(Model $model): void
     {
-        $flakeId = $model->{$model->pk} ?? self::generateSnowflakeID();
+        $flakeId             = $model->{$model->pk} ?? self::generateSnowflakeID();
         $model->{$model->pk} = $flakeId;
     }
 
