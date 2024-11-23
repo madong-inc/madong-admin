@@ -12,10 +12,14 @@
 
 namespace madong\basic;
 
+use app\services\system\SystemRecycleBinService;
 use Illuminate\Support\Carbon;
+use madong\exception\AdminException;
 use madong\utils\Snowflake;
+use support\Container;
 use support\Db;
 use support\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class BaseLaORMModel extends Model
 {
@@ -55,6 +59,7 @@ class BaseLaORMModel extends Model
 
     /**
      * 雪花算法实例化类
+     *
      * @var Snowflake|null
      */
     private static ?Snowflake $snowflake = null;
@@ -74,6 +79,21 @@ class BaseLaORMModel extends Model
         static::updating(function ($model) {
             self::setUpdatedBy($model);
         });
+
+        // 注册删除事件
+        static::deleted(function ($model) {
+            self::onAfterDelete($model);
+        });
+    }
+
+    /**
+     * 是否开启软删
+     *
+     * @return bool
+     */
+    public static function isSoftDeleteEnabled(): bool
+    {
+        return in_array(SoftDeletes::class, class_uses(static::class));
     }
 
     /**
@@ -148,6 +168,24 @@ class BaseLaORMModel extends Model
         return Carbon::parse($value)->format('Y-m-d H:i:s');
     }
 
+    public static function onAfterDelete(Model $model)
+    {
+        try {
+            if ($model->isSoftDeleteEnabled()) {
+                return;
+            }
+            $table     = $model->getTable();
+            $tableData = $model->getAttributes();
+            if (self::shouldStoreInRecycleBin($table)) {
+                $data                    = self::prepareRecycleBinData($tableData, $table);
+                $systemRecycleBinService = Container::make(SystemRecycleBinService::class);
+                $systemRecycleBinService->save($data);
+            }
+        } catch (\Exception $e) {
+            throw new AdminException($e->getMessage());
+        }
+    }
+
     /**
      * 设置创建人
      *
@@ -177,14 +215,16 @@ class BaseLaORMModel extends Model
             $model->setAttribute('updated_by', $uid);
         }
     }
+
     /**
      *  实力话雪花算法
+     *
      * @return Snowflake
      */
-    private static function createSnowflake():Snowflake
+    private static function createSnowflake(): Snowflake
     {
-        if(self::$snowflake==null){
-            self::$snowflake= new Snowflake(self::WORKER_ID, self::DATA_CENTER_ID);
+        if (self::$snowflake == null) {
+            self::$snowflake = new Snowflake(self::WORKER_ID, self::DATA_CENTER_ID);
         }
         return self::$snowflake;
     }
@@ -196,8 +236,23 @@ class BaseLaORMModel extends Model
      */
     private static function generateSnowflakeID(): int
     {
-        $snowflake    = self::createSnowflake();
+        $snowflake = self::createSnowflake();
         return $snowflake->nextId();
+    }
+
+    private static function shouldStoreInRecycleBin($table): bool
+    {
+        return config('app.store_in_recycle_bin') && !in_array($table, config('app.exclude_from_recycle_bin'));
+    }
+
+    private static function prepareRecycleBinData($tableData, $table): array
+    {
+        return [
+            'data'       => json_encode($tableData),
+            'data_table' => $table,
+            'enabled'    => 0,
+            'operate_id' => getCurrentUser(),
+        ];
     }
 
 }

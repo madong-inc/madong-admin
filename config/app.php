@@ -18,13 +18,15 @@ use madong\services\scheduler\event\UrlTask;
 use madong\services\scheduler\event\SchedulingTask;
 
 return [
-    'debug'             => true,
-    'error_reporting'   => E_ALL,
-    'default_timezone'  => 'Asia/Shanghai',
-    'request_class'     => Request::class,
-    'public_path'       => base_path() . DIRECTORY_SEPARATOR . 'public',
-    'runtime_path'      => base_path(false) . DIRECTORY_SEPARATOR . 'runtime',
-    'controller_suffix' => 'Controller',
-    'controller_reuse'  => false,
-    'model_type'        => 'thinkORM',//thinkORM||laravelORM
+    'debug'                    => true,
+    'error_reporting'          => E_ALL,
+    'default_timezone'         => 'Asia/Shanghai',
+    'request_class'            => Request::class,
+    'public_path'              => base_path() . DIRECTORY_SEPARATOR . 'public',
+    'runtime_path'             => base_path(false) . DIRECTORY_SEPARATOR . 'runtime',
+    'controller_suffix'        => 'Controller',
+    'controller_reuse'         => false,
+    'model_type'               => 'thinkORM',//thinkORM||laravelORM
+    'store_in_recycle_bin'     => true,//是否开启回站模式
+    'exclude_from_recycle_bin' => ['system_login_log', 'system_operate_log'],//排除的表
 ];

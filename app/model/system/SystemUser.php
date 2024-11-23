@@ -9,9 +9,11 @@
  *+------------------
  * Official Website: http://www.madong.cn
  */
+
 namespace app\model\system;
 
 use madong\basic\BaseTpORMModel;
+use think\model\concern\SoftDelete;
 
 /**
  * 用户信息模型
@@ -19,7 +21,7 @@ use madong\basic\BaseTpORMModel;
 class SystemUser extends BaseTpORMModel
 {
 
-
+//    use SoftDelete;
 
     // 完整数据库表名称
     protected $name = 'system_user';
@@ -76,7 +78,6 @@ class SystemUser extends BaseTpORMModel
         return json_encode($value, JSON_UNESCAPED_UNICODE);
     }
 
-
     /**
      * 定义与 UserRole 的关系
      *
@@ -86,7 +87,6 @@ class SystemUser extends BaseTpORMModel
     {
         return $this->hasMany(SystemUserRole::class, 'user_id', 'id');
     }
-
 
     /**
      * 通过中间表-关联角色

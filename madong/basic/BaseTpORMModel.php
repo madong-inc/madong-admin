@@ -10,14 +10,22 @@
  * Official Website: http://www.madong.tech
  */
 
-
 namespace madong\basic;
 
+use app\model\system\SystemRecycleBin;
+use app\services\system\SystemRecycleBinService;
+use madong\exception\AdminException;
 use madong\exception\ApiException;
 use madong\trait\ModelTrait;
 use madong\utils\Snowflake;
+use support\Container;
 use think\Model;
+use think\model\concern\SoftDelete;
 
+/**
+ * @author Mr.April
+ * @since  1.0
+ */
 class BaseTpORMModel extends Model
 {
     use ModelTrait;
@@ -38,6 +46,7 @@ class BaseTpORMModel extends Model
 
     /**
      * 雪花算法实例化类
+     *
      * @var Snowflake|null
      */
     private static ?Snowflake $snowflake = null;
@@ -50,6 +59,16 @@ class BaseTpORMModel extends Model
     public function getFields(): mixed
     {
         return $this->getTableFields();
+    }
+
+    /**
+     * 是否开启软删
+     *
+     * @return bool
+     */
+    public function isSoftDeleteEnabled(): bool
+    {
+        return in_array(SoftDelete::class, class_uses(static::class));
     }
 
     /**
@@ -138,12 +157,13 @@ class BaseTpORMModel extends Model
 
     /**
      *  实力话雪花算法
+     *
      * @return Snowflake
      */
-    private static function createSnowflake():Snowflake
+    private static function createSnowflake(): Snowflake
     {
-        if(self::$snowflake==null){
-            self::$snowflake= new Snowflake(self::WORKER_ID, self::DATA_CENTER_ID);
+        if (self::$snowflake == null) {
+            self::$snowflake = new Snowflake(self::WORKER_ID, self::DATA_CENTER_ID);
         }
         return self::$snowflake;
     }
@@ -155,7 +175,45 @@ class BaseTpORMModel extends Model
      */
     private static function generateSnowflakeID(): int
     {
-        $snowflake    = self::createSnowflake();
+        $snowflake = self::createSnowflake();
         return $snowflake->nextId();
+    }
+
+    /**
+     * 删除-事件
+     *
+     * @param \think\Model $model
+     */
+    public static function onAfterDelete(Model $model)
+    {
+        try {
+            if ($model->isSoftDeleteEnabled()) {
+                return;
+            }
+            $table     = $model->getName();
+            $tableData = $model->getData();
+            if (self::shouldStoreInRecycleBin($table)) {
+                $data                    = self::prepareRecycleBinData($tableData, $table);
+                $systemRecycleBinService = Container::make(SystemRecycleBinService::class);
+                $systemRecycleBinService->save($data);
+            }
+        } catch (\Exception $e) {
+            throw new AdminException($e->getMessage());
+        }
+    }
+
+    private static function shouldStoreInRecycleBin($table): bool
+    {
+        return config('app.store_in_recycle_bin') && !in_array($table, config('app.exclude_from_recycle_bin'));
+    }
+
+    private static function prepareRecycleBinData($tableData, $table): array
+    {
+        return [
+            'data'       => json_encode($tableData),
+            'data_table' => $table,
+            'enabled'    => 0,
+            'operate_id' => getCurrentUser(),
+        ];
     }
 }

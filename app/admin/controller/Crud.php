@@ -180,11 +180,20 @@ class Crud extends Base
         try {
             $id   = $request->route->param('id'); // 获取路由地址 id从
             $data = $request->input('data', []);
-            $id   = !empty($id) && $id !== '0' ? $id : $data;
-            if (empty($id)) {
+            $data = !empty($id) && $id !== '0' ? $id : $data;
+            if (empty($data)) {
                 throw new AdminException('参数错误');
             }
-            $this->service->destroy($id, true);
+            $this->service->transaction(function () use ($data) {
+                $data         = is_array($data) ? $data : explode(',', $data);
+                foreach ($data as $id) {
+                    $item = $this->service->get($id);
+                    if (!$item) {
+                        continue; // 如果找不到项，跳过
+                    }
+                    $item->delete();
+                }
+            });
             return Json::success('ok', []);
         } catch (\Throwable $e) {
             return Json::fail($e->getMessage());
@@ -198,7 +207,8 @@ class Crud extends Base
      *
      * @return \support\Response
      */
-    public function recovery(Request $request): \support\Response
+    public
+    function recovery(Request $request): \support\Response
     {
         try {
             $id = $request->route->param('id');
@@ -208,7 +218,8 @@ class Crud extends Base
         }
     }
 
-    protected function selectInput(Request $request): array
+    protected
+    function selectInput(Request $request): array
     {
         $field        = $request->input('field', '*');
         $sort         = $request->input('order', 'sort');
@@ -289,7 +300,8 @@ class Crud extends Base
      *
      * @return array
      */
-    protected function insertInput(Request $request): array
+    protected
+    function insertInput(Request $request): array
     {
         $data           = $this->inputFilter($request->all());
         $password_filed = 'password';
@@ -307,7 +319,8 @@ class Crud extends Base
      *
      * @return array
      */
-    protected function inputFilter(array $data, array $skipKeys = []): array
+    protected
+    function inputFilter(array $data, array $skipKeys = []): array
     {
         $model   = $this->service->getModel();
         $columns = $model->getTableFields();
@@ -338,7 +351,8 @@ class Crud extends Base
      *
      * @return \support\Response
      */
-    protected function formatTree($items): \support\Response
+    protected
+    function formatTree($items): \support\Response
     {
         $format_items = [];
         foreach ($items as $item) {
@@ -361,7 +375,8 @@ class Crud extends Base
      *
      * @return \support\Response
      */
-    protected function formatTableTree($data, $total): \support\Response
+    protected
+    function formatTableTree($data, $total): \support\Response
     {
         $tree  = new Tree($data->toArray());
         $items = $tree->getTree();
@@ -375,7 +390,8 @@ class Crud extends Base
      *
      * @return \support\Response
      */
-    protected function formatSelect($items): \support\Response
+    protected
+    function formatSelect($items): \support\Response
     {
         $formatted_items = [];
         foreach ($items as $item) {
@@ -396,12 +412,14 @@ class Crud extends Base
      *
      * @return \support\Response
      */
-    protected function formatNormal($items, $total): \support\Response
+    protected
+    function formatNormal($items, $total): \support\Response
     {
         return Json::success('ok', compact('items', 'total'));
     }
 
-    public function dev(Request $request): \support\Response
+    public
+    function dev(Request $request): \support\Response
     {
         return Json::fail('接口开发中');
     }
