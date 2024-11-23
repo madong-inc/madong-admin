@@ -11,7 +11,7 @@
  Target Server Version : 80012
  File Encoding         : 65001
 
- Date: 20/11/2024 10:24:59
+ Date: 24/11/2024 00:20:06
 */
 
 SET NAMES utf8mb4;
@@ -38,9 +38,9 @@ CREATE TABLE `ma_cache`  (
 DROP TABLE IF EXISTS `ma_system_config`;
 CREATE TABLE `ma_system_config`  (
   `id` bigint(20) NOT NULL COMMENT '配置ID',
-  `group_code` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '分组编码',
+  `group_code` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '分组编码',
   `code` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '唯一编码',
-  `name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '配置名称',
+  `name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '配置名称',
   `content` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '配置内容',
   `is_sys` tinyint(1) NULL DEFAULT 0 COMMENT '是否系统',
   `enabled` tinyint(1) NULL DEFAULT 1 COMMENT '是否启用',
@@ -48,7 +48,7 @@ CREATE TABLE `ma_system_config`  (
   `create_user` bigint(20) NULL DEFAULT NULL COMMENT '创建用户',
   `update_time` bigint(20) NULL DEFAULT NULL COMMENT '更新时间',
   `update_user` bigint(20) NULL DEFAULT NULL COMMENT '更新用户',
-  `delete_time` timestamp(0) NULL DEFAULT NULL COMMENT '是否删除',
+  `delete_time` timestamp NULL DEFAULT NULL COMMENT '是否删除',
   `remark` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '备注',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_config_code`(`code`) USING BTREE,
@@ -58,13 +58,13 @@ CREATE TABLE `ma_system_config`  (
 -- ----------------------------
 -- Records of ma_system_config
 -- ----------------------------
-INSERT INTO `ma_system_config` VALUES (0, 'system_storage', 'local', '本地存储', '{\"root\":\"public\",\"dirname\":\"upload\",\"domain\":\"http:\\/\\/43.138.153.216:8899\"}', 1, 1, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (0, 'system_storage', 'local', '本地存储', '{\"root\":\"public\",\"dirname\":\"upload\",\"domain\":\"http:\\/\\/127.0.0.1:8899\"}', 1, 1, NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `ma_system_config` VALUES (1, 'system_storage', 'oss', 'oss', '{\"accessKeyId\":\"1\",\"accessKeySecret\":\"2\",\"bucket\":\"1\",\"domain\":\"1\",\"endpoint\":\"22\",\"dirname\":\"22\"}', 1, 1, NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `ma_system_config` VALUES (2, 'system_storage', 'cos', 'cos', '{\"secretId\":\"13\",\"secretKey\":\"23\",\"bucket\":\"23\",\"domain\":\"23\",\"region\":\"23\",\"dirname\":\"23\"}', 1, 1, NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `ma_system_config` VALUES (3, 'system_storage', 'qiniu', 'qiniu', '{\"secretId\":\"13\",\"secretKey\":\"23\",\"bucket\":\"23\",\"domain\":\"23\",\"region\":\"23\",\"dirname\":\"23\"}', 1, 1, NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `ma_system_config` VALUES (4, 'system_storage', 'basic', '文件上传基础配置', '{\"default\":\"local\",\"single_limit\":\"1024\",\"total_limit\":\"1024\",\"nums\":\"100\",\"include\":\"png,image\",\"exclude\":\"mp4,php\"}', 1, 1, NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `ma_system_config` VALUES (5, 'system_config', 'site_open', '站点开启', '1', 1, 1, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `ma_system_config` VALUES (6, 'system_config', 'site_url', '网站地址', 'http://43.138.153.216:8899/', 1, 1, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (6, 'system_config', 'site_url', '网站地址', 'http://127.0.0.1:8899/', 1, 1, NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `ma_system_config` VALUES (7, 'system_config', 'site_name', '站点名称', 'MaDong Admin', 1, 1, NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `ma_system_config` VALUES (8, 'system_config', 'site_record_no', '网站ICP', '', 1, 1, NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `ma_system_config` VALUES (9, 'system_config', 'site_logo', '网站Logo', '', 0, 1, NULL, NULL, NULL, NULL, NULL, NULL);
@@ -73,11 +73,70 @@ INSERT INTO `ma_system_config` VALUES (11, 'system_config', 'site_keywords', '�
 INSERT INTO `ma_system_config` VALUES (12, 'system_config', 'site_description', '网站描述', 'MaDong Admin 快速开发框架', 0, 1, NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `ma_system_config` VALUES (13, 'system_config', 'site_icp_url', 'ICP URL', 'https://beian.miit.gov.cn/', 0, 1, NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `ma_system_config` VALUES (14, 'system_config', 'site_network_security_url', '网安备案链接', NULL, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `ma_system_config` VALUES (235117772018032640, 'basic_upload_setting', 'mode', NULL, 'local', 0, 1, 1732066622, NULL, 1732066622, NULL, NULL, NULL);
-INSERT INTO `ma_system_config` VALUES (235117772034809856, 'basic_upload_setting', 'single_limit', NULL, '1024', 0, 1, 1732066622, NULL, 1732066622, NULL, NULL, NULL);
-INSERT INTO `ma_system_config` VALUES (235117772043198464, 'basic_upload_setting', 'total_limit', NULL, '1024', 0, 1, 1732066622, NULL, 1732066622, NULL, NULL, NULL);
-INSERT INTO `ma_system_config` VALUES (235117772051587072, 'basic_upload_setting', 'nums', NULL, '5', 0, 1, 1732066622, NULL, 1732066622, NULL, NULL, NULL);
-INSERT INTO `ma_system_config` VALUES (235117772059975680, 'basic_upload_setting', 'exclude', NULL, 'php', 0, 1, 1732066622, NULL, 1732066622, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (234752607196028928, 'system_upload_basic', 'mode', '上传模式', 'oss', 1, 1, 1732023091, NULL, 1732031844, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (234752607263137792, 'system_upload_basic', 'single_limit', '上传大小', '1024', 1, 1, 1732023091, NULL, 1732031844, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (234752607279915008, 'system_upload_basic', 'total_limit', '文件限制', '1028', 1, 1, 1732023091, NULL, 1732031844, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (234752607296692224, 'system_upload_basic', 'nums', '数量限制', 'sc ', 1, 1, 1732023091, NULL, 1732031844, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (234752607313469440, 'system_upload_basic', 'exclude', '不允许文件类型', 'sdcd', 1, 1, 1732023091, NULL, 1732031844, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (234808972845260800, 'local', 'root', '', 'public', 0, 1, 1732029810, NULL, 1732029878, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (234808972937535488, 'local', 'dirname', '', 'upload', 0, 1, 1732029810, NULL, 1732029878, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (234808972962701312, 'local', 'domain', '', 'http://127.0.0.1:8899/', 0, 1, 1732029810, NULL, 1732029878, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (234812723148627968, 'oss', 'accessKeyId', '', '1', 0, 1, 1732030257, NULL, 1732030257, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (234812723182182400, 'oss', 'accessKeySecret', '', '2', 0, 1, 1732030257, NULL, 1732030257, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (234812723207348224, 'oss', 'bucket', '', '3', 0, 1, 1732030257, NULL, 1732030257, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (234812723224125440, 'oss', 'dirname', '', '4', 0, 1, 1732030257, NULL, 1732030257, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (234812723249291264, 'oss', 'domain', '', '5', 0, 1, 1732030257, NULL, 1732030257, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (234812723274457088, 'oss', 'endpoint', '', '6', 0, 1, 1732030257, NULL, 1732030257, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (234812723308011520, 'oss', 'remark', '', '7', 0, 1, 1732030257, NULL, 1732030257, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (234813088564781056, 'cos', 'secretId', '', '11', 0, 1, 1732030301, NULL, 1732030301, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (234813088589946880, 'cos', 'secretKey', '', '22', 0, 1, 1732030301, NULL, 1732030301, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (234813088606724096, 'cos', 'bucket', '', '33', 0, 1, 1732030301, NULL, 1732030301, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (234813088682221568, 'cos', 'dirname', '', '44', 0, 1, 1732030301, NULL, 1732030301, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (234813088707387392, 'cos', 'domain', '', '55', 0, 1, 1732030301, NULL, 1732030301, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (234813088724164608, 'cos', 'region', '', '66', 0, 1, 1732030301, NULL, 1732030301, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (234813088732553216, 'cos', 'remark', '', '77', 0, 1, 1732030301, NULL, 1732030301, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (234813242898391040, 'qiniu', 'accessKey', '', '99', 0, 1, 1732030319, NULL, 1732030319, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (234813242915168256, 'qiniu', 'secretKey', '', '88', 0, 1, 1732030319, NULL, 1732030319, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (234813242940334080, 'qiniu', 'bucket', '', '7', 0, 1, 1732030319, NULL, 1732030319, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (234813242965499904, 'qiniu', 'dirname', '', '78', 0, 1, 1732030319, NULL, 1732030319, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (234813242990665728, 'qiniu', 'domain', '', '8', 0, 1, 1732030319, NULL, 1732030319, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (234813243007442944, 'qiniu', 'region', '', '', 0, 1, 1732030319, NULL, 1732030319, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (234813243024220160, 'qiniu', 'remark', '', '897', 0, 1, 1732030319, NULL, 1732030319, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (234813346136989696, 's3', 'key', '', '12', 0, 1, 1732030332, NULL, 1732030332, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (234813346153766912, 's3', 'secret', '', '12', 0, 1, 1732030332, NULL, 1732030332, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (234813346170544128, 's3', 'bucket', '', '12', 0, 1, 1732030332, NULL, 1732030332, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (234813346178932736, 's3', 'dirname', '', '12', 0, 1, 1732030332, NULL, 1732030332, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (234813346195709952, 's3', 'domain', '', '12', 0, 1, 1732030332, NULL, 1732030332, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (234813346220875776, 's3', 'endpoint', '', '12', 0, 1, 1732030332, NULL, 1732030332, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (234813346246041600, 's3', 'region', '', '12', 0, 1, 1732030332, NULL, 1732030332, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (234813346262818816, 's3', 'acl', '', '6', 0, 1, 1732030332, NULL, 1732030332, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (234813346287984640, 's3', 'remark', '', '4', 0, 1, 1732030332, NULL, 1732030332, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (234819702873137152, 'system_setting_sms', 'enable', '', '1', 0, 1, 1732031089, NULL, 1732031111, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (234819702898302976, 'system_setting_sms', 'access_key_id', '', '12', 0, 1, 1732031089, NULL, 1732031111, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (234819702915080192, 'system_setting_sms', 'access_key_secret', '', '121', 0, 1, 1732031089, NULL, 1732031111, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (234819702931857408, 'system_setting_sms', 'sign_name', '', '12454', 0, 1, 1732031089, NULL, 1732031111, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (234820886178570240, 'system_setting_email', 'SMTPSecure', '', 'ssl', 0, 1, 1732031231, NULL, 1732031258, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (234820886203736064, 'system_setting_email', 'Host', '', '12', 0, 1, 1732031231, NULL, 1732031258, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (234820886220513280, 'system_setting_email', 'Port', '', '334', 0, 1, 1732031231, NULL, 1732031258, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (234820886237290496, 'system_setting_email', 'Username', '', '454', 0, 1, 1732031231, NULL, 1732031258, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (234820886254067712, 'system_setting_email', 'Password', '', '545', 0, 1, 1732031231, NULL, 1732031258, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (234820886270844928, 'system_setting_email', 'From', '', '454', 0, 1, 1732031231, NULL, 1732031258, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (234820886279233536, 'system_setting_email', 'FromName', '', '45', 0, 1, 1732031231, NULL, 1732031258, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (234820886304399360, 'system_setting_email', 'email', '', '45454', 0, 1, 1732031231, NULL, 1732031231, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (234824011379646464, 'email_setting', 'SMTPSecure', '', 'tsl', 0, 1, 1732031603, NULL, 1732031667, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (234824011396423680, 'email_setting', 'Host', '', '12', 0, 1, 1732031603, NULL, 1732031667, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (234824011429978112, 'email_setting', 'Port', '', '12', 0, 1, 1732031603, NULL, 1732031667, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (234824011455143936, 'email_setting', 'Username', '', '35', 0, 1, 1732031603, NULL, 1732031667, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (234824011480309760, 'email_setting', 'Password', '', '8', 0, 1, 1732031603, NULL, 1732031667, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (234824011513864192, 'email_setting', 'From', '', '8', 0, 1, 1732031603, NULL, 1732031667, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (234824011539030016, 'email_setting', 'FromName', '', '8', 0, 1, 1732031603, NULL, 1732031667, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (234826217575161856, 'site_setting', 'site_open', '', '1', 0, 1, 1732031866, NULL, 1732031866, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (234826217591939072, 'site_setting', 'site_url', '', 'Mdong', 0, 1, 1732031866, NULL, 1732031866, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (234826217608716288, 'site_setting', 'site_name', '', '码动开源', 0, 1, 1732031866, NULL, 1732031866, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (234826217633882112, 'site_setting', 'site_logo', '', '', 0, 1, 1732031866, NULL, 1732031866, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (234826217667436544, 'site_setting', 'site_network_security', '', '00001', 0, 1, 1732031866, NULL, 1732031866, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (234826217700990976, 'site_setting', 'site_description', '', '9887', 0, 1, 1732031866, NULL, 1732031866, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (234826217726156800, 'site_setting', 'site_record_no', '', '1010', 0, 1, 1732031866, NULL, 1732031866, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for ma_system_crontab
@@ -106,9 +165,9 @@ CREATE TABLE `ma_system_crontab`  (
 -- ----------------------------
 -- Records of ma_system_crontab
 -- ----------------------------
-INSERT INTO `ma_system_crontab` VALUES (2, NULL, '执行php方法', 2, 5, '{\"month\":null,\"week\":null,\"day\":null,\"hour\":null,\"minute\":null,\"second\":\"5\"}', '*/5 * * * * *', 'return 123;', 1626, 1731920441, 0, 1713752627, 0, 1);
+INSERT INTO `ma_system_crontab` VALUES (2, NULL, '执行php方法', 2, 5, '{\"month\":null,\"week\":null,\"day\":null,\"hour\":null,\"minute\":null,\"second\":\"5\"}', '*/5 * * * * *', 'return 123;', 1625, 1731116644, 0, 1713752627, 0, 1);
 INSERT INTO `ma_system_crontab` VALUES (3, NULL, '调用php类静态方法', 2, 5, '{\"month\":null,\"week\":null,\"day\":null,\"hour\":null,\"minute\":null,\"second\":\"10\"}', '*/10 * * * * *', 'return 888;', 1277, 1731136461, 0, 1713752627, 0, 1);
-INSERT INTO `ma_system_crontab` VALUES (8, NULL, '调用远程链接', 1, 4, '{\"month\":null,\"week\":null,\"day\":null,\"hour\":null,\"minute\":\"10\",\"second\":null}', '*/10 * * * *', 'http://www.baidu.com', 25, 1731136446, 1, 1713749636, 0, 1);
+INSERT INTO `ma_system_crontab` VALUES (8, NULL, '调用远程链接', 1, 4, '{\"month\":null,\"week\":null,\"day\":null,\"hour\":null,\"minute\":\"10\",\"second\":null}', '*/10 * * * *', 'http://www.baidu.com', 25, 1731136446, 0, 1713749636, 0, 1);
 
 -- ----------------------------
 -- Table structure for ma_system_crontab_log
@@ -148,7 +207,6 @@ INSERT INTO `ma_system_crontab_log` VALUES (113574386786766848, 2, 'return 123;'
 INSERT INTO `ma_system_crontab_log` VALUES (113629900933566464, 8, 'http://www.baidu.com', 'Class \"GuzzleHttp\\Client\" not found', 1, '0.022526', 1731129880);
 INSERT INTO `ma_system_crontab_log` VALUES (113657444739190784, 8, 'http://www.baidu.com', 'Class \"GuzzleHttp\\Client\" not found', 1, '0.015836', 1731136446);
 INSERT INTO `ma_system_crontab_log` VALUES (113657507351760896, 3, 'return 888;', '888', 0, '0.040985', 1731136461);
-INSERT INTO `ma_system_crontab_log` VALUES (233891511014793216, 2, 'return 123;', '123', 0, '0.009499', 1731920441);
 
 -- ----------------------------
 -- Table structure for ma_system_dept
@@ -334,7 +392,7 @@ CREATE TABLE `ma_system_login_log`  (
   `create_time` int(11) NULL DEFAULT NULL COMMENT '创建时间',
   `expires_time` int(11) NULL DEFAULT NULL COMMENT '过期时间',
   `update_time` int(11) NULL DEFAULT NULL COMMENT '更新时间',
-  `delete_time` datetime(0) NULL DEFAULT NULL COMMENT '删除时间',
+  `delete_time` datetime NULL DEFAULT NULL COMMENT '删除时间',
   `remark` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `username`(`user_name`) USING BTREE
@@ -374,7 +432,7 @@ CREATE TABLE `ma_system_menu`  (
   `create_by` bigint(20) NULL DEFAULT NULL COMMENT '创建用户',
   `update_time` int(11) NULL DEFAULT NULL COMMENT '更新时间',
   `update_by` bigint(20) NULL DEFAULT NULL COMMENT '更新用户',
-  `delete_time` datetime(0) NULL DEFAULT NULL COMMENT '是否删除',
+  `delete_time` datetime NULL DEFAULT NULL COMMENT '是否删除',
   `methods` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT 'get' COMMENT '请求方法',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_sys_menu_code`(`code`) USING BTREE,
@@ -491,6 +549,27 @@ INSERT INTO `ma_system_post` VALUES (108515985312583680, '0002', '业务员', 0,
 INSERT INTO `ma_system_post` VALUES (108516334249316352, '0003', '采购员', 0, 1, 1, 1, 1729910710, 1729910710, NULL, NULL);
 
 -- ----------------------------
+-- Table structure for ma_system_recycle_bin
+-- ----------------------------
+DROP TABLE IF EXISTS `ma_system_recycle_bin`;
+CREATE TABLE `ma_system_recycle_bin`  (
+  `id` bigint(20) UNSIGNED NOT NULL COMMENT 'ID',
+  `data` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '回收的数据',
+  `data_table` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '数据表',
+  `enabled` tinyint(4) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否已还原',
+  `ip` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '操作者IP',
+  `operate_id` bigint(20) UNSIGNED NOT NULL DEFAULT 0 COMMENT '操作管理员',
+  `create_time` bigint(20) UNSIGNED NULL DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '数据回收记录表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of ma_system_recycle_bin
+-- ----------------------------
+INSERT INTO `ma_system_recycle_bin` VALUES (237589900457943040, '{\"id\":109292941754896384,\"user_name\":\"1212\",\"real_name\":\"45454\",\"nick_name\":null,\"password\":\"$2y$10$Yw78SY0U5VqLmElg3fOjJ.TdO1gEu38pQmH3hPMSA\\/N7kN0VFjSui\",\"is_super\":2,\"mobile_phone\":null,\"email\":\"86\",\"avatar\":null,\"signed\":null,\"dashboard\":null,\"dept_id\":2,\"enabled\":0,\"login_ip\":null,\"login_time\":null,\"backend_setting\":null,\"created_by\":1,\"updated_by\":1,\"create_time\":1730095867,\"update_time\":1732361323,\"delete_time\":1732361323,\"sex\":1,\"remark\":\"888\",\"birthday\":null,\"tel\":\"0735-8830323\",\"is_locked\":0,\"role_id_list\":[108506227927027712],\"post_id_list\":[]}', 'system_user', 0, '', 1, 1732361323);
+INSERT INTO `ma_system_recycle_bin` VALUES (237592305706737664, '{\"id\":109292941754896384,\"user_name\":\"1212\",\"real_name\":\"45454\",\"nick_name\":null,\"password\":\"$2y$10$Yw78SY0U5VqLmElg3fOjJ.TdO1gEu38pQmH3hPMSA\\/N7kN0VFjSui\",\"is_super\":2,\"mobile_phone\":null,\"email\":\"86\",\"avatar\":null,\"signed\":null,\"dashboard\":null,\"dept_id\":2,\"enabled\":0,\"login_ip\":null,\"login_time\":null,\"backend_setting\":null,\"created_by\":1,\"updated_by\":1,\"create_time\":1730095867,\"update_time\":1732361557,\"delete_time\":null,\"sex\":1,\"remark\":\"888\",\"birthday\":null,\"tel\":\"0735-8830323\",\"is_locked\":0,\"role_id_list\":[108506227927027712],\"post_id_list\":[]}', 'system_user', 0, '', 1, 1732361609);
+
+-- ----------------------------
 -- Table structure for ma_system_role
 -- ----------------------------
 DROP TABLE IF EXISTS `ma_system_role`;
@@ -562,13 +641,17 @@ INSERT INTO `ma_system_role_menu` VALUES (108354281047986176, 170479284421255168
 INSERT INTO `ma_system_role_menu` VALUES (108354281047986176, 1704792844212551682);
 INSERT INTO `ma_system_role_menu` VALUES (108354281047986176, 1704792844212551684);
 INSERT INTO `ma_system_role_menu` VALUES (108354281047986176, 1704792844212551686);
+INSERT INTO `ma_system_role_menu` VALUES (108354281047986176, 1704792844212551687);
+INSERT INTO `ma_system_role_menu` VALUES (108354281047986176, 1704792844212551688);
+INSERT INTO `ma_system_role_menu` VALUES (108354281047986176, 1704792844212551689);
+INSERT INTO `ma_system_role_menu` VALUES (108354281047986176, 1704792844212551690);
+INSERT INTO `ma_system_role_menu` VALUES (108354281047986176, 1704792844212551691);
 INSERT INTO `ma_system_role_menu` VALUES (108354281047986176, 1704792844212551683);
 INSERT INTO `ma_system_role_menu` VALUES (108506227927027712, 1704792844212551690);
 INSERT INTO `ma_system_role_menu` VALUES (108506227927027712, 1704792844212551691);
 INSERT INTO `ma_system_role_menu` VALUES (108506227927027712, 1704792844212551687);
 INSERT INTO `ma_system_role_menu` VALUES (108506227927027712, 1704792844212551688);
 INSERT INTO `ma_system_role_menu` VALUES (108506227927027712, 1704792844212551689);
-INSERT INTO `ma_system_role_menu` VALUES (108354281047986176, 109410079526227968);
 
 -- ----------------------------
 -- Table structure for ma_system_upload
@@ -582,7 +665,7 @@ CREATE TABLE `ma_system_upload`  (
   `hash` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '文件hash',
   `filename` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '文件名称',
   `original_filename` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '原始文件名',
-  `base_path` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '基础存储路径',
+  `base_path` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '基础存储路径',
   `path` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '存储路径',
   `ext` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '文件扩展名',
   `content_type` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'MIME类型',
@@ -608,7 +691,9 @@ CREATE TABLE `ma_system_upload`  (
 INSERT INTO `ma_system_upload` VALUES (1, '127.0.0.1:8787', 111, '1212', '1212', '20220222161910_3802.jpg', '3802', 'public', 'public/upload/20220222161910_3802.jpg', 'png', 'image', 'local', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1729935438, 1, 1729935438, 1);
 INSERT INTO `ma_system_upload` VALUES (3, '127.0.0.1:8787', 111, '1212', '1212', '20220322174230_6546.jpg', '6546', 'public', 'public/upload/20220322174230_6546.jpg', 'png', 'image', 'local', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1729935438, 1, 1729935438, 1);
 INSERT INTO `ma_system_upload` VALUES (4, '127.0.0.1:8787', 111, '1212', '1212', '20220322174259_4085.jpg', '4085', 'public', 'public/upload/20220322174259_4085.jpg', 'png', 'image', 'local', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1729935438, 1, 1729935438, 1);
-INSERT INTO `ma_system_upload` VALUES (233724434127790080, 'http://43.138.153.216:8899/upload/2c3402afdd52639f8a7fff6ef397e6b9.png', 514, '514 B', '2c3402afdd52639f8a7fff6ef397e6b9', '/www/wwwroot/MyMotion/MaDong/public/upload/2c3402afdd52639f8a7fff6ef397e6b9.png', 'favicon.png', '/www/wwwroot/MyMotion/MaDong/public/upload/2c3402afdd52639f8a7fff6ef397e6b9.png', NULL, 'png', 'image/png', 'local', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1731900523, 1, 1731900523, 1);
+INSERT INTO `ma_system_upload` VALUES (232552154622337024, 'http://127.0.0.1:8899/upload/2c3402afdd52639f8a7fff6ef397e6b9.png', 514, '514 B', '2c3402afdd52639f8a7fff6ef397e6b9', 'D:/MyMotion/MaDong/public/upload/2c3402afdd52639f8a7fff6ef397e6b9.png', 'favicon copy.png', 'D:/MyMotion/MaDong/public/upload/2c3402afdd52639f8a7fff6ef397e6b', NULL, 'png', 'image/png', 'local', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1731760777, 1, 1731760777, 1);
+INSERT INTO `ma_system_upload` VALUES (232572539929632768, 'http://127.0.0.1:8899/upload/6fb703e7699c1112d4eb729dc9aeb3d5.jpg', 58313, '56.95 KB', '6fb703e7699c1112d4eb729dc9aeb3d5', 'D:/MyMotion/MaDong/public/upload/6fb703e7699c1112d4eb729dc9aeb3d5.jpg', 'b1103ccb470d7dc1a6c525d907e640a.jpg', 'D:/MyMotion/MaDong/public/upload/6fb703e7699c1112d4eb729dc9aeb3d', NULL, 'jpg', 'image/jpeg', 'local', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1731763207, 1, 1731763207, 1);
+INSERT INTO `ma_system_upload` VALUES (232574886810492928, 'http://127.0.0.1:8899/upload/a837f17870bdf2cc22f41fdf307d54ec.jpg', 89872, '87.77 KB', 'a837f17870bdf2cc22f41fdf307d54ec', 'D:/MyMotion/MaDong/public/upload/a837f17870bdf2cc22f41fdf307d54ec.jpg', '1730560210332.jpg', 'D:/MyMotion/MaDong/public/upload/a837f17870bdf2cc22f41fdf307d54e', NULL, 'jpg', 'image/jpeg', 'local', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1731763487, 1, 1731763487, 1);
 
 -- ----------------------------
 -- Table structure for ma_system_user
@@ -634,7 +719,7 @@ CREATE TABLE `ma_system_user`  (
   `created_by` bigint(20) NULL DEFAULT NULL COMMENT '创建者',
   `updated_by` bigint(20) NULL DEFAULT NULL COMMENT '更新者',
   `create_time` int(11) NULL DEFAULT NULL COMMENT '创建时间',
-  `update_time` int(11) NULL DEFAULT NULL COMMENT '修改时间',
+  `update_time` int(11) UNSIGNED NULL DEFAULT NULL COMMENT '修改时间',
   `delete_time` int(11) NULL DEFAULT NULL COMMENT '删除时间',
   `sex` tinyint(1) NULL DEFAULT 0 COMMENT '0=未知  1=男 2=女',
   `remark` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL COMMENT '备注',
@@ -649,8 +734,7 @@ CREATE TABLE `ma_system_user`  (
 -- ----------------------------
 -- Records of ma_system_user
 -- ----------------------------
-INSERT INTO `ma_system_user` VALUES (1, 'admin', '超级管理员', '', '$2y$10$upi7OwQ7NpVSDw5OBKUAIukk9sOnC4xhrkquOCTAF3eXd.zH.tsLy', 1, '18888888888', 'admin@admin.com', 'upload/2c3402afdd52639f8a7fff6ef397e6b9.png', 'Today is very good！', 'statistics', 4, 1, '117.28.115.74', 1732068384, '{\"mode\":\"light\",\"tag\":true,\"menuCollapse\":false,\"menuWidth\":230,\"layout\":\"classic\",\"skin\":\"mine\",\"i18n\":true,\"language\":\"zh_CN\",\"animation\":\"ma-slide-down\",\"color\":\"#165DFF\"}', 1, 1, NULL, 1732068384, NULL, 2, NULL, '2024-08-15 23:52:01', NULL, 0);
-INSERT INTO `ma_system_user` VALUES (73421010136862720, 'test', '测试用户1', NULL, '$2y$10$Q70WC9RBqMSS72DmppsbIuQtyAydXSmeD.Ae6W8YhmE/w15uLLpiy', 2, NULL, '405784684@qq.com', NULL, NULL, NULL, 4, 1, '127.0.0.1', 1731818525, NULL, NULL, 73421010136862720, 1721543332, 1731818525, NULL, 1, NULL, '2024-08-11', NULL, 0);
+INSERT INTO `ma_system_user` VALUES (1, 'admin', '超级管理员', '', '$2y$10$X1CoPxnqOZPIuyOk/RSXoOIVxflBZVUyqF/8fYOKzvn2hk0VGU52C', 1, '18888888888', 'admin@admin.com', '', 'Today is very good！', 'statistics', 4, 1, '127.0.0.1', 1732377862, '{\"mode\":\"light\",\"tag\":true,\"menuCollapse\":false,\"menuWidth\":230,\"layout\":\"classic\",\"skin\":\"mine\",\"i18n\":true,\"language\":\"zh_CN\",\"animation\":\"ma-slide-down\",\"color\":\"#165DFF\"}', 1, 1, NULL, 1732377862, NULL, 1, NULL, '2024-08-15 23:52:01', NULL, 0);
 INSERT INTO `ma_system_user` VALUES (73421384377831424, '12对对对4', '测试用户2', NULL, '$2y$10$Q70WC9RBqMSS72DmppsbIuQtyAydXSmeD.Ae6W8YhmE/w15uLLpiy', 2, NULL, NULL, NULL, NULL, NULL, 4, 0, NULL, NULL, NULL, NULL, 1, 1721543422, 1730110040, NULL, 1, NULL, '2024-08-11', NULL, 0);
 INSERT INTO `ma_system_user` VALUES (73421690444582912, '12对对对45', '测试用户3', NULL, '$2y$10$6JMairFZ.P.lD1RhTIEHYOxwZqUWMKW1dDlfMA1NauQZQcUBOo/uu', 2, NULL, NULL, NULL, NULL, NULL, 5, 0, NULL, NULL, NULL, NULL, 1, 1721543495, 1730119816, NULL, 1, NULL, '2024-08-11', NULL, 0);
 INSERT INTO `ma_system_user` VALUES (73421839434649600, '12对对对45f', '测试用户4', NULL, '$2y$10$Q70WC9RBqMSS72DmppsbIuQtyAydXSmeD.Ae6W8YhmE/w15uLLpiy', 2, NULL, NULL, NULL, NULL, NULL, 6, 0, NULL, NULL, NULL, NULL, 1, 1721543530, 1730096125, NULL, 1, NULL, '2024-08-11', NULL, 0);
@@ -659,7 +743,6 @@ INSERT INTO `ma_system_user` VALUES (81893691261849600, 'dfdvdf', '测试用户6
 INSERT INTO `ma_system_user` VALUES (81896469954695168, 'dfdvdf5', '测试用户7', NULL, '', 2, NULL, '405784684@qq.com', NULL, NULL, NULL, 2, 0, NULL, NULL, NULL, NULL, 1, 1723564040, 1730097723, NULL, 2, '123122s', NULL, '0592-8830352', 0);
 INSERT INTO `ma_system_user` VALUES (108620053292912640, 'admin1', '测试用户9', NULL, '$2y$10$MQCWNNObA4REPeWhYm1OX.z8G4h4FiYXZ0.W.6b8Qk0MXvFIy2hK.', 2, NULL, '1111', NULL, NULL, NULL, 2, 0, NULL, NULL, NULL, 1, 1, 1729935438, 1730042777, NULL, 1, NULL, NULL, NULL, 0);
 INSERT INTO `ma_system_user` VALUES (109227769325555712, '12', '4545', NULL, '$2y$10$fl4JtOVhtw7/qLi.Vs2S5OPnRmHSbWfF.u0mFB8nKm2rjlXAxierq', 2, NULL, NULL, NULL, NULL, NULL, 2, 0, NULL, NULL, NULL, 1, 1, 1730080329, 1730095645, NULL, 1, NULL, NULL, '0735-8830323', 0);
-INSERT INTO `ma_system_user` VALUES (109292941754896384, '1212', '45454', NULL, '$2y$10$Yw78SY0U5VqLmElg3fOjJ.TdO1gEu38pQmH3hPMSA/N7kN0VFjSui', 2, NULL, '86', NULL, NULL, NULL, 2, 0, NULL, NULL, NULL, 1, 1, 1730095867, 1730096004, NULL, 1, '888', NULL, '0735-8830323', 0);
 
 -- ----------------------------
 -- Table structure for ma_system_user_post
@@ -694,5 +777,9 @@ INSERT INTO `ma_system_user_role` VALUES (109292941754896384, 108506227927027712
 INSERT INTO `ma_system_user_role` VALUES (73421010136862720, 108354281047986176);
 INSERT INTO `ma_system_user_role` VALUES (73421010136862720, 108506227927027712);
 INSERT INTO `ma_system_user_role` VALUES (1, 108354281047986176);
+INSERT INTO `ma_system_user_role` VALUES (1, 108506227927027712);
+INSERT INTO `ma_system_user_role` VALUES (1, 232632128901488640);
+INSERT INTO `ma_system_user_role` VALUES (1, 232632220630917120);
+INSERT INTO `ma_system_user_role` VALUES (1, 232632352457891840);
 
 SET FOREIGN_KEY_CHECKS = 1;

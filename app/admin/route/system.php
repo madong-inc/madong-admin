@@ -179,11 +179,19 @@ Route::group('/system', function () {
         Route::post('/config', [\app\admin\controller\system\SystemConfigController::class, 'store'])->name('保存配置');
     });
 
+    /**
+     * 回收站管理
+     */
+    Route::group(function () {
+        Route::get('/recycle-bin', [\app\admin\controller\system\SystemRecycleBinController::class, 'index'])->name('回收站列表');
+        Route::put('/recycle-bin/{id}', [\app\admin\controller\system\SystemRecycleBinController::class, 'restore'])->name('恢复删除数据');
+        Route::delete('/recycle-bin/{id}', [\app\admin\controller\system\SystemRecycleBinController::class, 'restore'])->name('删除回收站数据');
+    });
 })->middleware([
     app\middleware\AllowCrossOriginMiddleware::class,
     app\admin\middleware\AdminAuthTokenMiddleware::class,
     app\admin\middleware\AdminAuthPermissionMiddleware::class,
     app\admin\middleware\AdminLogMiddleware::class,
-//    app\admin\middleware\RouteRestrictionMiddleware::class,//演示系统拦截不允许操作路由
+    //    app\admin\middleware\RouteRestrictionMiddleware::class,//演示系统拦截不允许操作路由
 ]);
 

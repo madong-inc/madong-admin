@@ -11,7 +11,7 @@
  Target Server Version : 80012
  File Encoding         : 65001
 
- Date: 17/11/2024 17:04:02
+ Date: 24/11/2024 00:19:28
 */
 
 SET NAMES utf8mb4;
@@ -272,6 +272,21 @@ CREATE TABLE `ma_system_post`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_unicode_ci COMMENT = '岗位信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Table structure for ma_system_recycle_bin
+-- ----------------------------
+DROP TABLE IF EXISTS `ma_system_recycle_bin`;
+CREATE TABLE `ma_system_recycle_bin`  (
+  `id` bigint(20) UNSIGNED NOT NULL COMMENT 'ID',
+  `data` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '回收的数据',
+  `data_table` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '数据表',
+  `enabled` tinyint(4) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否已还原',
+  `ip` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '操作者IP',
+  `operate_id` bigint(20) UNSIGNED NOT NULL DEFAULT 0 COMMENT '操作管理员',
+  `create_time` bigint(20) UNSIGNED NULL DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '数据回收记录表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
 -- Table structure for ma_system_role
 -- ----------------------------
 DROP TABLE IF EXISTS `ma_system_role`;
@@ -369,7 +384,7 @@ CREATE TABLE `ma_system_user`  (
   `created_by` bigint(20) NULL DEFAULT NULL COMMENT '创建者',
   `updated_by` bigint(20) NULL DEFAULT NULL COMMENT '更新者',
   `create_time` int(11) NULL DEFAULT NULL COMMENT '创建时间',
-  `update_time` int(11) NULL DEFAULT NULL COMMENT '修改时间',
+  `update_time` int(11) UNSIGNED NULL DEFAULT NULL COMMENT '修改时间',
   `delete_time` int(11) NULL DEFAULT NULL COMMENT '删除时间',
   `sex` tinyint(1) NULL DEFAULT 0 COMMENT '0=未知  1=男 2=女',
   `remark` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL COMMENT '备注',

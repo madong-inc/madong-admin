@@ -185,7 +185,7 @@ class Crud extends Base
                 throw new AdminException('参数错误');
             }
             $this->service->transaction(function () use ($data) {
-                $data         = is_array($data) ? $data : explode(',', $data);
+                $data = is_array($data) ? $data : explode(',', $data);
                 foreach ($data as $id) {
                     $item = $this->service->get($id);
                     if (!$item) {
@@ -207,19 +207,28 @@ class Crud extends Base
      *
      * @return \support\Response
      */
-    public
-    function recovery(Request $request): \support\Response
+    public function recovery(Request $request): \support\Response
     {
         try {
-            $id = $request->route->param('id');
-            throw new AdminException('暂不支持此操作');
+            $id   = $request->route->param('id');
+            $data = $request->input('data', []);
+            $data = !empty($id) && $id !== '0' ? $id : $data;
+            if (empty($data)) {
+                throw new AdminException('参数错误');
+            }
+            $this->service->transaction(function () use ($data) {
+                $data = is_array($data) ? $data : explode(',', $data);
+                foreach ($data as $id) {
+                    $this->service->update($id, ['delete' => null]);
+                }
+            });
+            return Json::success('操作成功', []);
         } catch (\Throwable $e) {
             return Json::fail($e->getMessage());
         }
     }
 
-    protected
-    function selectInput(Request $request): array
+    protected function selectInput(Request $request): array
     {
         $field        = $request->input('field', '*');
         $sort         = $request->input('order', 'sort');
@@ -300,8 +309,7 @@ class Crud extends Base
      *
      * @return array
      */
-    protected
-    function insertInput(Request $request): array
+    protected function insertInput(Request $request): array
     {
         $data           = $this->inputFilter($request->all());
         $password_filed = 'password';
@@ -319,8 +327,7 @@ class Crud extends Base
      *
      * @return array
      */
-    protected
-    function inputFilter(array $data, array $skipKeys = []): array
+    protected function inputFilter(array $data, array $skipKeys = []): array
     {
         $model   = $this->service->getModel();
         $columns = $model->getTableFields();
@@ -351,8 +358,7 @@ class Crud extends Base
      *
      * @return \support\Response
      */
-    protected
-    function formatTree($items): \support\Response
+    protected function formatTree($items): \support\Response
     {
         $format_items = [];
         foreach ($items as $item) {
@@ -375,8 +381,7 @@ class Crud extends Base
      *
      * @return \support\Response
      */
-    protected
-    function formatTableTree($data, $total): \support\Response
+    protected function formatTableTree($data, $total): \support\Response
     {
         $tree  = new Tree($data->toArray());
         $items = $tree->getTree();
@@ -390,8 +395,7 @@ class Crud extends Base
      *
      * @return \support\Response
      */
-    protected
-    function formatSelect($items): \support\Response
+    protected function formatSelect($items): \support\Response
     {
         $formatted_items = [];
         foreach ($items as $item) {
@@ -412,14 +416,12 @@ class Crud extends Base
      *
      * @return \support\Response
      */
-    protected
-    function formatNormal($items, $total): \support\Response
+    protected function formatNormal($items, $total): \support\Response
     {
         return Json::success('ok', compact('items', 'total'));
     }
 
-    public
-    function dev(Request $request): \support\Response
+    public function dev(Request $request): \support\Response
     {
         return Json::fail('接口开发中');
     }
