@@ -11,7 +11,7 @@
  Target Server Version : 80012
  File Encoding         : 65001
 
- Date: 24/11/2024 00:19:28
+ Date: 24/11/2024 16:13:15
 */
 
 SET NAMES utf8mb4;
@@ -278,7 +278,8 @@ DROP TABLE IF EXISTS `ma_system_recycle_bin`;
 CREATE TABLE `ma_system_recycle_bin`  (
   `id` bigint(20) UNSIGNED NOT NULL COMMENT 'ID',
   `data` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '回收的数据',
-  `data_table` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '数据表',
+  `table_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '数据表',
+  `table_prefix` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '表前缀',
   `enabled` tinyint(4) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否已还原',
   `ip` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '操作者IP',
   `operate_id` bigint(20) UNSIGNED NOT NULL DEFAULT 0 COMMENT '操作管理员',

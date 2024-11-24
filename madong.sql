@@ -11,7 +11,7 @@
  Target Server Version : 80012
  File Encoding         : 65001
 
- Date: 24/11/2024 00:20:06
+ Date: 24/11/2024 16:12:58
 */
 
 SET NAMES utf8mb4;
@@ -58,26 +58,6 @@ CREATE TABLE `ma_system_config`  (
 -- ----------------------------
 -- Records of ma_system_config
 -- ----------------------------
-INSERT INTO `ma_system_config` VALUES (0, 'system_storage', 'local', '本地存储', '{\"root\":\"public\",\"dirname\":\"upload\",\"domain\":\"http:\\/\\/127.0.0.1:8899\"}', 1, 1, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `ma_system_config` VALUES (1, 'system_storage', 'oss', 'oss', '{\"accessKeyId\":\"1\",\"accessKeySecret\":\"2\",\"bucket\":\"1\",\"domain\":\"1\",\"endpoint\":\"22\",\"dirname\":\"22\"}', 1, 1, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `ma_system_config` VALUES (2, 'system_storage', 'cos', 'cos', '{\"secretId\":\"13\",\"secretKey\":\"23\",\"bucket\":\"23\",\"domain\":\"23\",\"region\":\"23\",\"dirname\":\"23\"}', 1, 1, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `ma_system_config` VALUES (3, 'system_storage', 'qiniu', 'qiniu', '{\"secretId\":\"13\",\"secretKey\":\"23\",\"bucket\":\"23\",\"domain\":\"23\",\"region\":\"23\",\"dirname\":\"23\"}', 1, 1, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `ma_system_config` VALUES (4, 'system_storage', 'basic', '文件上传基础配置', '{\"default\":\"local\",\"single_limit\":\"1024\",\"total_limit\":\"1024\",\"nums\":\"100\",\"include\":\"png,image\",\"exclude\":\"mp4,php\"}', 1, 1, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `ma_system_config` VALUES (5, 'system_config', 'site_open', '站点开启', '1', 1, 1, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `ma_system_config` VALUES (6, 'system_config', 'site_url', '网站地址', 'http://127.0.0.1:8899/', 1, 1, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `ma_system_config` VALUES (7, 'system_config', 'site_name', '站点名称', 'MaDong Admin', 1, 1, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `ma_system_config` VALUES (8, 'system_config', 'site_record_no', '网站ICP', '', 1, 1, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `ma_system_config` VALUES (9, 'system_config', 'site_logo', '网站Logo', '', 0, 1, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `ma_system_config` VALUES (10, 'system_config', 'site_network_security', '网备案号', NULL, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `ma_system_config` VALUES (11, 'system_config', 'site_keywords', '关键字', 'MaDong', 0, 1, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `ma_system_config` VALUES (12, 'system_config', 'site_description', '网站描述', 'MaDong Admin 快速开发框架', 0, 1, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `ma_system_config` VALUES (13, 'system_config', 'site_icp_url', 'ICP URL', 'https://beian.miit.gov.cn/', 0, 1, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `ma_system_config` VALUES (14, 'system_config', 'site_network_security_url', '网安备案链接', NULL, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `ma_system_config` VALUES (234752607196028928, 'system_upload_basic', 'mode', '上传模式', 'oss', 1, 1, 1732023091, NULL, 1732031844, NULL, NULL, NULL);
-INSERT INTO `ma_system_config` VALUES (234752607263137792, 'system_upload_basic', 'single_limit', '上传大小', '1024', 1, 1, 1732023091, NULL, 1732031844, NULL, NULL, NULL);
-INSERT INTO `ma_system_config` VALUES (234752607279915008, 'system_upload_basic', 'total_limit', '文件限制', '1028', 1, 1, 1732023091, NULL, 1732031844, NULL, NULL, NULL);
-INSERT INTO `ma_system_config` VALUES (234752607296692224, 'system_upload_basic', 'nums', '数量限制', 'sc ', 1, 1, 1732023091, NULL, 1732031844, NULL, NULL, NULL);
-INSERT INTO `ma_system_config` VALUES (234752607313469440, 'system_upload_basic', 'exclude', '不允许文件类型', 'sdcd', 1, 1, 1732023091, NULL, 1732031844, NULL, NULL, NULL);
 INSERT INTO `ma_system_config` VALUES (234808972845260800, 'local', 'root', '', 'public', 0, 1, 1732029810, NULL, 1732029878, NULL, NULL, NULL);
 INSERT INTO `ma_system_config` VALUES (234808972937535488, 'local', 'dirname', '', 'upload', 0, 1, 1732029810, NULL, 1732029878, NULL, NULL, NULL);
 INSERT INTO `ma_system_config` VALUES (234808972962701312, 'local', 'domain', '', 'http://127.0.0.1:8899/', 0, 1, 1732029810, NULL, 1732029878, NULL, NULL, NULL);
@@ -111,32 +91,31 @@ INSERT INTO `ma_system_config` VALUES (234813346220875776, 's3', 'endpoint', '',
 INSERT INTO `ma_system_config` VALUES (234813346246041600, 's3', 'region', '', '12', 0, 1, 1732030332, NULL, 1732030332, NULL, NULL, NULL);
 INSERT INTO `ma_system_config` VALUES (234813346262818816, 's3', 'acl', '', '6', 0, 1, 1732030332, NULL, 1732030332, NULL, NULL, NULL);
 INSERT INTO `ma_system_config` VALUES (234813346287984640, 's3', 'remark', '', '4', 0, 1, 1732030332, NULL, 1732030332, NULL, NULL, NULL);
-INSERT INTO `ma_system_config` VALUES (234819702873137152, 'system_setting_sms', 'enable', '', '1', 0, 1, 1732031089, NULL, 1732031111, NULL, NULL, NULL);
-INSERT INTO `ma_system_config` VALUES (234819702898302976, 'system_setting_sms', 'access_key_id', '', '12', 0, 1, 1732031089, NULL, 1732031111, NULL, NULL, NULL);
-INSERT INTO `ma_system_config` VALUES (234819702915080192, 'system_setting_sms', 'access_key_secret', '', '121', 0, 1, 1732031089, NULL, 1732031111, NULL, NULL, NULL);
-INSERT INTO `ma_system_config` VALUES (234819702931857408, 'system_setting_sms', 'sign_name', '', '12454', 0, 1, 1732031089, NULL, 1732031111, NULL, NULL, NULL);
-INSERT INTO `ma_system_config` VALUES (234820886178570240, 'system_setting_email', 'SMTPSecure', '', 'ssl', 0, 1, 1732031231, NULL, 1732031258, NULL, NULL, NULL);
-INSERT INTO `ma_system_config` VALUES (234820886203736064, 'system_setting_email', 'Host', '', '12', 0, 1, 1732031231, NULL, 1732031258, NULL, NULL, NULL);
-INSERT INTO `ma_system_config` VALUES (234820886220513280, 'system_setting_email', 'Port', '', '334', 0, 1, 1732031231, NULL, 1732031258, NULL, NULL, NULL);
-INSERT INTO `ma_system_config` VALUES (234820886237290496, 'system_setting_email', 'Username', '', '454', 0, 1, 1732031231, NULL, 1732031258, NULL, NULL, NULL);
-INSERT INTO `ma_system_config` VALUES (234820886254067712, 'system_setting_email', 'Password', '', '545', 0, 1, 1732031231, NULL, 1732031258, NULL, NULL, NULL);
-INSERT INTO `ma_system_config` VALUES (234820886270844928, 'system_setting_email', 'From', '', '454', 0, 1, 1732031231, NULL, 1732031258, NULL, NULL, NULL);
-INSERT INTO `ma_system_config` VALUES (234820886279233536, 'system_setting_email', 'FromName', '', '45', 0, 1, 1732031231, NULL, 1732031258, NULL, NULL, NULL);
-INSERT INTO `ma_system_config` VALUES (234820886304399360, 'system_setting_email', 'email', '', '45454', 0, 1, 1732031231, NULL, 1732031231, NULL, NULL, NULL);
-INSERT INTO `ma_system_config` VALUES (234824011379646464, 'email_setting', 'SMTPSecure', '', 'tsl', 0, 1, 1732031603, NULL, 1732031667, NULL, NULL, NULL);
-INSERT INTO `ma_system_config` VALUES (234824011396423680, 'email_setting', 'Host', '', '12', 0, 1, 1732031603, NULL, 1732031667, NULL, NULL, NULL);
-INSERT INTO `ma_system_config` VALUES (234824011429978112, 'email_setting', 'Port', '', '12', 0, 1, 1732031603, NULL, 1732031667, NULL, NULL, NULL);
-INSERT INTO `ma_system_config` VALUES (234824011455143936, 'email_setting', 'Username', '', '35', 0, 1, 1732031603, NULL, 1732031667, NULL, NULL, NULL);
-INSERT INTO `ma_system_config` VALUES (234824011480309760, 'email_setting', 'Password', '', '8', 0, 1, 1732031603, NULL, 1732031667, NULL, NULL, NULL);
-INSERT INTO `ma_system_config` VALUES (234824011513864192, 'email_setting', 'From', '', '8', 0, 1, 1732031603, NULL, 1732031667, NULL, NULL, NULL);
-INSERT INTO `ma_system_config` VALUES (234824011539030016, 'email_setting', 'FromName', '', '8', 0, 1, 1732031603, NULL, 1732031667, NULL, NULL, NULL);
-INSERT INTO `ma_system_config` VALUES (234826217575161856, 'site_setting', 'site_open', '', '1', 0, 1, 1732031866, NULL, 1732031866, NULL, NULL, NULL);
-INSERT INTO `ma_system_config` VALUES (234826217591939072, 'site_setting', 'site_url', '', 'Mdong', 0, 1, 1732031866, NULL, 1732031866, NULL, NULL, NULL);
-INSERT INTO `ma_system_config` VALUES (234826217608716288, 'site_setting', 'site_name', '', '码动开源', 0, 1, 1732031866, NULL, 1732031866, NULL, NULL, NULL);
-INSERT INTO `ma_system_config` VALUES (234826217633882112, 'site_setting', 'site_logo', '', '', 0, 1, 1732031866, NULL, 1732031866, NULL, NULL, NULL);
-INSERT INTO `ma_system_config` VALUES (234826217667436544, 'site_setting', 'site_network_security', '', '00001', 0, 1, 1732031866, NULL, 1732031866, NULL, NULL, NULL);
-INSERT INTO `ma_system_config` VALUES (234826217700990976, 'site_setting', 'site_description', '', '9887', 0, 1, 1732031866, NULL, 1732031866, NULL, NULL, NULL);
-INSERT INTO `ma_system_config` VALUES (234826217726156800, 'site_setting', 'site_record_no', '', '1010', 0, 1, 1732031866, NULL, 1732031866, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (234824011379646464, 'email_setting', 'SMTPSecure', '', 'ssl', 0, 1, 1732031603, NULL, 1732429949, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (234824011396423680, 'email_setting', 'Host', '', 'smtp.qq.com', 0, 1, 1732031603, NULL, 1732429949, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (234824011429978112, 'email_setting', 'Port', '', '465', 0, 1, 1732031603, NULL, 1732429949, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (234824011455143936, 'email_setting', 'Username', '', 'kzhzjdyw888@qq.com', 0, 1, 1732031603, NULL, 1732429949, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (234824011480309760, 'email_setting', 'Password', '', '', 0, 1, 1732031603, NULL, 1732429949, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (234824011513864192, 'email_setting', 'From', '', '', 0, 1, 1732031603, NULL, 1732429949, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (234824011539030016, 'email_setting', 'FromName', '', 'kzhzjdyw888@qq.com', 0, 1, 1732031603, NULL, 1732429949, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (238040600610611200, 'basic_upload_setting', 'mode', '上传模式', 'local', 0, 1, 1732415050, NULL, 1732429734, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (238040600669331456, 'basic_upload_setting', 'single_limit', '上传大小', '1024', 0, 1, 1732415050, NULL, 1732429734, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (238040600694497280, 'basic_upload_setting', 'total_limit', '文件限制', '1024', 0, 1, 1732415050, NULL, 1732429734, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (238040600711274496, 'basic_upload_setting', 'nums', '数量限制', '10', 0, 1, 1732415050, NULL, 1732429734, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (238040600728051712, 'basic_upload_setting', 'exclude', '不允许文件类型', 'php,ext,exe', 0, 1, 1732415050, NULL, 1732429734, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (238164553500991488, 'site_setting', 'site_open', '站点开启', '1', 0, 1, 1732429827, NULL, 1732430264, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (238164553517768704, 'site_setting', 'site_url', '网站地址', '127.0.0.1:8899', 0, 1, 1732429827, NULL, 1732430264, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (238164553534545920, 'site_setting', 'site_name', '站点名称', 'MaDong Admin', 0, 1, 1732429827, NULL, 1732430264, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (238164553551323136, 'site_setting', 'site_logo', '站点Logo', 'https://madong.tech/assets/images/logo.svg', 0, 1, 1732429827, NULL, 1732430264, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (238164553568100352, 'site_setting', 'site_network_security', '网备案号', '2024042441号-2', 0, 1, 1732429827, NULL, 1732430264, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (238164553584877568, 'site_setting', 'site_description', '网站描述', '快速开发框架', 0, 1, 1732429827, NULL, 1732430264, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (238164553610043392, 'site_setting', 'site_record_no', '网站ICP', '2024042442', 0, 1, 1732429827, NULL, 1732430264, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (238164553618432000, 'site_setting', 'site_icp_url', 'ICP URL', 'https://beian.miit.gov.cn/', 0, 1, 1732429827, NULL, 1732430264, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (238164553635209216, 'site_setting', 'site_network_security_url', '网安备案链接', '', 0, 1, 1732429827, NULL, 1732430264, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (238165979958616064, 'sms_setting', 'enable', '是否开启', '1', 0, 1, 1732429997, NULL, 1732430097, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (238165979975393280, 'sms_setting', 'access_key_id', 'access_key_id', '234813346262818816', 0, 1, 1732429997, NULL, 1732430097, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (238165979992170496, 'sms_setting', 'access_key_secret', 'access_key_secret', '238164553517768704', 0, 1, 1732429997, NULL, 1732430097, NULL, NULL, NULL);
+INSERT INTO `ma_system_config` VALUES (238165980201885696, 'sms_setting', 'sign_name', 'sign_name', '【码动开源】，你的验证码是{code}，有效期5分钟。', 0, 1, 1732429997, NULL, 1732430097, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for ma_system_crontab
@@ -240,7 +219,6 @@ INSERT INTO `ma_system_dept` VALUES (3, 1, '0,1', '00001', '厦门总公司', NU
 INSERT INTO `ma_system_dept` VALUES (4, 2, '0,1,2', '00003', '市场部门', NULL, NULL, 1, 1, 1, 1, 1721640326, 1723219992, NULL, NULL);
 INSERT INTO `ma_system_dept` VALUES (5, 2, '0,1,2', '00004', '财务部门', NULL, NULL, 1, 1, 1, 1, 1721640326, 1723219992, NULL, NULL);
 INSERT INTO `ma_system_dept` VALUES (6, 3, '0,1,3', '00005', '研发部门', NULL, NULL, 1, 1, 1, 1, 1721640326, 1723219253, NULL, NULL);
-INSERT INTO `ma_system_dept` VALUES (7, 3, '0,1,3', '00006', '市场部门', '81896469954695168', NULL, 1, 1, 1, 1, 1721640326, 1730035124, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for ma_system_dept_leader
@@ -485,6 +463,9 @@ INSERT INTO `ma_system_menu` VALUES (111827149941510144, 111819772848640000, 'ad
 INSERT INTO `ma_system_menu` VALUES (111960469564166144, 111819772848640000, NULL, '定时任务', 'monitor:crontab', NULL, 2, 999, '/monitor/crontab', '/monitor/crontab/index', NULL, 'ant-design:dashboard-filled', 1, 0, NULL, 1, 0, 0, 1, 0, NULL, 1730731856, NULL, 1730774898, NULL, NULL, 'GET');
 INSERT INTO `ma_system_menu` VALUES (112877567396155392, 1704792844212551684, NULL, '附件管理', 'system:files', NULL, 2, 999, '/system/files', '/system/files/index', NULL, 'ant-design:folder-outlined', 1, 0, NULL, 1, 0, 0, 1, 0, NULL, 1730950509, NULL, 1730963813, NULL, NULL, 'GET');
 INSERT INTO `ma_system_menu` VALUES (114491196964999168, 1704792844212551684, NULL, '系统参数', 'system:config', NULL, 2, 999999, '/systen/config', '/system/config/index', NULL, 'ant-design:tool-outlined', 1, 0, NULL, 1, 0, 0, 1, 0, NULL, 1731335228, NULL, 1731833648, NULL, NULL, 'GET');
+INSERT INTO `ma_system_menu` VALUES (238042663444815872, 1704792844212551684, NULL, '数据回收', 'system:recycle_bin', NULL, 2, 999999999, '/system/recycle-bin', '/system/recycle-bin/index', NULL, 'ant-design:rest-filled', 1, 0, NULL, 1, 0, 0, 1, 0, NULL, 1732415296, NULL, 1732415931, NULL, NULL, 'GET');
+INSERT INTO `ma_system_menu` VALUES (238044307846864896, 238042663444815872, NULL, '恢复', 'system:recycle_bin:recover', NULL, 3, 999, NULL, NULL, NULL, NULL, 1, 0, NULL, 1, 1, 0, 1, 0, NULL, 1732415492, NULL, 1732415670, NULL, NULL, 'GET');
+INSERT INTO `ma_system_menu` VALUES (238044685007069184, 238042663444815872, NULL, '删除', 'system:recycle_bin:remove', NULL, 3, 999, NULL, NULL, NULL, NULL, 1, 0, NULL, 1, 0, 0, 1, 0, NULL, 1732415537, NULL, 1732415588, NULL, NULL, 'GET');
 INSERT INTO `ma_system_menu` VALUES (1704792844212551681, 0, 'admin', '首页', 'Dashboard', NULL, 1, -1, '/', 'BasicLayout', '/analytics', 'ant-design:home-outlined', 1, 0, NULL, 1, 0, 0, 1, 0, NULL, 1722348622, 1567738052492341249, 1722348622, 1567738052492341249, NULL, 'GET');
 INSERT INTO `ma_system_menu` VALUES (1704792844212551682, 1704792844212551681, 'admin', '分析页', 'Analytics', NULL, 1, -1, '/analytics', '/dashboard/analytics/index', NULL, 'ant-design:home-outlined', 1, 0, NULL, 1, 0, 0, 1, 1, NULL, 1722348622, 1567738052492341249, 1722348622, 1567738052492341249, NULL, 'GET');
 INSERT INTO `ma_system_menu` VALUES (1704792844212551683, 1704792844212551681, 'admin', '工作台', 'Workspace', NULL, 1, -1, '/workspace', '/dashboard/workspace/index', NULL, 'ant-design:home-outlined', 1, 0, NULL, 1, 0, 0, 1, 0, NULL, 1722348622, 1567738052492341249, 1722348622, 1567738052492341249, NULL, 'GET');
@@ -555,7 +536,8 @@ DROP TABLE IF EXISTS `ma_system_recycle_bin`;
 CREATE TABLE `ma_system_recycle_bin`  (
   `id` bigint(20) UNSIGNED NOT NULL COMMENT 'ID',
   `data` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '回收的数据',
-  `data_table` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '数据表',
+  `table_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '数据表',
+  `table_prefix` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '表前缀',
   `enabled` tinyint(4) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否已还原',
   `ip` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '操作者IP',
   `operate_id` bigint(20) UNSIGNED NOT NULL DEFAULT 0 COMMENT '操作管理员',
@@ -566,8 +548,8 @@ CREATE TABLE `ma_system_recycle_bin`  (
 -- ----------------------------
 -- Records of ma_system_recycle_bin
 -- ----------------------------
-INSERT INTO `ma_system_recycle_bin` VALUES (237589900457943040, '{\"id\":109292941754896384,\"user_name\":\"1212\",\"real_name\":\"45454\",\"nick_name\":null,\"password\":\"$2y$10$Yw78SY0U5VqLmElg3fOjJ.TdO1gEu38pQmH3hPMSA\\/N7kN0VFjSui\",\"is_super\":2,\"mobile_phone\":null,\"email\":\"86\",\"avatar\":null,\"signed\":null,\"dashboard\":null,\"dept_id\":2,\"enabled\":0,\"login_ip\":null,\"login_time\":null,\"backend_setting\":null,\"created_by\":1,\"updated_by\":1,\"create_time\":1730095867,\"update_time\":1732361323,\"delete_time\":1732361323,\"sex\":1,\"remark\":\"888\",\"birthday\":null,\"tel\":\"0735-8830323\",\"is_locked\":0,\"role_id_list\":[108506227927027712],\"post_id_list\":[]}', 'system_user', 0, '', 1, 1732361323);
-INSERT INTO `ma_system_recycle_bin` VALUES (237592305706737664, '{\"id\":109292941754896384,\"user_name\":\"1212\",\"real_name\":\"45454\",\"nick_name\":null,\"password\":\"$2y$10$Yw78SY0U5VqLmElg3fOjJ.TdO1gEu38pQmH3hPMSA\\/N7kN0VFjSui\",\"is_super\":2,\"mobile_phone\":null,\"email\":\"86\",\"avatar\":null,\"signed\":null,\"dashboard\":null,\"dept_id\":2,\"enabled\":0,\"login_ip\":null,\"login_time\":null,\"backend_setting\":null,\"created_by\":1,\"updated_by\":1,\"create_time\":1730095867,\"update_time\":1732361557,\"delete_time\":null,\"sex\":1,\"remark\":\"888\",\"birthday\":null,\"tel\":\"0735-8830323\",\"is_locked\":0,\"role_id_list\":[108506227927027712],\"post_id_list\":[]}', 'system_user', 0, '', 1, 1732361609);
+INSERT INTO `ma_system_recycle_bin` VALUES (238117280163307520, '{\"id\":238115444610048000,\"code\":\"qqe\",\"name\":\"qweq\",\"sort\":11,\"enabled\":1,\"created_by\":1,\"updated_by\":1,\"create_time\":1732423972,\"update_time\":1732423972,\"delete_time\":null,\"remark\":\"1\"}', 'system_post', 'ma_', 0, '127.0.0.1', 1, 1732424191);
+INSERT INTO `ma_system_recycle_bin` VALUES (238117416654348288, '{\"id\":7,\"pid\":3,\"level\":\"0,1,3\",\"code\":\"00006\",\"name\":\"\\u5e02\\u573a\\u90e8\\u95e8\",\"main_leader_id\":\"81896469954695168\",\"phone\":null,\"enabled\":1,\"sort\":1,\"created_by\":1,\"updated_by\":1,\"create_time\":1721640326,\"update_time\":1730035124,\"delete_time\":null,\"remark\":null,\"leader_id_list\":[]}', 'system_dept', 'ma_', 0, '127.0.0.1', 1, 1732424208);
 
 -- ----------------------------
 -- Table structure for ma_system_role
@@ -734,15 +716,11 @@ CREATE TABLE `ma_system_user`  (
 -- ----------------------------
 -- Records of ma_system_user
 -- ----------------------------
-INSERT INTO `ma_system_user` VALUES (1, 'admin', '超级管理员', '', '$2y$10$X1CoPxnqOZPIuyOk/RSXoOIVxflBZVUyqF/8fYOKzvn2hk0VGU52C', 1, '18888888888', 'admin@admin.com', '', 'Today is very good！', 'statistics', 4, 1, '127.0.0.1', 1732377862, '{\"mode\":\"light\",\"tag\":true,\"menuCollapse\":false,\"menuWidth\":230,\"layout\":\"classic\",\"skin\":\"mine\",\"i18n\":true,\"language\":\"zh_CN\",\"animation\":\"ma-slide-down\",\"color\":\"#165DFF\"}', 1, 1, NULL, 1732377862, NULL, 1, NULL, '2024-08-15 23:52:01', NULL, 0);
-INSERT INTO `ma_system_user` VALUES (73421384377831424, '12对对对4', '测试用户2', NULL, '$2y$10$Q70WC9RBqMSS72DmppsbIuQtyAydXSmeD.Ae6W8YhmE/w15uLLpiy', 2, NULL, NULL, NULL, NULL, NULL, 4, 0, NULL, NULL, NULL, NULL, 1, 1721543422, 1730110040, NULL, 1, NULL, '2024-08-11', NULL, 0);
-INSERT INTO `ma_system_user` VALUES (73421690444582912, '12对对对45', '测试用户3', NULL, '$2y$10$6JMairFZ.P.lD1RhTIEHYOxwZqUWMKW1dDlfMA1NauQZQcUBOo/uu', 2, NULL, NULL, NULL, NULL, NULL, 5, 0, NULL, NULL, NULL, NULL, 1, 1721543495, 1730119816, NULL, 1, NULL, '2024-08-11', NULL, 0);
-INSERT INTO `ma_system_user` VALUES (73421839434649600, '12对对对45f', '测试用户4', NULL, '$2y$10$Q70WC9RBqMSS72DmppsbIuQtyAydXSmeD.Ae6W8YhmE/w15uLLpiy', 2, NULL, NULL, NULL, NULL, NULL, 6, 0, NULL, NULL, NULL, NULL, 1, 1721543530, 1730096125, NULL, 1, NULL, '2024-08-11', NULL, 0);
-INSERT INTO `ma_system_user` VALUES (73422563472183296, '1288', '测试用户5', NULL, '$2y$10$Q70WC9RBqMSS72DmppsbIuQtyAydXSmeD.Ae6W8YhmE/w15uLLpiy', 2, NULL, NULL, NULL, NULL, NULL, 7, 0, NULL, NULL, NULL, NULL, 1, 1721543703, 1730096131, NULL, 1, NULL, '2024-08-11', NULL, 0);
-INSERT INTO `ma_system_user` VALUES (81893691261849600, 'dfdvdf', '测试用户6', NULL, '$2y$10$gyCkjXCBZai.wRbBaQ0puOoPkNkoAqMmJeztOCahAWS0h.7pdPsaq', 2, NULL, '405784684@qq.com', NULL, NULL, NULL, 3, 0, NULL, NULL, NULL, NULL, NULL, 1723563377, 1723563377, NULL, 1, NULL, NULL, '0592-8830352', 0);
-INSERT INTO `ma_system_user` VALUES (81896469954695168, 'dfdvdf5', '测试用户7', NULL, '', 2, NULL, '405784684@qq.com', NULL, NULL, NULL, 2, 0, NULL, NULL, NULL, NULL, 1, 1723564040, 1730097723, NULL, 2, '123122s', NULL, '0592-8830352', 0);
-INSERT INTO `ma_system_user` VALUES (108620053292912640, 'admin1', '测试用户9', NULL, '$2y$10$MQCWNNObA4REPeWhYm1OX.z8G4h4FiYXZ0.W.6b8Qk0MXvFIy2hK.', 2, NULL, '1111', NULL, NULL, NULL, 2, 0, NULL, NULL, NULL, 1, 1, 1729935438, 1730042777, NULL, 1, NULL, NULL, NULL, 0);
-INSERT INTO `ma_system_user` VALUES (109227769325555712, '12', '4545', NULL, '$2y$10$fl4JtOVhtw7/qLi.Vs2S5OPnRmHSbWfF.u0mFB8nKm2rjlXAxierq', 2, NULL, NULL, NULL, NULL, NULL, 2, 0, NULL, NULL, NULL, 1, 1, 1730080329, 1730095645, NULL, 1, NULL, NULL, '0735-8830323', 0);
+INSERT INTO `ma_system_user` VALUES (1, 'admin', '超级管理员', '', '$2y$10$X1CoPxnqOZPIuyOk/RSXoOIVxflBZVUyqF/8fYOKzvn2hk0VGU52C', 1, '18888888888', 'admin@admin.com', '', 'Today is very good！', 'statistics', 4, 1, '127.0.0.1', 1732432145, '{\"mode\":\"light\",\"tag\":true,\"menuCollapse\":false,\"menuWidth\":230,\"layout\":\"classic\",\"skin\":\"mine\",\"i18n\":true,\"language\":\"zh_CN\",\"animation\":\"ma-slide-down\",\"color\":\"#165DFF\"}', 1, 1, NULL, 1732432145, NULL, 1, NULL, '2024-08-15 23:52:01', NULL, 0);
+INSERT INTO `ma_system_user` VALUES (73421384377831424, '12对对对4', '测试用户2', NULL, '$2y$10$Q70WC9RBqMSS72DmppsbIuQtyAydXSmeD.Ae6W8YhmE/w15uLLpiy', 2, NULL, NULL, NULL, NULL, NULL, 4, 1, NULL, NULL, NULL, NULL, 1, 1721543422, 1730110040, NULL, 1, NULL, '2024-08-11', NULL, 0);
+INSERT INTO `ma_system_user` VALUES (73421690444582912, '12对对对45', '测试用户3', NULL, '$2y$10$6JMairFZ.P.lD1RhTIEHYOxwZqUWMKW1dDlfMA1NauQZQcUBOo/uu', 2, NULL, NULL, NULL, NULL, NULL, 5, 1, NULL, NULL, NULL, NULL, 1, 1721543495, 1730119816, NULL, 1, NULL, '2024-08-11', NULL, 0);
+INSERT INTO `ma_system_user` VALUES (73421839434649600, '12对对对45f', '测试用户4', NULL, '$2y$10$Q70WC9RBqMSS72DmppsbIuQtyAydXSmeD.Ae6W8YhmE/w15uLLpiy', 2, NULL, NULL, NULL, NULL, NULL, 6, 1, NULL, NULL, NULL, NULL, 1, 1721543530, 1730096125, NULL, 1, NULL, '2024-08-11', NULL, 0);
+INSERT INTO `ma_system_user` VALUES (73422563472183296, '1288', '测试用户5', NULL, '$2y$10$Q70WC9RBqMSS72DmppsbIuQtyAydXSmeD.Ae6W8YhmE/w15uLLpiy', 2, NULL, NULL, NULL, NULL, NULL, 7, 1, NULL, NULL, NULL, NULL, 1, 1721543703, 1732423903, 1732423903, 1, NULL, '2024-08-11', NULL, 0);
 
 -- ----------------------------
 -- Table structure for ma_system_user_post

@@ -48,7 +48,7 @@ class RouteRestrictionMiddleware implements MiddlewareInterface
         if (in_array($method, ['PUT', 'POST', 'DELETE'])) {
             foreach ($restrictedRoutes as $pattern) {
                 if (preg_match("#^$pattern$#", $currentPath)) {
-//                    return Json::fail('演示系统,不支持当前操作');
+//                    return Json::fail('演示环境,不支持当前操作');
                 }
             }
         }
