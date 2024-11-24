@@ -178,23 +178,28 @@ class Crud extends Base
     public function destroy(Request $request): \support\Response
     {
         try {
-            $id   = $request->route->param('id'); // 获取路由地址 id从
+            $id = $request->route->param('id'); // 获取路由地址 id从
+
             $data = $request->input('data', []);
             $data = !empty($id) && $id !== '0' ? $id : $data;
             if (empty($data)) {
                 throw new AdminException('参数错误');
             }
-            $this->service->transaction(function () use ($data) {
-                $data = is_array($data) ? $data : explode(',', $data);
+            $result = $this->service->transaction(function () use ($data) {
+                $data       = is_array($data) ? $data : explode(',', $data);
+                $deletedIds = [];
                 foreach ($data as $id) {
                     $item = $this->service->get($id);
                     if (!$item) {
                         continue; // 如果找不到项，跳过
                     }
                     $item->delete();
+                    $primaryKey   = $item->getPk();
+                    $deletedIds[] = $item->{$primaryKey};
                 }
+                return $deletedIds;
             });
-            return Json::success('ok', []);
+            return Json::success('ok', $result);
         } catch (\Throwable $e) {
             return Json::fail($e->getMessage());
         }
