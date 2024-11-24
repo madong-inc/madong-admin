@@ -35,6 +35,8 @@ class RouteRestrictionMiddleware implements MiddlewareInterface
             '/system/dict/\d+',
             '/system/dict-item',
             '/system/dict-item/\d+',
+            '/system/recycle-bin',
+            '/system/recycle-bin/\d+',
             '/system/config',
             '/monitor/crontab',
             '/monitor/crontab/\d+',

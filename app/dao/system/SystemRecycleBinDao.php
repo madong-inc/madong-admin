@@ -23,4 +23,14 @@ class SystemRecycleBinDao extends BaseDao
         return SystemRecycleBin::class;
     }
 
+    public function selectList(array $where, string $field = '*', int $page = 0, int $limit = 0, string $order = '', array $with = [], bool $search = false)
+    {
+        return parent::selectList($where, $field, $page, $limit, $order, ['operate'], $search);
+    }
+
+    public function get(array|string|int $id)
+    {
+        return parent::get($id, [], ['operate']);
+    }
+
 }

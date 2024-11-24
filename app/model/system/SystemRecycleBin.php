@@ -32,8 +32,8 @@ class SystemRecycleBin extends BaseTpORMModel
 
     protected $name = 'system_recycle_bin';
 
-    public function createdBy(): \think\model\relation\hasOne
+    public function operate(): \think\model\relation\hasOne
     {
-        return $this->hasOne(SystemUser::class, 'id', 'created_by')->bind(['created_name' => 'real_name']);
+        return $this->hasOne(SystemUser::class, 'id', 'operate_id')->bind(['operate_name' => 'real_name']);
     }
 }

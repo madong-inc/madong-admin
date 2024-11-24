@@ -22,6 +22,7 @@ Route::group(function () {
     Route::post('/system/send-sms', [\app\admin\controller\LoginController::class, 'sendSms'])->name('发送手机验证码');
     Route::get('/system/captcha', [\app\admin\controller\LoginController::class, 'captcha'])->name('验证码');
     Route::get('/system/get-captcha-open-flag', [\app\admin\controller\LoginController::class, 'getCaptchaOpenFlag'])->name('是否开启验证码');
+    Route::get('/system/config/info', [\app\admin\controller\system\SystemConfigController::class, 'getConfigInfo'])->name('配置获取');
 });
 
 Route::group('/system', function () {
@@ -175,7 +176,6 @@ Route::group('/system', function () {
      * 配置管理
      */
     Route::group(function () {
-        Route::get('/config/info', [\app\admin\controller\system\SystemConfigController::class, 'getConfigInfo'])->name('配置获取');
         Route::post('/config', [\app\admin\controller\system\SystemConfigController::class, 'store'])->name('保存配置');
     });
 
@@ -183,15 +183,16 @@ Route::group('/system', function () {
      * 回收站管理
      */
     Route::group(function () {
-        Route::get('/recycle-bin', [\app\admin\controller\system\SystemRecycleBinController::class, 'index'])->name('回收站列表');
+        Route::get('/recycle-bin', [\app\admin\controller\system\SystemRecycleBinController::class, 'index'])->name('回收数据列表');
+        Route::get('/recycle-bin/{id}', [\app\admin\controller\system\SystemRecycleBinController::class, 'show'])->name('回收数据详情');
         Route::put('/recycle-bin/{id}', [\app\admin\controller\system\SystemRecycleBinController::class, 'restore'])->name('恢复删除数据');
-        Route::delete('/recycle-bin/{id}', [\app\admin\controller\system\SystemRecycleBinController::class, 'restore'])->name('删除回收站数据');
+        Route::delete('/recycle-bin/{id}', [\app\admin\controller\system\SystemRecycleBinController::class, 'destroy'])->name('删除回收数据');
     });
 })->middleware([
     app\middleware\AllowCrossOriginMiddleware::class,
     app\admin\middleware\AdminAuthTokenMiddleware::class,
     app\admin\middleware\AdminAuthPermissionMiddleware::class,
     app\admin\middleware\AdminLogMiddleware::class,
-    //    app\admin\middleware\RouteRestrictionMiddleware::class,//演示系统拦截不允许操作路由
+    app\admin\middleware\RouteRestrictionMiddleware::class,//演示系统拦截不允许操作路由
 ]);
 

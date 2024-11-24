@@ -21,7 +21,7 @@ use think\model\concern\SoftDelete;
 class SystemUser extends BaseTpORMModel
 {
 
-//    use SoftDelete;
+    use SoftDelete;
 
     // 完整数据库表名称
     protected $name = 'system_user';

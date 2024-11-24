@@ -45,9 +45,10 @@ class SystemRecycleBinService extends BaseService
             if (!empty($data)) {
                 $this->transaction(function () use ($data) {
                     if (config('app.model_type', 'thinkORM') == 'thinkORM') {
-                        $tableName = $data->getData('data_table');
+                        $tablePrefix = $data->getData('table_prefix');
+                        $tableName = $data->getData('table_name');
                         $tableData = json_decode($data->getData('data'), true);
-                        $columns   = $this->getTableColumns($tableName);
+                        $columns   = $this->getTableColumns($tableName, $tablePrefix);
                         $tableData = array_intersect_key($tableData, array_flip($columns));
                         ThinkDb::name($tableName)->insert($tableData);
                     } else {
@@ -65,10 +66,11 @@ class SystemRecycleBinService extends BaseService
         }
     }
 
-    private function getTableColumns(string $tableName): array
+    private function getTableColumns(string $tableName, string $tablePrefix = ''): array
     {
         if (config('app.model_type', 'thinkORM') == 'thinkORM') {
-            $columns = \think\facade\Db::query("SHOW COLUMNS FROM `{$tableName}`");
+            $fullTableName = $tablePrefix . $tableName;
+            $columns       = \think\facade\Db::query("SHOW COLUMNS FROM `{$fullTableName}`");
             return array_column($columns, 'Field'); // 提取字段名
         } else {
             return LaravelDb::getSchemaBuilder()->getColumnListing($tableName);

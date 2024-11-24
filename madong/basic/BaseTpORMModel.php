@@ -186,14 +186,15 @@ class BaseTpORMModel extends Model
      */
     public static function onAfterDelete(Model $model)
     {
+        if ($model->isSoftDeleteEnabled()) {
+            return;
+        }
+        $table     = $model->getName();
+        $tableData = $model->getData();
+        $prefix    = $model->getConfig('prefix');
         try {
-            if ($model->isSoftDeleteEnabled()) {
-                return;
-            }
-            $table     = $model->getName();
-            $tableData = $model->getData();
             if (self::shouldStoreInRecycleBin($table)) {
-                $data                    = self::prepareRecycleBinData($tableData, $table);
+                $data                    = self::prepareRecycleBinData($tableData, $table, $prefix);
                 $systemRecycleBinService = Container::make(SystemRecycleBinService::class);
                 $systemRecycleBinService->save($data);
             }
@@ -207,13 +208,15 @@ class BaseTpORMModel extends Model
         return config('app.store_in_recycle_bin') && !in_array($table, config('app.exclude_from_recycle_bin'));
     }
 
-    private static function prepareRecycleBinData($tableData, $table): array
+    private static function prepareRecycleBinData($tableData, $table, $prefix): array
     {
         return [
-            'data'       => json_encode($tableData),
-            'data_table' => $table,
-            'enabled'    => 0,
-            'operate_id' => getCurrentUser(),
+            'data'         => json_encode($tableData),
+            'table_name'   => $table,
+            'table_prefix' => $prefix,
+            'enabled'      => 0,
+            'ip'           => request()->getRealIp(),
+            'operate_id'   => getCurrentUser(),
         ];
     }
 }
