@@ -24,10 +24,7 @@ use support\Request;
  */
 class SystemMenuService extends BaseService
 {
-    /**
-     * @var SystemMenuDao $dao
-     */
-    public $dao;
+
     public function __construct()
     {
         $this->dao = Container::make(SystemMenuDao::class);
