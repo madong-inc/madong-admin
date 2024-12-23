@@ -16,14 +16,16 @@ use app\admin\controller\Crud;
 use app\admin\validate\system\SystemCrontabValidate;
 use app\services\system\SystemCrontabLogService;
 use app\services\system\SystemCrontabService;
+use Exception;
 use madong\exception\AdminException;
 use madong\utils\Json;
 use support\Container;
 use support\Request;
+use Throwable;
 
 /**
- *
  * 定时任务
+ *
  * @author Mr.April
  * @since  1.0
  */
@@ -47,10 +49,10 @@ class CrontabController extends Crud
     public function resume(Request $request): \support\Response
     {
         try {
-            $data = $this->inputFilter($request->all(),['data']);
+            $data = $this->inputFilter($request->all(), ['data']);
             if (isset($this->validate) && $this->validate) {
                 if (!$this->validate->scene('resume')->check($data)) {
-                    throw new \Exception($this->validate->getError(),-1);
+                    throw new \Exception($this->validate->getError(), -1);
                 }
             }
             $this->service->resumeCrontab($data['data']);
@@ -70,10 +72,10 @@ class CrontabController extends Crud
     public function pause(Request $request): \support\Response
     {
         try {
-            $data = $this->inputFilter($request->all(),['data']);
+            $data = $this->inputFilter($request->all(), ['data']);
             if (isset($this->validate) && $this->validate) {
                 if (!$this->validate->scene('pause')->check($data)) {
-                    throw new \Exception($this->validate->getError(),-1);
+                    throw new \Exception($this->validate->getError(), -1);
                 }
             }
             $this->service->pauseCrontab($data['data']);
@@ -93,13 +95,13 @@ class CrontabController extends Crud
     public function execute(Request $request): \support\Response
     {
         try {
-            $data = $this->inputFilter($request->all(),['data']);
+            $data = $this->inputFilter($request->all(), ['data']);
             if (isset($this->validate) && $this->validate) {
                 if (!$this->validate->scene('execute')->check($data)) {
-                    throw new \Exception($this->validate->getError(),-1);
+                    throw new \Exception($this->validate->getError(), -1);
                 }
             }
-            $result = $this->service->runOneTask(['id'=>$data['data']]);
+            $result = $this->service->runOneTask(['id' => $data['data']]);
             if ($result['code'] == 1) {
                 throw new AdminException('执行失败' . $result['log']);
             }
@@ -109,20 +111,20 @@ class CrontabController extends Crud
         }
     }
 
-    public function update(Request $request): Response
+    public function update(Request $request): \support\Response
     {
         try {
             $id   = $request->route->param('id');
-            $data = $this->inputFilter($request->all(),['month','week','day','hour','minute','second']);
+            $data = $this->inputFilter($request->all(), ['month', 'week', 'day', 'hour', 'minute', 'second']);
             if (isset($this->validate) && $this->validate) {
                 if (!$this->validate->scene('update')->check($data)) {
                     throw new Exception($this->validate->getError());
                 }
             }
             $this->service->update($id, $data);
-            return $this->success('ok', []);
+            return Json::success('执行完成', []);
         } catch (Throwable $e) {
-            return $this->fail($e->getMessage());
+            return Json::fail($e->getMessage(), [], $e->getCode());
         }
     }
 }

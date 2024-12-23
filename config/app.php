@@ -18,7 +18,7 @@ use madong\services\scheduler\event\UrlTask;
 use madong\services\scheduler\event\SchedulingTask;
 
 return [
-    'debug'                    => true,
+    'debug'                    => false,
     'error_reporting'          => E_ALL,
     'default_timezone'         => 'Asia/Shanghai',
     'request_class'            => Request::class,
