@@ -24,6 +24,10 @@ Redis`
 - Gitee   仓库地址：https://gitee.com/motion-code/madong
 - Gitcode 仓库地址：https://gitcode.com/motion-code/madong
 
+#### 前端仓库
+- Gitee   仓库地址：https://gitee.com/motion-code/madong-vben5
+- Gitcode 仓库地址：https://gitcode.com/motion-code/madong-vben5
+
 
 
 #### 后端安装
@@ -41,7 +45,7 @@ Redis`
 
 #### 如何贡献
 
-非常欢迎你的加入！[提一个 Issue](https://gitee.com/motion-code/bolt/issues) 或者提交一个 Pull Request。
+非常欢迎你的加入！[提一个 Issue](https://gitee.com/motion-code/madong/issues) 或者提交一个 Pull Request。
 
 **Pull Request:**
 
@@ -67,6 +71,17 @@ Redis`
   - `ci` 持续集成
   - `types` 类型定义文件更改
   - `wip` 开发中
+
+
+#### 联系我
+
+如果您对开源技术感兴趣，或者希望与我交流合作，欢迎通过以下方式联系我：
+
+- **频道**：[pd52261144](https://pd.qq.com/s/3edfwx2lm)
+
+- **邮箱**：[405784684@qq.com]
+
+- **社区**：[https://madong.tech](https://madong.tech)
 
 
 #### 维护者
