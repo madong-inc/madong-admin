@@ -12,7 +12,8 @@
 
 namespace app\model\system;
 
-use madong\basic\BaseTpORMModel;
+use madong\basic\BaseLaORMModel;
+
 
 /**
  * 配置模型
@@ -20,7 +21,7 @@ use madong\basic\BaseTpORMModel;
  * @author Mr.April
  * @since  1.0
  */
-class SystemConfig extends BaseTpORMModel
+class SystemConfig extends BaseLaORMModel
 {
 
     /**
@@ -28,9 +29,11 @@ class SystemConfig extends BaseTpORMModel
      *
      * @var string
      */
-    protected $pk = 'id';
+    protected $primaryKey = 'id';
 
-    protected $name = 'system_config';
+    protected $table  = 'system_config';
+
+
 
     /**
      * 分组代码-搜索器
@@ -38,7 +41,7 @@ class SystemConfig extends BaseTpORMModel
      * @param $query
      * @param $value
      */
-    public function searchGroupCodeAttr($query, $value)
+    public function scopeGroupCode($query, $value)
     {
         if (!empty($value)) {
             $queryMethod = is_array($value) ? 'whereIn' : 'where';
@@ -52,7 +55,7 @@ class SystemConfig extends BaseTpORMModel
      * @param $query
      * @param $value
      */
-    public function searchNameAttr($query, $value)
+    public function scopeName($query, $value)
     {
         if (!empty($value)) {
             $queryMethod = is_array($value) ? 'whereIn' : 'where';
@@ -66,7 +69,7 @@ class SystemConfig extends BaseTpORMModel
      * @param $query
      * @param $value
      */
-    public function searchCodeAttr($query, $value)
+    public function scopeCode($query, $value)
     {
         if (!empty($value)) {
             $queryMethod = is_array($value) ? 'whereIn' : 'where';
@@ -80,7 +83,7 @@ class SystemConfig extends BaseTpORMModel
      * @param $query
      * @param $value
      */
-    public function searchEnableAttr($query, $value)
+    public function scopeEnable($query, $value)
     {
         if ($value !== '') {
             $queryMethod = is_array($value) ? 'whereIn' : 'where';

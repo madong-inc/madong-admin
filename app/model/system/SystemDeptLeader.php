@@ -11,18 +11,18 @@
  */
 namespace app\model\system;
 
-use think\model\Pivot;
 
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
 /**
- *
  * 关联模型
+ *
  * @author Mr.April
  * @since  1.0
  */
 class SystemDeptLeader extends Pivot
 {
-    protected $name = 'system_dept_leader';
+    protected $table = 'system_dept_leader';
 
 
 }

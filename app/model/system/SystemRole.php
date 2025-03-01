@@ -12,7 +12,7 @@
 
 namespace app\model\system;
 
-use madong\basic\BaseTpORMModel;
+use madong\basic\BaseLaORMModel;
 
 /**
  * 角色模型
@@ -20,7 +20,7 @@ use madong\basic\BaseTpORMModel;
  * @author Mr.April
  * @since  1.0
  */
-class SystemRole extends BaseTpORMModel
+class SystemRole extends BaseLaORMModel
 {
 
     /**
@@ -28,14 +28,14 @@ class SystemRole extends BaseTpORMModel
      *
      * @var string
      */
-    protected $pk = 'id';
+    protected $primaryKey = 'id';
 
-    protected $name = 'system_role';
+    protected $table = 'system_role';
 
     /**
      * Id搜索
      */
-    public function searchIdAttr($query, $value)
+    public function scopeId($query, $value)
     {
         if (is_array($value)) {
             $query->whereIn('id', $value);
@@ -50,7 +50,7 @@ class SystemRole extends BaseTpORMModel
      * @param $query
      * @param $value
      */
-    public function searchNameAttr($query, $value)
+    public function scopeName($query, $value)
     {
         if (!empty($value)) {
             $query->where('name', 'like', $value . '%');
@@ -63,7 +63,7 @@ class SystemRole extends BaseTpORMModel
      * @param $query
      * @param $value
      */
-    public function searchStatusAttr($query, $value)
+    public function scopeStatus($query, $value)
     {
         if ($value !== '') {
             $query->where('status', $value);

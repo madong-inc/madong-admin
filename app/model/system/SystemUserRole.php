@@ -9,9 +9,11 @@
  *+------------------
  * Official Website: http://www.madong.cn
  */
+
 namespace app\model\system;
 
-use think\model\Pivot;
+
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
 /**
  * 用户管理角色-中间模型
@@ -21,7 +23,14 @@ use think\model\Pivot;
  */
 class SystemUserRole extends Pivot
 {
-    protected $name = 'system_user_role';
+    protected $table = 'system_user_role';
+
+    /**
+     * 指示是否自动维护时间戳
+     *
+     * @var bool
+     */
+    public $timestamps = false;
 
     /**
      * 用户Id搜索器
@@ -29,7 +38,7 @@ class SystemUserRole extends Pivot
      * @param $query
      * @param $value
      */
-    public function searchUserIdAttr($query, $value)
+    public function scopeUserId($query, $value)
     {
         if (!empty($value)) {
             if (is_string($value)) {
@@ -49,7 +58,7 @@ class SystemUserRole extends Pivot
      * @param $query
      * @param $value
      */
-    public function searchRoleIdAttr($query, $value)
+    public function scopeRoleId($query, $value)
     {
         if (!empty($value)) {
             if (is_string($value)) {

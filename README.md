@@ -2,35 +2,46 @@
 # MaDong Admin
 
 
-## 介绍
+#### 介绍
 MaDong Admin基于Webman快速开发平台框架搭建的后端工程
 
 
 
-## 运行环境
+#### 运行环境
 `Nignx/Apache
 PHP 8.1 ~ 8.4 
 MySQL 8.0
 Redis`
 
 
-## 系统演示
+#### 系统演示
 
 管理后台： http://antd-vben5.madong.tech 账号：admin 密码：123456
 
 
 
-## 代码仓库
-
-| `项目`  | `Gitee`                                          | `GitCode`                                          |
-|-------|--------------------------------------------------|----------------------------------------------------|
-| `后端`  | [https://gitee.com/motion-code/madong](https://gitee.com/motion-code/madong) | [https://gitcode.com/motion-code/madong](https://gitcode.com/motion-code/madong) |
-| `前端`  | [https://gitee.com/motion-code/madong-vben5](https://gitee.com/motion-code/madong-vben5) | [https://gitcode.com/motion-code/madong-vben5](https://gitcode.com/motion-code/madong-vben5) |
+### 代码仓库
+- Gitee   仓库地址：https://gitee.com/motion-code/madong
+- Gitcode 仓库地址：https://gitcode.com/motion-code/madong
 
 
-## 如何贡献
 
-非常欢迎你的加入！[提一个 Issue](https://gitee.com/motion-code/madong/issues) 或者提交一个 Pull Request。
+#### 后端安装
+- cd MaDong 
+- composer install
+
+
+
+#### 官方论坛
+
+产品BUG、优化建议，欢迎社区反馈：http://www.madong.tech
+
+
+
+
+#### 如何贡献
+
+非常欢迎你的加入！[提一个 Issue](https://gitee.com/motion-code/bolt/issues) 或者提交一个 Pull Request。
 
 **Pull Request:**
 
@@ -40,7 +51,7 @@ Redis`
 4. 推送您的分支: `git push origin feature/xxxx`
 5. 提交`pull request`
 
-## Git 贡献提交规范
+#### Git 贡献提交规范
 
 - 参考规范([Git](https://www.conventionalcommits.org/) [Vue](https://github.com/vuejs/vue/blob/dev/.github/COMMIT_CONVENTION.md) [Angular](https://github.com/conventional-changelog/conventional-changelog/tree/master/packages/conventional-changelog-angular))
 
@@ -58,26 +69,6 @@ Redis`
   - `wip` 开发中
 
 
-  
-##  链接
+#### 维护者
 
----
-
-> 官方：
-https://www.madong.tech/
-
->腾讯频道:
-[pd52261144](https://pd.qq.com/s/3edfwx2lm)
-
->纷传圈子:
-[https://pc.fenchuan8.com/#/index?forum=84868&yqm=M9RJ](https://pc.fenchuan8.com/#/index?forum=84868&yqm=M9RJ)
-
-
----
-
-
-``` info
-如果对您有帮助，您可以点右上角 💘Star💘支持
-特别声明：坚决打击网络诈骗行为，严禁将本项目集成在任何违法违规的程序上。
-```
-
+[Mr.April](https://gitee.com/liu_guan_qing)
