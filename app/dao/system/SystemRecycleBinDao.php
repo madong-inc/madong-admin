@@ -30,7 +30,7 @@ class SystemRecycleBinDao extends BaseDao
 
     public function get(array|string|int $id)
     {
-        return parent::get($id, [], ['operate']);
+        return parent::get($id, ['*'], ['operate']);
     }
 
 }

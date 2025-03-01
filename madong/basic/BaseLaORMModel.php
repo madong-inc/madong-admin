@@ -168,19 +168,48 @@ class BaseLaORMModel extends Model
         return $this; // 支持链式调用
     }
 
-    public function getCreateTimeAttribute($value): string
+    /**
+     * 追加创建时间
+     *
+     * @return string|null
+     */
+    public function getCreateDateAttribute(): ?string
     {
-        return Carbon::parse($value)->format('Y-m-d H:i:s');
+        if ($this->getAttribute($this->getCreatedAtColumn())) {
+            try {
+                $timestamp = $this->getRawOriginal($this->getCreatedAtColumn());
+                if (empty($timestamp)) {
+                    return null;
+                }
+                $carbonInstance = Carbon::createFromTimestamp($timestamp);
+                return $carbonInstance->setTimezone(config('app.default_timezone'))->format('Y-m-d H:i:s');
+            } catch (\Exception $e) {
+                return null;
+            }
+        }
+        return null;
     }
 
-    public function getExpiresTimeAttribute($value): string
+    /**
+     * 追加更新时间
+     *
+     * @return string|null
+     */
+    public function getUpdateDateAttribute(): ?string
     {
-        return Carbon::parse($value)->format('Y-m-d H:i:s');
-    }
-
-    public function getUpdateTimeAttribute($value): string
-    {
-        return Carbon::parse($value)->format('Y-m-d H:i:s');
+        if ($this->getAttribute($this->getUpdatedAtColumn())) {
+            try {
+                $timestamp = $this->getRawOriginal($this->getUpdatedAtColumn());
+                if (empty($timestamp)) {
+                    return null;
+                }
+                $carbonInstance = Carbon::createFromTimestamp($timestamp);
+                return $carbonInstance->setTimezone(config('app.default_timezone'))->format('Y-m-d H:i:s');
+            } catch (\Exception $e) {
+                return null;
+            }
+        }
+        return null;
     }
 
     public static function onAfterDelete(Model $model)
