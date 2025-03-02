@@ -24,10 +24,9 @@ class SystemRoleMenu extends Pivot
 {
     protected $table = 'system_role_menu';
 
-    /**
-     * 指示是否自动维护时间戳
-     *
-     * @var bool
-     */
-    public $timestamps = false;
+    protected $fillable = [
+        'role_id',
+        'dept_id',
+    ];
+
 }

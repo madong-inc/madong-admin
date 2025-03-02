@@ -25,7 +25,36 @@ class SystemUser extends BaseLaORMModel
     // 主键
     protected $primaryKey = 'id';
 
+    protected $appends = ['create_date', 'update_date'];
 
+    protected $fillable = [
+        'id',
+        'user_name',
+        'real_name',
+        'nick_name',
+        'password',
+        'is_super',
+        'mobile_phone',
+        'email',
+        'avatar',
+        'signed',
+        'dashboard',
+        'dept_id',
+        'enabled',
+        'login_ip',
+        'login_time',
+        'backend_setting',
+        'created_by',
+        'updated_by',
+        'create_time',
+        'update_time',
+        'delete_time',
+        'sex',
+        'remark',
+        'birthday',
+        'tel',
+        'is_locked',
+    ];
 
     /**
      * 账号-搜索器

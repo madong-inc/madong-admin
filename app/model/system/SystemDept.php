@@ -32,6 +32,25 @@ class SystemDept extends BaseLaORMModel
 
     protected $table = 'system_dept';
 
+    protected $appends = ['create_date', 'update_date'];
+
+    protected $fillable = [
+        'id',
+        'pid',
+        'level',
+        'code',
+        'name',
+        'main_leader_id',
+        'phone',
+        'enabled',
+        'sort',
+        'created_by',
+        'updated_by',
+        'create_time',
+        'update_time',
+        'delete_time',
+        'remark',
+    ];
 
     /**
      * 部门名称-搜索器

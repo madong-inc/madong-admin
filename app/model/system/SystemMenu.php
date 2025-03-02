@@ -27,6 +27,37 @@ class SystemMenu extends BaseLaORMModel
 
     protected $primaryKey = 'id';
 
+    protected $appends = ['create_date', 'update_date'];
+
+    protected $fillable = [
+        'id',
+        'pid',
+        'app',
+        'title',
+        'code',
+        'level',
+        'type',
+        'sort',
+        'path',
+        'component',
+        'redirect',
+        'icon',
+        'is_show',
+        'is_link',
+        'link_url',
+        'open_type',
+        'is_cache',
+        'is_sync',
+        'is_affix',
+        'variable',
+        'create_time',
+        'create_by',
+        'update_time',
+        'update_by',
+        'delete_time',
+        'methods',
+    ];
+
     /**
      * 菜单meta属性
      *

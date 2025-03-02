@@ -28,6 +28,25 @@ class SystemCrontab extends BaseLaORMModel
 
     protected $primaryKey = 'id';
 
+    protected $appends = ['create_date', 'update_date'];
+
+    protected $fillable = [
+        'id',
+        'biz_id',
+        'title',
+        'type',
+        'task_cycle',
+        'cycle_rule',
+        'rule',
+        'target',
+        'running_times',
+        'last_running_time',
+        'enabled',
+        'create_time',
+        'delete_time',
+        'singleton',
+    ];
+
     /**
      *  通过ID获取最后执行记录
      *
@@ -39,20 +58,7 @@ class SystemCrontab extends BaseLaORMModel
             ->orderBy('create_time', 'desc')
             ->first();
     }
-
-    /**
-     * 获取器-创建时间
-     *
-     * @param $value
-     *
-     * @return string
-     */
-    public function getCreateTimeAttribute($value): string
-    {
-        return getDateText($value);
-        return date('Y-m-d H:i:s', $value); // 将时间戳格式化为日期时间字符串
-    }
-
+    
     /**
      * 获取器-last_running_time
      *

@@ -12,7 +12,6 @@
 
 namespace app\model\system;
 
-
 use madong\basic\BaseLaORMModel;
 
 class SystemLoginLog extends BaseLaORMModel
@@ -27,12 +26,24 @@ class SystemLoginLog extends BaseLaORMModel
 
     protected $table = 'system_login_log';
 
-    protected $dates = ['create_time', 'update_time'];
+    protected $appends = ['create_date', 'update_date'];
 
-    protected $casts = [
-        'create_time'  => 'datetime',
-        'expires_time' => 'datetime',
-        'update_time'  => 'datetime',
+    protected $fillable = [
+        'id',
+        'user_name',
+        'ip',
+        'ip_location',
+        'os',
+        'browser',
+        'status',
+        'message',
+        'login_time',
+        'key',
+        'create_time',
+        'expires_time',
+        'update_time',
+        'delete_time',
+        'remark',
     ];
 
 }

@@ -32,6 +32,34 @@ class SystemUpload extends BaseLaORMModel
 
     protected $table = 'system_upload';
 
+    protected $appends = ['create_date', 'update_date'];
+
+    protected $fillable = [
+        'id',
+        'url',
+        'size',
+        'size_info',
+        'hash',
+        'filename',
+        'original_filename',
+        'base_path',
+        'path',
+        'ext',
+        'content_type',
+        'platform',
+        'th_url',
+        'th_filename',
+        'th_size',
+        'th_size_info',
+        'th_content_type',
+        'object_id',
+        'object_type',
+        'attr',
+        'create_time',
+        'created_by',
+        'update_time',
+        'updated_by'
+    ];
 
     public function createds(): \Illuminate\Database\Eloquent\Relations\HasOne
     {

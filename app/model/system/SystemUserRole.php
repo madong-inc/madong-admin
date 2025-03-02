@@ -12,7 +12,6 @@
 
 namespace app\model\system;
 
-
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 /**
@@ -24,6 +23,11 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 class SystemUserRole extends Pivot
 {
     protected $table = 'system_user_role';
+
+    protected $fillable = [
+        'user_id',
+        'role_id',
+    ];
 
     /**
      * 指示是否自动维护时间戳
