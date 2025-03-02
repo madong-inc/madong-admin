@@ -12,7 +12,7 @@
 
 namespace app\model\system;
 
-use madong\basic\BaseTpORMModel;
+use madong\basic\BaseLaORMModel;
 
 /**
  * 字典数据
@@ -20,7 +20,7 @@ use madong\basic\BaseTpORMModel;
  * @author Mr.April
  * @since  1.0
  */
-class SystemDictItem extends BaseTpORMModel
+class SystemDictItem extends BaseLaORMModel
 {
 
     /**
@@ -28,14 +28,32 @@ class SystemDictItem extends BaseTpORMModel
      *
      * @var string
      */
-    protected $pk = 'id';
+    protected $primaryKey = 'id';
 
-    protected $name = 'system_dict_item';
+    protected $table = 'system_dict_item';
+
+    protected $appends = ['create_date', 'update_date'];
+
+    protected $fillable = [
+        'id',
+        'dict_id',
+        'label',
+        'value',
+        'code',
+        'sort',
+        'enabled',
+        'created_by',
+        'updated_by',
+        'create_time',
+        'update_time',
+        'remark',
+        'delete_time',
+    ];
 
     /**
      * 关键字搜索
      */
-    public function searchKeywordsAttr($query, $value)
+    public function scopeKeywords($query, $value)
     {
         if (!empty($value)) {
             $query->where('label|code', 'LIKE', "%$value%");
@@ -48,7 +66,7 @@ class SystemDictItem extends BaseTpORMModel
      * @param $query
      * @param $value
      */
-    public function searchStatusAttr($query, $value)
+    public function scopeStatus($query, $value)
     {
         if ($value !== '') {
             $queryMethod = is_array($value) ? 'whereIn' : 'where';
@@ -62,7 +80,7 @@ class SystemDictItem extends BaseTpORMModel
      * @param $query
      * @param $value
      */
-    public function searchDictIdAttr($query, $value)
+    public function scopeDictId($query, $value)
     {
         if (!empty($value)) {
             $queryMethod = is_array($value) ? 'whereIn' : 'where';
@@ -76,7 +94,7 @@ class SystemDictItem extends BaseTpORMModel
      * @param $query
      * @param $value
      */
-    public function searchCodeAttr($query, $value)
+    public function scopeCode($query, $value)
     {
         if (!empty($value)) {
             $queryMethod = is_array($value) ? 'whereIn' : 'where';
@@ -90,7 +108,7 @@ class SystemDictItem extends BaseTpORMModel
      * @param $query
      * @param $value
      */
-    public function searchValueAttr($query, $value)
+    public function scopeValue($query, $value)
     {
         if (!empty($value)) {
             $query->where('value', 'LIKE', "%$value%");
@@ -103,7 +121,7 @@ class SystemDictItem extends BaseTpORMModel
      * @param $query
      * @param $value
      */
-    public function searchLabelAttr($query, $value)
+    public function scopeLabel($query, $value)
     {
         if (!empty($value)) {
             $query->where('label', 'LIKE', "%$value%");
@@ -117,7 +135,7 @@ class SystemDictItem extends BaseTpORMModel
      *
      * @return mixed|object
      */
-    public function getExtAttr($value): mixed
+    public function getExt($value): mixed
     {
         if (is_null($value) || $value === '') {
             return (object)[];

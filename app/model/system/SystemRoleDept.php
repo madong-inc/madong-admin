@@ -9,18 +9,25 @@
  *+------------------
  * Official Website: http://www.madong.cn
  */
+
 namespace app\model\system;
 
-use think\model\Pivot;
-
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
 /**
- *
  * 关联模型
+ *
  * @author Mr.April
  * @since  1.0
  */
 class SystemRoleDept extends Pivot
 {
-    protected $name = 'system_role_dept';
+    protected $table = 'system_role_dept';
+
+    protected $fillable=[
+        'role_id',
+        'dept_id'
+    ];
+
+
 }

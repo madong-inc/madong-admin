@@ -46,14 +46,14 @@ class SystemRecycleBinService extends BaseService
                 $this->transaction(function () use ($data) {
                     if (config('app.model_type', 'thinkORM') == 'thinkORM') {
                         $tablePrefix = $data->getData('table_prefix');
-                        $tableName = $data->getData('table_name');
-                        $tableData = json_decode($data->getData('data'), true);
-                        $columns   = $this->getTableColumns($tableName, $tablePrefix);
-                        $tableData = array_intersect_key($tableData, array_flip($columns));
+                        $tableName   = $data->getData('table_name');
+                        $tableData   = json_decode($data->getData('data'), true);
+                        $columns     = $this->getTableColumns($tableName, $tablePrefix);
+                        $tableData   = array_intersect_key($tableData, array_flip($columns));
                         ThinkDb::name($tableName)->insert($tableData);
                     } else {
-                        $tableName = $data->getAttributes('data_table');
-                        $tableData = json_decode($data->getAttributes('data'), true);
+                        $tableName = $data->getData('table_name');
+                        $tableData = json_decode($data->getData('data'), true);
                         $columns   = $this->getTableColumns($tableName);
                         $tableData = array_intersect_key($tableData, array_flip($columns));
                         LaravelDb::table($tableName)->insert($tableData);
@@ -66,14 +66,16 @@ class SystemRecycleBinService extends BaseService
         }
     }
 
+    /**
+     * 获取还原表的数据列
+     *
+     * @param string $tableName
+     * @param string $tablePrefix
+     *
+     * @return array
+     */
     private function getTableColumns(string $tableName, string $tablePrefix = ''): array
     {
-        if (config('app.model_type', 'thinkORM') == 'thinkORM') {
-            $fullTableName = $tablePrefix . $tableName;
-            $columns       = \think\facade\Db::query("SHOW COLUMNS FROM `{$fullTableName}`");
-            return array_column($columns, 'Field'); // 提取字段名
-        } else {
-            return LaravelDb::getSchemaBuilder()->getColumnListing($tableName);
-        }
+        return LaravelDb::getSchemaBuilder()->getColumnListing($tableName);
     }
 }

@@ -9,11 +9,10 @@
  *+------------------
  * Official Website: http://www.madong.cn
  */
+
 namespace app\model\system;
 
-use madong\basic\BaseTpORMModel;
-use madong\trait\ModelTrait;
-use madong\trait\SnowflakeIdTrait;
+use madong\basic\BaseLaORMModel;
 
 /**
  * 字典模型
@@ -21,7 +20,7 @@ use madong\trait\SnowflakeIdTrait;
  * @author Mr.April
  * @since  1.0
  */
-class SystemDict extends BaseTpORMModel
+class SystemDict extends BaseLaORMModel
 {
 
     /**
@@ -29,14 +28,27 @@ class SystemDict extends BaseTpORMModel
      *
      * @var string
      */
-    protected $pk = 'id';
+    protected $primaryKey = 'id';
 
-    protected $name = 'system_dict';
+    protected $table = 'system_dict';
 
-    public function setIdAttr($value)
-    {
-        $this->set($this->pk, (string)$value);
-    }
+    protected $appends = ['create_date', 'update_date'];
+
+    protected $fillable=[
+        'id',
+        'group_code',
+        'name',
+        'code',
+        'sort',
+        'data_type',
+        'description',
+        'enabled',
+        'created_by',
+        'updated_by',
+        'create_time',
+        'update_time',
+        'delete_time'
+    ];
 
     /**
      * ID-搜索器
@@ -44,7 +56,7 @@ class SystemDict extends BaseTpORMModel
      * @param $query
      * @param $value
      */
-    public function searchIdAttr($query, $value)
+    public function scopeId($query, $value)
     {
         if (!empty($value)) {
             $queryMethod = is_array($value) ? 'whereIn' : 'where';
@@ -58,7 +70,7 @@ class SystemDict extends BaseTpORMModel
      * @param $query
      * @param $value
      */
-    public function searchNameAttr($query, $value)
+    public function scopeName($query, $value)
     {
         if (!empty($value)) {
             $queryMethod = is_array($value) ? 'whereIn' : 'where';
@@ -72,7 +84,7 @@ class SystemDict extends BaseTpORMModel
      * @param $query
      * @param $value
      */
-    public function searchCodeAttr($query, $value)
+    public function scopeCode($query, $value)
     {
         if (!empty($value)) {
             $queryMethod = is_array($value) ? 'whereIn' : 'where';
@@ -86,7 +98,7 @@ class SystemDict extends BaseTpORMModel
      * @param $query
      * @param $value
      */
-    public function searchEnableAttr($query, $value)
+    public function scopeEnable($query, $value)
     {
         if ($value !== '') {
             $queryMethod = is_array($value) ? 'whereIn' : 'where';
@@ -96,12 +108,9 @@ class SystemDict extends BaseTpORMModel
 
     /**
      * 字典数据
-     *
-     * @return \think\model\relation\HasMany
      */
-    public function items(): \think\model\relation\HasMany
+    public function items(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(SystemDictItem::class, 'dict_id', 'id');
     }
-
 }

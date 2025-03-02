@@ -64,6 +64,16 @@ class BaseLaORMModel extends Model
      */
     private static ?Snowflake $snowflake = null;
 
+    /**
+     * 兼容tp写法
+     *
+     * @return string
+     */
+    public function getPk(): string
+    {
+        return $this->getKeyName();
+    }
+
     protected static function boot()
     {
         parent::boot();
@@ -124,14 +134,19 @@ class BaseLaORMModel extends Model
      *
      * @return array
      */
+    /**
+     * 获取当前模型的字段列表
+     *
+     * @return array
+     */
     public function getFields(): array
     {
         try {
             $tableName     = $this->getTable();
-            $connection    = DB::connection();
+            $connection    = $this->getConnection();
             $prefix        = $connection->getTablePrefix();
             $fullTableName = $prefix . $tableName;
-            $fields        = DB::select("SHOW COLUMNS FROM `{$fullTableName}`");
+            $fields        = $connection->select("SHOW COLUMNS FROM `{$fullTableName}`");
             return array_map(function ($column) {
                 return $column->Field;
             }, $fields);
@@ -153,19 +168,48 @@ class BaseLaORMModel extends Model
         return $this; // 支持链式调用
     }
 
-    public function getCreateTimeAttribute($value): string
+    /**
+     * 追加创建时间
+     *
+     * @return string|null
+     */
+    public function getCreateDateAttribute(): ?string
     {
-        return Carbon::parse($value)->format('Y-m-d H:i:s');
+        if ($this->getAttribute($this->getCreatedAtColumn())) {
+            try {
+                $timestamp = $this->getRawOriginal($this->getCreatedAtColumn());
+                if (empty($timestamp)) {
+                    return null;
+                }
+                $carbonInstance = Carbon::createFromTimestamp($timestamp);
+                return $carbonInstance->setTimezone(config('app.default_timezone'))->format('Y-m-d H:i:s');
+            } catch (\Exception $e) {
+                return null;
+            }
+        }
+        return null;
     }
 
-    public function getExpiresTimeAttribute($value): string
+    /**
+     * 追加更新时间
+     *
+     * @return string|null
+     */
+    public function getUpdateDateAttribute(): ?string
     {
-        return Carbon::parse($value)->format('Y-m-d H:i:s');
-    }
-
-    public function getUpdateTimeAttribute($value): string
-    {
-        return Carbon::parse($value)->format('Y-m-d H:i:s');
+        if ($this->getAttribute($this->getUpdatedAtColumn())) {
+            try {
+                $timestamp = $this->getRawOriginal($this->getUpdatedAtColumn());
+                if (empty($timestamp)) {
+                    return null;
+                }
+                $carbonInstance = Carbon::createFromTimestamp($timestamp);
+                return $carbonInstance->setTimezone(config('app.default_timezone'))->format('Y-m-d H:i:s');
+            } catch (\Exception $e) {
+                return null;
+            }
+        }
+        return null;
     }
 
     public static function onAfterDelete(Model $model)
@@ -178,7 +222,7 @@ class BaseLaORMModel extends Model
             $tableData = $model->getAttributes();
             $prefix    = $model->getConnection()->getTablePrefix();
             if (self::shouldStoreInRecycleBin($table)) {
-                $data                    = self::prepareRecycleBinData($tableData, $table,$prefix);
+                $data                    = self::prepareRecycleBinData($tableData, $table, $prefix);
                 $systemRecycleBinService = Container::make(SystemRecycleBinService::class);
                 $systemRecycleBinService->save($data);
             }
@@ -197,8 +241,8 @@ class BaseLaORMModel extends Model
     private static function setCreatedBy(Model $model): void
     {
         $uid = getCurrentUser();
-        if ($uid && $model->isFillable('created_by')) {
-            $model->setAttribute('created_by', $uid);
+        if ($uid && $model->isFillable('create_by')) {
+            $model->setAttribute('create_by', $uid);
         }
     }
 
@@ -212,8 +256,8 @@ class BaseLaORMModel extends Model
     private static function setUpdatedBy(Model $model): void
     {
         $uid = getCurrentUser();
-        if ($uid && $model->isFillable('updated_by')) {
-            $model->setAttribute('updated_by', $uid);
+        if ($uid && $model->isFillable('update_by')) {
+            $model->setAttribute('update_by', $uid);
         }
     }
 

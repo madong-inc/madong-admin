@@ -12,7 +12,7 @@
 
 namespace app\model\system;
 
-use madong\basic\BaseTpORMModel;
+use madong\basic\BaseLaORMModel;
 
 /**
  * 菜单模型
@@ -20,22 +20,52 @@ use madong\basic\BaseTpORMModel;
  * @author Mr.April
  * @since  1.0
  */
-class SystemMenu extends BaseTpORMModel
+class SystemMenu extends BaseLaORMModel
 {
 
-    protected $name = 'system_menu';
+    protected $table = 'system_menu';
 
-    protected $pk = 'id';
+    protected $primaryKey = 'id';
+
+    protected $appends = ['create_date', 'update_date'];
+
+    protected $fillable = [
+        'id',
+        'pid',
+        'app',
+        'title',
+        'code',
+        'level',
+        'type',
+        'sort',
+        'path',
+        'component',
+        'redirect',
+        'icon',
+        'is_show',
+        'is_link',
+        'link_url',
+        'open_type',
+        'is_cache',
+        'is_sync',
+        'is_affix',
+        'variable',
+        'create_time',
+        'create_by',
+        'update_time',
+        'update_by',
+        'delete_time',
+        'methods',
+    ];
 
     /**
      * 菜单meta属性
      *
-     * @param $value
      * @param $data
      *
      * @return array
      */
-    public function getMetaAttr($value, $data): array
+    public static function getMetaAttribute($data): array
     {
         // 1.构建mate数组
         $newData = [
@@ -71,7 +101,7 @@ class SystemMenu extends BaseTpORMModel
     /**
      * Id搜索
      */
-    public function searchIdAttr($query, $value)
+    public function scopeId($query, $value)
     {
         if (is_array($value)) {
             $query->whereIn('id', $value);
@@ -83,7 +113,7 @@ class SystemMenu extends BaseTpORMModel
     /**
      * Type搜索
      */
-    public function searchTypeAttr($query, $value)
+    public function scopeType($query, $value)
     {
         if (is_array($value)) {
             $query->whereIn('type', $value);
@@ -92,4 +122,12 @@ class SystemMenu extends BaseTpORMModel
         }
     }
 
+    public function scopeEnabled($query, $value)
+    {
+        if (is_array($value)) {
+            $query->whereIn('enabled', $value);
+        } else {
+            $query->where('enabled', $value);
+        }
+    }
 }

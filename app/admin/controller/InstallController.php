@@ -129,7 +129,7 @@ class InstallController extends Base
             }
 
             // 7.0执行安装 SQL
-            $sql_file = base_path() . '/install.sql';
+            $sql_file = base_path() . 'scripts/install.sql';
             if (!is_file($sql_file)) {
                 throw new \Exception('数据库SQL文件不存在');
             }

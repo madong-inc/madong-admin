@@ -9,12 +9,12 @@
  *+------------------
  * Official Website: http://www.madong.cn
  */
+
 namespace app\model\system;
 
-use madong\basic\BaseTpORMModel;
+use madong\basic\BaseLaORMModel;
 
-
-class SystemOperateLog extends BaseTpORMModel
+class SystemOperateLog extends BaseLaORMModel
 {
 
     /**
@@ -22,8 +22,28 @@ class SystemOperateLog extends BaseTpORMModel
      *
      * @var string
      */
-    protected  $pk = 'id';
+    protected $primaryKey = 'id';
 
-    protected  $name = 'system_operate_log';
+    protected $table = 'system_operate_log';
+
+    protected $appends = ['create_date', 'update_date'];
+
+    protected $fillable = [
+        'id',
+        'name',
+        'app',
+        'ip',
+        'ip_location',
+        'browser',
+        'os',
+        'url',
+        'class_name',
+        'action',
+        'method',
+        'param',
+        'result',
+        'create_time',
+        'user_name',
+    ];
 
 }

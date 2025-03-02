@@ -9,12 +9,12 @@
  *+------------------
  * Official Website: http://www.madong.cn
  */
+
 namespace app\model\system;
 
-use madong\basic\BaseTpORMModel;
+use madong\basic\BaseLaORMModel;
 
-
-class SystemLoginLog extends BaseTpORMModel
+class SystemLoginLog extends BaseLaORMModel
 {
 
     /**
@@ -22,8 +22,28 @@ class SystemLoginLog extends BaseTpORMModel
      *
      * @var string
      */
-    protected $pk = 'id';
+    protected $primaryKey = 'id';
 
-    protected $name = 'system_login_log';
+    protected $table = 'system_login_log';
+
+    protected $appends = ['create_date', 'update_date'];
+
+    protected $fillable = [
+        'id',
+        'user_name',
+        'ip',
+        'ip_location',
+        'os',
+        'browser',
+        'status',
+        'message',
+        'login_time',
+        'key',
+        'create_time',
+        'expires_time',
+        'update_time',
+        'delete_time',
+        'remark',
+    ];
 
 }

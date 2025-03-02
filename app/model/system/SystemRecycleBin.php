@@ -12,15 +12,15 @@
 
 namespace app\model\system;
 
-use madong\basic\BaseTpORMModel;
+use madong\basic\BaseLaORMModel;
 
 /**
- * 附件模型
+ * 回收站模型
  *
  * @author Mr.April
  * @since  1.0
  */
-class SystemRecycleBin extends BaseTpORMModel
+class SystemRecycleBin extends BaseLaORMModel
 {
 
     /**
@@ -28,12 +28,41 @@ class SystemRecycleBin extends BaseTpORMModel
      *
      * @var string
      */
-    protected $pk = 'id';
+    protected $primaryKey = 'id';
 
-    protected $name = 'system_recycle_bin';
+    protected $table = 'system_recycle_bin';
 
-    public function operate(): \think\model\relation\hasOne
+    protected $appends = ['create_date', 'update_date', 'operate_name'];
+
+    protected $fillable = [
+        'id',
+        'data',
+        'table_name',
+        'table_prefix',
+        'enabled',
+        'ip',
+        'operate_id',
+        'create_time',
+        'update_time',
+    ];
+
+    /**
+     * 定义访问器
+     *
+     * @return null
+     */
+    public function getOperateNameAttribute(): mixed
     {
-        return $this->hasOne(SystemUser::class, 'id', 'operate_id')->bind(['operate_name' => 'real_name']);
+        return $this->operate ? $this->operate->operate_name : null;
+    }
+
+    /**
+     * 关联-操作人
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function operate(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(SystemUser::class, 'id', 'operate_id')->select(['id', 'real_name as operate_name']);
     }
 }

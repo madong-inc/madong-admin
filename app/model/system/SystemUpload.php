@@ -12,7 +12,7 @@
 
 namespace app\model\system;
 
-use madong\basic\BaseTpORMModel;
+use madong\basic\BaseLaORMModel;
 
 /**
  * 附件模型
@@ -20,7 +20,7 @@ use madong\basic\BaseTpORMModel;
  * @author Mr.April
  * @since  1.0
  */
-class SystemUpload extends BaseTpORMModel
+class SystemUpload extends BaseLaORMModel
 {
 
     /**
@@ -28,18 +28,47 @@ class SystemUpload extends BaseTpORMModel
      *
      * @var string
      */
-    protected $pk = 'id';
+    protected $primaryKey = 'id';
 
-    protected $name = 'system_upload';
+    protected $table = 'system_upload';
 
-    public function created(): \think\model\relation\hasOne
+    protected $appends = ['create_date', 'update_date'];
+
+    protected $fillable = [
+        'id',
+        'url',
+        'size',
+        'size_info',
+        'hash',
+        'filename',
+        'original_filename',
+        'base_path',
+        'path',
+        'ext',
+        'content_type',
+        'platform',
+        'th_url',
+        'th_filename',
+        'th_size',
+        'th_size_info',
+        'th_content_type',
+        'object_id',
+        'object_type',
+        'attr',
+        'create_time',
+        'created_by',
+        'update_time',
+        'updated_by'
+    ];
+
+    public function createds(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
-        return $this->hasOne(SystemUser::class, 'id', 'created_by')->bind(['created_name' => 'real_name']);
+        return $this->hasOne(SystemUser::class, 'id', 'created_by')->select('id', 'real_name as created_name');
     }
 
-    public function updated(): \think\model\relation\hasOne
+    public function updateds(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
-        return $this->hasOne(SystemUser::class, 'id', 'updated_by')->bind(['updated_name' => 'real_name']);
+        return $this->hasOne(SystemUser::class, 'id', 'updated_by')->select('id', 'real_name as updated_name');
     }
 
 }

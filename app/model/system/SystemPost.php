@@ -9,9 +9,10 @@
  *+------------------
  * Official Website: http://www.madong.cn
  */
+
 namespace app\model\system;
 
-use madong\basic\BaseTpORMModel;
+use madong\basic\BaseLaORMModel;
 
 /**
  * 岗位模型
@@ -19,17 +20,32 @@ use madong\basic\BaseTpORMModel;
  * @author Mr.April
  * @since  1.0
  */
-class SystemPost extends BaseTpORMModel
+class SystemPost extends BaseLaORMModel
 {
-
 
     /**
      * 数据表主键
      *
      * @var string
      */
-    protected $pk = 'id';
+    protected $primaryKey = 'id';
 
-    protected $name = 'system_post';
+    protected $table = 'system_post';
+
+    protected $appends = ['create_date', 'update_date'];
+
+    protected $fillable = [
+        'id',
+        'code',
+        'name',
+        'sort',
+        'enabled',
+        'created_by',
+        'updated_by',
+        'create_time',
+        'update_time',
+        'delete_time',
+        'remark',
+    ];
 
 }
