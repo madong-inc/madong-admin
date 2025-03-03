@@ -34,6 +34,18 @@ class SystemCrontabLog extends BaseLaORMModel
      */
     protected $primaryKey = 'id';
 
+    protected $appends = ['create_date', 'update_date'];
+
+    protected $fillable=[
+        'id',
+        'crontab_id',
+        'target',
+        'log',
+        'return_code',
+        'running_time',
+        'create_time',
+    ];
+
     /**
      * 获取 create_time 属性的访问器。
      *

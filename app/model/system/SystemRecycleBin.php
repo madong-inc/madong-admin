@@ -32,9 +32,9 @@ class SystemRecycleBin extends BaseLaORMModel
 
     protected $table = 'system_recycle_bin';
 
-    protected $appends = ['operate_name'];
+    protected $appends = ['create_date', 'update_date', 'operate_name'];
 
-    protected  $fillable = [
+    protected $fillable = [
         'id',
         'data',
         'table_name',
@@ -42,9 +42,9 @@ class SystemRecycleBin extends BaseLaORMModel
         'enabled',
         'ip',
         'operate_id',
-        'create_time'
+        'create_time',
+        'update_time',
     ];
-
 
     /**
      * 定义访问器

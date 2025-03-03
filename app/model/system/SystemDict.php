@@ -32,6 +32,23 @@ class SystemDict extends BaseLaORMModel
 
     protected $table = 'system_dict';
 
+    protected $appends = ['create_date', 'update_date'];
+
+    protected $fillable=[
+        'id',
+        'group_code',
+        'name',
+        'code',
+        'sort',
+        'data_type',
+        'description',
+        'enabled',
+        'created_by',
+        'updated_by',
+        'create_time',
+        'update_time',
+        'delete_time'
+    ];
 
     /**
      * ID-搜索器

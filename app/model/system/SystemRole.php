@@ -32,6 +32,26 @@ class SystemRole extends BaseLaORMModel
 
     protected $table = 'system_role';
 
+    protected $appends = ['create_date', 'update_date'];
+
+    protected $fillable = [
+        'id',
+        'pid',
+        'name',
+        'code',
+        'is_super_admin',
+        'role_type',
+        'data_scope',
+        'enabled',
+        'sort',
+        'remark',
+        'created_by',
+        'updated_by',
+        'create_time',
+        'update_time',
+        'delete_time'
+    ];
+
     /**
      * Id搜索
      */

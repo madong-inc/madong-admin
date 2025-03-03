@@ -9,8 +9,8 @@
  *+------------------
  * Official Website: http://www.madong.cn
  */
-namespace app\model\system;
 
+namespace app\model\system;
 
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
@@ -24,5 +24,11 @@ class SystemDeptLeader extends Pivot
 {
     protected $table = 'system_dept_leader';
 
+    protected $appends = ['create_date', 'update_date'];
+
+    protected $fillable = [
+        'dept_id',
+        'user_id',
+    ];
 
 }

@@ -24,10 +24,9 @@ class SystemUserPost extends Pivot
 {
     protected $table = 'system_user_post';
 
-    /**
-     * 指示是否自动维护时间戳
-     *
-     * @var bool
-     */
-    public $timestamps = false;
+    protected $fillable = [
+        'user_id',
+        'post_id'
+    ];
+
 }

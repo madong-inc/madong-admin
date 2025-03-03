@@ -9,6 +9,7 @@
  *+------------------
  * Official Website: http://www.madong.cn
  */
+
 namespace app\model\system;
 
 use madong\basic\BaseLaORMModel;
@@ -22,7 +23,6 @@ use madong\basic\BaseLaORMModel;
 class SystemPost extends BaseLaORMModel
 {
 
-
     /**
      * 数据表主键
      *
@@ -31,5 +31,21 @@ class SystemPost extends BaseLaORMModel
     protected $primaryKey = 'id';
 
     protected $table = 'system_post';
+
+    protected $appends = ['create_date', 'update_date'];
+
+    protected $fillable = [
+        'id',
+        'code',
+        'name',
+        'sort',
+        'enabled',
+        'created_by',
+        'updated_by',
+        'create_time',
+        'update_time',
+        'delete_time',
+        'remark',
+    ];
 
 }

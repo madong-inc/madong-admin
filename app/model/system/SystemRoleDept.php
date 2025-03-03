@@ -12,7 +12,6 @@
 
 namespace app\model\system;
 
-
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 /**
@@ -25,10 +24,10 @@ class SystemRoleDept extends Pivot
 {
     protected $table = 'system_role_dept';
 
-    /**
-     * 指示是否自动维护时间戳
-     *
-     * @var bool
-     */
-    public $timestamps = false;
+    protected $fillable=[
+        'role_id',
+        'dept_id'
+    ];
+
+
 }

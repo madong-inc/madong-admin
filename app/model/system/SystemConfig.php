@@ -14,7 +14,6 @@ namespace app\model\system;
 
 use madong\basic\BaseLaORMModel;
 
-
 /**
  * 配置模型
  *
@@ -31,9 +30,25 @@ class SystemConfig extends BaseLaORMModel
      */
     protected $primaryKey = 'id';
 
-    protected $table  = 'system_config';
+    protected $table = 'system_config';
 
+    protected $appends = ['create_date', 'update_date'];
 
+    protected $fillable = [
+        'id',
+        'group_code',
+        'code',
+        'name',
+        'content',
+        'is_sys',
+        'enabled',
+        'create_time',
+        'create_user',
+        'update_time',
+        'update_user',
+        'delete_time',
+        'remark',
+    ];
 
     /**
      * 分组代码-搜索器
