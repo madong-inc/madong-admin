@@ -404,10 +404,9 @@ class LaravelORMFactory
      *
      * @param array $data
      *
-     * @return \Illuminate\Database\Eloquent\Collection
-     * @throws \Exception
+     * @return bool|null
      */
-    public function saveAll(array $data): \Illuminate\Database\Eloquent\Collection
+    public function saveAll(array $data): ?bool
     {
         return $this->getModel()->insert($data);
     }
