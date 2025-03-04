@@ -46,8 +46,13 @@ class Crud extends Base
             ];
 
             $format_function = $methods[$format] ?? 'formatNormal';
-            $total           = $this->service->getCount($where);
-            $list            = $this->service->selectList($where, $field, $page, $limit, $order, [], false);
+            // 检查格式，如果不是 'normal'，则将 page 和 limit 设置为 0
+            if ($format !== 'normal') {
+                $page  = 0;
+                $limit = 0;
+            }
+            $total = $this->service->getCount($where);
+            $list  = $this->service->selectList($where, $field, $page, $limit, $order, [], false);
             return call_user_func([$this, $format_function], $list, $total);
         } catch (\Throwable $e) {
             return Json::fail($e->getMessage());

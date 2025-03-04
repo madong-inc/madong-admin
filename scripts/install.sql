@@ -284,6 +284,7 @@ CREATE TABLE `ma_system_recycle_bin`  (
   `ip` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '操作者IP',
   `operate_id` bigint(20) UNSIGNED NOT NULL DEFAULT 0 COMMENT '操作管理员',
   `create_time` bigint(20) UNSIGNED NULL DEFAULT NULL COMMENT '创建时间',
+  `update_time` bigint(20) UNSIGNED NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '数据回收记录表' ROW_FORMAT = Dynamic;
 
