@@ -22,4 +22,27 @@ class SystemDeptDao extends BaseDao
     {
         return SystemDept::class;
     }
+
+    /**
+     * get
+     *
+     * @param            $id
+     * @param array|null $field
+     * @param array|null $with
+     * @param string     $order
+     *
+     * @return \app\model\system\SystemDept|null
+     */
+    public function get($id, ?array $field = [], ?array $with = [], string $order = ''): ?SystemDept
+    {
+        $model = parent::get($id, ['*'], ['leader']);
+        if (!empty($model)) {
+            $leader = $model->getData('leader');
+            $model->set('leader_id_list', []);
+            if (!empty($leader)) {
+                $model->set('leader_id_list', array_column($leader->toArray() ?? [], 'id'));
+            }
+        }
+        return $model;
+    }
 }

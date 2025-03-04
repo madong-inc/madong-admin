@@ -41,7 +41,7 @@ class SystemDeptService extends BaseService
             $leaders = $data['leader_id_list'] ?? [];//部门领导
             $model   = $this->dao->save($data);
             if (!empty($leaders)) {
-                $model->leader()->save($leaders);
+                $model->leader()->sync($leaders);
             }
             Db::commit();
             return $model;
@@ -63,8 +63,9 @@ class SystemDeptService extends BaseService
     {
         try {
             $this->transaction(function () use ($id, $data) {
+                $leaders = $data['leader_id_list'] ?? [];//部门领导
+                unset($data['leader_id_list']);
                 $this->dao->update($id, $data);
-                $leaders                 = $data['leader_id_list'] ?? [];//部门领导
                 $systemDeptLeaderService = Container::make(SystemDeptLeaderService::class);
                 $systemDeptLeaderService->dao->delete(['dept_id' => $id]);
                 if (!empty($leaders)) {
@@ -82,23 +83,6 @@ class SystemDeptService extends BaseService
         } catch (\Throwable $e) {
             throw new AdminException($e->getMessage());
         }
-    }
-
-    /**
-     * get
-     *
-     * @param $id
-     *
-     * @return \app\model\system\SystemDept|null
-     */
-    public function get($id): ?SystemDept
-    {
-        $model = $this->dao->get($id, ['*'], ['leader']);
-        if (!empty($model)) {
-            $leader = $model->getData('leader');
-            $model->set('leader_id_list', array_column($leader->toArray() ?? [], 'id'));
-        }
-        return $model;
     }
 
     /**
