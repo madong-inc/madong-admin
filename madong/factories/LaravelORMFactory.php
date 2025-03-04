@@ -407,7 +407,7 @@ class LaravelORMFactory
      * @return \Illuminate\Database\Eloquent\Collection
      * @throws \Exception
      */
-    public function saveAll(array $data): \Illuminate\Database\Eloquent\Collection
+    public function saveAll(array $data): bool
     {
         return $this->getModel()->insert($data);
     }

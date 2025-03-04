@@ -37,7 +37,7 @@ class SystemDeptDao extends BaseDao
     {
         $model = parent::get($id, ['*'], ['leader']);
         if (!empty($model)) {
-            $leader = $model->getData('leader');
+            $leader = $model->leader;
             $model->set('leader_id_list', []);
             if (!empty($leader)) {
                 $model->set('leader_id_list', array_column($leader->toArray() ?? [], 'id'));
