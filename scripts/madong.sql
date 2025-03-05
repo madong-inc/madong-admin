@@ -940,17 +940,6 @@ CREATE TABLE `ma_system_recycle_bin`
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '数据回收记录表' ROW_FORMAT = Dynamic;
 
--- ----------------------------
--- Records of ma_system_recycle_bin
--- ----------------------------
-INSERT INTO `ma_system_recycle_bin`
-VALUES (238117280163307520,
-        '{\"id\":238115444610048000,\"code\":\"qqe\",\"name\":\"qweq\",\"sort\":11,\"enabled\":1,\"created_by\":1,\"updated_by\":1,\"create_time\":1732423972,\"update_time\":1732423972,\"delete_time\":null,\"remark\":\"1\"}',
-        'system_post', 'ma_', 0, '127.0.0.1', 1, 1732424191);
-INSERT INTO `ma_system_recycle_bin`
-VALUES (238117416654348288,
-        '{\"id\":7,\"pid\":3,\"level\":\"0,1,3\",\"code\":\"00006\",\"name\":\"\\u5e02\\u573a\\u90e8\\u95e8\",\"main_leader_id\":\"81896469954695168\",\"phone\":null,\"enabled\":1,\"sort\":1,\"created_by\":1,\"updated_by\":1,\"create_time\":1721640326,\"update_time\":1730035124,\"delete_time\":null,\"remark\":null,\"leader_id_list\":[]}',
-        'system_dept', 'ma_', 0, '127.0.0.1', 1, 1732424208);
 
 -- ----------------------------
 -- Table structure for ma_system_role
