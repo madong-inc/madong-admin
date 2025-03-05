@@ -18,16 +18,19 @@ use Webman\Route;
  */
 require_once app_path('admin/config/route.php');
 
-
 /**
  * 后端首页
  */
-Route::get('/', function() {
-    $path = base_path('README.md');
-
+Route::get('/', function () {
+    $path = base_path('public/index.html');
     if (file_exists($path)) {
-        $content = file_get_contents($path);
-        $parsedown = new Parsedown();
+        return redirect('/admin');
+    }
+
+    $path = base_path('README.md');
+    if (file_exists($path)) {
+        $content     = file_get_contents($path);
+        $parsedown   = new Parsedown();
         $htmlContent = $parsedown->text($content);
         $htmlContent = preg_replace('/<a href="([^"]+)"/', '<a href="$1" target="_blank" rel="noopener noreferrer"', $htmlContent);
 
@@ -81,6 +84,15 @@ Route::get('/', function() {
     }
 
     return response('File not found', 404);
+});
+
+/**
+ * 访问前端静态页面
+ */
+Route::get('/admin', function () {
+    $path    = base_path('public/index.html');
+    $content = file_get_contents($path);
+    return response($content);
 });
 
 /**

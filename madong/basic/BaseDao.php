@@ -59,7 +59,7 @@ abstract class BaseDao
 
     public function __construct(string|null $mode = null, string|object|null $modelClass = null)
     {
-        $mode           = $mode ?? config('app.model_type', 'thinkORM');
+        $mode           = $mode ?? config('app.model_type', 'laravelORM');
         $modelClass     = $modelClass ?? $this->setModel();
         $this->instance = ORMAdapterFactory::createAdapter($mode, $modelClass);
     }
