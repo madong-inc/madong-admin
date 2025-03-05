@@ -16,13 +16,12 @@ use madong\exception\MadongException;
 use madong\factories\LaravelORMFactory;
 use madong\factories\ThinkORMFactory;
 use support\Container;
-use support\Model as laravelModel;
-use think\Model as thinkModel;
+
 
 class ORMAdapterFactory
 {
 
-    public static function createAdapter(string $mode, string|thinkModel|laravelModel|null $model = null): mixed
+    public static function createAdapter(string $mode, string|object $model): mixed
     {
         return match ($mode) {
             'thinkORM' => Container::make(ThinkORMFactory::class, ['context' => $model]),
