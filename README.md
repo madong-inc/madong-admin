@@ -21,15 +21,15 @@ Redis`
 
 ## 代码仓库
 
-| `项目`  | `Gitee`                                          | `GitCode`                                          |
-|-------|--------------------------------------------------|----------------------------------------------------|
-| `后端`  | [https://gitee.com/motion-code/madong](https://gitee.com/motion-code/madong) | [https://gitcode.com/motion-code/madong](https://gitcode.com/motion-code/madong) |
-| `前端`  | [https://gitee.com/motion-code/madong-vben5](https://gitee.com/motion-code/madong-vben5) | [https://gitcode.com/motion-code/madong-vben5](https://gitcode.com/motion-code/madong-vben5) |
+| 项目 | Gitee                                          | GitCode                                        |
+|----|------------------------------------------------|------------------------------------------------|
+| 后端 | [https://gitee.com/motion-code/madong](https://gitee.com/motion-code/madong) | [https://gitcode.com/motion-code/madong](https://gitcode.com/motion-code/madong) |
+| 前端 | [https://gitee.com/motion-code/madong-vben5](https://gitee.com/motion-code/madong-vben5) | [https://gitcode.com/motion-code/madong-vben5](https://gitcode.com/motion-code/madong-vben5) |
 
 
 ## 如何贡献
 
-非常欢迎你的加入！[提一个 Issue](https://gitee.com/motion-code/madong/issues) 或者提交一个 Pull Request。
+非常欢迎你的加入！[提一个 Issue](https://gitcode.com/motion-code/madong/issues) 或者提交一个 Pull Request。
 
 **Pull Request:**
 
