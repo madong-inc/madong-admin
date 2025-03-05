@@ -16,11 +16,14 @@ use app\dao\system\SystemDeptDao;
 use app\model\system\SystemDept;
 use madong\basic\BaseService;
 use madong\exception\AdminException;
+use madong\factories\LaravelORMFactory;
 use support\Container;
-use think\facade\Db;
+use support\Db;
+
 
 class SystemDeptService extends BaseService
 {
+
 
     public function __construct()
     {
@@ -36,19 +39,19 @@ class SystemDeptService extends BaseService
      */
     public function save(array $data): mixed
     {
-        Db::startTrans();
         try {
-            $leaders = $data['leader_id_list'] ?? [];//部门领导
-            $model   = $this->dao->save($data);
-            if (!empty($leaders)) {
-                $model->leader()->sync($leaders);
-            }
-            Db::commit();
-            return $model;
+            return $this->transaction(function () use ($data) {
+                $leaders = $data['leader_id_list'] ?? [];//部门领导
+                $model   = $this->dao->save($data);
+                if (!empty($leaders)) {
+                    $model->leader()->sync($leaders);
+                }
+                return $model;
+            });
         } catch (\Throwable $e) {
-            Db::rollback();
             throw new AdminException($e->getMessage());
         }
+
     }
 
     /**
