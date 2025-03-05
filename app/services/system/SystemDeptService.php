@@ -17,7 +17,8 @@ use app\model\system\SystemDept;
 use madong\basic\BaseService;
 use madong\exception\AdminException;
 use support\Container;
-use think\facade\Db;
+use support\Db;
+
 
 class SystemDeptService extends BaseService
 {
@@ -36,7 +37,7 @@ class SystemDeptService extends BaseService
      */
     public function save(array $data): mixed
     {
-        Db::startTrans();
+        Db::beginTransaction();
         try {
             $leaders = $data['leader_id_list'] ?? [];//部门领导
             $model   = $this->dao->save($data);
@@ -46,7 +47,7 @@ class SystemDeptService extends BaseService
             Db::commit();
             return $model;
         } catch (\Throwable $e) {
-            Db::rollback();
+            Db::rollBack();
             throw new AdminException($e->getMessage());
         }
     }
