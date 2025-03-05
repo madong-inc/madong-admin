@@ -244,86 +244,6 @@ class SystemUserService extends BaseService
     }
 
     /**
-     * 获取用户列表-角色id
-     *
-     * @param array  $where
-     * @param string $field
-     * @param int    $page
-     * @param int    $limit
-     *
-     * @return array
-     */
-    public function getUsersListByRoleId(array $where, string $field, int $page, int $limit): array
-    {
-        $roleId = $where['role_id'];
-        //1.0 获取总数
-        $total = $this->dao->getModel()->hasWhere('userRoles', function ($query) use ($roleId) {
-            $query->where('role_id', $roleId);
-        })->when(!empty($where), function ($query) use ($where) {
-            unset($where['role_id']);
-            $query->where($where);
-        })->count();
-
-        //2.0 获取列表
-        $items = $this->dao->getModel()->hasWhere('userRoles', function ($query) use ($roleId) {
-            $query->where('role_id', $roleId);
-        })->when($page && $limit, function ($query) use ($page, $limit) {
-            $query->page($page, $limit);
-        })->when(!empty($where), function ($query) use ($where) {
-            unset($where['role_id']);
-            $query->where($where);
-        })->select()->toArray();
-
-        return compact('total', 'items');
-    }
-
-    /**
-     * 排除角色ID-用户列表
-     *
-     * @param array  $where
-     * @param string $field
-     * @param int    $page
-     * @param int    $limit
-     *
-     * @return array
-     */
-    public function getUsersExcludingRole(array $where, string $field, int $page, int $limit): array
-    {
-        $roleId = $where['role_id'];
-
-        /**@var SystemUserRoleService $systemUserRoleService */
-        $systemUserRoleService = Container::make(SystemUserRoleService::class);
-
-        $excludUserIds = $systemUserRoleService->getColumn(['role_id' => $roleId], 'user_id');
-
-        // 1.0 获取总数
-        $total = $this->dao->getModel()
-            ->with(['roles'])
-            ->whereNotIn('id', $excludUserIds)
-            ->when(!empty($where), function ($query) use ($where) {
-                unset($where['role_id']);
-                $query->where($where);
-            })
-            ->count();
-
-        // 2.0 获取列表
-        $items = $this->dao->getModel()
-            ->with(['roles'])
-            ->whereNotIn('id', $excludUserIds)
-            ->when($page && $limit, function ($query) use ($page, $limit) {
-                $query->page($page, $limit);
-            })
-            ->when(!empty($where), function ($query) use ($where) {
-                unset($where['role_id']);
-                $query->where($where);
-            })
-            ->select()
-            ->toArray();
-
-        return compact('total', 'items');
-    }
-
-    /**
      * 更新用户信息
      *
      * @param string|int $id
@@ -331,7 +251,7 @@ class SystemUserService extends BaseService
      *
      * @return mixed
      */
-    public function updateUserInfo(string|int $id, array $data)
+    public function updateUserInfo(string|int $id, array $data): mixed
     {
         return $this->dao->update(['id' => $id], $data);
     }
@@ -355,7 +275,7 @@ class SystemUserService extends BaseService
      * @param string|int $id
      * @param array      $data
      *
-     * @return mixed
+     * @return void
      */
     public function updateUserPwd(string|int $id, array $data): void
     {

@@ -96,9 +96,9 @@ class SystemUserRoleService extends BaseService
      *
      * @param array $data
      *
-     * @return \think\model\Collection|null
+     * @return bool
      */
-    public function saveUserRoles(array $data): \think\model\Collection|null
+    public function saveUserRoles(array $data):bool
     {
         try {
             return $this->transaction(function () use ($data) {
