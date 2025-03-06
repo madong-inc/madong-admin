@@ -13,6 +13,10 @@
 function getCurrentUser(bool $returnFullInfo = false): mixed
 {
     $request = request();
+    if (empty($request)) {
+        //定时任务脚本等等没有request请求对象
+        return null;
+    }
     if (!$request->hasMacro('adminInfo')) {
         return null;
     }
