@@ -16,6 +16,9 @@ namespace app\dao\system;
 use app\model\system\SystemCrontabLog;
 use madong\basic\BaseDao;
 
+/**
+ * @method getModel()
+ */
 class SystemCrontabLogDao extends BaseDao
 {
 

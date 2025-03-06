@@ -24,51 +24,6 @@ class SystemCrontabService extends BaseService
     }
 
     /**
-     * 获取列表
-     *
-     * @param array  $where
-     * @param string $field
-     * @param int    $page
-     * @param int    $limit
-     * @param string $order
-     * @param array  $with
-     * @param bool   $search
-     *
-     * @return \madong\trait\Model
-     */
-    public function selectList(array $where, string $field = '*', int $page = 0, int $limit = 0, string $order = '', array $with = [], bool $search = false)
-    {
-        $result = parent::selectList($where, $field, $page, $limit, $order, [], $search);
-        //兼容处理
-        if (config('app.model_type', 'thinkORM') === 'laravelORM') {
-            if (!empty($result)) {
-                foreach ($result as $item) {
-                    // 设置最后运行时间
-                    $item->last_running_time = $item->getData('last_running_time')
-                        ? date('Y-m-d H:i:s', $item->getData('last_running_time'))
-                        : null;
-                    // 获取相关日志并设置到项中
-                    $item->log = $item->getData('log');
-                }
-            }
-            return $result;
-        }
-
-        $systemCrontabLogService = Container::make(SystemCrontabLogService::class);
-        if (!empty($result)) {
-            foreach ($result as $item) {
-                $item->rule_name .= '';
-                $item->set('last_running_time', date('Y-m-d H:i:s', $item->getData('last_running_time')));
-                $item->logs = $systemCrontabLogService->getModel()
-                    ->where(['crontab_id' => $item->id])
-                    ->order('create_time', 'desc')
-                    ->find();
-            }
-        }
-        return $result;
-    }
-
-    /**
      * 添加定时任务
      *
      * @param array $data
@@ -334,7 +289,8 @@ class SystemCrontabService extends BaseService
     {
         try {
             $this->transaction(function () use ($data) {
-                $this->dao->update([['id', 'in', $data]], ['enabled' => 1]);//更改启用
+                $model = $this->dao->getModel();
+                $model->whereIn('id', $data)->update(['enabled' => 1, 'update_time' => time()]);//更改禁用
                 $result = $this->requestData($data);
                 if (!$result) {
                     throw new AdminException('恢复失败');
@@ -354,8 +310,8 @@ class SystemCrontabService extends BaseService
     {
         try {
             $this->transaction(function () use ($data) {
-                var_dump($data);
-                $this->dao->update([['id', 'in', $data]], ['enabled' => 0]);//更改禁用
+                $model = $this->dao->getModel();
+                $model->whereIn('id', $data)->update(['enabled' => 0, 'update_time' => time()]);//更改禁用
                 $result = $this->requestData($data);
                 if (!$result) {
                     throw new AdminException('重启失败');
@@ -412,8 +368,8 @@ class SystemCrontabService extends BaseService
             }
             $result_data = $task_handle[$crontab['type']]::parse($crontab);
             // 记录执行信息
-            $crontab->last_running_time = $start_time;
-            $crontab->inc('running_times', 1);
+            $crontab->last_running_time = time();
+            $crontab->increment('running_times', 1);
             if ($crontab->singleton == 0) {
                 // 单次任务 直接停用
                 $crontab->status = 0;
@@ -426,14 +382,15 @@ class SystemCrontabService extends BaseService
                 $result_data['log'] = mb_substr($result_data['log'], 0, 300) . '...';
             }
             // 写入执行日志
-            $installData       = [
+            $installData = [
                 'crontab_id'   => $crontab['id'] ?? '',
                 'target'       => $crontab['target'] ?? '',
                 'log'          => $result_data['log'] ?? '--',
                 'return_code'  => $result_data['code'] ?? 1,
                 'running_time' => round($end_time - $start_time, 6),
-                'create_time'  => $start_time,
+                'create_time'  => time(),
             ];
+
             $crontabLogService = Container::make(SystemCrontabLogService::class);
             $crontabLogModel   = $crontabLogService->dao->save($installData);
             if (empty($crontabLogModel)) {

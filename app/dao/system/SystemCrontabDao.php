@@ -25,4 +25,32 @@ class SystemCrontabDao extends BaseDao
         return SystemCrontab::class;
     }
 
+    /**
+     * 获取列表
+     *
+     * @param array  $where
+     * @param string $field
+     * @param int    $page
+     * @param int    $limit
+     * @param string $order
+     * @param array  $with
+     * @param bool   $search
+     */
+    public function selectList(array $where, string $field = '*', int $page = 0, int $limit = 0, string $order = '', array $with = [], bool $search = false)
+    {
+        $result = parent::selectList($where, $field, $page, $limit, $order, [], $search);
+
+        $systemCrontabLogDao = new SystemCrontabLogDao();
+        if (!empty($result)) {
+            foreach ($result as $item) {
+                $item->rule_name .= '';
+                $item->logs      = $systemCrontabLogDao->getModel()
+                    ->where(['crontab_id' => $item->id])
+                    ->orderBy('create_time', 'desc')
+                    ->first();
+            }
+        }
+        return $result;
+    }
+
 }

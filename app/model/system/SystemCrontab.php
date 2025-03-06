@@ -58,7 +58,7 @@ class SystemCrontab extends BaseLaORMModel
             ->orderBy('create_time', 'desc')
             ->first();
     }
-    
+
     /**
      * 获取器-last_running_time
      *
@@ -81,8 +81,13 @@ class SystemCrontab extends BaseLaORMModel
      */
     public function getRuleNameAttribute($value): string
     {
+        if (is_null($this->cycle_rule) || $this->cycle_rule === '') {
+            return '任务规则不正确';
+        }
         $rule_arr = json_decode($this->cycle_rule, true);
-        if (empty($rule_arr)) return '错误';
+        if (json_last_error() !== JSON_ERROR_NONE || empty($rule_arr)) {
+            return '任务规则不正确';
+        }
         switch ($this->task_cycle) {
             case 1:
                 $rule = "每天{$rule_arr['hour']}点{$rule_arr['minute']}分";
@@ -114,6 +119,13 @@ class SystemCrontab extends BaseLaORMModel
         }
         return $rule;
     }
+
+
+
+
+
+
+
 
     /**
      * 关联执行志记录表
