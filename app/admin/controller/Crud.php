@@ -12,13 +12,12 @@
 
 namespace app\admin\controller;
 
+use madong\helper\Tree;
 use support\Request;
 use madong\utils\JwtAuth;
 use madong\exception\AdminException;
 use madong\utils\Json;
-use madong\utils\Tree;
-use app\services\system\SystemUserService;
-use think\Model;
+
 
 /**
  * @author Mr.April

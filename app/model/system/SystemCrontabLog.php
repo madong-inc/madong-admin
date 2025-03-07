@@ -12,12 +12,12 @@
 
 namespace app\model\system;
 
-use madong\basic\BaseLaORMModel;
+use madong\basic\BaseModel;
 
 /**
  *定时任务日志
  */
-class SystemCrontabLog extends BaseLaORMModel
+class SystemCrontabLog extends BaseModel
 {
 
     /**

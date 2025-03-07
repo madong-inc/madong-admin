@@ -16,8 +16,7 @@ use app\dao\system\SystemRecycleBinDao;
 use madong\basic\BaseService;
 use madong\exception\AdminException;
 use support\Container;
-use support\Db as LaravelDb;
-use think\facade\Db as ThinkDb;
+use support\Db;
 
 /**
  * 回收站服务
@@ -44,20 +43,12 @@ class SystemRecycleBinService extends BaseService
             $data = $this->dao->get($id);
             if (!empty($data)) {
                 $this->transaction(function () use ($data) {
-                    if (config('app.model_type', 'thinkORM') == 'thinkORM') {
-                        $tablePrefix = $data->getData('table_prefix');
-                        $tableName   = $data->getData('table_name');
-                        $tableData   = json_decode($data->getData('data'), true);
-                        $columns     = $this->getTableColumns($tableName, $tablePrefix);
-                        $tableData   = array_intersect_key($tableData, array_flip($columns));
-                        ThinkDb::name($tableName)->insert($tableData);
-                    } else {
-                        $tableName = $data->getData('table_name');
-                        $tableData = json_decode($data->getData('data'), true);
-                        $columns   = $this->getTableColumns($tableName);
-                        $tableData = array_intersect_key($tableData, array_flip($columns));
-                        LaravelDb::table($tableName)->insert($tableData);
-                    }
+
+                    $tableName = $data->getData('table_name');
+                    $tableData = json_decode($data->getData('data'), true);
+                    $columns   = $this->getTableColumns($tableName);
+                    $tableData = array_intersect_key($tableData, array_flip($columns));
+                    Db::table($tableName)->insert($tableData);
                     $data->delete();
                 });
             }
@@ -76,6 +67,6 @@ class SystemRecycleBinService extends BaseService
      */
     private function getTableColumns(string $tableName, string $tablePrefix = ''): array
     {
-        return LaravelDb::getSchemaBuilder()->getColumnListing($tableName);
+        return Db::getSchemaBuilder()->getColumnListing($tableName);
     }
 }

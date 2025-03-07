@@ -4,19 +4,20 @@ namespace madong\services\scheduler;
 
 use app\services\system\SystemCrontabService;
 use support\Container;
-use Webman\RedisQueue\Client as RedisClient;
 use WebmanTech\SymfonyLock\Locker;
 use Workerman\Connection\TcpConnection;
 use Workerman\Crontab\Crontab;
-use Workerman\Lib\Timer;
+use Workerman\Timer;
 use Workerman\Worker;
+use Webman\RedisQueue\Client as RedisClient;
 
 /**
  * 该任务调度进程服务必须安装以下扩展组件
  * 1.定时任务 composer require workerman/crontab
- * 2.Redis   composer require webman/redis-queue illuminate/redis
+ * 2.Redis   composer require webman/redis-queue
  * 3.业务锁  composer require webman-tech/symfony-lock
  * 4.env组件 composer require vlucas/phpdotenv
+ * 5.url处理 composer require guzzlehttp/guzzle
  * @method getAllTask() 获取所有任务
  * @method getTask($id) 获取单个任务
  * @method writeRunLog($insert_data = []) 写入运行日志
@@ -33,9 +34,10 @@ class SchedulerServer
 
     /**
      * Redis
-     * @var \Workerman\RedisQueue\Client|null
+     *
+     * @var
      */
-    protected \Workerman\RedisQueue\Client|null $redis;
+    protected $redis;
 
     /**
      * 调试模式
@@ -72,14 +74,14 @@ class SchedulerServer
     private array $crontabPool = [];
 
     /**
-     * @var \Workerman\RedisQueue\Client|null 订阅实例
+     * 订阅实例
      */
-    protected \Workerman\RedisQueue\Client|null $subscribeClient;
+    protected $subscribeClient;
 
     /**
-     * @var \Workerman\RedisQueue\Client|null 通知实例
+     * 通知实例
      */
-    protected \Workerman\RedisQueue\Client|null $publishClient;
+    protected $publishClient;
 
     /**
      * @param Worker $worker
@@ -113,14 +115,14 @@ class SchedulerServer
      */
     private function subscribeEvent(): void
     {
-
         //创建发布实例
         if (empty($this->publishClient)) {
             $this->publishClient = $this->redisCreate();
             $this->writeln('启用心跳');
-            Timer::add(30, function () {//保持链接活跃
+            Timer::add(30, function () {
+                //保持链接活跃
                 $this->writeln('发送心跳');
-                $this->publishClient->send('ping', ['name' => 'ping', 'age' => 1]);
+                $this->publishClient->send('ping', ['name' => 'ping', 'date' => date('Y-m-d H:i:s',time())]);
             });
         }
 
@@ -141,12 +143,7 @@ class SchedulerServer
         });
     }
 
-    /**
-     * Redis 初始化
-     *
-     * @return false|\Webman\RedisQueue\Client|\Workerman\RedisQueue\Client
-     */
-    function redisCreate(): false|RedisClient|\Workerman\RedisQueue\Client
+    public function redisCreate(): bool|RedisClient|\Workerman\RedisQueue\Client
     {
         $connection_name = 'default';
         try {
@@ -242,7 +239,7 @@ class SchedulerServer
             //运行次数加1,很重要,多进程情况下用来检测当前次数是否已执行
             $data['running_times'] += 1;
             $uuid                  = $this->createTaskUuid($data);
-            //获取锁.
+            //获取锁
             $lock = Locker::cash($uuid);
             // 获取锁失败
             if (!$lock) {
@@ -251,7 +248,7 @@ class SchedulerServer
             try {
                 $systemCrontabService = Container::make(SystemCrontabService::class);
                 $reData               = $systemCrontabService->runOneTask($data['id']);
-                $this->writeln( $data['title'].' 任务#' . $data['id'] . ' ' . $data['rule'] . ' ' . $data['target'], $reData['code']);
+                $this->writeln($data['title'] . ' 任务#' . $data['id'] . ' ' . $data['rule'] . ' ' . $data['target'], $reData['code']);
                 $this->isSingleton($data);
             } finally {
                 // 释放锁

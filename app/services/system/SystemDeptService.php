@@ -13,17 +13,14 @@
 namespace app\services\system;
 
 use app\dao\system\SystemDeptDao;
-use app\model\system\SystemDept;
+
 use madong\basic\BaseService;
 use madong\exception\AdminException;
-use madong\factories\LaravelORMFactory;
 use support\Container;
-use support\Db;
 
 
 class SystemDeptService extends BaseService
 {
-
 
     public function __construct()
     {

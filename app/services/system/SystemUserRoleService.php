@@ -33,47 +33,6 @@ class SystemUserRoleService extends BaseService
     }
 
     /**
-     * 更新设置角色权限
-     *
-     * @param $data
-     */
-    public function save($data): void
-    {
-        try {
-            $this->transaction(function () use ($data) {
-                $userId   = $data['user_id'] ?? '';
-                $newRoles = $data['role_id_list'] ?? [];
-                if (empty($userId)) {
-                    throw new AdminException('参数错误缺少user_id', -1);
-                } // 获取当前权限
-                $currentRoles = $this->getColumn(['user_id' => $userId], 'role_id');
-
-                // 计算需要添加和删除的权限
-                $userRoleIdsToAdd    = array_diff($newRoles, $currentRoles);
-                $userRoleIdsToRemove = array_diff($currentRoles, $newRoles);
-
-                // 批量删除权限
-                if (!empty($userRoleIdsToRemove)) {
-                    $this->dao->delete([
-                        ['role_id', 'in', $userRoleIdsToRemove],
-                        ['user_id', '=', $userId],
-                    ]);
-                }
-
-                // 批量添加权限
-                if (!empty($userRoleIdsToAdd)) {
-                    $data = array_map(function ($roleId) use ($userId) {
-                        return ['role_id' => $roleId, 'user_id' => $userId];
-                    }, $userRoleIdsToAdd);
-                    $this->dao->saveAll($data);
-                }
-            });
-        } catch (\Throwable $e) {
-            throw new AdminException($e->getMessage());
-        }
-    }
-
-    /**
      * 移除用户-关联角色
      *
      * @param array $data

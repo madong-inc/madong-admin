@@ -17,14 +17,14 @@ use app\model\system\SystemMenu;
 use app\model\system\SystemUser;
 use madong\basic\BaseService;
 use madong\exception\AuthException;
+use madong\helper\Tree;
+use madong\interface\IDict;
 use madong\services\cache\CacheService;
-use madong\utils\Dict;
 use madong\utils\Json;
 use madong\utils\JwtAuth;
-use madong\utils\Tree;
 use support\Container;
 use support\Request;
-use think\db\Query;
+
 
 class SystemAuthService extends BaseService
 {
@@ -190,7 +190,7 @@ class SystemAuthService extends BaseService
      *
      * @return array
      */
-    public function getCodesByUserRoles(Dict $userDict): array
+    public function getCodesByUserRoles(IDict $userDict): array
     {
         try {
             $role    = $userDict->get('roles', []);

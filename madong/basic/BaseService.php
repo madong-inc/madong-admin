@@ -14,9 +14,8 @@
 namespace madong\basic;
 
 use madong\services\cache\CacheService;
-use madong\trait\ServicesTrait;
+use madong\traits\ServicesTrait;
 use support\Db as LaravelDb;
-use think\facade\DB as ThinkDb;
 
 abstract class BaseService
 {
@@ -55,11 +54,11 @@ abstract class BaseService
         $request = request();
         $page    = $limit = 0;
         if ($isPage) {
-            $page  = $request->input(Config('thinkorm.page.pageKey', 'page') . '/d', 0);
-            $limit = $request->input(Config('thinkorm.page.limitKey', 'limit') . '/d', 0);
+            $page  = $request->input(Config('database.page.pageKey', 'page') . '/d', 0);
+            $limit = $request->input(Config('database.page.limitKey', 'limit') . '/d', 0);
         }
-        $limitMax     = Config('thinkorm.page.limitMax');
-        $defaultLimit = Config('thinkorm.page.defaultLimit', 10);
+        $limitMax     = Config('database.page.limitMax');
+        $defaultLimit = Config('database.page.defaultLimit', 10);
         if ($limit > $limitMax && $isRelieve) {
             $limit = $limitMax;
         }
@@ -83,6 +82,8 @@ abstract class BaseService
             'laravelORM' => $isTran ? $this->runLaravelTransaction($closure) : $closure(),
             default => throw new \InvalidArgumentException("Unsupported framework: $framework"),
         };
+
+        
     }
 
     /**

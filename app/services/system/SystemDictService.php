@@ -13,7 +13,6 @@
 namespace app\services\system;
 
 use app\dao\system\SystemDictDao;
-use app\model\system\SystemDictItem;
 use madong\basic\BaseService;
 use ReflectionClass;
 use ReflectionException;
@@ -33,55 +32,6 @@ class SystemDictService extends BaseService
     {
         $this->dao = Container::make(SystemDictDao::class);
     }
-
-    /**
-     * 字典项获取
-     *
-     * @param string $code
-     *
-     * @return array
-     */
-//    public function findItemsByCode(string $code): array
-//    {
-//        $map1   = [
-//            'code'    => $code,
-//            'enabled' => 1,
-//        ];
-//        $result = $this->get($map1, ['*'], ['items']);
-//        if (empty($result)) {
-//            return [];
-//        }
-//        $items = Config('app.model_type', 'thinkORM') == 'laravelORM' ? $result->items : $result->getData('items');
-//        if (empty($items)) {
-//            return [];
-//        }
-//        $dataType = Config('app.model_type', 'thinkORM') == 'laravelORM' ? $result->data_type : $result->getData('data_type');
-//        foreach ($items as $item) {
-//            $value = Config('app.model_type', 'thinkORM') == 'laravelORM' ? $item->value : $item->getData('value');
-//            if ($dataType == 1) {
-//                $item->value = (string)$value; // 转换为字符串
-//            } elseif ($dataType == 2) {
-//                $item->value = (int)$value; // 转换为整型
-//            }
-//        }
-//        if (Config('app.model_type', 'thinkORM') == 'laravelORM') {
-//            return $items->makeHidden(['id'])->map(function ($item) {
-//                return [
-//                    'label' => $item->label,
-//                    'value' => $item->value,
-//                    'ext'   => $item->ext,
-//                ];
-//            })->toArray();
-//        } else {
-//            return array_map(function ($item) {
-//                return [
-//                    'label' => $item->getData('label'),
-//                    'value' => $item->getData('value'),
-//                    'ext'   => $item->getData('ext'),
-//                ];
-//            }, $items);
-//        }
-//    }
 
     /**
      * 扫描枚举目录
@@ -123,7 +73,6 @@ class SystemDictService extends BaseService
             $reflectionClass = new ReflectionClass($className);
             return $reflectionClass->isEnum();
         } catch (ReflectionException $e) {
-            var_dump($e->getMessage());
             return false; // 如果遇到错误则返回 false
         }
     }

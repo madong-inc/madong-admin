@@ -19,7 +19,7 @@ use app\services\system\SystemRoleMenuService;
 use app\services\system\SystemUserRoleService;
 use app\services\system\SystemUserService;
 use madong\exception\AuthException;
-use madong\utils\Dict;
+use madong\helper\Dict;
 use madong\utils\Json;
 use support\Container;
 use support\Request;

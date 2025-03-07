@@ -28,6 +28,56 @@ class SystemUserDao extends BaseDao
     }
 
     /**
+     * 用户详情
+     *
+     * @param            $id
+     * @param array|null $field
+     * @param array|null $with
+     * @param string     $order
+     *
+     * @return SystemUser|null
+     * @throws \Exception
+     */
+    public function get($id, ?array $field = null, ?array $with = [], string $order = ''): SystemUser|null
+    {
+        $model = parent::get($id, ['*'], ['roles', 'posts', 'depts']);
+        if (!empty($model)) {
+            $roles = $model->getData('roles');
+            $posts = $model->getData('posts');
+            $model->set('role_id_list', []);
+            $model->set('post_id_list', []);
+            if (!empty($roles)) {
+                $model->set('role_id_list', array_column($roles->toArray(), 'id'));
+            }
+            if (!empty($posts)) {
+                $model->set('post_id_list', array_column($posts->toArray(), 'id'));
+            }
+            $model->makeHidden(['password']);
+        }
+        return $model;
+    }
+
+    /**
+     * 获取用户列表
+     *
+     * @param array  $where
+     * @param string $field
+     * @param int    $page
+     * @param int    $limit
+     * @param string $order
+     * @param array  $with
+     * @param bool   $search
+     *
+     * @return \Illuminate\Database\Eloquent\Collection|null
+     * @throws \Exception
+     */
+    public function selectList(array $where, string $field = '*', int $page = 0, int $limit = 0, string $order = '', array $with = [], bool $search = false):?\Illuminate\Database\Eloquent\Collection
+    {
+        $where['enabled'] = 1;
+        return parent::selectList($where, $field, $page, $limit, $order, ['depts', 'posts', 'roles'], $search)->makeHidden(['password']);
+    }
+
+    /**
      * 获取用户列表-角色id
      *
      * @param array  $where

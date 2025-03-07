@@ -32,6 +32,7 @@ class SystemDeptDao extends BaseDao
      * @param string     $order
      *
      * @return \app\model\system\SystemDept|null
+     * @throws \Exception
      */
     public function get($id, ?array $field = [], ?array $with = [], string $order = ''): ?SystemDept
     {

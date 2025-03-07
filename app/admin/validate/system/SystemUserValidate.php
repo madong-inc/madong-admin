@@ -54,12 +54,13 @@ class SystemUserValidate extends Validate
      * @param       $value
      * @param       $rule
      * @param array $data
+     * @param array $field
      *
      * @return bool
      */
-    protected function unique($value, $rule, array $data = []): bool
+    public function unique($value, $rule, array $data = [],$field=[]):bool
     {
-        $query = SystemUser::where('user_name', $value)->withTrashed();
+        $query = SystemUser::where('user_name', $value);
         // 如果是更新操作，可以排除当前记录
         if (isset($data['id'])) {
             $query->where('id', '<>', $data['id']);

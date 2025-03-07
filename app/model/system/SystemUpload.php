@@ -12,7 +12,7 @@
 
 namespace app\model\system;
 
-use madong\basic\BaseLaORMModel;
+use madong\basic\BaseModel;
 
 /**
  * 附件模型
@@ -20,7 +20,7 @@ use madong\basic\BaseLaORMModel;
  * @author Mr.April
  * @since  1.0
  */
-class SystemUpload extends BaseLaORMModel
+class SystemUpload extends BaseModel
 {
 
     /**

@@ -23,12 +23,9 @@ class SystemUploadDao extends BaseDao
         return SystemUpload::class;
     }
 
-    public function selectList(array $where, string $field = '*', int $page = 0, int $limit = 0, string $order = '', array $with = [], bool $search = false)
+    public function selectList(array $where, string $field = '*', int $page = 0, int $limit = 0, string $order = '', array $with = [], bool $search = false): ?\Illuminate\Database\Eloquent\Collection
     {
-        if (Config('app.model_type', 'thinkORM') == 'thinkORM') {
-            return parent::selectList($where, $field, $page, $limit, $order, ['created', 'updated'], $search)->toArray();
-        } else {
-            return parent::selectList($where, $field, $page, $limit, $order, ['createds', 'updateds'], $search);
-        }
+        //重写追加两个关联模型
+        return parent::selectList($where, $field, $page, $limit, $order, ['createds', 'updateds'], $search);
     }
 }

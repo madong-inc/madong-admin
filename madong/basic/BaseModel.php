@@ -15,13 +15,13 @@ namespace madong\basic;
 use app\services\system\SystemRecycleBinService;
 use Illuminate\Support\Carbon;
 use madong\exception\AdminException;
-use madong\utils\Snowflake;
+use madong\helper\Snowflake;
 use support\Container;
 use support\Db;
 use support\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class BaseLaORMModel extends Model
+class BaseModel extends Model
 {
     private const WORKER_ID = 1;
     private const DATA_CENTER_ID = 1;

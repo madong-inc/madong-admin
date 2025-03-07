@@ -13,7 +13,7 @@
 namespace app\model\system;
 
 use app\services\system\SystemCrontabLogService;
-use madong\basic\BaseLaORMModel;
+use madong\basic\BaseModel;
 
 /**
  * 定时任务
@@ -21,7 +21,7 @@ use madong\basic\BaseLaORMModel;
  * @author Mr.April
  * @since  1.0
  */
-class SystemCrontab extends BaseLaORMModel
+class SystemCrontab extends BaseModel
 {
 
     protected $table = 'system_crontab';

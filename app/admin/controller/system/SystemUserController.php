@@ -151,7 +151,7 @@ class SystemUserController extends Crud
             $ids      = $request->input('ids');
             $password = $request->input('password', 123456);
             $data     = ['password' => password_hash($password, PASSWORD_DEFAULT)];
-            $this->service->update(['id' => $ids], $data);
+            $this->service->batchUpdate($ids, $data);
             return Json::success('ok');
         } catch (\Exception $e) {
             return Json::fail($e->getMessage());
@@ -168,9 +168,8 @@ class SystemUserController extends Crud
     public function grantRole(Request $request): \support\Response
     {
         try {
-            $data                  = $this->inputFilter($request->all(), ['user_id', 'role_id_list']);
-            $systemUserRoleService = Container::make(SystemUserRoleService::class);
-            $systemUserRoleService->save($data);
+            $data = $this->inputFilter($request->all(), ['user_id', 'role_id_list']);
+            $this->service->userRoleGrant($data['user_id'], $data['role_id_list']);
             return Json::success('ok');
         } catch (\Exception $e) {
             return Json::fail($e->getMessage());

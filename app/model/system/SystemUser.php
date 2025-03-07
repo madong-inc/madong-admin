@@ -12,12 +12,12 @@
 
 namespace app\model\system;
 
-use madong\basic\BaseLaORMModel;
+use madong\basic\BaseModel;
 
 /**
  * 用户信息模型
  */
-class SystemUser extends BaseLaORMModel
+class SystemUser extends BaseModel
 {
 
     // 完整数据库表名称

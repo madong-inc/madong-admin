@@ -1,6 +1,6 @@
 <?php
 
-namespace madong\trait;
+namespace madong\traits;
 
 /**
  * Trait ServicesTrait

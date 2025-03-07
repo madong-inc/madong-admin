@@ -12,9 +12,9 @@
 
 namespace app\model\system;
 
-use madong\basic\BaseLaORMModel;
+use madong\basic\BaseModel;
 
-class SystemLoginLog extends BaseLaORMModel
+class SystemLoginLog extends BaseModel
 {
 
     /**

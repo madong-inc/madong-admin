@@ -13,6 +13,8 @@
 namespace app\services\system;
 
 use app\model\system\SystemUser;
+use app\model\system\SystemUserPost;
+use madong\helper\PropertyCopier;
 use madong\services\cache\CacheService;
 use support\Container;
 use Webman\Event\Event;
@@ -30,54 +32,7 @@ class SystemUserService extends BaseService
     }
 
     /**
-     * 用户详情
-     *
-     * @param $id
-     *
-     * @return SystemUser|null
-     */
-    public function get($id): SystemUser|null
-    {
-        /** @var SystemUser|null $model */
-        $model = $this->dao->get($id, ['*'], ['roles', 'posts', 'depts']);
-//        var_dump($model->getLastSql());
-        if (!empty($model)) {
-            $roles = $model->getData('roles');
-            $posts = $model->getData('posts');
-            $model->set('role_id_list', []);
-            $model->set('post_id_list', []);
-            if (!empty($roles)) {
-                $model->set('role_id_list', array_column($roles->toArray(), 'id'));
-            }
-            if (!empty($posts)) {
-                $model->set('post_id_list', array_column($posts->toArray(), 'id'));
-            }
-            $model->hidden(['password']);
-        }
-        return $model;
-    }
-
-    /**
-     * selectList
-     *
-     * @param array  $where
-     * @param string $field
-     * @param int    $page
-     * @param int    $limit
-     * @param string $order
-     * @param array  $with
-     * @param bool   $search
-     *
-     * @return \think\Collection|null
-     */
-    public function selectList(array $where, string $field = '*', int $page = 0, int $limit = 0, string $order = '', array $with = [], bool $search = false)
-    {
-        $where['enabled'] = 1;
-        return $this->dao->selectList($where, $field, $page, $limit, $order, ['depts', 'posts', 'roles'], $search);
-    }
-
-    /**
-     * save
+     * 新增
      *
      * @param array $data
      *
@@ -91,12 +46,8 @@ class SystemUserService extends BaseService
                 $roles            = $data['role_id_list'] ?? [];
                 $posts            = $data['post_id_list'] ?? [];
                 $model            = $this->dao->save($data);
-                if (!empty($roles)) {
-                    $model->roles()->saveAll($roles);
-                }
-                if (!empty($posts)) {
-                    $model->posts()->save($posts);
-                }
+                $model->roles()->sync($roles);
+                $model->posts()->sync($posts);
                 return $model;
             });
         } catch (\Throwable $e) {
@@ -107,33 +58,27 @@ class SystemUserService extends BaseService
     /**
      * 编辑
      *
-     * @param $id
-     * @param $data
-     *
-     * @return void
+     * @param int   $id
+     * @param array $data
      */
-    public function update($id, $data): void
+    public function update(int $id, array $data): void
     {
         try {
             $this->transaction(function () use ($id, $data) {
+                // 处理角色和职位
+                $roles = $data['role_id_list'] ?? [];
+                $posts = $data['post_id_list'] ?? [];
+                // 处理密码
                 unset($data['password']);
-                $roles  = $data['role_id_list'] ?? [];
-                $posts  = $data['post_id_list'] ?? [];
-                $result = $this->dao->update(['id' => $id], $data);
-                $user   = $this->dao->get($id);
-                if ($result && $user) {
-                    $user->roles()->detach();
-                    $user->posts()->detach();
-                    if (!empty($roles)) {
-                        $user->roles()->saveAll($roles);
-                    }
-                    if (!empty($posts)) {
-                        $user->posts()->save($posts);
-                    }
-                }
+                // 更新用户信息
+                $user = $this->dao->getModel()->where('id', $id)->first();
+                $user->update($data);
+                $user->roles()->sync($roles);
+                $user->posts()->sync($posts);
             });
         } catch (\Throwable $e) {
-            throw new AdminException($e->getMessage());
+            // 记录日志或添加更多上下文信息到异常中
+            throw new AdminException("Failed to update user: {$e->getMessage()}");
         }
     }
 
@@ -195,16 +140,16 @@ class SystemUserService extends BaseService
     /**
      * 用户登录
      *
-     * @param string      $username
-     * @param string|null $password
-     * @param string      $type
-     * @param string      $grantType
+     * @param string $username
+     * @param string $password
+     * @param string $type
+     * @param string $grantType
      *
      * @return array
      */
     public function login(string $username, string $password = '', string $type = 'admin', string $grantType = 'default'): array
     {
-        $adminInfo = $this->dao->get(['user_name' => $username]);
+        $adminInfo = $this->dao->getModel()->where('user_name',$username)->first();//注意get在dao被重写了使用mode 直接获取
         $status    = 1;
         $message   = '登录成功';
         if (!$adminInfo) {
@@ -280,7 +225,7 @@ class SystemUserService extends BaseService
     public function updateUserPwd(string|int $id, array $data): void
     {
         $this->transaction(function () use ($id, $data) {
-            $info = $this->dao->get($id);
+            $info = $this->dao->getModel()->where('id', $id)->first();
             if (empty($info)) {
                 throw new AdminException('用户不存在或被删除');
             }
@@ -306,6 +251,25 @@ class SystemUserService extends BaseService
                 $cacheService->delete($value);
             }
         });
+    }
+
+    /**
+     * 用户授权角色
+     *
+     * @param string|int $id
+     * @param array      $data
+     */
+    public function userRoleGrant(string|int $id, array $data = []): void
+    {
+        try {
+            $this->transaction(function () use ($id, $data) {
+                $model = $this->dao->getModel()->where('id', $id)->first();
+                $model->roles()->sync($data);
+            });
+        } catch (\Throwable $e) {
+            // 记录日志或添加更多上下文信息到异常中
+            throw new AdminException("Failed to update user: {$e->getMessage()}");
+        }
     }
 
     /**

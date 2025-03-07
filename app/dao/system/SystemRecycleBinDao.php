@@ -13,6 +13,7 @@
 namespace app\dao\system;
 
 use app\model\system\SystemRecycleBin;
+use app\model\system\SystemUser;
 use madong\basic\BaseDao;
 
 class SystemRecycleBinDao extends BaseDao
@@ -23,12 +24,12 @@ class SystemRecycleBinDao extends BaseDao
         return SystemRecycleBin::class;
     }
 
-    public function selectList(array $where, string $field = '*', int $page = 0, int $limit = 0, string $order = '', array $with = [], bool $search = false)
+    public function selectList(array $where, string $field = '*', int $page = 0, int $limit = 0, string $order = '', array $with = [], bool $search = false): ?\Illuminate\Database\Eloquent\Collection
     {
         return parent::selectList($where, $field, $page, $limit, $order, ['operate'], $search);
     }
 
-    public function get(array|string|int $id)
+    public function get($id, array|null $field = ['*'], array|null $with = [], string $order = ''): ?SystemRecycleBin
     {
         return parent::get($id, ['*'], ['operate']);
     }

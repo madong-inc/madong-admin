@@ -35,8 +35,11 @@ class SystemCrontabDao extends BaseDao
      * @param string $order
      * @param array  $with
      * @param bool   $search
+     *
+     * @return \Illuminate\Database\Eloquent\Collection|null
+     * @throws \Exception
      */
-    public function selectList(array $where, string $field = '*', int $page = 0, int $limit = 0, string $order = '', array $with = [], bool $search = false)
+    public function selectList(array $where, string $field = '*', int $page = 0, int $limit = 0, string $order = '', array $with = [], bool $search = false): ?\Illuminate\Database\Eloquent\Collection
     {
         $result = parent::selectList($where, $field, $page, $limit, $order, [], $search);
 

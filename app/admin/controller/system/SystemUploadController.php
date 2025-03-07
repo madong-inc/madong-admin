@@ -46,9 +46,9 @@ class SystemUploadController extends Crud
      *
      * @param \support\Request $request
      *
-     * @return \support\Response|\Webman\Http\Response
+     * @return \support\Response
      */
-    public function downloadResourceById(Request $request)
+    public function downloadResourceById(Request $request): \support\Response
     {
         try {
             $id   = $request->route->param('id');
@@ -67,9 +67,9 @@ class SystemUploadController extends Crud
      *
      * @param \support\Request $request
      *
-     * @return \support\Response|\Webman\Http\Response
+     * @return \support\Response
      */
-    public function downloadResourceByHash(Request $request)
+    public function downloadResourceByHash(Request $request): \support\Response
     {
         try {
             $hash = $request->route->param('hash');
