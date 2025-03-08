@@ -39,8 +39,8 @@ class Captcha
         $captcha->build(120, 36);
         $uuid   = Uuid::uuid4();
         $key    = $uuid->toString();
-        $mode   = config('captcha.mode', 'session');
-        $expire = config('captcha.expire', 300);
+        $mode   = config('captcha.captcha.mode', 'session');
+        $expire = config('captcha.captcha.expire', 300);
         $code   = strtolower($captcha->getPhrase());
         if ($mode === 'redis') {
             try {
@@ -102,7 +102,7 @@ class Captcha
      */
     public function check(string $uuid, string|int $captcha): bool
     {
-        $mode = config('captcha.mode', 'session');
+        $mode = config('.captcha.captcha.mode', 'session');
         if ($mode === 'redis') {
             try {
                 $code = Redis::get($uuid);
