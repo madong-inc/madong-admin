@@ -48,8 +48,8 @@
         "phpmailer/phpmailer": "^6.9",
         "overtrue/easy-sms": "^3.0",
         "firebase/php-jwt": "^6.11",
-        "madong/madong-helper": "^1.0",
-        "robmorgan/phinx": "^0.16.6"
+        "robmorgan/phinx": "^0.16.6",
+        "madong/helper": "^1.0"
     },
     "suggest": {
         "ext-event": "For better performance. "
