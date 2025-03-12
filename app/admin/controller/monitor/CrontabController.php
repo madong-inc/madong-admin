@@ -39,6 +39,26 @@ class CrontabController extends Crud
         $this->validate = Container::make(SystemCrontabValidate::class);
     }
 
+
+    public function store(Request $request): \support\Response
+    {
+        try {
+            $data = $this->inputFilter($request,['year','month','day','hour','minute','second']);
+            if (isset($this->validate) && $this->validate) {
+                if (!$this->validate->scene('store')->check($data)) {
+                    throw new \Exception($this->validate->getError());
+                }
+            }
+            $model = $this->service->save($data);
+            if (empty($model)) {
+                throw new AdminException('插入失败');
+            }
+            $pk = $model->getPk();
+            return Json::success('ok', [$pk => $model->getData($pk)]);
+        } catch (\Throwable $e) {
+            return Json::fail($e->getMessage());
+        }
+    }
     /**
      * 恢复任务
      *

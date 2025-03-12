@@ -288,14 +288,12 @@ class SystemCrontabService extends BaseService
     public function resumeCrontab(string|int|array $data): void
     {
         try {
-            $this->transaction(function () use ($data) {
-                $model = $this->dao->getModel();
-                $model->whereIn('id', $data)->update(['enabled' => 1, 'update_time' => time()]);//更改禁用
-                $result = $this->requestData($data);
-                if (!$result) {
-                    throw new AdminException('恢复失败');
-                }
-            });
+            $model = $this->dao->getModel();
+            $model->whereIn('id', $data)->update(['enabled' => 1, 'update_time' => time()]);//更改禁用
+            $result = $this->requestData($data);
+            if (!$result) {
+                throw new AdminException('恢复失败');
+            }
         } catch (\Exception $e) {
             throw new AdminException($e->getMessage());
         }
@@ -309,14 +307,12 @@ class SystemCrontabService extends BaseService
     public function pauseCrontab(string|int|array $data): void
     {
         try {
-            $this->transaction(function () use ($data) {
-                $model = $this->dao->getModel();
-                $model->whereIn('id', $data)->update(['enabled' => 0, 'update_time' => time()]);//更改禁用
-                $result = $this->requestData($data);
-                if (!$result) {
-                    throw new AdminException('重启失败');
-                }
-            });
+            $model = $this->dao->getModel();
+            $model->whereIn('id', $data)->update(['enabled' => 0, 'update_time' => time()]);//更改禁用
+            $result = $this->requestData($data);
+            if (!$result) {
+                throw new AdminException('重启失败');
+            }
         } catch (\Exception $e) {
             throw new AdminException($e->getMessage());
         }
