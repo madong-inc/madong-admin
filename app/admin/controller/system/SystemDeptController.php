@@ -73,6 +73,9 @@ class SystemDeptController extends Crud
                     throw new \Exception($this->validate->getError());
                 }
             }
+            if (empty($data['pid'])) {
+                $data['pid'] = 0;
+            }
             $this->service->update($id, $data);
             return Json::success('ok');
         } catch (\Throwable $e) {
