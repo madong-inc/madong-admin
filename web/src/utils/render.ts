@@ -1,0 +1,224 @@
+import type { Component as ComponentType } from 'vue';
+import type { SystemDictItemModel} from '#/api/system/dict';
+import { h } from 'vue';
+// import { JsonPreview } from '#/components/common-ui';
+//@ts-ignore
+import {
+  // AndroidIcon,
+  // BaiduIcon,
+  // ChromeIcon,
+  // DefaultBrowserIcon,
+  // DefaultOsIcon,
+  // DingtalkIcon,
+  // EdgeIcon,
+  // FirefoxIcon,
+  IconifyIcon,
+  // IPhoneIcon,
+  // LinuxIcon,
+  // MicromessengerIcon,
+  // OperaIcon,
+  // OSXIcon,
+  // QuarkIcon,
+  // SafariIcon,
+  // SvgQQIcon,
+  // UcIcon,
+  // WindowsIcon,
+} from '#/components/common/icons';
+import { Tag } from 'ant-design-vue';
+import { DictTag } from '#/components/dict';
+import { getDictOptions } from './dict';
+
+/**
+ * 渲染标签
+ * @param text 文字
+ * @param color 颜色
+ * @returns render
+ */
+function renderTag(text: string, color?: string) {
+  return h(Tag, { color }, text);
+}
+
+/**
+ * 渲染多个标签
+ * @param tags 标签list
+ * @param wrap 是否换行显示
+ * @param gap 间隔
+ * @returns render
+ */
+export function renderTags(tags: string[], wrap = false, gap = 1) {
+  return h('div', { class: ['flex', wrap ? 'flex-col' : 'flex-row'], style: { gap: `${gap}px` } }, 
+    tags.map((tag, index) => h('div', { key: index }, renderTag(tag)))
+  );
+}
+
+/**
+ * 渲染 JSON 预览
+ * @param json json对象 接受object/string类型
+ * @returns json预览
+ */
+// export function renderJsonPreview(json: any) {
+//   if (typeof json !== 'object' && typeof json !== 'string') {
+//     return h('span', json);
+//   }
+//   if (typeof json === 'object') {
+//     return h(JsonPreview, { class: "break-normal", data: json });
+//   }
+//   try {
+//     const obj = JSON.parse(json);
+//     return h(JsonPreview, { class: "break-normal", data: obj });
+//   } catch {
+//     return h('span', json);
+//   }
+// }
+
+/**
+ * 渲染图标
+ * @param icon icon名称
+ * @returns render
+ */
+export function renderIcon(icon: string) {
+  return h(IconifyIcon, { icon });
+}
+
+/**
+ * 渲染 HTTP 方法标签
+ * @param type method类型
+ * @returns render
+ */
+export function renderHttpMethodTag(type: string) {
+  const method = type.toUpperCase();
+  const colors: { [key: string]: string } = {
+    DELETE: 'red',
+    GET: 'green',
+    POST: 'blue',
+    PUT: 'orange',
+  };
+
+  const color = colors[method] ?? 'default';
+  const title = `${method}请求`;
+
+  return renderTag(title, color);
+}
+
+export function renderDictTag(value: number | string, dicts: SystemDictItemModel.DictItem[]) {
+  return h(DictTag, { dicts, value });
+}
+
+/**
+ * 渲染多个字典标签
+ * @param value key数组 string[]类型
+ * @param dicts 字典数组
+ * @param wrap 是否需要换行显示
+ * @param gap 间隔
+ * @returns render
+ */
+export function renderDictTags(
+  value: string[],
+  dicts: SystemDictItemModel.DictItem[],
+  wrap = true,
+  gap = 1,
+) {
+  if (!Array.isArray(value)) {
+    return h('div', value);
+  }
+  return h('div', { class: ['flex', wrap ? 'flex-col' : 'flex-row'], style: { gap: `${gap}px` } },
+    value.map((item, index) => h('div', { key: index }, renderDictTag(item, dicts)))
+  );
+}
+
+/**
+ * 显示字典标签 一般是table使用
+ * @param value 值
+ * @param dictName dictName
+ * @returns tag
+ */
+export function renderDict(value: number | string, dictName: string) {
+  const dictInfo = getDictOptions(dictName);
+  return renderDictTag(value, dictInfo);
+}
+
+/**
+ * 渲染图标和文本
+ * @param icon 组件
+ * @param value 文本
+ * @param center 是否居中
+ * @param marginLeft 左边距
+ * @returns render
+ */
+export function renderIconSpan(
+  icon: ComponentType,
+  value: string,
+  center = false,
+  marginLeft = '2px',
+) {
+  const justifyCenter = center ? 'justify-center' : '';
+
+  return h('span', { class: ['flex', 'items-center', justifyCenter] },
+    [h(icon), h('span', { style: { marginLeft } }, value)]
+  );
+}
+
+// const osOptions = [
+//   { icon: WindowsIcon, value: 'windows' },
+//   { icon: LinuxIcon, value: 'linux' },
+//   { icon: OSXIcon, value: 'osx' },
+//   { icon: AndroidIcon, value: 'android' },
+//   { icon: IPhoneIcon, value: 'iphone' },
+// ];
+
+// /**
+//  * 浏览器图标
+//  */
+// const browserOptions = [
+//   { icon: ChromeIcon, value: 'chrome' },
+//   { icon: EdgeIcon, value: 'edge' },
+//   { icon: FirefoxIcon, value: 'firefox' },
+//   { icon: OperaIcon, value: 'opera' },
+//   { icon: SafariIcon, value: 'safari' },
+//   { icon: MicromessengerIcon, value: 'micromessenger' },
+//   { icon: MicromessengerIcon, value: 'windowswechat' },
+//   { icon: QuarkIcon, value: 'quark' },
+//   { icon: MicromessengerIcon, value: 'wxwork' },
+//   { icon: SvgQQIcon, value: 'qq' },
+//   { icon: DingtalkIcon, value: 'dingtalk' },
+//   { icon: UcIcon, value: 'uc' },
+//   { icon: BaiduIcon, value: 'baidu' },
+// ];
+
+/**
+ * 渲染操作系统图标
+ * @param os 操作系统名称
+ * @param center 是否居中
+ * @returns render
+ */
+// export function renderOsIcon(os: string, center = false) {
+//   if (!os) {
+//     return;
+//   }
+//   let current = osOptions.find((item) =>
+//     os.toLocaleLowerCase().includes(item.value),
+//   );
+//   // windows要特殊处理
+//   if (os.toLocaleLowerCase().includes('windows')) {
+//     current = osOptions[0];
+//   }
+//   const icon = current ? current.icon : DefaultOsIcon;
+//   return renderIconSpan(icon, os, center, '5px');
+// }
+
+/**
+ * 渲染浏览器图标
+ * @param browser 浏览器名称
+ * @param center 是否居中
+ * @returns render
+ */
+// export function renderBrowserIcon(browser: string, center = false) {
+//   if (!browser) {
+//     return;
+//   }
+//   const current = browserOptions.find((item) =>
+//     browser.toLocaleLowerCase().includes(item.value),
+//   );
+//   const icon = current ? current.icon : DefaultBrowserIcon;
+//   return renderIconSpan(icon, browser, center, '5px');
+// }

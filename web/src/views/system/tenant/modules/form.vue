@@ -1,0 +1,113 @@
+<script setup lang="ts">
+import { computed, ref } from "vue";
+
+import { useDrawer, useModal } from "#/components/common-ui";
+import { $t } from "#/locale";
+import { cloneDeep } from "#/components/common/utils";
+
+import { useForm } from "#/adapter/form";
+
+import { omit } from "lodash-es";
+
+import { formSchemas } from "../data";
+import type { SystemTenantRow } from "#/api/system/tenant";
+import { SystemTenantApi, SystemTenantPackageApi } from "#/api/system/tenant";
+
+const emit = defineEmits<{ reload: [] }>();
+
+const api = new SystemTenantApi();
+const packageApi = new SystemTenantPackageApi();
+
+const record = ref<SystemTenantRow>();
+const isUpdate = ref<Boolean>(false);
+
+const [Form, formApi] = useForm({
+  commonConfig: {
+    formItemClass: "col-span-2",
+    componentProps: {
+      class: "w-full",
+    },
+    labelWidth: 110,
+  },
+  schema: formSchemas(),
+  showDefaultActions: false,
+  wrapperClass: "grid-cols-2",
+});
+
+const [Modal, drawerApi] = useDrawer({
+  async onOpenChange(isOpen) {
+    if (isOpen) {
+      isUpdate.value = false;
+      formApi.resetForm();
+      const { record } = drawerApi.getData<Record<string, any>>();
+      //编辑
+      if (record?.id) {
+        isUpdate.value = true;
+        record.value = await api.get(record.id);
+        await formApi.setValues(record.value);
+      }
+       formApi.updateSchema([
+          {
+            fieldName: "package_id",
+            componentProps: {
+              disabled: isUpdate.value,
+            },
+          },
+        ]);
+      await initialPackageSelect();
+    }
+  },
+  onConfirm: handleConfirm,
+});
+
+async function initialPackageSelect() {
+  const options = await packageApi.list({
+    format: "select",
+  });
+  formApi.updateSchema([
+    {
+      componentProps: {
+        // optionFilterProp: 'label',
+        // optionLabelProp: 'label',
+        options,
+        showSearch: true,
+      },
+      fieldName: "package_id",
+    },
+  ]);
+}
+
+/**
+ * 表单提交
+ */
+async function handleConfirm() {
+  try {
+    drawerApi.lock(true);
+    const { valid } = await formApi.validate();
+    if (!valid) {
+      return;
+    }
+    const data = cloneDeep(await formApi.getValues());
+    await (isUpdate.value ? api.update(data) : api.create(omit(data, ["id"])));
+    emit("reload");
+    drawerApi.close();
+  } catch (error) {
+    console.error(error);
+  } finally {
+    drawerApi.lock(false);
+  }
+}
+
+const title = computed(() => {
+  return isUpdate.value ? $t("common.edit") : $t("common.create");
+});
+</script>
+
+<template>
+  <Modal :title="title" class="w-[700px]">
+    <Form />
+  </Modal>
+</template>
+<style scoped lang="less">
+@import "#/assets/styles/common-form.less";
+</style>

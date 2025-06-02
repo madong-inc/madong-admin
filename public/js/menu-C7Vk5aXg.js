@@ -1,1 +1,0 @@
-import{bN as s}from"../jse/index-index-BUCZBWdu.js";const e="/system/menu",o=t=>s.get(e,{params:t}),a=t=>s.get(`${e}/${t}`),u=t=>s.post(e,t),c=(t,r)=>s.put(`${e}/${t}`,r),$=(t,r)=>s.delete(`${e}/${t}`,{data:r});export{u as a,$ as d,o as l,a as s,c as u};

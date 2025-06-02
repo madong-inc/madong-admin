@@ -1,1 +1,0 @@
-import{bN as t}from"../jse/index-index-BUCZBWdu.js";const o="/system/logs",s=e=>t.get(`${o}/login`,{params:e}),g=e=>t.get(`${o}/operate`,{params:e}),n=e=>t.get(`${o}/operate/${e}`);export{n as g,s as l,g as o};
