@@ -4,25 +4,7 @@ import { h } from 'vue';
 // import { JsonPreview } from '#/components/common-ui';
 //@ts-ignore
 import {
-  // AndroidIcon,
-  // BaiduIcon,
-  // ChromeIcon,
-  // DefaultBrowserIcon,
-  // DefaultOsIcon,
-  // DingtalkIcon,
-  // EdgeIcon,
-  // FirefoxIcon,
-  IconifyIcon,
-  // IPhoneIcon,
-  // LinuxIcon,
-  // MicromessengerIcon,
-  // OperaIcon,
-  // OSXIcon,
-  // QuarkIcon,
-  // SafariIcon,
-  // SvgQQIcon,
-  // UcIcon,
-  // WindowsIcon,
+  IconifyIcon
 } from '#/components/common/icons';
 import { Tag } from 'ant-design-vue';
 import { DictTag } from '#/components/dict';
@@ -51,25 +33,6 @@ export function renderTags(tags: string[], wrap = false, gap = 1) {
   );
 }
 
-/**
- * 渲染 JSON 预览
- * @param json json对象 接受object/string类型
- * @returns json预览
- */
-// export function renderJsonPreview(json: any) {
-//   if (typeof json !== 'object' && typeof json !== 'string') {
-//     return h('span', json);
-//   }
-//   if (typeof json === 'object') {
-//     return h(JsonPreview, { class: "break-normal", data: json });
-//   }
-//   try {
-//     const obj = JSON.parse(json);
-//     return h(JsonPreview, { class: "break-normal", data: obj });
-//   } catch {
-//     return h('span', json);
-//   }
-// }
 
 /**
  * 渲染图标
@@ -158,67 +121,3 @@ export function renderIconSpan(
   );
 }
 
-// const osOptions = [
-//   { icon: WindowsIcon, value: 'windows' },
-//   { icon: LinuxIcon, value: 'linux' },
-//   { icon: OSXIcon, value: 'osx' },
-//   { icon: AndroidIcon, value: 'android' },
-//   { icon: IPhoneIcon, value: 'iphone' },
-// ];
-
-// /**
-//  * 浏览器图标
-//  */
-// const browserOptions = [
-//   { icon: ChromeIcon, value: 'chrome' },
-//   { icon: EdgeIcon, value: 'edge' },
-//   { icon: FirefoxIcon, value: 'firefox' },
-//   { icon: OperaIcon, value: 'opera' },
-//   { icon: SafariIcon, value: 'safari' },
-//   { icon: MicromessengerIcon, value: 'micromessenger' },
-//   { icon: MicromessengerIcon, value: 'windowswechat' },
-//   { icon: QuarkIcon, value: 'quark' },
-//   { icon: MicromessengerIcon, value: 'wxwork' },
-//   { icon: SvgQQIcon, value: 'qq' },
-//   { icon: DingtalkIcon, value: 'dingtalk' },
-//   { icon: UcIcon, value: 'uc' },
-//   { icon: BaiduIcon, value: 'baidu' },
-// ];
-
-/**
- * 渲染操作系统图标
- * @param os 操作系统名称
- * @param center 是否居中
- * @returns render
- */
-// export function renderOsIcon(os: string, center = false) {
-//   if (!os) {
-//     return;
-//   }
-//   let current = osOptions.find((item) =>
-//     os.toLocaleLowerCase().includes(item.value),
-//   );
-//   // windows要特殊处理
-//   if (os.toLocaleLowerCase().includes('windows')) {
-//     current = osOptions[0];
-//   }
-//   const icon = current ? current.icon : DefaultOsIcon;
-//   return renderIconSpan(icon, os, center, '5px');
-// }
-
-/**
- * 渲染浏览器图标
- * @param browser 浏览器名称
- * @param center 是否居中
- * @returns render
- */
-// export function renderBrowserIcon(browser: string, center = false) {
-//   if (!browser) {
-//     return;
-//   }
-//   const current = browserOptions.find((item) =>
-//     browser.toLocaleLowerCase().includes(item.value),
-//   );
-//   const icon = current ? current.icon : DefaultBrowserIcon;
-//   return renderIconSpan(icon, browser, center, '5px');
-// }
