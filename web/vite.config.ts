@@ -13,7 +13,7 @@ export default defineConfig(async () => {
             ws: true,
           },
           '/ws': {
-            target: 'ws://127.0.0.1:3998',
+            target: 'ws://127.0.0.1:3898',
             changeOrigin: true,
             ws: true,
             rewrite: (path) => path.replace(/^\/ws/, '')

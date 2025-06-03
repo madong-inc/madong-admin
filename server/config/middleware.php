@@ -13,7 +13,7 @@
 
 return [
     'admin' => [
-//        \app\admin\middleware\RouteRestrictionMiddleware::class,// 演示过滤中间件
+        \app\admin\middleware\RouteRestrictionMiddleware::class,// 演示过滤中间件
     ],
     // 全局中间件
     '' => [
