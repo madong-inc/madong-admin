@@ -55,7 +55,8 @@ class InstallController extends Base
             $user      = $request->post('user');
             $password  = $request->post('password');
             $port      = (int)$request->post('port') ?: 3306;
-            $overwrite = $request->post('overwrite');
+            $overwrite = $request->post('overwrite', 'off');
+            $overwrite = $overwrite == 'on';
 
             $dataImporterService = new DataImporterService();
             $pdo                 = $dataImporterService->getPdo($host, $user, $password, $port);
@@ -106,7 +107,7 @@ class InstallController extends Base
             $dataImporterService->importData($pdo, 'ma_system_config', $field, $configuration);
             //2.5 导入默认租户数据
             $tenant = include base_path() . '/scripts/config/tenant.php';
-            $field         = ["id","tenant_id","package_id","contact_user_name","contact_phone","company_name","license_number","address","intro","domain","account_count","enabled","deleted_at","created_dept","created_by","created_at","expired_at","remark","updated_by","updated_at","is_default"];
+            $field  = ["id", "tenant_id", "package_id", "contact_user_name", "contact_phone", "company_name", "license_number", "address", "intro", "domain", "account_count", "enabled", "deleted_at", "created_dept", "created_by", "created_at", "expired_at", "remark", "updated_by", "updated_at", "is_default"];
             $dataImporterService->importData($pdo, 'ma_system_tenant', $field, $tenant);
 
             // 3.0 提交pdo 数据

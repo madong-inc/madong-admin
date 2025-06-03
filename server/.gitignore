@@ -6,4 +6,5 @@
 .env
 /tests/tmp
 /tests/.phpunit.result.cache
+install.lock
 

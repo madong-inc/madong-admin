@@ -1384,6 +1384,7 @@
           "account_count": "用户数量",
           "deleted_at": "删除时间",
           "created_dept": "创建部门",
+          "expired":"无期限",
           "remark": "备注",
           "enabled": "状态",
           "created_date": "创建时间",

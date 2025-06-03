@@ -1295,6 +1295,7 @@
           "enabled": "Status",
           "created_date": "Creation Time",
           "expired_date": "Expiration Time",
+          "expired":"unlimited duration",
           "operation": "Operation",
           "actions": {
             "edit": "Edit",

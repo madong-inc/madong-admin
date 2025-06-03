@@ -122,6 +122,15 @@ export function useColumns(
       title: $t('system.tenant.list.table.columns.expired_date'),
       field: 'expired_date',
       width: 140,
+      slots: {
+        default: ({ row }) => {
+          if(row.expired_date){
+            return row.expired_date;
+          }
+          return $t('system.tenant.list.table.columns.expired');
+        },
+
+      }
     },
     {
       align: 'center',

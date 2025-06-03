@@ -23,8 +23,7 @@ return [
         "domain"            => "",
         "account_count"     => -1,
         "enabled"           => 1,
-        "deleted_at"        => "",
-        "created_dept"      => "",
+        "deleted_at"        => null,
         "is_default"        => 1,
     ],
 ];
