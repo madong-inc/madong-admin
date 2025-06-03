@@ -64,16 +64,18 @@ function createRequestClient(baseURL: string, options?: RequestClientOptions) {
     return token ? `Bearer ${token}` : null;
   }
 
+
+  function formatClientId(clientId:null|string|undefined){
+    return clientId? clientId:null;
+  }
+
   // 请求头处理
   client.addRequestInterceptor({
     fulfilled: async (config) => {
       const accessStore = useAccessStore();
       config.headers.Authorization = formatToken(accessStore.accessToken);
       config.headers['Accept-Language'] = preferences.app.locale;
-      // 添加客户端ID
-      if(accessStore.clientId!==''&&accessStore.clientId!==undefined&&accessStore.clientId!==null){
-        config.headers[clientKey]= accessStore.clientId||'';
-      }
+      config.headers[clientKey]= formatClientId(accessStore.clientId);
       return config;
     },
   });

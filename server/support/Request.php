@@ -304,10 +304,15 @@ class Request extends \Webman\Http\Request
             return $includeAll ? [] : null;
         }
 
-        $clientId    = $this->header('client_id');
+        // 适配 header 大小写问题
+        $clientId = $this->header('X-Client-ID',null);
+        if (empty($clientId)) {
+            return $includeAll ? [] : null;
+        }
+
         $cache       = Container::make(CacheService::class);
         $tenantCache = $cache->get("tenant_{$clientId}");
 
-        return $includeAll ? $tenantCache : $tenantCache['tenant_id'] ?? null;
+        return $includeAll ? $tenantCache : ($tenantCache['tenant_id'] ?? null);
     }
 }

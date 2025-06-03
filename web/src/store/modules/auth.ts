@@ -39,9 +39,10 @@ export const useAuthStore = defineStore('auth', () => {
       if (accessToken) {
         accessStore.setAccessToken(accessToken);
 
-        accessStore.setClientId(clientSide);
+        await accessStore.setClientId(clientSide);
 
-        // 获取用户信息并存储到 accessStore 中
+
+        // 获取用户信息并存储到 accessStore 中 解决打包后client_id缺失问题
         const [fetchUserInfoResult, accessCodes] = await Promise.all([
           fetchUserInfo(),
           getAccessCodesApi(),

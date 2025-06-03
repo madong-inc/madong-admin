@@ -246,7 +246,7 @@ class SystemCrontabService extends BaseService
     {
         /**  @var $task_handle EventBootstrap[] */
         $task_handle = config('task.task_handle');
-        $crontab     = $this->dao->getTask($id);
+        $crontab     = $this->getTask($id);
         $start_time  = microtime(true);
         try {
             if (empty($crontab)) {

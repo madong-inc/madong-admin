@@ -372,7 +372,7 @@ class SystemAuthService extends BaseService
                 throw new AuthException('登录状态已过期，需要重新登录md00002', $code);
             }
             $tenantInfo = \request()->getTenantId(true);
-            if (empty($tenantInfo) || empty($tenantInfo['tenant_id'])) {
+            if (empty($tenantInfo)) {
                 throw new AuthException('登录状态已过期，需要重新登录md00003', $code);
             }
             // 将租户id添加到请求头
