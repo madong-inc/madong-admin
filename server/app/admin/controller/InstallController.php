@@ -104,6 +104,11 @@ class InstallController extends Base
             $configuration = include base_path() . '/scripts/config/configuration.php';
             $field         = ["id", "group_code", "code", "name", "content", "is_sys", "enabled", "created_at", "created_by", "updated_at", "updated_by", "deleted_at", "remark"];
             $dataImporterService->importData($pdo, 'ma_system_config', $field, $configuration);
+            //2.5 导入默认租户数据
+            $tenant = include base_path() . '/scripts/config/tenant.php';
+            $field         = ["id","tenant_id","package_id","contact_user_name","contact_phone","company_name","license_number","address","intro","domain","account_count","enabled","deleted_at","created_dept","created_by","created_at","expired_at","remark","updated_by","updated_at","is_default"];
+            $dataImporterService->importData($pdo, 'ma_system_tenant', $field, $tenant);
+
             // 3.0 提交pdo 数据
             $pdo->commit();
 
@@ -231,3 +236,5 @@ class InstallController extends Base
     }
 
 }
+
+

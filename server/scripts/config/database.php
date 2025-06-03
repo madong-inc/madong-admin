@@ -21,7 +21,7 @@ return [
             'driver'      => 'mysql',
             'host'        => '127.0.0.1',
             'port'        => 3306,
-            'database'    => 'madong_v3',
+            'database'    => 'madong',
             'username'    => 'root',
             'password'    => 'root',
             'unix_socket' => '',

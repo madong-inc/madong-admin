@@ -16,12 +16,12 @@ use Webman\Route;
  * 无需授权的接口
  */
 Route::group(function () {
-    Route::post('/system/login', [\app\admin\controller\LoginController::class, 'login'])->name('登录');
-    Route::post('/system/logout', [\app\admin\controller\LoginController::class, 'logout'])->name('注销');
-    Route::post('/system/send-sms', [\app\admin\controller\LoginController::class, 'sendSms'])->name('发送手机验证码');
-    Route::get('/system/captcha', [\app\admin\controller\LoginController::class, 'captcha'])->name('验证码');
-    Route::get('/system/get-captcha-open-flag', [\app\admin\controller\LoginController::class, 'getCaptchaOpenFlag'])->name('是否开启验证码');
-    Route::get('/system/config/info', [\app\admin\controller\system\SystemConfigController::class, 'getConfigInfo'])->name('配置获取');
+    Route::post('/system/login', [\app\admin\controller\LoginController::class, 'login'])->name('系统设置.权限管理.登录');
+    Route::post('/system/logout', [\app\admin\controller\LoginController::class, 'logout'])->name('系统设置.权限管理.注销');
+    Route::post('/system/send-sms', [\app\admin\controller\LoginController::class, 'sendSms'])->name('系统设置.权限管理.发送手机验证码');
+    Route::get('/system/captcha', [\app\admin\controller\LoginController::class, 'captcha'])->name('系统设置.权限管理.验证码');
+    Route::get('/system/get-captcha-open-flag', [\app\admin\controller\LoginController::class, 'getCaptchaOpenFlag'])->name('系统设置.权限管理.是否开启验证码');
+    Route::get('/system/config/info', [\app\admin\controller\system\SystemConfigController::class, 'getConfigInfo'])->name('系统设置.系统参数.配置详情');
     Route::get('/system/account-sets', [\app\admin\controller\system\SystemTenantController::class, 'accountSets'])->name('系统设置.租户管理.账套列表');
 });
 
@@ -103,14 +103,13 @@ Route::group('/system', function () {
      * 菜单
      */
     Route::group(function () {
-        Route::get('/menu', [\app\admin\controller\system\SystemMenuController::class, 'index'])->name('列表');
-        Route::get('/menu/{id}', [\app\admin\controller\system\SystemMenuController::class, 'show'])->name('详情');
-        Route::put('/menu', [\app\admin\controller\system\SystemMenuController::class, 'update'])->name('更新');
-        Route::post('/menu', [\app\admin\controller\system\SystemMenuController::class, 'store'])->name('保存');
-        Route::post('/menu/batch-store', [\app\admin\controller\system\SystemMenuController::class, 'batchStore'])->name('批量保存');
-        Route::delete('/menu/{id}', [\app\admin\controller\system\SystemMenuController::class, 'destroy'])->name('删除');
-//        Route::post('/menu/tree', [\app\admin\controller\system\SystemMenuController::class, 'buildMenuTree'])->name('菜单Tree');
-        Route::post('/menu/app-list', [\app\admin\controller\system\SystemMenuController::class, 'dev'])->name('应用列表');
+        Route::get('/menu', [\app\admin\controller\system\SystemMenuController::class, 'index'])->name('系统设置.菜单管理.列表');
+        Route::get('/menu/{id}', [\app\admin\controller\system\SystemMenuController::class, 'show'])->name('系统设置.菜单管理.详情');
+        Route::put('/menu', [\app\admin\controller\system\SystemMenuController::class, 'update'])->name('系统设置.菜单管理.更新');
+        Route::post('/menu', [\app\admin\controller\system\SystemMenuController::class, 'store'])->name('系统设置.菜单管理.保存');
+        Route::post('/menu/batch-store', [\app\admin\controller\system\SystemMenuController::class, 'batchStore'])->name('系统设置.菜单管理.批量保存');
+        Route::delete('/menu/{id}', [\app\admin\controller\system\SystemMenuController::class, 'destroy'])->name('系统设置.菜单管理.删除');
+        Route::post('/menu/app-list', [\app\admin\controller\system\SystemMenuController::class, 'dev'])->name('系统设置.菜单管理.应用列表');
     });
 
     /**
@@ -156,16 +155,16 @@ Route::group('/system', function () {
         /**
          * 登录日志
          */
-        Route::get('/login', [\app\admin\controller\system\SystemLoginLogController::class, 'index'])->name('登录日志列表');
-        Route::get('/login/{id}', [\app\admin\controller\system\SystemLoginLogController::class, 'show'])->name('登录日志详情');
-        Route::delete('/login/{id}', [\app\admin\controller\system\SystemLoginLogController::class, 'destroy'])->name('登录日志删除');
+        Route::get('/login', [\app\admin\controller\system\SystemLoginLogController::class, 'index'])->name('系统设置.登录日志.列表');
+        Route::get('/login/{id}', [\app\admin\controller\system\SystemLoginLogController::class, 'show'])->name('系统设置.登录日志.详情');
+        Route::delete('/login/{id}', [\app\admin\controller\system\SystemLoginLogController::class, 'destroy'])->name('系统设置.登录日志.删除');
 
         /**
          * 操作日志
          */
-        Route::get('/operate', [\app\admin\controller\system\SystemOperateLogController::class, 'index'])->name('操作日志列表');
-        Route::get('/operate/{id}', [\app\admin\controller\system\SystemOperateLogController::class, 'show'])->name('操作日志详情');
-        Route::delete('/operate/{id}', [\app\admin\controller\system\SystemOperateLogController::class, 'destroy'])->name('操作日志删除');
+        Route::get('/operate', [\app\admin\controller\system\SystemOperateLogController::class, 'index'])->name('系统设置.操作日志.列表');
+        Route::get('/operate/{id}', [\app\admin\controller\system\SystemOperateLogController::class, 'show'])->name('系统设置.操作日志.详情');
+        Route::delete('/operate/{id}', [\app\admin\controller\system\SystemOperateLogController::class, 'destroy'])->name('系统设置.操作日志.删除');
         Route::post('/operate/export', [\app\admin\controller\system\SystemOperateLogController::class, 'export'])->name('系统设置.操作日志.导出');
     });
 
@@ -187,7 +186,7 @@ Route::group('/system', function () {
      * 配置管理
      */
     Route::group(function () {
-        Route::post('/config', [\app\admin\controller\system\SystemConfigController::class, 'store'])->name('保存配置');
+        Route::post('/config', [\app\admin\controller\system\SystemConfigController::class, 'store'])->name('系统设置.系统参数.保存');
     });
 
     /**
@@ -200,7 +199,6 @@ Route::group('/system', function () {
         Route::delete('/recycle-bin/{id}', [\app\admin\controller\system\SystemRecycleBinController::class, 'destroy'])->name('系统设置.回收站管理.永久删除');
     });
 
-    
     /**
      * 通知公告
      */

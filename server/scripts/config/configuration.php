@@ -46,7 +46,7 @@ return [
         "group_code" => "local",
         "code"       => "domain",
         "name"       => "",
-        "content"    => "http=>>//43.138.153.216=>>8899/",
+        "content"    => "http=>>//127.0.0.1=>>8899/",
         "is_sys"     => "0",
         "enabled"    => "1",
         "created_at" => "1732029810",
