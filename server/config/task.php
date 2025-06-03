@@ -17,7 +17,7 @@ use madong\services\scheduler\event\UrlTask;
 
 return [
     'debug'       => config('app.debug'),
-    'enable'      => true,// 是否启用定时器  修改此参数后，需要重启
+    'enable'      => false,// 是否启用定时器  修改此参数后，需要重启
     'write_log'   => true,
     'listen'      => '127.0.0.1:' . '2337',// 注意此端口用于任务通讯，一个项目一个端口，请勿占用
     'task_handle' => [

@@ -97,9 +97,9 @@ class InstallController extends Base
             $field2 = ['label', 'value', 'code', 'sort', 'enabled', 'created_by', 'updated_by', 'remark'];
             $dataImporterService->importWithRelated($pdo, 'ma_system_dict', $field1, 'ma_system_dict_item', $field2, $dict, ['pidKey' => 'dict_id']);
             //2.3 导入初始用户
-            $userInfo  = include base_path() . '/scripts/config/user.php';
-            $field = ['id', 'user_name', 'real_name', 'nick_name', 'password', 'is_super', 'mobile_phone', 'email', 'avatar', 'signed', 'dashboard', 'dept_id', 'enabled', 'login_ip', 'login_time', 'backend_setting', 'created_by', 'updated_by', 'created_at', 'updated_at', 'deleted_at', 'sex', 'remark', 'birthday', 'tel', 'is_locked'];
-            $dataImporterService->importData($pdo, 'ma_system_user', $field, $userInfo);
+//            $userInfo  = include base_path() . '/scripts/config/user.php';
+//            $field = ['id', 'user_name', 'real_name', 'nick_name', 'password', 'is_super', 'mobile_phone', 'email', 'avatar', 'signed', 'dashboard', 'dept_id', 'enabled', 'login_ip', 'login_time', 'backend_setting', 'created_by', 'updated_by', 'created_at', 'updated_at', 'deleted_at', 'sex', 'remark', 'birthday', 'tel', 'is_locked'];
+//            $dataImporterService->importData($pdo, 'ma_system_user', $field, $userInfo);
             //2.4 导入系统配置数据
             $configuration = include base_path() . '/scripts/config/configuration.php';
             $field         = ["id", "group_code", "code", "name", "content", "is_sys", "enabled", "created_at", "created_by", "updated_at", "updated_by", "deleted_at", "remark"];
