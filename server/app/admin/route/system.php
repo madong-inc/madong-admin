@@ -133,6 +133,7 @@ Route::group('/system', function () {
         Route::get('/dept', [\app\admin\controller\system\SystemDeptController::class, 'index'])->name('系统设置.部门管理.列表');
         Route::get('/dept/{id}', [\app\admin\controller\system\SystemDeptController::class, 'show'])->name('系统设置.部门管理.详情');
         Route::put('/dept', [\app\admin\controller\system\SystemDeptController::class, 'update'])->name('系统设置.部门管理.更新');
+        Route::put('/dept/change-status', [\app\admin\controller\system\SystemDeptController::class, 'changeStatus'])->name('系统设置.部门管理.更新状态');
         Route::post('/dept', [\app\admin\controller\system\SystemDeptController::class, 'store'])->name('系统设置.部门管理.保存');
         Route::delete('/dept/{id}', [\app\admin\controller\system\SystemDeptController::class, 'destroy'])->name('系统设置.部门管理.删除');
     });

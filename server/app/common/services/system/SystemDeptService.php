@@ -14,8 +14,11 @@ namespace app\common\services\system;
 
 use app\common\dao\system\SystemDeptDao;
 use app\common\model\system\SystemDept;
+use app\common\scopes\global\AccessScope;
+use app\common\scopes\global\TenantScope;
 use madong\basic\BaseService;
 use madong\exception\AdminException;
+use madong\helper\PropertyCopier;
 use support\Container;
 use think\facade\Db;
 
@@ -63,20 +66,12 @@ class SystemDeptService extends BaseService
         try {
             $this->transaction(function () use ($id, $data) {
                 $leaders = $data['leader_id_list'] ?? [];//部门领导
-                unset($data['leader_id_list']);
-                $this->dao->update($id, $data);
-                $systemDeptLeaderService = Container::make(SystemDeptLeaderService::class);
-                $systemDeptLeaderService->dao->delete(['dept_id' => $id]);
-                if (!empty($leaders)) {
-                    $insert = [];
-                    foreach ($leaders as $item) {
-                        $row      = [
-                            'dept_id' => $id,
-                            'user_id' => $item,
-                        ];
-                        $insert[] = $row;
-                    }
-                    $systemDeptLeaderService->saveAll($insert);
+                $model = $this->dao->get($id,['*'],[],'',[TenantScope::class,AccessScope::class]);
+                PropertyCopier::copyProperties((object)$data, $model);
+                if (!empty($model)) {
+                    unset($model->leader_id_list);
+                    $model->save();
+                    $model->leader()->sync($leaders);
                 }
             });
         } catch (\Throwable $e) {
