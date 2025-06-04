@@ -11,13 +11,16 @@ import { Button,Space, message } from "ant-design-vue";
 import {PlusOutlined,ShrinkOutlined,ArrowsAltOutlined} from "@ant-design/icons-vue";
 
 import { useVxeGrid } from '#/adapter/vxe-table';
-import { type SystemDept, SystemDeptApi } from '#/api/system/dept';
+import { SystemDeptApi } from '#/api/system/dept';
+import type { SystemDept } from '#/api/system/dept';
 import { $t } from '#/locale';
 
 import { querySchema, useColumns } from './data';
 import Form from './modules/form.vue';
 import { eachTree } from '#/components/common/utils';
 import { ref,h } from 'vue';
+import { Recordable } from '#/components/common/types';
+import { confirm } from "#/utils";
 
 
 const api = new SystemDeptApi();
@@ -110,7 +113,7 @@ const [Grid, gridApi] = useVxeGrid({
     // wrapperClass: 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4',
   },
   gridOptions: {
-    columns: useColumns(onActionClick),
+    columns: useColumns(onActionClick,onStatusChange),
     height: "auto",
     keepSource: true,
     pagerConfig: {
@@ -151,6 +154,34 @@ const [Grid, gridApi] = useVxeGrid({
     },
   } as VxeTableGridOptions,
 });
+
+
+
+/**
+ * 状态开关即将改变
+ * @param newStatus 期望改变的状态值
+ * @param row 行数据
+ * @returns 返回false则中止改变，返回其他值（undefined、true）则允许改变
+ */
+ async function onStatusChange(newStatus: number, row: SystemDept) {
+  const status: Recordable<string> = {
+    0: $t("system.dept.list.table.columns.actions.status.disabled"),
+    1: $t("system.dept.list.table.columns.actions.status.enabled"),
+  };
+  try {
+    await confirm(
+      $t("system.dept.list.table.columns.actions.status.confirm", [
+        row.name,
+        status[newStatus.toString()]]),
+      $t("system.dept.list.table.columns.actions.status.title")
+    );
+    await api.changStatus({ id: row.id, enabled: newStatus });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 
 /**
  * 展开或者折叠

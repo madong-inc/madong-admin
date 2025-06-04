@@ -176,7 +176,7 @@ export function useColumns(
         attrs: {
           beforeChange: onStatusChange,
           disabled: (row: SystemDept) => {
-            return !!(row.is_super_admin == 1);
+            return !(row?.children?.length == 0|| row.children == undefined)
           }
         },
         name: useAccess().hasAccessByCodes(['admin', 'system.role.status']) ? 'CellSwitch' : 'CellTag',
