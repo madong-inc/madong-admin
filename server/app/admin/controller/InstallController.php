@@ -114,7 +114,7 @@ class InstallController extends Base
             $pdo->commit();
 
             // 4.0 创建数据库配置-使用队列预防监听文件重启当前链接被重置可使用关闭监听文件改动实现
-            $queue = 'write-database-config';
+            $queue = 'write-environment-config';
             $param = [
                 'host'     => $host,
                 'database' => $database,
