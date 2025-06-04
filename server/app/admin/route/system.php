@@ -33,6 +33,7 @@ Route::group('/system', function () {
         Route::get('/user', [\app\admin\controller\system\SystemUserController::class, 'index'])->name('系统设置.用户管理.列表');
         Route::get('/user/{id}', [\app\admin\controller\system\SystemUserController::class, 'show'])->name('系统设置.用户管理.详情');
         Route::put('/user', [\app\admin\controller\system\SystemUserController::class, 'update'])->name('系统设置.用户管理.更新');
+        Route::put('/user/change-status', [\app\admin\controller\system\SystemUserController::class, 'changeStatus'])->name('系统设置.用户管理.更新状态');
         Route::put('/user/recovery', [\app\admin\controller\system\SystemUserController::class, 'recovery'])->name('系统设置.用户管理.恢复');
         Route::post('/user', [\app\admin\controller\system\SystemUserController::class, 'store'])->name('系统设置.用户管理.保存');
         Route::get('/user-select', [\app\admin\controller\system\SystemUserController::class, 'select'])->name('系统设置.用户管理.下拉列表');
