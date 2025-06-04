@@ -66,14 +66,13 @@ class SystemDeptController extends Crud
     public function update(Request $request): \support\Response
     {
         try {
-            $id   = $request->route->param('id');
             $data = $this->inputFilter($request->all(), ['leader_id_list']);
             if (isset($this->validate) && $this->validate) {
                 if (!$this->validate->scene('update')->check($data)) {
                     throw new \Exception($this->validate->getError());
                 }
             }
-            $this->service->update($id, $data);
+            $this->service->update($data['id'], $data);
             return Json::success('ok');
         } catch (\Throwable $e) {
             return Json::fail($e->getMessage());
