@@ -12,12 +12,12 @@
 
 return [
     'captcha'           => [
-        'mode'    => 'session',//session||redis
+        'mode'    => env('CAPTCHA_MODE','session'),//session||redis
         'expire'  => 300,//验证码过期时间
         'default' => [
 
         ],
     ],
-    'captcha_open_flag' => false,//登录验证码状态
+    'captcha_open_flag' => env('CAPTCHA_ENABLED',false),//登录验证码状态
 ];
 

@@ -18,7 +18,7 @@ use madong\services\scheduler\event\UrlTask;
 use madong\services\scheduler\event\SchedulingTask;
 
 return [
-    'debug'                    => true,
+    'debug'                    => env('APP_DEBUG', false),
     "lang"                     => 'zh_CN',//默认语言
     'error_reporting'          => E_ALL,
     'default_timezone'         => 'Asia/Shanghai',
@@ -27,9 +27,8 @@ return [
     'runtime_path'             => base_path(false) . DIRECTORY_SEPARATOR . 'runtime',
     'controller_suffix'        => 'Controller',
     'controller_reuse'         => false,
-    'store_in_recycle_bin'     => true,//是否开启回站模式
-    'is_tenant_mode_enabled'   => false,//是否租户模式
-    'tenant_enabled'      => true,//是否租户模式
+    'store_in_recycle_bin'     => env('RECYCLE_BIN_ENABLED', false),//是否开启回站模式
+    'tenant_enabled'           => env('TENANT_ENABLED', false),//是否租户模式
     //枚举扫描配置-待优化实现自动扫描子目录
     //将配置数组中分隔符使用正斜杠 /，PHP 在 Windows 下会自动转换，而 Linux 只识别正斜杠
     'enum_scan_directories'    => [

@@ -26,22 +26,21 @@ return [
     //对应自定义扩展
     'custom'  => [
         'default'   => [
-            'host'     => '127.0.0.1',
-            'password' => null,
-            'port'     => 6379,
-            'database' => 0,
+            'host'     => env("CACHE_CUSTOM_REDIS_HOST"),
+            'password' => env("CACHE_CUSTOM_REDIS_PASSWORD"),
+            'port'     => env("CACHE_CUSTOM_REDIS_PORT"),
+            'database' => env("CACHE_CUSTOM_REDIS_DB"),
         ],
         'namespace' => '',
-        'prefix'    => 'md_',
+        'prefix'    => env("CACHE_CUSTOM_REDIS_PREFIX"),
         'type'      => 'redis',//redis||file
         'stores' => [
             'redis' => [
-                'host'     => '127.0.0.1',
-                'password' => null,
-                'port'     => 6379,
-                'database' => 0,
+                'host'     => env("CACHE_CUSTOM_REDIS_HOST"),
+                'password' => env("CACHE_CUSTOM_REDIS_PASSWORD"),
+                'port'     => env("CACHE_CUSTOM_REDIS_PORT"),
+                'database' => env("CACHE_CUSTOM_REDIS_DB"),
             ],
         ],
     ],
-
 ];
