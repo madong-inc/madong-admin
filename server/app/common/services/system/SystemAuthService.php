@@ -428,8 +428,12 @@ class SystemAuthService extends BaseService
         } else {
             //租户普通成员输出套餐内权限跟角色权限的差集
             $tenantMenuIds = $packageMenu->getColumn(['package_id' => $tenantCache['package_id']], 'menu_id');
+            //默认租户直接返回角色的权限
+            if ((int)$tenantCache['is_default'] === 1) {
+                return $filteredMenuIds;
+            }
+            //非默认租户返回角色权限跟套餐的交集
             return array_values(array_intersect($filteredMenuIds, $tenantMenuIds));
         }
     }
-
 }
