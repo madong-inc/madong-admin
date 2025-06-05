@@ -13,6 +13,7 @@
 namespace app\common\services\system;
 
 use app\common\dao\system\SystemTenantDao;
+use app\common\enum\system\UserAdminType;
 use app\common\model\system\SystemTenant;
 use madong\basic\BaseService;
 
@@ -46,6 +47,7 @@ class SystemTenantService extends BaseService
                 $user['real_name']    = $data['contact_user_name'] ?? '';
                 $user['mobile_phone'] = $data['contact_phone'] ?? '';
                 $user['tenant_id']    = $data['tenant_id'];
+                $user['is_super']     = UserAdminType::TENANT_ADMIN->value;
                 $systemUserService    = Container::make(SystemUserService::class);
                 $systemUserService->dao->save($user);
                 ['expired_date' => $expired] = $data;
@@ -58,7 +60,7 @@ class SystemTenantService extends BaseService
                     $data['expired_at'] = $expired;
                 }
 
-                unset($data['password'], $data['account'],$data['expired_date']);
+                unset($data['password'], $data['account'], $data['expired_date']);
                 return $this->dao->save($data);
             });
         } catch (\Throwable $e) {

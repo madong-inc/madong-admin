@@ -19,7 +19,7 @@ use Spatie\Macroable\Macroable;
 /**
  * Class Request
  *
- * @property mixed $dataSource
+ * @property int|mixed|string $tenantId
  * @package support
  */
 class Request extends \Webman\Http\Request
@@ -27,10 +27,6 @@ class Request extends \Webman\Http\Request
 
     use Macroable;
 
-    /**
-     * @var mixed|string
-     */
-    public string $tenantId;
 
     /**
      * 不过滤变量名
