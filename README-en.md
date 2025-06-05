@@ -21,7 +21,7 @@ In the PHP ecosystem, while there are many excellent backend management systems,
 **Frontend:** Uses Vue3 + Vite6 + Pinia + Ant Design Vue 4. This modern stack enables seamless adaptation across PC, mobile, and tablet devices, ensuring consistent user experience.
 
 ## Community
-Join our official community for technical discussions: QQ Channel
+Join our official community for technical discussions: <img src="https://svg.hamm.cn/badge.svg?key=QQ 频道&value= pd52261144"/>
 
 ## Built-in Features
 > The system provides comprehensive management capabilities:

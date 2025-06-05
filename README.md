@@ -24,7 +24,8 @@
 
 
 ## 官方社区
-欢迎加入我们的官方社区交流互动，我们在QQ频道设立了交流群组： ![QQ频道](https://svg.hamm.cn/badge.svg?key=QQ 频道&value= pd52261144)
+欢迎加入我们的官方社区交流互动<img src="https://svg.hamm.cn/badge.svg?key=QQ 频道&value= pd52261144"/>
+
 
 
 
