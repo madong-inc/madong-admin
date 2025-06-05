@@ -1,54 +1,71 @@
+中文 | [English](./README-en.md)
+# 项目概述
+
 <p align="center">
-  <img src="https://www.madong.tech/app/kbase/upload/avatar/202503/67e75c135c1f.md.png" width="120" />
+    <img src="https://madong.tech/app/kbase/upload/avatar/202503/67e75c135c1f.md.png" width="120" />
 </p>
 <p align="center">
-  <img src="https://svg.hamm.cn/badge.svg?key=License&value=Apache-2.0" />
-  <img src="https://svg.hamm.cn/badge.svg?key=Version&value=3.x" />
+    <a href="https://www.madong.tech" target="_blank">官网</a> |
+    <a href="https://madong.tech/kbase/doc?name=md" target="_blank">文档</a> | 
+    <a href="https://admin.madong.tech" target="_blank">演示</a> |
+    <a href="https://www.workerman.net/doc/webman/" target="_blank">Webman官方文档</a> 
 </p>
 
-简介
 
-* Madong 基于Webman+Vue3的极速后台开发框架
-* Madong官网地址：[https://madong.tech](https://madong.tech)
-* Madong在线文档：[https://madong.tech/kbase/doc?name=md](https://madong.tech/kbase/doc?name=md)
-* Madong演示地址：[https://admin.madong.tech](https://admin.madong.tech)    admin  123456
-* Madong代码下载：[https://gitcode.com/motion-code/madong](https://gitcode.com/motion-code/madong)
-* Madong在线提问：[https://gitcode.com/motion-code/ingenious/issues](https://gitcode.com/motion-code/ingenious/issues)
-* Madong 是一个 PHP 企业级快速开发平台，基于经典技术组合（`webman`、`laravel`、`php-jwt`、`php-di`、`Vue3`、`Vben Admin`、`Ant Design` `Vue`），内置模块如：部门管理、角色用户、菜单及按钮授权、数据权限、系统参数、日志管理、通知公告、消息推送、服务监控、字典管理、附件管理、用户管理、定时任务配置。
+在PHP领域，虽然存在众多优秀的后台管理系统，但基于socket框架且符合个人需求的却寥寥无几。因此，我们精心开发了一套功能强大的后台管理系统。该系统适用性广泛，可用于网站管理后台、CMS（内容管理系统）、CRM（客户关系管理系统）、OA（办公自动化系统）、ERP（企业资源计划系统）等多种场景。
 
-## 主要特性
+## 技术架构
+**后端：**系统基于Webman框架开发，采用企业级架构分层设计。这种架构不仅能够轻松满足创业公司及个人前期发展的需求，而且仅需使用少量的服务器资源，就能实现媲美静态语言的性能，为用户提供高效稳定的服务。
 
-* 完全响应式布局（支持电脑、平板、手机等所有主流设备）
-* 支持按钮及数据权限，可自定义部门数据权限。
-* 对大量常用插件封装，维护方便容易上手
-* 国际化支持，服务端及客户端支持
-* 完善的日志记录体系简单注解即可实现
-* 支持服务监控，数据监控，缓存监控功能。
-*
+**前端：**前端技术栈选用了Vue3 + Vite6 + Pinia + Ant Design Vue 4的组合。借助这些先进的前端技术，系统能够实现一端适配PC、移动端、平板，为用户带来一致且流畅的使用体验。
 
-## 技术选型
 
-**1、系统环境**
 
-* php 8.1+
-*
 
-**2、主框架**
 
-* webman 2.x
+## 官方社区
+欢迎加入我们的官方社区交流互动，我们在QQ频道设立了交流群组： ![QQ频道](https://svg.hamm.cn/badge.svg?key=QQ 频道&value= pd52261144)
+
+
 
 ## 内置功能
 
-* 用户管理：用户是系统操作者，该功能主要完成系统用户配置。
-* 部门管理：配置系统组织机构（公司、部门），树结构展现支持数据权限。
-* 岗位管理：配置系统用户所属担任职务。
-* 菜单管理：配置系统菜单，操作权限，接口权限，按钮权限标识等。
-* 角色管理：角色菜单权限分配、设置角色按机构进行数据范围权限划分。
-* 字典管理：对系统中经常使用的一些较为固定的数据进行维护以及内置枚举字典。
-* 参数管理：对系统动态配置常用参数。
-* 通知公告：系统通知公告信息发布维护。
-* 操作日志：系统正常操作日志记录和查询；系统异常信息日志记录和查询。
-* 登录日志：系统登录日志记录查询包含登录异常。
-* 在线用户：当前系统中活跃用户状态监控。
-* 定时任务：在线（添加、修改、删除)任务调度包含执行结果日志。
-* 服务监控：监视当前系统CPU、内存、磁盘、堆栈等相关信息。5.7
+本系统内置了丰富实用的功能，为系统的管理和维护提供了全面的支持：
+
+- 用户管理：支持用户的添加、修改、删除操作，同时可根据不同用户角色，定制不同的后台首页，满足多样化的使用需求。
+- 角色管理：可对角色的菜单权限和数据权限进行灵活分配，确保不同角色的用户只能访问其权限范围内的资源。
+- 菜单管理：方便配置系统菜单和按钮，能够根据业务需求灵活调整系统的导航结构。
+- 操作日志：记录用户对系统的正常操作，方便管理员进行操作追溯和审计。
+- 登录日志：记录用户登录系统的详细信息，有助于监控系统的登录情况和保障系统安全。
+- 附件管理：对系统上传的文件及图片等信息进行集中管理，方便文件的存储、查找和使用。
+- 定时任务：支持可视化添加和管理定时任务，可根据业务需求设置定时执行的任务，提高工作效率。
+- 服务监控：实时监视系统的CPU、内存、磁盘、堆栈等相关信息，帮助管理员及时发现系统性能问题并进行处理。
+- 字典管理：对系统中常用的固定数据进行维护，内置枚举字典，方便数据的统一管理和使用。
+
+
+## 环境需求
+为了确保系统的正常运行，请确保您的服务器环境满足以下要求：
+- PHP：版本需 >= 8.1，并开启以下扩展：
+- mbstring：用于多字节字符串处理。
+- json：支持JSON数据的编码和解码。
+- pdo：提供统一的数据库访问接口。
+- openssl：用于加密和解密操作，保障数据传输安全。
+- redis：支持Redis缓存和数据存储。
+- pcntl：用于多进程控制。
+- Mysql：版本需 >= 5.7，作为系统的主要数据库存储数据。
+- Redis：版本需 >= 4.0，用于缓存数据，提高系统性能。
+- Git：版本需 >= 2.x，方便代码的版本管理和协作开发。
+- Composer：版本需 >= 2.x，用于PHP依赖管理。
+
+
+## 体验地址
+
+[体验地址](https://admin.madong.tech) https://admin.madong.tech
+- 账号：admin
+- 密码：123456
+期待您的使用和反馈，我们将不断优化和完善系统，为您提供更优质的服务。
+
+
+## 共同交流
+
+<img src="https://madong.tech/app/admin/upload/files/20250605/684160e45fcc.png" width="240" />
