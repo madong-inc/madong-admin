@@ -12,6 +12,7 @@
 
 namespace app\common\scopes\global;
 
+use app\common\enum\system\UserAdminType;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
@@ -46,9 +47,14 @@ class AccessScope implements Scope
             $this->scope = $adminInfo['data_scope'] ?? [1];
             $this->data  = $adminInfo['data_auth'] ?? [0];
             //顶级管理员跳过处理
-            if ((int)$adminInfo['is_super'] === 1) {
+            if ((int)$adminInfo['is_super'] === UserAdminType::SUPER_ADMIN->value) {
                 $this->scope = [1];
             }
+            //租户管理员跳过处理
+            if ((int)$adminInfo['is_super'] === UserAdminType::TENANT_ADMIN->value) {
+                $this->scope = [1];
+            }
+
             //非全部权限的时候做处理
             if (!in_array(1, $this->scope)) {
                 $this->dataAuthority($builder, $model);

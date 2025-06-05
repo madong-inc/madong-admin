@@ -168,12 +168,13 @@ class SystemUserService extends BaseService
             if (empty($result)) {
                 throw new AuthException('Forbidden: Invalid tenant_id');
             }
-            $tenantInfo        = $result->toArray();
-            $map1['tenant_id'] = $tenantId;
+            $tenantInfo         = $result->toArray();
+            $map1['tenant_id']  = $tenantId;
+            request()->tenantId = $tenantId;
         }
         $adminInfo = $this->dao->getModel()->withoutGlobalScopes()->where($map1)->first();//注意get在dao被重写了使用model 直接获取
-        $status  = 1;
-        $message = '登录成功';
+        $status    = 1;
+        $message   = '登录成功';
         if (!$adminInfo) {
             $status  = 0;
             $message = '账号未注册，请重新输入!';

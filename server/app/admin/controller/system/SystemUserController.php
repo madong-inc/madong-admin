@@ -49,6 +49,21 @@ class SystemUserController extends Crud
                     throw new \Exception($this->validate->getError());
                 }
             }
+            // 租户注册账号过来账套数
+            if (config('app.tenant_enabled', false)) {
+                $tenantInfo = $request->getTenantId(true);
+                if (empty($tenantInfo)) {
+                    throw new \Exception('参数异常，缺少租户信息');
+                }
+                $accountCount = $tenantInfo['account_count'] ?? -1;
+                if ($accountCount > 0 && $tenantInfo['is_default'] !== 1) {
+                    $count = $this->service->getCount([]);
+                    if (($count + 1) > $accountCount) {
+                        throw new \Exception('当前租户账套数' . $accountCount . '已使用账套' . $count);
+                    }
+                }
+            }
+
             $model = $this->service->save($data);
             if (empty($model)) {
                 throw new AdminException('插入失败');
@@ -225,7 +240,7 @@ class SystemUserController extends Crud
     {
         try {
             $uid  = getCurrentUser();
-            $data = $this->inputFilter($request->all(), ['confirm_password', 'new_password','old_password']);
+            $data = $this->inputFilter($request->all(), ['confirm_password', 'new_password', 'old_password']);
             if (isset($this->validate) && $this->validate) {
                 $data['id'] = $uid;
                 if (!$this->validate->scene('update-pwd')->check($data)) {

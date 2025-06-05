@@ -15,14 +15,11 @@ namespace madong\services\email;
 use app\common\dao\system\SystemMessageDao;
 use app\common\enum\system\MessagePriority;
 use app\common\enum\system\MessageStatus;
-use app\common\enum\system\MessageType;
 use app\common\model\system\SystemMessage;
 use app\common\model\system\SystemNotice;
-use app\common\services\system\SystemMessageService;
 use app\common\services\system\SystemNoticeService;
-use madong\ingenious\libs\utils\ArrayHelper;
+use madong\helper\Arr;
 use madong\interface\IDict;
-use support\Container;
 use Webman\Push\Api;
 
 class MessagePushService
@@ -66,7 +63,7 @@ class MessagePushService
      */
     public static function pushNotificationToUser(string|array $uid, ?SystemMessage $model = null): void
     {
-        $data = ArrayHelper::normalize($uid);
+        $data = Arr::normalize($uid);
         foreach ($data as $id) {
             if (!empty($model)) {
                 self::modelMessage($model, $id);
@@ -148,7 +145,7 @@ class MessagePushService
     public static function informationToUser(IDict $dict, string|array $id): void
     {
         self::initApi();
-        $data = ArrayHelper::normalize($id);
+        $data = Arr::normalize($id);
         foreach ($data as $i) {
             $row   = [
                 'title'         => $dict->get('title'),//标题
