@@ -105,6 +105,7 @@ Route::group('/system', function () {
      */
     Route::group(function () {
         Route::get('/menu', [\app\admin\controller\system\SystemMenuController::class, 'index'])->name('系统设置.菜单管理.列表');
+        Route::get('/menu-tree', [\app\admin\controller\system\SystemMenuController::class, 'fetchPermissionTreeExclNonPackageIds'])->name('系统设置.菜单管理.菜单Tree');
         Route::get('/menu/{id}', [\app\admin\controller\system\SystemMenuController::class, 'show'])->name('系统设置.菜单管理.详情');
         Route::put('/menu', [\app\admin\controller\system\SystemMenuController::class, 'update'])->name('系统设置.菜单管理.更新');
         Route::post('/menu', [\app\admin\controller\system\SystemMenuController::class, 'store'])->name('系统设置.菜单管理.保存');

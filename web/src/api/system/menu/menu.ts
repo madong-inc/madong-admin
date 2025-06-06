@@ -36,6 +36,14 @@ export class SystemMenuApi extends BaseApi<SystemMenuRow> {
     6
   ] as const;
 
+
+  /**
+   * 获取菜单树
+   */
+  fetchPermissionTreeExclNonPackageIds(params?: Record<string, any>) {
+        return requestClient.get(`${this.baseUrl}-tree`, { params });
+  }
+
   /**
    * 批量创建菜单
    * @param data 批量菜单数据

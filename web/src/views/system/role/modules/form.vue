@@ -89,7 +89,8 @@ function filterPermissions(permissions: (string | null | undefined)[]): string[]
 async function loadPermissions() {
   loadingPermissions.value = true;
   try {
-    const res = await menuApi.list({ format: "table_tree", page: 1, limit: 9999 });
+    // const res = await menuApi.list({ format: "table_tree", page: 1, limit: 9999 });
+    const res = await menuApi.fetchPermissionTreeExclNonPackageIds();
     permissions.value = (res as unknown) as DataNode[];
   } finally {
     loadingPermissions.value = false;
