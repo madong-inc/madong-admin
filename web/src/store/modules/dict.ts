@@ -94,9 +94,7 @@ export const useDictStore = defineStore('app-dict', () => {
   }
 
   function $reset() {
-    /**
-     * doNothing
-     */
+
   }
 
   return {

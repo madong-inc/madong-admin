@@ -32,58 +32,6 @@ const personal: RouteRecordStringComponent[] = [
 ];
 
 
-const generate: RouteRecordStringComponent[] = [
-  {
-    component: 'BasicLayout',
-    meta: {
-      hideChildrenInMenu: true,
-      hideInMenu: true,
-      title: $t('生成配置'),
-    },
-    name: 'dev:generate',
-    path: '/dev/generate',
-    children: [
-      {
-        meta: {
-          icon: 'mingcute:profile-line',
-          title: $t('生成配置'),
-        },
-        name: 'dev:generate:builder',
-        path: '/dev/generate/builder',
-        component: '/dev/builder/index',
-      },
-    ],
-  },
-];
-
-
-const launch: RouteRecordStringComponent[] = [
-  {
-    component: 'BasicLayout',
-    meta: {
-      icon: 'ant-design:user-outlined',
-      keepAlive: true,
-      order: 1000,
-      title: $t('发起流程'),
-      hideInMenu: true,
-      component: 'BasicLayout',
-    },
-    name: 'wf:manager',
-    path: '/wf/launch/start',
-    children: [
-      {
-        meta: {
-          icon: 'ant-design:user-switch-outlined',
-          title: $t('发起流程'),
-          hideInMenu: true,
-        },
-        name: 'launch:start',
-        path: '/wf/define/start',
-        component: '/wf/define/start',
-      },
-    ],
-  },
-];
 
 /**
  * 后端模式-前端静态路由
@@ -92,24 +40,37 @@ export const localRoutesList: RouteRecordStringComponent[] = [
   // {
   //   component: 'BasicLayout',
   //   meta: {
-  //     hideChildrenInMenu: true,
-  //     icon: 'lucide:copyright',
-  //     order: 9999,
-  //     title: $t('demos.vben.about'),
+  //     icon:'ant-design:home-outlined',
+  //     order: -1,
+  //     title: 'page.dashboard.title',
+  //     // 不使用基础布局（仅在顶级生效）
+  //     noBasicLayout: true,
   //   },
-  //   name: 'About',
-  //   path: '/about',
+  //   name: 'Dashboard',
+  //   path: '/',
+  //   redirect: '/analytics',
   //   children: [
   //     {
-  //       component: '/_core/about/index',
+  //       name: 'Analytics',
+  //       path: '/analytics',
+  //       component: '/dashboard/analytics/index',
   //       meta: {
-  //         title: $t('demos.vben.about'),
+  //         affixTab: true,
+  //         title: 'page.dashboard.analytics',
   //       },
-  //       name: 'VbenAbout',
-  //       path: '/vben-admin/about',
   //     },
-  //   ],
+  //     {
+  //       name: 'Workspace',
+  //       path: '/workspace',
+  //       component: '/dashboard/workspace/index',
+  //       meta: {
+  //         title: 'page.dashboard.workspace',
+  //       },
+  //     },
+  //   ]
   // },
+
+
   ...personal,
   // ...generate,
   // ...launch
