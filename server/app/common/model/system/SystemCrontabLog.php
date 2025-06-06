@@ -38,7 +38,6 @@ class SystemCrontabLog extends BaseModel
 
     protected $fillable = [
         'id',
-        "tenant_id",
         'crontab_id',
         'target',
         'log',

@@ -37,7 +37,6 @@ class SystemCrontab extends BaseModel
 
     protected $fillable = [
         'id',
-        "tenant_id",
         'biz_id',
         'title',
         'type',

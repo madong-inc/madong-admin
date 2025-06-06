@@ -232,7 +232,7 @@ class SystemCrontabService extends BaseService
      */
     public function getTask($id): mixed
     {
-        return $this->dao->get($id, null, [], '', [TenantScope::class, AccessScope::class]);
+        return $this->dao->get($id);
     }
 
     /**
@@ -244,9 +244,12 @@ class SystemCrontabService extends BaseService
      */
     public function runOneTask($id): array
     {
+        var_dump(999);
         /**  @var $task_handle EventBootstrap[] */
         $task_handle = config('task.task_handle');
-        $crontab     = $this->getTask($id);
+        var_dump($id);
+        $crontab     = $this->dao->get($id);
+        var_dump(888);
         $start_time  = microtime(true);
         try {
             if (empty($crontab)) {
