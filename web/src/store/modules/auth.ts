@@ -32,9 +32,9 @@ export const useAuthStore = defineStore('auth', () => {
     let userInfo: null | UserInfo = null;
     try {
       loginLoading.value = true;
-      const { token,client_id } = await loginApi(params);
+      const { token, client_id } = await loginApi(params);
       const accessToken = token;
-      const clientSide= client_id
+      const clientSide = client_id
       // 如果成功获取到 accessToken
       if (accessToken) {
         accessStore.setAccessToken(accessToken);
@@ -84,19 +84,23 @@ export const useAuthStore = defineStore('auth', () => {
       await logoutApi();
     } catch {
       // 不做任何处理
-    }
-    resetAllStores();
-    accessStore.setLoginExpired(false);
+    } finally {
+      resetAllStores();
+      accessStore.setLoginExpired(false);
 
-    // 回登录页带上当前路由地址
-    await router.replace({
-      path: LOGIN_PATH,
-      query: redirect
-        ? {
+      // 回登录页带上当前路由地址
+      await router.replace({
+        path: LOGIN_PATH,
+        query: redirect
+          ? {
             redirect: encodeURIComponent(router.currentRoute.value.fullPath),
           }
-        : {},
-    });
+          : {},
+      });
+
+      // 强制刷新解决缓存问题-或者写一个重置路由的方法要不下次进入系统后端的路由无法添加到框架
+      window.location.reload();
+    }
   }
 
   async function fetchUserInfo() {
