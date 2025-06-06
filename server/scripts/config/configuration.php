@@ -21,7 +21,8 @@ return [
         "content"    => "public",
         "is_sys"     => "0",
         "enabled"    => "1",
-        "updated_by" => "",
+        "created_by" => 1,
+        "created_at" => time(),
         "remark"     => "",
     ],
     [
@@ -31,7 +32,8 @@ return [
         "content"    => "upload",
         "is_sys"     => "0",
         "enabled"    => "1",
-        "updated_by" => "",
+        "created_by" => 1,
+        "created_at" => time(),
         "remark"     => "",
     ],
     [
@@ -41,7 +43,8 @@ return [
         "content"    => "127.0.0.1:8899",
         "is_sys"     => "0",
         "enabled"    => "1",
-        "updated_by" => "",
+        "created_by" => 1,
+        "created_at" => time(),
         "remark"     => "",
     ],
     [
@@ -51,7 +54,8 @@ return [
         "content"    => "1",
         "is_sys"     => "0",
         "enabled"    => "1",
-        "updated_by" => "",
+        "created_by" => 1,
+        "created_at" => time(),
         "remark"     => "",
     ],
     [
@@ -61,7 +65,8 @@ return [
         "content"    => "2",
         "is_sys"     => "0",
         "enabled"    => "1",
-        "updated_by" => "",
+        "created_by" => 1,
+        "created_at" => time(),
         "remark"     => "",
     ],
     [
@@ -71,7 +76,8 @@ return [
         "content"    => "3",
         "is_sys"     => "0",
         "enabled"    => "1",
-        "updated_by" => "",
+        "created_by" => 1,
+        "created_at" => time(),
         "remark"     => "",
     ],
     [
@@ -81,7 +87,8 @@ return [
         "content"    => "4",
         "is_sys"     => "0",
         "enabled"    => "1",
-        "updated_by" => "",
+        "created_by" => 1,
+        "created_at" => time(),
         "remark"     => "",
     ],
     [
@@ -91,7 +98,8 @@ return [
         "content"    => "5",
         "is_sys"     => "0",
         "enabled"    => "1",
-        "updated_by" => "",
+        "created_by" => 1,
+        "created_at" => time(),
         "remark"     => "",
     ],
     [
@@ -101,7 +109,8 @@ return [
         "content"    => "6",
         "is_sys"     => "0",
         "enabled"    => "1",
-        "updated_by" => "",
+        "created_by" => 1,
+        "created_at" => time(),
         "remark"     => "",
     ],
     [
@@ -111,7 +120,8 @@ return [
         "content"    => "7",
         "is_sys"     => "0",
         "enabled"    => "1",
-        "updated_by" => "",
+        "created_by" => 1,
+        "created_at" => time(),
         "remark"     => "",
     ],
     [
@@ -121,7 +131,8 @@ return [
         "content"    => "11",
         "is_sys"     => "0",
         "enabled"    => "1",
-        "updated_by" => "",
+        "created_by" => 1,
+        "created_at" => time(),
         "remark"     => "",
     ],
     [
@@ -131,7 +142,8 @@ return [
         "content"    => "22",
         "is_sys"     => "0",
         "enabled"    => "1",
-        "updated_by" => "",
+        "created_by" => 1,
+        "created_at" => time(),
         "remark"     => "",
     ],
     [
@@ -141,7 +153,8 @@ return [
         "content"    => "33",
         "is_sys"     => "0",
         "enabled"    => "1",
-        "updated_by" => "",
+        "created_by" => 1,
+        "created_at" => time(),
         "remark"     => "",
     ],
     [
@@ -151,7 +164,8 @@ return [
         "content"    => "44",
         "is_sys"     => "0",
         "enabled"    => "1",
-        "updated_by" => "",
+        "created_by" => 1,
+        "created_at" => time(),
         "remark"     => "",
     ],
     [
@@ -161,7 +175,8 @@ return [
         "content"    => "55",
         "is_sys"     => "0",
         "enabled"    => "1",
-        "updated_by" => "",
+        "created_by" => 1,
+        "created_at" => time(),
         "remark"     => "",
     ],
     [
@@ -171,7 +186,8 @@ return [
         "content"    => "66",
         "is_sys"     => "0",
         "enabled"    => "1",
-        "updated_by" => "",
+        "created_by" => 1,
+        "created_at" => time(),
         "remark"     => "",
     ],
     [
@@ -181,7 +197,8 @@ return [
         "content"    => "77",
         "is_sys"     => "0",
         "enabled"    => "1",
-        "updated_by" => "",
+        "created_by" => 1,
+        "created_at" => time(),
         "remark"     => "",
     ],
     [
@@ -191,7 +208,8 @@ return [
         "content"    => "99",
         "is_sys"     => "0",
         "enabled"    => "1",
-        "updated_by" => "",
+        "created_by" => 1,
+        "created_at" => time(),
         "remark"     => "",
     ],
     [
@@ -201,7 +219,8 @@ return [
         "content"    => "88",
         "is_sys"     => "0",
         "enabled"    => "1",
-        "updated_by" => "",
+        "created_by" => 1,
+        "created_at" => time(),
         "remark"     => "",
     ],
     [
@@ -211,7 +230,8 @@ return [
         "content"    => "7",
         "is_sys"     => "0",
         "enabled"    => "1",
-        "updated_by" => "",
+        "created_by" => 1,
+        "created_at" => time(),
         "remark"     => "",
     ],
     [
@@ -221,7 +241,8 @@ return [
         "content"    => "78",
         "is_sys"     => "0",
         "enabled"    => "1",
-        "updated_by" => "",
+        "created_by" => 1,
+        "created_at" => time(),
         "remark"     => "",
     ],
     [
@@ -231,7 +252,8 @@ return [
         "content"    => "8",
         "is_sys"     => "0",
         "enabled"    => "1",
-        "updated_by" => "",
+        "created_by" => 1,
+        "created_at" => time(),
         "remark"     => "",
     ],
     [
@@ -241,7 +263,8 @@ return [
         "content"    => "",
         "is_sys"     => "0",
         "enabled"    => "1",
-        "updated_by" => "",
+        "created_by" => 1,
+        "created_at" => time(),
         "remark"     => "",
     ],
     [
@@ -251,7 +274,8 @@ return [
         "content"    => "897",
         "is_sys"     => "0",
         "enabled"    => "1",
-        "updated_by" => "",
+        "created_by" => 1,
+        "created_at" => time(),
         "remark"     => "",
     ],
     [
@@ -261,7 +285,8 @@ return [
         "content"    => "12",
         "is_sys"     => "0",
         "enabled"    => "1",
-        "updated_by" => "",
+        "created_by" => 1,
+        "created_at" => time(),
         "remark"     => "",
     ],
     [
@@ -271,7 +296,8 @@ return [
         "content"    => "12",
         "is_sys"     => "0",
         "enabled"    => "1",
-        "updated_by" => "",
+        "created_by" => 1,
+        "created_at" => time(),
         "remark"     => "",
     ],
     [
@@ -281,7 +307,8 @@ return [
         "content"    => "12",
         "is_sys"     => "0",
         "enabled"    => "1",
-        "updated_by" => "",
+        "created_by" => 1,
+        "created_at" => time(),
         "remark"     => "",
     ],
     [
@@ -291,7 +318,8 @@ return [
         "content"    => "12",
         "is_sys"     => "0",
         "enabled"    => "1",
-        "updated_by" => "",
+        "created_by" => 1,
+        "created_at" => time(),
         "remark"     => "",
     ],
     [
@@ -301,7 +329,8 @@ return [
         "content"    => "12",
         "is_sys"     => "0",
         "enabled"    => "1",
-        "updated_by" => "",
+        "created_by" => 1,
+        "created_at" => time(),
         "remark"     => "",
     ],
     [
@@ -311,7 +340,8 @@ return [
         "content"    => "12",
         "is_sys"     => "0",
         "enabled"    => "1",
-        "updated_by" => "",
+        "created_by" => 1,
+        "created_at" => time(),
         "remark"     => "",
     ],
     [
@@ -321,7 +351,8 @@ return [
         "content"    => "12",
         "is_sys"     => "0",
         "enabled"    => "1",
-        "updated_by" => "",
+        "created_by" => 1,
+        "created_at" => time(),
         "remark"     => "",
     ],
     [
@@ -331,7 +362,8 @@ return [
         "content"    => "6",
         "is_sys"     => "0",
         "enabled"    => "1",
-        "updated_by" => "",
+        "created_by" => 1,
+        "created_at" => time(),
         "remark"     => "",
     ],
     [
@@ -341,7 +373,8 @@ return [
         "content"    => "4",
         "is_sys"     => "0",
         "enabled"    => "1",
-        "updated_by" => "",
+        "created_by" => 1,
+        "created_at" => time(),
         "remark"     => "",
     ],
     [
@@ -351,7 +384,8 @@ return [
         "content"    => "ssl",
         "is_sys"     => "0",
         "enabled"    => "1",
-        "updated_by" => "",
+        "created_by" => 1,
+        "created_at" => time(),
         "remark"     => "",
     ],
     [
@@ -361,7 +395,8 @@ return [
         "content"    => "smtp.qq.com",
         "is_sys"     => "0",
         "enabled"    => "1",
-        "updated_by" => "",
+        "created_by" => 1,
+        "created_at" => time(),
         "remark"     => "",
     ],
     [
@@ -371,7 +406,8 @@ return [
         "content"    => "465",
         "is_sys"     => "0",
         "enabled"    => "1",
-        "updated_by" => "",
+        "created_by" => 1,
+        "created_at" => time(),
         "remark"     => "",
     ],
     [
@@ -381,7 +417,8 @@ return [
         "content"    => "kzhzjdyw888@qq.com",
         "is_sys"     => "0",
         "enabled"    => "1",
-        "updated_by" => "",
+        "created_by" => 1,
+        "created_at" => time(),
         "remark"     => "",
     ],
     [
@@ -391,7 +428,8 @@ return [
         "content"    => "",
         "is_sys"     => "0",
         "enabled"    => "1",
-        "updated_by" => "",
+        "created_by" => 1,
+        "created_at" => time(),
         "remark"     => "",
     ],
     [
@@ -401,7 +439,8 @@ return [
         "content"    => "",
         "is_sys"     => "0",
         "enabled"    => "1",
-        "updated_by" => "",
+        "created_by" => 1,
+        "created_at" => time(),
         "remark"     => "",
     ],
     [
@@ -411,7 +450,8 @@ return [
         "content"    => "kzhzjdyw888@qq.com",
         "is_sys"     => "0",
         "enabled"    => "1",
-        "updated_by" => "",
+        "created_by" => 1,
+        "created_at" => time(),
         "remark"     => "",
     ],
     [
@@ -421,7 +461,8 @@ return [
         "content"    => "local",
         "is_sys"     => "0",
         "enabled"    => "1",
-        "updated_by" => "",
+        "created_by" => 1,
+        "created_at" => time(),
         "remark"     => "",
     ],
     [
@@ -431,7 +472,8 @@ return [
         "content"    => "1024",
         "is_sys"     => "0",
         "enabled"    => "1",
-        "updated_by" => "",
+        "created_by" => 1,
+        "created_at" => time(),
         "remark"     => "",
     ],
     [
@@ -441,7 +483,9 @@ return [
         "content"    => "1024",
         "is_sys"     => "0",
         "enabled"    => "1",
-        "updated_by" => "",
+        "created_at" => time(),
+        "created_by" => 1,
+        "updated_by" => 1,
         "remark"     => "",
     ],
     [
@@ -451,7 +495,9 @@ return [
         "content"    => "10",
         "is_sys"     => "0",
         "enabled"    => "1",
-        "updated_by" => "",
+        "created_at" => time(),
+        "created_by" => 1,
+        "updated_by" => 1,
         "remark"     => "",
     ],
     [
@@ -461,7 +507,8 @@ return [
         "content"    => "php,ext,exe",
         "is_sys"     => "0",
         "enabled"    => "1",
-        "updated_by" => "",
+        "created_by" => 1,
+        "created_at" => time(),
         "remark"     => "",
     ],
     [
@@ -471,7 +518,8 @@ return [
         "content"    => "1",
         "is_sys"     => "0",
         "enabled"    => "1",
-        "updated_by" => "",
+        "created_by" => 1,
+        "created_at" => time(),
         "remark"     => "",
     ],
     [
@@ -481,7 +529,8 @@ return [
         "content"    => "127.0.0.1:8899",
         "is_sys"     => "0",
         "enabled"    => "1",
-        "updated_by" => "",
+        "created_by" => 1,
+        "created_at" => time(),
         "remark"     => "",
     ],
     [
@@ -491,7 +540,8 @@ return [
         "content"    => "MaDong Admin",
         "is_sys"     => "0",
         "enabled"    => "1",
-        "updated_by" => "",
+        "created_by" => 1,
+        "created_at" => time(),
         "remark"     => "",
     ],
     [
@@ -501,7 +551,8 @@ return [
         "content"    => "",
         "is_sys"     => "0",
         "enabled"    => "1",
-        "updated_by" => "",
+        "created_by" => 1,
+        "created_at" => time(),
         "remark"     => "",
     ],
     [
@@ -511,7 +562,8 @@ return [
         "content"    => "",
         "is_sys"     => "0",
         "enabled"    => "1",
-        "updated_by" => "",
+        "created_by" => 1,
+        "created_at" => time(),
         "remark"     => "",
     ],
     [
@@ -521,7 +573,8 @@ return [
         "content"    => "快速开发框架",
         "is_sys"     => "0",
         "enabled"    => "1",
-        "updated_by" => "",
+        "created_by" => 1,
+        "created_at" => time(),
         "remark"     => "",
     ],
     [
@@ -531,7 +584,8 @@ return [
         "content"    => "",
         "is_sys"     => "0",
         "enabled"    => "1",
-        "updated_by" => "",
+        "created_by" => 1,
+        "created_at" => time(),
         "remark"     => "",
     ],
     [
@@ -541,7 +595,8 @@ return [
         "content"    => "https=>>//beian.miit.gov.cn/",
         "is_sys"     => "0",
         "enabled"    => "1",
-        "updated_by" => "",
+        "created_by" => 1,
+        "created_at" => time(),
         "remark"     => "",
     ],
     [
@@ -551,7 +606,8 @@ return [
         "content"    => "",
         "is_sys"     => "0",
         "enabled"    => "1",
-        "updated_by" => "",
+        "created_by" => 1,
+        "created_at" => time(),
         "remark"     => "",
     ],
     [
@@ -561,7 +617,8 @@ return [
         "content"    => "1",
         "is_sys"     => "0",
         "enabled"    => "1",
-        "updated_by" => "",
+        "created_by" => 1,
+        "created_at" => time(),
         "remark"     => "",
     ],
     [
@@ -571,7 +628,8 @@ return [
         "content"    => "234813346262818816",
         "is_sys"     => "0",
         "enabled"    => "1",
-        "updated_by" => "",
+        "created_by" => 1,
+        "created_at" => time(),
         "remark"     => "",
     ],
     [
@@ -581,7 +639,8 @@ return [
         "content"    => "238164553517768704",
         "is_sys"     => "0",
         "enabled"    => "1",
-        "updated_by" => "",
+        "created_by" => 1,
+        "created_at" => time(),
         "remark"     => "",
     ],
     [
@@ -591,7 +650,8 @@ return [
         "content"    => "【码动开源】，你的验证码是{code}，有效期5分钟。",
         "is_sys"     => "0",
         "enabled"    => "1",
-        "updated_by" => "",
+        "created_by" => 1,
+        "created_at" => time(),
         "remark"     => "",
     ],
 ];
