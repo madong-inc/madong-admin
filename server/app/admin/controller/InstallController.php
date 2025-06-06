@@ -155,7 +155,6 @@ class InstallController extends Base
         if (!is_file($config_file)) {
             return Json::fail('请先完成第一步数据库配置');
         }
-
         // 引入配置文件
         $database_config = include $config_file;
 

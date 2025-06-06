@@ -1,21 +1,21 @@
 <?php
     return  [
-        'default' => 'mysql',
+        'default' => env("DB_CONNECTION"),
         'connections' => [
             'mysql' => [
                 'driver'      => 'mysql',
-                'host'        => '127.0.0.1',
-                'port'        => '3306',
-                'database'    => 'madong_community',
-                'username'    => 'root',
-                'password'    => 'root',
+                'host'        => env("DB_HOST"),
+                'port'        => env("DB_PORT", 3306),
+                'database'    => env("DB_DATABASE"),
+                'username'    => env("DB_USERNAME"),
+                'password'    => env("DB_PASSWORD"),
                 'unix_socket' => '',
                 'charset'     => 'utf8',
                 'collation'   => 'utf8_unicode_ci',
-                'prefix'      => 'ma_',
+                'prefix'      => env('DB_PREFIX','ma_'),
                 'strict'      => true,
                 'engine'      => null,
-                'pool' => [ 
+                'pool' => [
                    // 连接池配置，仅支持swoole/swow驱动
                    'max_connections' => 5, // 最大连接数
                    'min_connections' => 1, // 最小连接数
