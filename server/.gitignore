@@ -7,4 +7,5 @@
 /tests/tmp
 /tests/.phpunit.result.cache
 install.lock
+/public/update
 
