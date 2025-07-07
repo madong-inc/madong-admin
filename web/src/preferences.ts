@@ -1,4 +1,6 @@
-import {defineOverridesPreferences} from '#/components/common/core/preferences';
+import {defineOverridesPreferences, updatePreferences} from '#/components/common/core/preferences';
+
+
 
 /**
  * @description 项目配置文件
@@ -19,3 +21,4 @@ export const overridesPreferences = defineOverridesPreferences({
         mode: "light"
       }
 });
+

@@ -3,6 +3,7 @@ import { useVModel } from '@vueuse/core';
 import { Upload } from 'ant-design-vue';
 import { SystemFielsApi} from '#/api/system/files/files';
 import { Icon } from '#/components/icon';
+import {fullUrl} from '#/utils/';
 
 defineOptions({
   inheritAttrs: false,
@@ -27,7 +28,7 @@ const customRequest = (e: any) => {
   api.uploadFile({
     file: e.file,
   }).then((data: any) => {
-    mValue.value = data.url;
+    mValue.value = fullUrl(data.base_path);
   });
 };
 

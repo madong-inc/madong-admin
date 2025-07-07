@@ -6,11 +6,13 @@ import { useRouter } from 'vue-router';
 import { DEFAULT_HOME_PATH, LOGIN_PATH } from '#/components/common/constants';
 import { resetAllStores, useAccessStore, useUserStore } from '#/components/common/stores';
 
-import { notification } from 'ant-design-vue';
+import { notification, theme } from 'ant-design-vue';
 import { defineStore } from 'pinia';
 
 import { getAccessCodesApi, getUserInfoApi, loginApi, logoutApi } from '#/api';
 import { $t } from '#/locale';
+import { updatePreferences } from '#/components/common/core/preferences';
+import { fullUrl } from '#/utils';
 
 export const useAuthStore = defineStore('auth', () => {
   const accessStore = useAccessStore();
@@ -32,17 +34,14 @@ export const useAuthStore = defineStore('auth', () => {
     let userInfo: null | UserInfo = null;
     try {
       loginLoading.value = true;
-      const { token, client_id } = await loginApi(params);
-      const accessToken = token;
+      const { access_token, client_id } = await loginApi(params);
+      const accessToken = access_token;
       const clientSide = client_id
       // 如果成功获取到 accessToken
       if (accessToken) {
         accessStore.setAccessToken(accessToken);
 
-        await accessStore.setClientId(clientSide);
-
-
-        // 获取用户信息并存储到 accessStore 中 解决打包后client_id缺失问题
+        // 获取用户信息并存储到 accessStore 中
         const [fetchUserInfoResult, accessCodes] = await Promise.all([
           fetchUserInfo(),
           getAccessCodesApi(),
@@ -53,6 +52,7 @@ export const useAuthStore = defineStore('auth', () => {
         userStore.setUserInfo(userInfo);
         accessStore.setAccessCodes(accessCodes);
         userStore.setAccessCodes(accessCodes);
+        accessStore.setClientId(clientSide);
 
         if (accessStore.loginExpired) {
           accessStore.setLoginExpired(false);
@@ -84,31 +84,64 @@ export const useAuthStore = defineStore('auth', () => {
       await logoutApi();
     } catch {
       // 不做任何处理
-    } finally {
-      resetAllStores();
-      accessStore.setLoginExpired(false);
+    }
+    resetAllStores();
+    accessStore.setLoginExpired(false);
 
-      // 回登录页带上当前路由地址
-      await router.replace({
-        path: LOGIN_PATH,
-        query: redirect
-          ? {
-            redirect: encodeURIComponent(router.currentRoute.value.fullPath),
-          }
-          : {},
-      });
+    // 回登录页带上当前路由地址
+    await router.replace({
+      path: LOGIN_PATH,
+      query: redirect
+        ? {
+          redirect: encodeURIComponent(router.currentRoute.value.fullPath),
+        }
+        : {},
+    });
+    //强制刷新重置状态
+    window.location.reload();
+  }
 
-      // 强制刷新解决缓存问题-或者写一个重置路由的方法要不下次进入系统后端的路由无法添加到框架
-      window.location.reload();
+
+  /**
+   * 偏好设置
+   * @param _data 
+   */
+  async function setPreferences(_data: any) {
+    const allowedKeys = ['theme', 'app']; 
+    const updateData: Record<string, any> = {};
+    for (const key of allowedKeys) {
+      if (_data[key] !== undefined && _data[key] !== null) {
+        updateData[key] = _data[key];
+      }
+    }
+    if (Object.keys(updateData).length > 0) {
+      updatePreferences(updateData);
+    } else {
+      console.warn('No valid preferences to update');
     }
   }
 
-  async function fetchUserInfo() {
-    let userInfo: null | UserInfo = null;
-    userInfo = await getUserInfoApi();
-    userStore.setUserInfo(userInfo);
-    // accessStore.setPlayer(userInfo.ext.isPlayer || false);
-    return userInfo;
+  async function fetchUserInfo(): Promise<UserInfo> {
+    try {
+      const userInfo = await getUserInfoApi();
+      
+      if (!userInfo) {
+        throw new Error('Failed to fetch user info');
+      }
+  
+      const processedUserInfo = {
+        ...userInfo,
+        avatar: fullUrl(userInfo.avatar || ''),
+      };
+
+      userStore.setUserInfo(processedUserInfo);
+      setPreferences(userInfo.backend_setting || {});
+
+      return processedUserInfo;
+    } catch (error) {
+      console.error('Error fetching user info:', error);
+      throw error;
+    }
   }
 
 

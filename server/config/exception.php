@@ -13,5 +13,6 @@
  */
 
 return [
-    '' => support\exception\Handler::class,
+//    '' => support\exception\Handler::class,
+      '' => madong\exception\Handler::class,
 ];

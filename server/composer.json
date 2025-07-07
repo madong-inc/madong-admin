@@ -23,8 +23,15 @@
         "wiki": "https://workerman.net/doc/webman",
         "source": "https://github.com/walkor/webman"
     },
-    "repositories": {
-    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "./packages/*",
+            "options": {
+                "symlink": true
+            }
+        }
+    ],
     "require": {
         "php": ">=8.1",
         "workerman/webman-framework": "~2.1",
@@ -59,7 +66,7 @@
         "laravel/serializable-closure": "^2.0",
         "psr/container": "1.1.1",
         "doctrine/annotations": "1.14",
-        "madong/helper": "^1.0",
+        "madong/helper": "^1.1",
         "workerman/workerman": "~5.1",
         "workerman/http-client": "2.1.0",
         "webman/push": "^1.0",
@@ -69,7 +76,15 @@
         "webman/redis": "^2.1",
         "phpoffice/phpspreadsheet": "^4.2",
         "symfony/translation": "^7.2",
-        "php-di/php-di": "6.3"
+        "webman/rate-limiter": "^1.1",
+        "ext-pdo": "*",
+        "topthink/think-template": "^3.0",
+        "ext-gd": "*",
+        "madong/admin": "*",
+        "madong/exception": "*",
+        "madong/jwt": "*",
+        "madong/captcha": "*",
+        "madong/casbin": "*"
     },
     "suggest": {
         "ext-event": "For better performance. "
@@ -79,15 +94,13 @@
             "": "./",
             "app\\": "./app",
             "App\\": "./app",
-            "app\\View\\Components\\": "./app/view/components",
-            "madong\\": "./madong"
+            "app\\View\\Components\\": "./app/view/components"
         },
         "psr-0": {
             "": "extend"
         },
         "files": [
-            "./support/helpers.php",
-            "./madong/functions.php"
+            "./support/helpers.php"
         ]
     },
     "scripts": {

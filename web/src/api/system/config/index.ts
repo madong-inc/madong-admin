@@ -1,2 +1,2 @@
 export * from './config';
-export * from './config-model';
+export type * from './config-model';

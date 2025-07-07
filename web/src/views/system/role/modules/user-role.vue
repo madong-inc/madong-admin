@@ -178,6 +178,8 @@ const [Drawer, DrawerApi] = useDrawer({
   footer: false,
   onOpenChange(isOpen) {
     record.value = isOpen ? DrawerApi.getData()?.record : {};
+    console.log(record.value)
+
   },
 });
 
@@ -199,7 +201,7 @@ const handleRemoveUserRole = (row: any) => {
   }
   const userRoles = ids.map((id) => {
     return {
-      user_id: id,
+      admin_id: id,
       role_id: record.value.id,
     };
   });

@@ -185,6 +185,9 @@ importers:
       vue3-colorpicker:
         specifier: ^2.3.0
         version: 2.3.0(@aesoper/normal-utils@0.1.5)(@popperjs/core@2.11.8)(@vueuse/core@12.8.2(typescript@5.7.3))(gradient-parser@1.1.1)(lodash-es@4.17.21)(tinycolor2@1.6.0)(vue-types@3.0.2(vue@3.5.13(typescript@5.7.3)))(vue@3.5.13(typescript@5.7.3))
+      vue3-scrollbar:
+        specifier: ^0.1.9
+        version: 0.1.9(typescript@5.7.3)
       vxe-pc-ui:
         specifier: ^4.4.8
         version: 4.4.20(vue@3.5.13(typescript@5.7.3))
@@ -1514,6 +1517,9 @@ packages:
   base64-js@1.5.1:
     resolution: {integrity: sha512-AKpaYlHn8t4SVbOHCy+b5+KKgvR4vrsD8vbvrbiQJps7fKDTkjkDry6ji0rUJjC0kzbNePLwzxq8iypo41qeWA==}
 
+  batch-processor@1.0.0:
+    resolution: {integrity: sha512-xoLQD8gmmR32MeuBHgH0Tzd5PuSZx71ZsbhVxOCRbgktZEPe4SQy7s9Z50uPp0F/f7iw2XmkHN2xkgbMfckMDA==}
+
   binary-extensions@2.3.0:
     resolution: {integrity: sha512-Ceh+7ox5qe7LJuLHoY0feh3pHuUDHAcRUeyL2VYghZwfpkNIy/+8Ocg0a3UuSoYzavmylwuLWQOf3hl0jjMMIw==}
     engines: {node: '>=8'}
@@ -1929,6 +1935,9 @@ packages:
     resolution: {integrity: sha512-gN553+xr7ETkhJhH26YG0fERmd2BSCcQKslbtR8fats0Mc0yCtZOXr00bmoPOt5xGzhuRN1TWc9+f1pCaiA0/Q==}
     peerDependencies:
       vue: ^3.2.0
+
+  element-resize-detector@1.2.4:
+    resolution: {integrity: sha512-Fl5Ftk6WwXE0wqCgNoseKWndjzZlDCwuPTcoVZfCP9R3EHQF8qUtr3YUPNETegRBOKqQKPW3n4kiIWngGi8tKg==}
 
   emoji-regex@8.0.0:
     resolution: {integrity: sha512-MSjYzcWNOA0ewAHpz0MxpYFvwg6yjy1NG3xteoqz644VCo/RPgnr1/GGt+ic3iJTzQ8Eu3TdM14SawnVUmGE6A==}
@@ -3826,6 +3835,9 @@ packages:
       vue: ^3.2.6
       vue-types: ^4.1.0
 
+  vue3-scrollbar@0.1.9:
+    resolution: {integrity: sha512-k5svT81JvZM5opph924PfCig/Ry9i7L7b75gP8ScZCo80UfGKfjMcMEUFKnIgt3ynldX/f2seBZ1HAuEO946iA==}
+
   vue@3.5.13:
     resolution: {integrity: sha512-wmeiSMxkZCSc+PM2w2VRsOYAZC8GdipNFRTsLSfodVqI9mbejKeXEGr8SckuLnrQPGe3oJN5c3K0vpoU9q/wCQ==}
     peerDependencies:
@@ -5263,6 +5275,8 @@ snapshots:
 
   base64-js@1.5.1: {}
 
+  batch-processor@1.0.0: {}
+
   binary-extensions@2.3.0: {}
 
   birpc@0.2.19: {}
@@ -5709,6 +5723,10 @@ snapshots:
       vue: 3.5.13(typescript@5.7.3)
     transitivePeerDependencies:
       - '@vue/composition-api'
+
+  element-resize-detector@1.2.4:
+    dependencies:
+      batch-processor: 1.0.0
 
   emoji-regex@8.0.0: {}
 
@@ -7659,6 +7677,14 @@ snapshots:
       tinycolor2: 1.6.0
       vue: 3.5.13(typescript@5.7.3)
       vue-types: 3.0.2(vue@3.5.13(typescript@5.7.3))
+
+  vue3-scrollbar@0.1.9(typescript@5.7.3):
+    dependencies:
+      core-js: 3.40.0
+      element-resize-detector: 1.2.4
+      vue: 3.5.13(typescript@5.7.3)
+    transitivePeerDependencies:
+      - typescript
 
   vue@3.5.13(typescript@5.7.3):
     dependencies:

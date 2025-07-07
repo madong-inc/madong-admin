@@ -66,7 +66,6 @@ export interface TimeFields {
  * 完整菜单项接口
  */
 export interface SystemMenuRow extends MenuItemBase, TimeFields {
-  label: any;
   /** HTTP方法 */
   methods: string;
   /** 创建时间（格式化） */

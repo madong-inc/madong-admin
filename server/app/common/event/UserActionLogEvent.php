@@ -2,9 +2,11 @@
 
 namespace app\common\event;
 
-use app\common\services\system\SystemLoginLogService;
-use app\common\services\system\SystemMenuService;
-use app\common\services\system\SystemOperateLogService;
+use app\common\services\platform\TenantSessionService;
+use app\common\services\system\SysLoginLogService;
+use app\common\services\system\SysMenuService;
+use app\common\services\system\SysOperateLogService;
+use madong\admin\context\TenantContext;
 use support\Container;
 
 class UserActionLogEvent
@@ -16,25 +18,36 @@ class UserActionLogEvent
      */
     public function logLogin($item): void
     {
-        $token           = $item['token'];
-        $key             = 'token_' . $item['type'] . '_' . md5($token['token'] ?? '');
-        $ip              = request()->getRealIp();
-        $http_user_agent = request()->header('user-agent');
-
-        $data['tenant_id']   = request()->tenantId;//手动添加租户id 因为系统没登录
-        $data['user_name']   = $item['username'];
+        $key                 = md5($item['access_token'] ?? '');
+        $ip                  = request()->getRealIp();
+        $http_user_agent     = request()->header('user-agent', null);
+        $data['user_name']   = $item['user_name'];
+        $data['tenant_id']   = TenantContext::getTenantId() ?? null;
         $data['ip']          = $ip;
         $data['ip_location'] = '未知';
         $data['os']          = self::getOs($http_user_agent);
         $data['browser']     = self::getBrowser($http_user_agent);
-        $data['status']      = $item['status'];
-        $data['message']     = $item['message'];
+        $data['status']      = $item['status'] ?? 0;
+        $data['message']     = $item['message'] ?? '';
         $data['login_time']  = time();
         $data['key']         = $key;
-        $data['expires_at']  = $token['params']['exp'] ?? time();
-
-        $service = new SystemLoginLogService();
+        $data['expires_at']  = $item['expires_time'] ?? time();
+        $service             = new SysLoginLogService();
         $service->save($data);
+        //创建租户会话session
+        if (config('tenant.enabled', false) && (int)$item['status'] == 1) {
+            $session              = [
+                "key"        => $item['client_id'] ?? '',
+                "admin_id"   => $item['id'] ?? '',
+                "tenant_id"  => $item['tenant_id'] ?? '',
+                "token"      => md5($item['access_token']),
+                "expire_at"  => $item['expires_time'] ?? time(),
+                "created_at" => time(),
+                "updated_at" => time(),
+            ];
+            $tenantSessionService = new TenantSessionService();
+            $tenantSessionService->save($session);
+        }
     }
 
     /**
@@ -59,7 +72,7 @@ class UserActionLogEvent
             'user_name'   => $info['user_name'] ?? '',
         ];
 
-        $service = new SystemOperateLogService();
+        $service = new SysOperateLogService();
         $service->save($data);
         return true;
     }
@@ -70,7 +83,7 @@ class UserActionLogEvent
         if (preg_match("/\{[^}]+\}/", $path)) {
             $path = rtrim(preg_replace("/\{[^}]+\}/", '', $path), '/');
         }
-        $systemMenuService = Container::make(SystemMenuService::class);
+        $systemMenuService = Container::make(SysMenuService::class);
         $menu              = $systemMenuService->get(['path' => $path]);
         if (!empty($menu)) {
             return $menu->getData('title');

@@ -239,6 +239,8 @@ interface WidgetPreferences {
   sidebarToggle: boolean;
   /** 是否显示主题切换部件 */
   themeToggle: boolean;
+  /** 是否显示web组件 */
+  terminal:boolean
 }
 
 interface Preferences {

@@ -119,7 +119,7 @@ const [Modal, ModalApi] = useModal({
       .map((item) => item.id);
     const userRole = checkedKeys.map((item) => {
       return {
-        user_id: item,
+        admin_id: item,
         role_id: record.value.id,
       };
     });

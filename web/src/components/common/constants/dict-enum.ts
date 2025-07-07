@@ -46,6 +46,11 @@ export const DictEnum = {
   //操作结果
   SYS_OPERATION_RESULT:'app.common.enum.system.OperationResult',
 
+  //平台管理
+  SYS_DB_TYPE:'app.common.enum.system.DbType',
+  SYS_ISOLATION_MODE:'app.common.enum.platform.IsolationMode',
+  SYS_TENANT_ADMIN_TYPE:'app.common.enum.system.TenantAdminType'
+
 
 
 } as const;

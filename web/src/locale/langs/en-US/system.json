@@ -439,7 +439,7 @@
         },
         "toolbar": {
           "create": "Add New",
-          "enum": "Enum Dict",
+          "enum":"Enum Dict",
           "delete": {
             "label": "Delete",
             "title": "Confirmation",
@@ -1273,43 +1273,37 @@
     },
     "form": {}
   },
-  "tenant": {
+  "data_source": {
     "list": {
-      "title": "Multi-Tenant Management",
+      "title": "Data Center",
       "table": {
         "columns": {
           "id": "ID",
-          "tenant_id": "Tenant ID",
-          "package_id": "Tenant Package ID",
-          "contact_user_name": "Contact Person",
-          "contact_phone": "Contact Phone",
-          "company_name": "Company Name",
+          "tenant_id": "Unique Code",
+          "db_domain": "Data Source",
+          "db_host": "IP",
+          "db_port": "Port",
+          "db_name": "Database Instance",
+          "db_user": "DB Account",
+          "db_password": "DB Password",
+          "name": "Name",
+          "phone": "Phone Number",
           "license_number": "Unified Social Credit Code",
+          "description": "Enterprise Description",
           "address": "Address",
-          "intro": "Company Introduction",
           "domain": "Domain",
           "account_count": "User Count",
-          "deleted_at": "Deletion Time",
-          "created_dept": "Created Department",
-          "remark": "Remarks",
+          "sort": "Sort Order",
+          "is_system": "System Built-in",
           "enabled": "Status",
           "created_date": "Creation Time",
-          "expired_date": "Expiration Time",
-          "expired":"unlimited duration",
-          "operation": "Operation",
+          "operation": "Actions",
           "actions": {
             "edit": "Edit",
-            "user": "Users",
             "delete": {
               "label": "Delete",
-              "title": "Friendly Reminder",
-              "confirm": "Are you sure you want to delete?"
-            },
-            "status": {
-              "disabled": "Disable",
-              "enabled": "Enable",
-              "confirm": "Do you want to change the status of {0} to 【{1}】?",
-              "title": "Change Status"
+              "title": "Prompt",
+              "confirm": "Confirm deletion?"
             }
           }
         },
@@ -1317,130 +1311,52 @@
           "create": "Add New",
           "delete": {
             "label": "Delete",
-            "title": "Friendly Reminder",
-            "confirm": "Are you sure you want to delete the selected {0} records?"
+            "title": "Prompt",
+            "confirm": "Confirm deletion of {0} selected records?"
           }
         }
       },
       "query": {
-        "tenant_id": "Tenant (ID)",
-        "name": "Tenant Name",
-        "contact_user_name": "Contact Person",
-        "contact_phone": "Contact Phone",
-        "enabled": "Enable Status",
+        "tenant_id": "Data Center Code",
+        "name": "Data Center Name",
         "placeholder": {
-          "tenant_id": "Please enter tenant ID",
-          "name": "Please enter tenant name",
-          "contact_user_name": "Please enter contact person",
-          "contact_phone": "Please enter contact phone",
-          "enabled": "Please select enable status"
+          "tenant_id": "Enter data center code",
+          "name": "Enter data center name"
         }
       }
     },
     "form": {
       "modal": {
         "id": "ID",
-        "tenant_id": "Tenant ID",
-        "package_id": "Tenant Package",
-        "contact_user_name": "Contact Person",
-        "contact_phone": "Contact Phone",
-        "company_name": "Company Name",
-        "license_number": "Company Code",
-        "address": "Company Address",
-        "intro": "Company Introduction",
-        "domain": "Bound Domain",
-        "account": "User Account",
-        "password": "User Password",
+        "tenant_id": "Unique Code",
+        "db_domain": "Data Source",
+        "db_host": "IP",
+        "db_port": "Port",
+        "db_name": "Database Instance",
+        "db_user": "DB Account",
+        "db_password": "DB Password",
+        "name": "Name",
+        "phone": "Phone Number",
+        "license_number": "Unified Social Credit Code",
+        "description": "Enterprise Description",
+        "address": "Address",
+        "domain": "Domain",
         "account_count": "User Count",
-        "deleted_at": "Deletion Time",
-        "expired_at": "Expiration Time",
-        "created_dept": "Created Department",
-        "remark": "Remarks",
+        "sort": "Sort Order",
+        "is_system": "System Built-in",
         "enabled": "Status",
-        "divider": {
-          "basic_info": "Basic Information",
-          "account_info": "Account Information",
-          "tenant_info": "Tenant Information"
-        },
         "placeholder": {
-          "tenant_id": "Please enter tenant ID",
-          "package_id": "Please select tenant package ID",
-          "contact_user_name": "Please enter contact person",
-          "contact_phone": "Please enter contact phone",
-          "company_name": "Please enter company name",
-          "license_number": "Please enter unified social credit code",
-          "address": "Please enter address",
-          "intro": "Please enter company introduction",
-          "domain": "Please enter a valid domain, no need for http(s)",
-          "account_count": "Please enter user count",
-          "remark": "Please enter remarks",
-          "enabled": "Please select status"
-        },
-        "help": {
-          "package_id": "Authorized corresponding permission package",
-          "expired_at": "Once the expiration time is set, it cannot be reset to 'no expiration'\nIf it was not set to no expiration during activation, it cannot be set in the future",
-          "account_count": "-1 means no limit on user count",
-          "limit": "Input quantity",
-          "no_limit": "No limit on quantity",
-          "domain": "You can fill in the domain/port. Fill in the domain like: www.123.com or www.123.com:8080, fill in the IP:port like: 127.0.0.1:8787"
-        }
-      }
-    },
-    "user": {
-      "title": "User Members"
-    }
-  },
-  "tenant_package": {
-    "list": {
-      "title": "Tenant Packages",
-      "table": {
-        "columns": {
-          "id": "ID",
-          "name": "Package Name",
-          "remark": "Remarks",
-          "enabled": "Status",
-          "created_date": "Creation Time",
-          "operation": "Operation",
-          "actions": {
-            "edit": "Edit",
-            "delete": {
-              "label": "Delete",
-              "title": "Friendly Reminder",
-              "confirm": "Are you sure you want to delete?"
-            }
-          }
-        },
-        "toolbar": {
-          "create": "Add New",
-          "delete": {
-            "label": "Delete",
-            "title": "Friendly Reminder",
-            "confirm": "Are you sure you want to delete the selected {0} records?"
-          }
-        }
-      },
-      "query": {
-        "name": "Package Name",
-        "enabled": "Enable Status",
-        "placeholder": {
-          "name": "Please enter package name",
-          "enabled": "Please select enable status"
-        }
-      }
-    },
-    "form": {
-      "modal": {
-        "id": "ID",
-        "name": "Package Name",
-        "remark": "Remarks",
-        "permissions": "Authorized Menu",
-        "enabled": "Status",
-        "created_date": "Creation Time",
-        "placeholder": {
-          "name": "Please enter package name",
-          "remark": "Please enter remarks",
-          "permissions": "Please select authorized menu",
-          "enabled": "Please select status"
+          "tenant_id": "Enter data center code",
+          "db_domain": "Data Source",
+          "db_host": "Enter database IP",
+          "db_port": "Enter database port",
+          "db_name": "Enter database instance",
+          "db_user": "Enter database account",
+          "db_password": "Enter database password",
+          "name": "Enter connection name",
+          "phone": "Enter contact number",
+          "sort": "Enter sort order",
+          "description": "Enter enterprise description"
         }
       }
     }

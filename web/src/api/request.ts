@@ -1,6 +1,6 @@
 import type { HttpResponse, RequestClientOptions } from '#/components/common/effects/request';
 
-import { preferences} from '#/components/common/core/preferences';
+import { preferences } from '#/components/common/core/preferences';
 import {
   authenticateResponseInterceptor,
   defaultResponseInterceptor,
@@ -44,6 +44,7 @@ function createRequestClient(baseURL: string, options?: RequestClientOptions) {
     }
   }
 
+
   /**
    * 刷新token逻辑
    */
@@ -64,9 +65,8 @@ function createRequestClient(baseURL: string, options?: RequestClientOptions) {
     return token ? `Bearer ${token}` : null;
   }
 
-
-  function formatClientId(clientId:null|string|undefined){
-    return clientId? clientId:null;
+  function formatClientId(clientId: null | string | undefined) {
+    return clientId ? clientId : null;
   }
 
   // 请求头处理
@@ -75,33 +75,33 @@ function createRequestClient(baseURL: string, options?: RequestClientOptions) {
       const accessStore = useAccessStore();
       config.headers.Authorization = formatToken(accessStore.accessToken);
       config.headers['Accept-Language'] = preferences.app.locale;
-      config.headers[clientKey]= formatClientId(accessStore.clientId);
+      config.headers[clientKey] = formatClientId(accessStore.clientId);
       return config;
     },
   });
 
-    // response数据解构
-    client.addResponseInterceptor<HttpResponse>({
-      fulfilled: (response) => {
-        const { data: responseData, status } = response;
-        const { code, data } = responseData;
+  // response数据解构
+  client.addResponseInterceptor<HttpResponse>({
+    fulfilled: (response) => {
+      const { data: responseData, status } = response;
+      const { code, data } = responseData;
 
-        //@ts-ignore
-        const {isResponse} = response.config;
-        if(isResponse!==undefined&&isResponse==true){
-          return response.data;
-        }
+      //@ts-ignore
+      const { isResponse } = response.config;
+      if (isResponse !== undefined && isResponse == true) {
+        return response.data;
+      }
 
-        // 变更
-        if (status >= 200 && status < 400 && code === 0) {
-          return data;
-        } else if (status >= 200 && status < 400 && code !== 0) {
-            return Promise.reject(response);
-        }
+      // 变更
+      if (status >= 200 && status < 400 && code === 0) {
+        return data;
+      } else if (status >= 200 && status < 400 && code !== 0) {
+        return Promise.reject(response);
+      }
 
-        throw Object.assign({}, response, { response });
-      },
-    });
+      throw Object.assign({}, response, { response });
+    },
+  });
 
 
   // token过期的处理
@@ -140,3 +140,4 @@ export const requestClient = createRequestClient(apiURL, {
 });
 
 export const baseRequestClient = new RequestClient({ baseURL: apiURL });
+

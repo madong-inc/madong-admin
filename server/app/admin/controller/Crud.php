@@ -12,15 +12,14 @@
 
 namespace app\admin\controller;
 
-use app\common\scopes\global\AccessScope;
-use app\common\scopes\global\TenantScope;
-use madong\exception\AdminException;
+
+use madong\admin\ex\AdminException;
+use madong\admin\services\jwt\JwtAuth;
+use madong\admin\utils\Json;
 use madong\helper\DateTime;
 use madong\helper\Tree;
 use madong\ingenious\libs\utils\ArrayHelper;
-use madong\services\excel\ExcelExportService;
-use madong\utils\Json;
-use madong\utils\JwtAuth;
+use madong\admin\services\excel\ExcelExportService;
 use support\Request;
 
 /**
@@ -114,7 +113,7 @@ class Crud extends Base
                 throw new AdminException('插入失败');
             }
             $pk = $model->getPk();
-            return Json::success('ok', [$pk => $model->getData($pk)]);
+            return Json::success('ok', [$pk => $model->getAttribute($pk)]);
         } catch (\Throwable $e) {
             return Json::fail($e->getMessage());
         }
@@ -201,8 +200,7 @@ class Crud extends Base
             if (!array_key_exists($primaryKey, $data)) {
                 throw new \Exception('参数异常缺少主键');
             }
-            //注意移除所有作用域可以添加细度权限控制
-            $targetModel = $model->withoutGlobalScopes([TenantScope::class, AccessScope::class])->findOrFail($data[$primaryKey]);
+            $targetModel = $model->findOrFail($data[$primaryKey]);
             if (empty($targetModel)) {
                 throw new \Exception('资源不存在' . $primaryKey . '=', $data[$primaryKey]);
             }
@@ -285,8 +283,7 @@ class Crud extends Base
                 $data       = is_array($data) ? $data : explode(',', $data);
                 $deletedIds = [];
                 foreach ($data as $id) {
-                    $item = $this->service->get($id,null,[],'',[TenantScope::class, AccessScope::class]);
-                    //删除这里取消了作用域可以拓展删除权限
+                    $item = $this->service->get($id);
                     if (!$item) {
                         continue; // 如果找不到项，跳过
                     }

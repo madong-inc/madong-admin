@@ -19,7 +19,7 @@ const defaultPreferences: Preferences = {
     layout: 'sidebar-nav',
     locale: 'zh-CN',
     loginExpiredMode: 'page',
-    name: 'Madong Admin',
+    name: 'madong-admin',
     preferencesButtonPosition: 'auto',
     watermark: false,
   },
@@ -33,7 +33,7 @@ const defaultPreferences: Preferences = {
   copyright: {
     companyName: 'Madong',
     companySiteLink: 'https://www.madong.tech',
-    date: '2024',
+    date: '2025',
     enable: true,
     icp: '',
     icpLink: '',
@@ -117,6 +117,7 @@ const defaultPreferences: Preferences = {
     refresh: true,
     sidebarToggle: true,
     themeToggle: true,
+    terminal:true,
   },
 };
 

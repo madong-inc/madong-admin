@@ -12,7 +12,7 @@
 
 namespace app\admin\controller;
 
-use madong\basic\BaseController;
+use madong\admin\abstract\BaseController;
 
 /**
  * 基类控制器继承的类

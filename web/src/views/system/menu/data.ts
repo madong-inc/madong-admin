@@ -119,7 +119,7 @@ export function useColumns(onActionClick: OnActionClickFn<SystemMenuRow>): VxeTa
       headerAlign: 'center',
       showOverflow: false,
       title: $t('system.menu.list.table.columns.operation'),
-      width: 280,
+      width: 250,
     }
   ];
 }

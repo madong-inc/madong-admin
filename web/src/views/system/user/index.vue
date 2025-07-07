@@ -5,7 +5,7 @@ import type { OnActionClickParams, VxeGridProps } from "#/adapter/vxe-table";
 
 import { ref } from "vue";
 
-import { Page, useDrawer } from "#/components/common-ui";
+import { Page, useDrawer, useModal } from "#/components/common-ui";
 
 
 import { Modal, Popconfirm, Space,Button, message } from "ant-design-vue";
@@ -72,7 +72,7 @@ const [Grid, gridApi] = useVxeGrid({
       },
     },
     schema: querySchema(),
-    submitOnChange: true,
+    submitOnChange: false,
     handleReset: async () => {
       selectDeptId.value = [];
       // eslint-disable-next-line no-use-before-define
@@ -91,7 +91,7 @@ const [Grid, gridApi] = useVxeGrid({
       // 翻页时保留选中状态
       reserve: true,
       trigger: "cell",
-      checkMethod: ({ row }) => row.is_super !== 1,//顶级管理员禁止
+      checkMethod: ({ row }) => row.is_super !== 1&& row.tenant.is_super!== 1,//顶级管理员禁止
     },
     columns: useColumns(onActionClick, onStatusChange),
     height: "auto",
@@ -134,7 +134,6 @@ const [Grid, gridApi] = useVxeGrid({
 const [Drawer, drawerApi] = useDrawer({
   connectedComponent: Form,
 });
-
 
 
 /**
@@ -241,7 +240,6 @@ async function onResetPassword(row:User){
     message.success($t('system.user.success.reset_password'));
     gridApi.reload();
   });
-
 }
 
 

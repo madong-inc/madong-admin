@@ -1,0 +1,25 @@
+{
+    "name": "madong/casbin",
+    "description": "Madong framework, Casbin customized permission plugin",
+    "authors": [
+        {
+            "name": "Mr.April",
+            "homepage": "https://gitcode.com/motion-code",
+            "email": "405784684@qq.com"
+        }
+    ],
+    "type": "library",
+    "license": "Apache License",
+    "require": {
+        "php": ">=8.1",
+        "casbin/casbin": "~4.0",
+        "php-di/php-di": "^7.0",
+        "doctrine/annotations": "^1.13",
+        "workerman/redis": "^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "madong\\casbin\\": "src"
+        }
+    }
+}

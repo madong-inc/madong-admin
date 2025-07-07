@@ -19,6 +19,11 @@ interface BasicUserInfo {
    * 用户名
    */
   user_name: string;
+
+  /**
+   * 偏好设置
+   */
+  backend_setting?:any
 }
 
 export type {BasicUserInfo};

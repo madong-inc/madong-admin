@@ -12,14 +12,15 @@
 
 namespace app\common\scopes\global;
 
+
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
-use madong\exception\AuthException;
+use madong\admin\context\TenantContext;
 use support\Db;
 
 /**
- * 租户
+ * 租户-字段隔离模式作用域
  *
  * @author Mr.April
  * @since  1.0
@@ -36,16 +37,8 @@ class TenantScope implements Scope
         if (!Db::Schema()->hasColumn($tableName, 'tenant_id')) {
             return;
         }
-
-        $request  = request();
-        $tenantId = $request->getTenantId();
-        if (config('app.tenant_enabled', false) && empty($tenantId)) {
-            throw new AuthException('网络异常请稍后重试');
-        }
-
-        // 检查是否启用租户功能并且 tenant_id 不为空
-        if (config('app.tenant_enabled', false)) {
-            $builder->where('tenant_id', $tenantId);
+        if (config('tenant.enabled', false) && TenantContext::isFieldIsolation()) {
+            $builder->where("tenant_id", TenantContext::getTenantId());
         }
     }
 

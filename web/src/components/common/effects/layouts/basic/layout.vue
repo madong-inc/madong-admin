@@ -174,6 +174,7 @@ const slots: SetupContext['slots'] = useSlots();
 const headerSlots = computed(() => {
   return Object.keys(slots).filter((key) => key.startsWith('header-'));
 });
+
 </script>
 
 <template>
@@ -265,9 +266,16 @@ const headerSlots = computed(() => {
         <template #user-dropdown>
           <slot name="user-dropdown"></slot>
         </template>
+        
+        <template #terminal>
+          <slot name="terminal"></slot>
+        </template>
         <template #notification>
           <slot name="notification"></slot>
         </template>
+
+
+      
         <template v-for="item in headerSlots" #[item]>
           <slot :name="item"></slot>
         </template>

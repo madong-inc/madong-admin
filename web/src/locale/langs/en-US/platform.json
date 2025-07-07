@@ -1,0 +1,276 @@
+{
+    "db": {
+        "list": {
+            "title": "Data Sources",
+            "table": {
+                "columns": {
+                    "id": "ID",
+                    "name": "Display Name",
+                    "description": "Description",
+                    "driver": "Type",
+                    "host": "Host",
+                    "port": "Port",
+                    "database": "Connection Name",
+                    "username": "Username",
+                    "password": "Password",
+                    "prefix": "Table Prefix",
+                    "enabled": "Status",
+                    "created_date": "Creation Date",
+                    "operation": "Actions",
+                    "actions": {
+                        "detail": "View",
+                        "edit": "Edit",
+                        "delete": {
+                            "label": "Delete",
+                            "title": "Confirm Deletion",
+                            "confirm": "Are you sure you want to delete?"
+                        },
+                        "status": {
+                            "disabled": "Disable",
+                            "enabled": "Enable",
+                            "confirm": "Do you want to change {0}'s status to 【{1}】?",
+                            "title": "Change Status"
+                        }
+                    }
+                },
+                "toolbar": {
+                    "create": "Add New",
+                    "delete": {
+                        "label": "Delete",
+                        "title": "Confirm Deletion",
+                        "confirm": "Are you sure you want to delete the selected {0} records?"
+                    }
+                }
+            },
+            "query": {
+                "database": "Connection Name",
+                "driver": "Type",
+                "enabled": "Status",
+                "placeholder": {
+                    "database": "Enter connection name",
+                    "driver": "Select type",
+                    "enabled": "Select status"
+                }
+            }
+        },
+        "form": {
+            "modal": {
+                "id": "ID",
+                "name": "Display Name",
+                "description": "Description",
+                "driver": "Type",
+                "host": "Host",
+                "port": "Port",
+                "database": "Connection Name",
+                "username": "Username",
+                "password": "Password",
+                "prefix": "Table Prefix",
+                "enabled": "Status",
+                "placeholder": {
+                    "name": "Enter display name",
+                    "description": "Enter description",
+                    "driver": "Select type",
+                    "host": "Enter host",
+                    "port": "Enter port",
+                    "database": "Enter connection name",
+                    "username": "Enter username",
+                    "password": "Enter password",
+                    "enabled": "Select status"
+                }
+            }
+        }
+    },
+    "tenant": {
+        "list": {
+            "title": "Tenant Center",
+            "table": {
+                "columns": {
+                    "id": "ID",
+                    "db_id": "Data Source",
+                    "code": "Tenant ID",
+                    "isolation_mode": "Type",
+                    "contact_person": "Contact Person",
+                    "contact_phone": "Contact Phone",
+                    "company_name": "Company Name",
+                    "license_number": "Business License",
+                    "address": "Address",
+                    "description": "Short Name",
+                    "domain": "Domain",
+                    "enabled": "Status",
+                    "is_default": "Is Default",
+                    "created_date": "Creation Date",
+                    "operation": "Actions",
+                    "actions": {
+                        "detail": "View",
+                        "edit": "Edit",
+                        "gran_subscription": "Assign Subscription",
+                        "delete": {
+                            "label": "Delete",
+                            "title": "Confirm Deletion",
+                            "confirm": "Are you sure you want to delete?"
+                        },
+                        "status": {
+                            "disabled": "Disable",
+                            "enabled": "Enable",
+                            "confirm": "Do you want to change {0}'s status to 【{1}】?",
+                            "title": "Change Status"
+                        }
+                    }
+                },
+                "toolbar": {
+                    "create": "Add New",
+                    "delete": {
+                        "label": "Delete",
+                        "title": "Confirm Deletion",
+                        "confirm": "Are you sure you want to delete the selected {0} records?"
+                    }
+                }
+            },
+            "query": {
+                "code": "Code",
+                "name": "Name",
+                "company_name": "Short Name",
+                "type": "Type",
+                "enabled": "Status",
+                "placeholder": {
+                    "code": "Enter code",
+                    "name": "Enter name",
+                    "company_name": "Enter short name",
+                    "type": "Select type",
+                    "enabled": "Select status"
+                }
+            }
+        },
+        "form": {
+            "modal": {
+                "id": "ID",
+                "db_id": "Data Source",
+                "code": "Tenant ID",
+                "type": "Type",
+                "contact_person": "Contact Person",
+                "contact_phone": "Contact Phone",
+                "company_name": "Company Name",
+                "license_number": "Business License",
+                "address": "Address",
+                "description": "Short Name",
+                "domain": "Domain",
+                "enabled": "Status",
+                "account": "Account",
+                "password": "Password",
+                "isolation_mode": "Isolation Mode",
+                "divider": {
+                    "basic_info": "Basic Information",
+                    "account_info": "Account Information",
+                    "db_info": "Database Configuration"
+                },
+                "placeholder": {
+                    "db_id": "Select data source",
+                    "code": "Enter code",
+                    "name": "Enter name",
+                    "type": "Select type",
+                    "contact_person": "Enter contact person",
+                    "contact_phone": "Enter contact phone",
+                    "company_name": "Enter short name",
+                    "license_number": "Enter business license",
+                    "address": "Enter address",
+                    "description": "Enter description",
+                    "domain": "Enter domain",
+                    "isolation_mode": "Select isolation mode",
+                    "enabled": "Select status"
+                }
+            }
+        },
+        "gran_subscription": {
+            "title": "Assign Subscription",
+            "table": {
+                "columns": {
+                    "id": "ID",
+                    "name": "Name",
+                    "description": "Description"
+                },
+                "toolbar": {
+                    "save": "Save"
+                }
+            }
+        }
+    },
+    "tenant_subscription": {
+        "list": {
+            "title": "Subscription Plans",
+            "table": {
+                "columns": {
+                    "id": "ID",
+                    "name": "Plan Name",
+                    "description": "Description",
+                    "remark": "Remarks",
+                    "enabled": "Status",
+                    "created_date": "Creation Date",
+                    "operation": "Actions",
+                    "actions": {
+                        "edit": "Edit",
+                        "grant_menu": "Assign Permissions",
+                        "grant_tenant": "Associate Tenant",
+                        "delete": {
+                            "label": "Delete",
+                            "title": "Confirmation",
+                            "confirm": "Are you sure you want to delete?"
+                        }
+                    }
+                },
+                "toolbar": {
+                    "create": "Add New",
+                    "delete": {
+                        "label": "Delete",
+                        "title": "Confirmation",
+                        "confirm": "Are you sure you want to delete the selected {0} records?"
+                    }
+                }
+            },
+            "query": {
+                "name": "Plan Name",
+                "enabled": "Status",
+                "description": "Description",
+                "placeholder": {
+                    "name": "Enter plan name",
+                    "enabled": "Select status",
+                    "description": "Enter description"
+                }
+            }
+        },
+        "form": {
+            "grant_menu_title": "Assign Permissions",
+            "modal": {
+                "id": "ID",
+                "name": "Name",
+                "description": "Description",
+                "sort": "Sort Order",
+                "remark": "Remarks",
+                "enabled": "Status",
+                "permissions": "Assigned Menus",
+                "created_date": "Creation Date",
+                "placeholder": {
+                    "name": "Enter name",
+                    "sort": "Enter sort order",
+                    "remark": "Enter remarks",
+                    "description": "Enter description",
+                    "permissions": "Select menus to assign",
+                    "enabled": "Select status"
+                }
+            }
+        },
+        "grant_tenant": {
+            "title": "Associate Tenant",
+            "table": {
+                "columns": {
+                    "id": "ID",
+                    "name": "Name",
+                    "isolation_mode": "Type",
+                    "effective": "Effective Method"
+                },
+                "toolbar": {
+                    "save": "Save"
+                }
+            }
+        }
+    }
+}

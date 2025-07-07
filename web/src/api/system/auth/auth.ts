@@ -78,6 +78,34 @@ export class SystemAuthApi extends BaseApi<any> {
     saveUserRole(data: any) {
         return requestClient.post<any>(`${this.baseUrl}/save-user-role`, data);
     }
+
+    /**
+     * 获取用户关联租户
+     * @returns 
+     */
+    getUserTenant(){
+        return requestClient.get<any>(`${this.baseUrl}/user-tenant`);
+    }
+
+    /**
+     * 切换租户
+     * @returns 
+     */
+    changeTenant(data:any){
+        return requestClient.put<any>(`${this.baseUrl}/change-tenant`,data);
+    }
+
+    tenantGrant(data:any){
+        return requestClient.put<any>(`${this.baseUrl}/tenant-grant`,data);
+    }
+
+    /**
+     * 用户权限-包含菜单 按钮  接口
+     * @returns 
+     */
+    getUserPermission(){
+        return requestClient.get<any>(`${this.baseUrl}/permission`);
+    }
 }
 
 

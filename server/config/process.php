@@ -20,7 +20,7 @@ global $argv;
 return [
     'webman'            => [
         'handler'     => Http::class,
-        'listen'      => 'http://0.0.0.0:8899',
+        'listen'      => 'http://0.0.0.0:8998',
         'count'       => cpu_count() * 4,
         'user'        => '',
         'group'       => '',
@@ -60,8 +60,11 @@ return [
         ],
     ],
     'webman-scheduler'  => [
-        'handler' => \madong\services\scheduler\SchedulerServer::class,
+        'handler' => \madong\admin\services\scheduler\SchedulerServer::class,
         'count'   => 1,
         'listen'=>'text://'.config('task.listen','0.0.0.0:2346')
-    ]
+    ],
+    'push_notification' => [
+        'handler' => \app\common\process\PushNotification::class,
+    ],
 ];

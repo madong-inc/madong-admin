@@ -12,11 +12,10 @@
 
 namespace app\admin\controller;
 
-use app\common\services\system\SystemUserService;
-use madong\exception\AdminException;
-use madong\services\email\MessagePushService;
-use madong\utils\Captcha;
-use madong\utils\Json;
+use app\common\services\system\SysAdminService;
+use madong\admin\ex\AdminException;
+use madong\captcha\Captcha;
+use madong\admin\utils\Json;
 use support\Container;
 use support\Request;
 
@@ -31,8 +30,9 @@ class LoginController extends Crud
 
     public function __construct()
     {
+
         parent::__construct();//调用父类构造函数
-        $this->service = Container::make(SystemUserService::class);
+        $this->service = Container::make(SysAdminService::class);
     }
 
     /**
@@ -54,7 +54,7 @@ class LoginController extends Crud
      */
     public function getCaptchaOpenFlag(Request $request): \support\Response
     {
-        return Json::success('ok', ['flag' => config('captcha.captcha_open_flag',false)]);
+        return Json::success('ok', ['flag' => config('plugin.madong.captcha.app.enable', false)]);
     }
 
     /**
@@ -68,7 +68,7 @@ class LoginController extends Crud
     {
         try {
             $captcha = new Captcha();
-            $type    = $request->input('type', 'login');
+            $type    = $request->input('type', 'admin-login');
             $result  = $captcha->captcha($request, $type);
             return Json::success('ok', $result);
         } catch (\Throwable $e) {
@@ -115,14 +115,14 @@ class LoginController extends Crud
             $tenantId  = $request->input('tenant_id', '');
             $grantType = $request->input('grant_type', 'default');//refresh_token   sms   default 可以自行定义拓展登录方式
 
-            $service = Container::make(SystemUserService::class);
+            $service = Container::make(SysAdminService::class);
 
             $captcha = new Captcha();
-            if (config('app.is_account_set_mode_enabled') && empty($tenantId)) {
-                throw new AdminException('请选择数据源！');
-            }
+//            if (config('tenant.enabled') && empty($tenantId)) {
+//                throw new AdminException('请选择数据源！');
+//            }
 
-            if (config('captcha.captcha_open_flag') && $grantType === 'default') {
+            if (config('plugin.madong.captcha.app.enable') && $grantType === 'default') {
                 if (!$captcha->check($uuid, $code)) {
                     throw new AdminException('图片验证码错误！');
                 }
@@ -138,7 +138,6 @@ class LoginController extends Crud
                 }
                 $username = $info->getData('user_name');
             }
-
             $data = $service->login($username, $password, $type, $grantType, $tenantId);
             return Json::success('ok', $data);
         } catch (\Throwable $e) {
@@ -160,7 +159,6 @@ class LoginController extends Crud
 
     public function test(Request $request)
     {
-        var_dump(123);
 
     }
 

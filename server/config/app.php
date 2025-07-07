@@ -12,10 +12,6 @@
  */
 
 use support\Request;
-use madong\services\scheduler\event\EvalTask;
-use madong\services\scheduler\event\ShellTask;
-use madong\services\scheduler\event\UrlTask;
-use madong\services\scheduler\event\SchedulingTask;
 
 return [
     'debug'                    => env('APP_DEBUG', false),
@@ -28,18 +24,35 @@ return [
     'controller_suffix'        => 'Controller',
     'controller_reuse'         => false,
     'store_in_recycle_bin'     => env('RECYCLE_BIN_ENABLED', false),//是否开启回站模式
-    'tenant_enabled'           => env('TENANT_ENABLED', false),//是否租户模式
     //枚举扫描配置-待优化实现自动扫描子目录
     //将配置数组中分隔符使用正斜杠 /，PHP 在 Windows 下会自动转换，而 Linux 只识别正斜杠
     'enum_scan_directories'    => [
         app_path('enum'),//app目录
         app_path('common/enum'),//公共目录
         app_path('common/enum/system'),//系统枚举目录
+        app_path('packages/admin/src/enum/system'),//系统枚举目录
+        app_path('common/enum/platform'),//平台枚举目录
+        base_path('vendor/madong/ingenious/src/enums'),//目录枚举
     ],
     //回收站排除的表
     'exclude_from_recycle_bin' => [
         'system_login_log',
         'system_operate_log',
         'system_recycle_bin',
+        'wf_process_cc_instance',
+        'wf_process_define',
+        'wf_process_define_favorite',
+        'wf_process_design',
+        'wf_process_design_history',
+        'wf_process_form',
+        'wf_process_form_history',
+        'wf_process_instance',
+        'wf_process_instance_history',
+        'wf_process_surrogate',
+        'wf_process_task',
+        'wf_process_task_actor',
+        'wf_process_task_actor_history',
+        'wf_process_task_history',
+        'wf_process_type',
     ],
 ];

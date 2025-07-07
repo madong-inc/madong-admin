@@ -12,7 +12,7 @@ export namespace AuthApi {
 
   /** 登录接口返回值 */
   export interface LoginResult {
-    token: string;
+    access_token: string;
     user_id?:string|number;
     client_id?:string|null|undefined;
     expires_time?:string|number;
@@ -21,17 +21,17 @@ export namespace AuthApi {
 
   export interface RefreshTokenResult {
     data: string;
-    status: number;
+    code: number;
   }
 
   export interface AccountSet {
     id: number|string;
-    tenant_id:string;
-    company_name: string;
+    tenant_id:string|number;
+    name: string;
   }
 
   export interface AccountSetResponse {
-    tenant_enabled: boolean; // 是否开启账套模式
+    is_tenant_mode_enabled: boolean; // 是否开启账套模式
     list: AccountSet[]; // 账套列表
   }
 
@@ -48,7 +48,7 @@ export async function loginApi(data: AuthApi.LoginParams) {
  * 刷新accessToken
  */
 export async function refreshTokenApi() {
-  return baseRequestClient.post<AuthApi.RefreshTokenResult>('/auth/refresh', {
+  return baseRequestClient.post<AuthApi.RefreshTokenResult>('/system/auth/refresh', {
     withCredentials: true,
   });
 }
@@ -71,11 +71,11 @@ export async function getAccessCodesApi() {
 
 
 /**
- * 获取租户列表
+ * 获取账套列表
  * @returns
  */
 export async function getAccountSet() {
-  return requestClient.get<AuthApi.AccountSetResponse>('/system/account-sets');
+  return requestClient.get<AuthApi.AccountSetResponse>('/platform/account-sets');
 }
 
 

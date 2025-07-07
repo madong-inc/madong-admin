@@ -1,0 +1,1 @@
+Route::get('{%ROUTE%}/{id}', [\app\admin\controller\crud\.{%NAME_CAMEL%}:class','index'])->name('{%MENUS%}详情接口');

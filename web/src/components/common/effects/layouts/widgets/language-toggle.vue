@@ -7,10 +7,13 @@ import { loadLocaleMessages } from '#/locale';
 import { preferences, updatePreferences } from '#/components/common/core/preferences';
 
 import { BasicDropdownRadioMenu, BasicIconButton } from '#/components/common/core/ui-kit/shadcn-ui';
+import { SystemUserApi } from '#/api/system/user';
 
 defineOptions({
   name: 'LanguageToggle',
 });
+
+const api= new SystemUserApi();
 
 async function handleUpdate(value: string) {
   const locale = value as SupportedLanguagesType;
@@ -20,6 +23,8 @@ async function handleUpdate(value: string) {
     },
   });
   await loadLocaleMessages(locale);
+  await api.preferences(preferences);
+  window.location.reload();//刷新重新加载
 }
 </script>
 

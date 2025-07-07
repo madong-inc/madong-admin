@@ -1,7 +1,7 @@
 {
   "name": "madong-admin",
   "private": true,
-  "version": "3.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "pnpm vite --mode development",
@@ -72,6 +72,7 @@
     "vue-router": "^4.5.0",
     "vue-tippy": "^6.6.0",
     "vue3-colorpicker": "^2.3.0",
+    "vue3-scrollbar": "^0.1.9",
     "vxe-pc-ui": "^4.4.8",
     "vxe-table": "4.10.0",
     "watermark-js-plus": "^1.5.8",

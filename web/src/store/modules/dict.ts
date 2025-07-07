@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import type { SystemDictItemRow } from '#/api/system/dict';
+import type { SystemDictItemModel } from '#/api/system/dict';
 
 import { reactive } from 'vue';
 
@@ -9,8 +9,7 @@ import { defineStore } from 'pinia';
  * antd使用 select和radio通用
  * 本质上是对DictData的拓展
  */
-export interface DictOption extends SystemDictItemRow {
-  [x: string]: string;
+export interface DictOption extends SystemDictItemModel.DictItem {
   disabled?: boolean;
   label: string;
   value: number | string;
@@ -23,7 +22,7 @@ export interface DictOption extends SystemDictItemRow {
  * @returns options
  */
 export function dictToOptions(
-  data: SystemDictItemRow[],
+  data: SystemDictItemModel.DictItem[],
   formatNumber = false,
 ): DictOption[] {
   return data.map((item) => ({
@@ -46,7 +45,7 @@ export const useDictStore = defineStore('app-dict', () => {
    * 相当于加锁 保证只有第一次请求的结果能拿到
    */
   const dictRequestCache = reactive(
-    new Map<string, Promise<SystemDictItemRow[] | void>>(),
+    new Map<string, Promise<SystemDictItemModel.DictItem[] | void>>(),
   );
 
   function getDictOptions(dictName: string): DictOption[] {
@@ -78,7 +77,7 @@ export const useDictStore = defineStore('app-dict', () => {
    */
   function setDictInfo(
     dictName: string,
-    dictValue: SystemDictItemRow[],
+    dictValue: SystemDictItemModel.DictItem[],
     formatNumber = false,
   ) {
     if (
@@ -94,7 +93,9 @@ export const useDictStore = defineStore('app-dict', () => {
   }
 
   function $reset() {
-
+    /**
+     * doNothing
+     */
   }
 
   return {

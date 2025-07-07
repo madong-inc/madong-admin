@@ -1,10 +1,8 @@
 import type { Component as ComponentType } from 'vue';
-import type { SystemDictItemModel} from '#/api/system/dict';
+import type { DictOptions} from '#/api/system/dict';
 import { h } from 'vue';
-// import { JsonPreview } from '#/components/common-ui';
-//@ts-ignore
 import {
-  IconifyIcon
+  IconifyIcon,
 } from '#/components/common/icons';
 import { Tag } from 'ant-design-vue';
 import { DictTag } from '#/components/dict';
@@ -32,7 +30,6 @@ export function renderTags(tags: string[], wrap = false, gap = 1) {
     tags.map((tag, index) => h('div', { key: index }, renderTag(tag)))
   );
 }
-
 
 /**
  * 渲染图标
@@ -63,7 +60,7 @@ export function renderHttpMethodTag(type: string) {
   return renderTag(title, color);
 }
 
-export function renderDictTag(value: number | string, dicts: SystemDictItemModel.DictItem[]) {
+export function renderDictTag(value: number | string, dicts: DictOptions[]) {
   return h(DictTag, { dicts, value });
 }
 
@@ -77,7 +74,7 @@ export function renderDictTag(value: number | string, dicts: SystemDictItemModel
  */
 export function renderDictTags(
   value: string[],
-  dicts: SystemDictItemModel.DictItem[],
+  dicts: DictOptions[],
   wrap = true,
   gap = 1,
 ) {
@@ -120,4 +117,3 @@ export function renderIconSpan(
     [h(icon), h('span', { style: { marginLeft } }, value)]
   );
 }
-

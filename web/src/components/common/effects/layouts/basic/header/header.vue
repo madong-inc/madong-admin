@@ -79,6 +79,13 @@ const rightSlots = computed(() => {
     });
   }
 
+  if (preferences.widget.terminal) {
+    list.push({
+      index: REFERENCE_VALUE + 45,
+      name: 'terminal',
+    });
+  }
+
   Object.keys(slots).forEach((key) => {
     const name = key.split('-');
     if (key.startsWith('header-right')) {
@@ -164,7 +171,7 @@ function clearPreferencesAndLogout() {
           <LanguageToggle class="mr-1" />
         </template>
         <template v-else-if="slot.name === 'fullscreen'">
-          <BasicFullScreen class="mr-1" />
+          <BasicFullScreen   />
         </template>
       </slot>
     </template>

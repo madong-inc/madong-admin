@@ -12,15 +12,21 @@
 
 namespace app\common\dao\system;
 
-use app\common\model\system\SystemDictItem;
-use madong\basic\BaseDao;
+use app\common\model\system\SysDictItem;
+use madong\admin\abstract\BaseDao;
 
+/**
+ * 字典项
+ *
+ * @author Mr.April
+ * @since  1.0
+ */
 class SystemDictItemDao extends BaseDao
 {
 
     protected function setModel(): string
     {
-        return SystemDictItem::class;
+        return SysDictItem::class;
     }
 
 }

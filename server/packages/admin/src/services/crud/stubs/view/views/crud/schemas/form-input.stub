@@ -1,0 +1,9 @@
+{
+      fieldName: '{FORM_FIELD}',
+      label: '{FORM_LABEL}',
+      component: 'Input',
+      componentProps: {
+        allowClear: true,
+      },
+      formItemClass: 'col-span-12',
+},

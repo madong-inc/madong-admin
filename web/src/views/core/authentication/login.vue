@@ -51,17 +51,20 @@ const formSchema = computed((): BasicFormSchema[] => {
       defaultValue: '',
       componentProps: {
         placeholder: '',
-        options:accountSetData.value.list?.map((item: { name: any; tenant_id: any; }) => ({
+        options:accountSetData.value.list?.map((item: { name: string; tenant_id: string|number; }) => ({
           label: item.name,
           value: item.tenant_id,
         })),
       },
       fieldName: 'tenant_id',
-      rules: z.string().min(1, { message: '请选择对应数据源' }),
+      rules: z.union([
+        z.string().min(1, { message: '请选择对应数据源' }),
+        z.number()
+      ]),
       formItemClass: 'col-span-12',
       dependencies: {
         if: () => accountSetData.value.tenant_enabled,
-        componentProps: (_values: { tenant_id: string}) => {
+        componentProps: (_values: { tenant_id: string|number}) => {
           return {};
         },
         triggerFields: ['', 'tenant_id'],
@@ -132,7 +135,6 @@ const handleSubmit = (data: any) => {
     refreshCaptcha.value = true;
   });
 };
-
 </script>
 
 <template>

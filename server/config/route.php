@@ -18,13 +18,22 @@ use Webman\Route;
  */
 require_once app_path('admin/config/route.php');
 
+
 Route::get('/', function () {
-    //1.是否有安装前端页面
+    // 1. 检查是否已安装（通过 `install.lock` 文件）
+    $lockFile = base_path('install.lock');
+    if (!file_exists($lockFile)) {
+        // 重定向到安装页面
+        return redirect('/app/install/index');
+    }
+
+    //2.是否有安装前端页面
     $path = base_path('public/index.html');
     if (file_exists($path)) {
         $content = file_get_contents($path);
         return response($content);
     }
+
     //2.没有前端页面显示readme.md
     $path = base_path('README.md');
     if (file_exists($path)) {
@@ -39,7 +48,7 @@ Route::get('/', function () {
             <head>
                 <meta charset='UTF-8'>
                 <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-                <title>MaDong Admin快速开发框架</title>
+                <title>madong-admin快速开发框架</title>
                 <style>
                     body {
                         font-family: Arial, sans-serif;
@@ -87,10 +96,10 @@ Route::get('/', function () {
 
 });
 
-
 /**
  * 关闭默认路由
  */
 Route::disableDefaultRoute();
+
 
 

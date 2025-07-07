@@ -11,18 +11,14 @@ import { IconifyIcon } from "#/components/common/icons";
 import { Spin, Tag } from "ant-design-vue";
 
 import { useForm } from "#/adapter/form";
-import { SystemMenuApi } from "#/api/system/menu";
 import { SystemRoleApi } from "#/api/system/role";
 import { SystemAuthApi } from "#/api/system/auth";
 import { $t } from "#/locale";
 
 import { formSchemas } from "../data";
 import type { SystemRoleRow } from "#/api/system/role";
-import { getDictOptions } from "#/utils";
-import { DictEnum } from "#/components/common/constants";
 
 const api = new SystemRoleApi();
-const menuApi = new SystemMenuApi();
 const authApi = new SystemAuthApi();
 
 const emits = defineEmits(["success"]);
@@ -44,9 +40,10 @@ const [Drawer, drawerApi] = useDrawer({
     if (!valid) return;
     const values = await formApi.getValues();
     drawerApi.lock();
+
     const filteredData = {
       ...values,
-      permissions: filterPermissions(values.permissions),
+      permissions: filterPermissions(values?.permissions||[]),
     };
 
     (id.value ? api.update({ ...filteredData, id: id.value }) : api.create(filteredData))
@@ -89,8 +86,7 @@ function filterPermissions(permissions: (string | null | undefined)[]): string[]
 async function loadPermissions() {
   loadingPermissions.value = true;
   try {
-    // const res = await menuApi.list({ format: "table_tree", page: 1, limit: 9999 });
-    const res = await menuApi.fetchPermissionTreeExclNonPackageIds();
+    const res = await authApi.getUserPermission();
     permissions.value = (res as unknown) as DataNode[];
   } finally {
     loadingPermissions.value = false;
@@ -103,7 +99,7 @@ const getDrawerTitle = computed(() => {
 
 function getNodeClass(node: Recordable<any>) {
   const classes: string[] = [];
-  if (node.value?.type === 4) {
+  if (node.value?.type === 3) {
     classes.push("inline-flex");
     if (node.index % 3 >= 1) {
       classes.push("!pl-0");
@@ -129,16 +125,12 @@ function getNodeClass(node: Recordable<any>) {
             label-field="title"
             icon-field="icon"
           >
-          <template #node="{ value }">
-              <Tag
-                v-for="item in getDictOptions(DictEnum.SYS_MENU_TYPE)"
-                :key="item.value"
-                v-show="item.value === value.type" 
-                :color="item?.color||'default'"
-                class="dynamic-tag"
-              >
-                {{ item.label }}
-              </Tag>
+            <template #node="{ value }">
+              <!-- <IconifyIcon v-if="value.icon" :icon="value.icon" /> -->
+              <Tag v-if="value.type === 1" color="processing">目录</Tag>
+              <Tag v-if="value.type === 2" color="success">菜单</Tag>
+              <Tag v-if="value.type === 3" color="yellow">按钮</Tag>
+              <Tag v-if="value.type === 4" color="cyan">接口</Tag>
               {{ $t(value.title) }}
             </template>
           </Tree>

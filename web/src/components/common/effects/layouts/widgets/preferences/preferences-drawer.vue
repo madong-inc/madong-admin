@@ -55,6 +55,8 @@ import {
   Theme,
   Widget,
 } from './blocks';
+import { SystemUserApi } from '#/api/system/user';
+import { SaveOutlined } from '@ant-design/icons-vue';
 
 const emit = defineEmits<{ clearPreferencesAndLogout: [] }>();
 
@@ -213,12 +215,21 @@ const showBreadcrumbConfig = computed(() => {
 
 async function handleCopy() {
   await copy(JSON.stringify(diffPreference.value, null, 2));
-
   message.copyPreferencesSuccess?.(
     $t('preferences.copyPreferencesSuccessTitle'),
     $t('preferences.copyPreferencesSuccess'),
   );
 }
+
+
+async function handleUserPreferences(){
+  const {theme}= preferences;
+  const api=new SystemUserApi();
+  await api.preferences({theme});
+}
+
+
+
 
 async function handleClearCache() {
   resetPreferences();
@@ -424,7 +435,7 @@ async function handleReset() {
       </div>
 
       <template #footer>
-        <BasicButton
+        <!-- <BasicButton
           :disabled="!diffPreference"
           class="mx-4 w-full"
           size="sm"
@@ -433,6 +444,16 @@ async function handleReset() {
         >
           <Copy class="mr-2 size-3" />
           {{ $t('preferences.copyPreferences') }}
+        </BasicButton> -->
+
+        <BasicButton
+          class="mx-4 w-full"
+          size="sm"
+          variant="default"
+          @click="handleUserPreferences"
+        >
+          <SaveOutlined class="mr-2 size-3" />
+          {{ $t('preferences.save') }}
         </BasicButton>
         <BasicButton
           :disabled="!diffPreference"

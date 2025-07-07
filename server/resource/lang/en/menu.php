@@ -24,7 +24,7 @@ return [
     '新增'       => 'Add',
     '删除'       => 'Delete',
     '详情'       => 'Detail',
-    '导出'     => 'Export',
+    '导出'       => 'Export',
 
     //系统设置
     '用户'       => 'User',
@@ -50,42 +50,48 @@ return [
     '系统设置'   => 'Setting',
     '用户管理'   => 'User',
     '移除用户'   => 'RemoveUser',
-    '附件管理' => 'Attachment',
+    '附件管理'   => 'Attachment',
 
     //系统监控
     '性能监控'   => 'Performance',
     'Redis监控'  => 'RedisMonitor',
-    '定时任务'   => 'ScheduledTask',
     '操作日志'   => 'OperationLog',
 
     //系统工具
-    '系统工具'   => 'SystemTool',
-    '代码生成' => 'CodeGen',
-
-
-
 
     //业务流程
-    '业务流程' => 'Workflow',
-    '流程查询' => 'Query',
-    '流程设置' => 'Setting',
-    '流程设计' => 'Design',
-    '表单设计' => 'FormDesign',
-    '基础功能' => 'BasicFunc',
-    '流程类型' => 'Type',
-    '委托设置' => 'Delegate',
-    '流程定义' => 'Definition',
-    '我的申请' => 'MyRequest',
-    '我的收藏' => 'Bookmark',
-    '我的已办' => 'Completed',
-    '待阅'     => 'PendingRead',
-    '待办'     => 'Todo',
-    '发起'     => 'Launch',
-    '恢复'     => 'Restore',
+    '业务流程'   => 'Workflow',
+    '流程查询'   => 'Query',
+    '流程设置'   => 'Setting',
+    '流程设计'   => 'Design',
+    '表单设计'   => 'FormDesign',
+    '基础功能'   => 'BasicFunc',
+    '流程类型'   => 'Type',
+    '委托设置'   => 'Delegate',
+    '流程定义'   => 'Definition',
+    '我的申请'   => 'MyRequest',
+    '我的收藏'   => 'Bookmark',
+    '我的已办'   => 'Completed',
+    '待阅'       => 'PendingRead',
+    '待办'       => 'Todo',
+    '发起'       => 'Launch',
+    '恢复'       => 'Restore',
 
-    //租户设置
-    '租户设置'   => 'Tenant',
-    '租户管理'   => 'Management',
-    '租户套餐'   => 'Packages',
+    //开发平台
+    '开发平台'   => 'Dev',
+    '代码生成'   => 'CodeGeneration',
+    '定时任务'   => 'ScheduledTasks',
+    '网关管理'   => 'Gateway',
+    '限流规则'   => 'Rate Limiting Rules',
+    '限访名单'   => 'Access Restriction List',
+    '在线开发'   => 'Online Development',
+    //平台管理
+    '平台管理'   => 'Platform',
+    '账套管理'   => 'AccountManagement',
+    '账套中心'   => 'AccountCenter',
+    '多数据源'   => 'MultiDataSource',
+    //人工智能
+    '人工智能'   => 'AI',
+    '智能问答'   => 'Agent',
 
 ];

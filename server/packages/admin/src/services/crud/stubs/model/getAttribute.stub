@@ -1,0 +1,10 @@
+    /**
+     * {%NAME%}获取器
+     * @date {%DATE%}
+     * @param string $value
+     * @return string
+     */
+    public function get{%FIELD%}Attribute($value)
+    {
+{%CONTENT_PHP%}
+    }

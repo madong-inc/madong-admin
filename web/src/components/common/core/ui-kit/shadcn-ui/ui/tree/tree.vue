@@ -140,7 +140,6 @@ function expandNodes(value: Arrayable<number | string>) {
 }
 
 function expandAll() {
-  alert(88)
   expanded.value = flattenData.value
     .filter((item) => item.hasChildren)
     .map((item) => get(item.value, props.valueField));

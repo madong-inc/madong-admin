@@ -3,46 +3,68 @@
  * Here is your custom functions.
  */
 
-use app\common\model\system\SystemUser;
-use app\common\services\system\SystemConfigService;
+use app\common\model\system\SysAdmin;
+use app\common\services\system\SysConfigService;
+use madong\jwt\JwtToken;
 use support\Container;
 
 /**
- * 返回当前系统登录用户
+ * 获取当前认证用户信息
  *
- * @param bool $returnFullInfo
+ * @param bool $fullInfo 是否返回完整用户信息（默认只返回用户ID）
+ * @param bool $refresh  是否强制从数据库刷新用户数据
  *
- * @return null
+ * @return mixed 用户ID|array|null 返回用户ID、完整用户信息或null（未认证）
  */
-function getCurrentUser(bool $returnFullInfo = false): mixed
+function getCurrentUser(bool $fullInfo = false, bool $refresh = false): mixed
 {
-     $request = request();
+    // 1. 验证请求和授权令牌
+    $token = resolveAuthorizationToken();
+    if ($token === null) {
+        return null;
+    }
+
+    // 2. 获取当前用户ID
+    $userId = JwtToken::getCurrentId();
+    if ($userId === null) {
+        return null;
+    }
+
+    // 3. 根据参数返回相应数据
+    if ($refresh) {
+        return $fullInfo ? JwtToken::getUser() : $userId;
+    }
+
+    return $fullInfo ? JwtToken::getExtend() : $userId;
+}
+
+function resolveAuthorizationToken(): ?string
+{
+    $request = request();
     if (empty($request)) {
-        //定时任务脚本等等没有request请求对象
         return null;
     }
-    if (!$request->hasMacro('adminInfo')) {
-        return null;
+    // 尝试从header获取
+    $tokenName     = config('plugin.madong.jwt.app.jwt.token_name', 'Authorization');
+    $authorization = $request->header($tokenName);
+    // 尝试从query参数获取
+    if (empty($authorization) || $authorization === 'undefined') {
+        $authorization = $request->get('token');
     }
-    $adminInfo = $request->adminInfo();
-    if (!$adminInfo) {
-        return null;
-    }
-    // 根据参数决定返回值
-    return $returnFullInfo ? $adminInfo : $adminInfo['id'];
+    return $authorization ?: null;
 }
 
 /**
  * 提取用户的头像
  *
- * @param \app\common\model\system\SystemUser|null $adminInfo
+ * @param \app\common\model\system\SysAdmin|null $adminInfo
  *
  * @return string
  */
-function getAvatarUrl(?SystemUser $adminInfo): string
+function getAvatarUrl(?SysAdmin $adminInfo): string
 {
     /** @var TYPE_NAME $systemConfigService */
-    $systemConfigService = Container::make(SystemConfigService::class);
+    $systemConfigService = Container::make(SysConfigService::class);
 
     // 获取站点配置地址
     $url          = $systemConfigService->getConfig('site_url', 'site_setting');

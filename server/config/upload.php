@@ -1,13 +1,16 @@
 <?php
 
-use madong\services\upload\storage\Cos;
-use madong\services\upload\storage\Local;
-use madong\services\upload\storage\Oss;
-use madong\services\upload\storage\Qiniu;
-use madong\services\upload\storage\S3;
+use madong\admin\services\upload\storage\Cos;
+use madong\admin\services\upload\storage\Local;
+use madong\admin\services\upload\storage\Oss;
+use madong\admin\services\upload\storage\Qiniu;
+use madong\admin\services\upload\storage\S3;
 
 return [
     'debug'           => config('app.debug'),
+    'cdn_url'         => '',
+    'cdn_url_params'  => '',
+    'default_avatar'  => '/upload/avatar.jpeg',
     'config_key'      => [
         'local' => '',
         'oss'   => '',

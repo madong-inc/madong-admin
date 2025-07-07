@@ -1,3 +1,4 @@
+import { preferences } from '#/components/common/core/preferences';
 import BaseApi from '#/api/base-api';
 import { requestClient } from '#/api/request';
 import { User } from './user-model';
@@ -58,6 +59,16 @@ export class SystemUserApi extends BaseApi<User> {
    */
   unLocked(data: any) {
     return requestClient.put(this.baseUrl + '/un-locked', data);
+  }
+
+
+  /**
+   * 保存用户偏好设置
+   * @param data 
+   * @returns 
+   */
+  preferences(data:any){
+    return requestClient.put(this.baseUrl + '/preferences', data);
   }
 
 }

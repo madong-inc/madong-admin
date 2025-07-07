@@ -10,7 +10,7 @@ const personal: RouteRecordStringComponent[] = [
     component: '/core/profile/index',
     meta: {
       icon: 'mingcute:profile-line',
-      title: $t('system.user.profile.title'),
+      title: '个人中心',
       hideInMenu: true,
       requireHomeRedirect: true,
     },
@@ -19,10 +19,32 @@ const personal: RouteRecordStringComponent[] = [
   },
 
   {
+    component: '/wf/designer/modules/design',
+    meta: {
+      activePath: '/wf/designer',
+      title: '模型设计',
+      hideInMenu: true,
+      requireHomeRedirect: true,
+    },
+    name: 'flow_design',
+    path: '/wf/design',
+  },
+  {
+    component: '/wf/form-builder/modules/design',
+    meta: {
+      activePath: '/wf/form-builder',
+      title: '表单设计',
+      hideInMenu: true,
+      requireHomeRedirect: true,
+    },
+    name: 'form_design',
+    path: '/wf/form-design',
+  },
+  {
     component: '/system/message/index',
     meta: {
       activePath: '/system/message',
-      title: $t('system.message.list.title'),
+      title: '我的消息',
       hideInMenu: true,
       requireHomeRedirect: true,
     },
@@ -32,6 +54,58 @@ const personal: RouteRecordStringComponent[] = [
 ];
 
 
+const generate: RouteRecordStringComponent[] = [
+  {
+    component: 'BasicLayout',
+    meta: {
+      hideChildrenInMenu: true,
+      hideInMenu: true,
+      title: $t('生成配置'),
+    },
+    name: 'dev:generate',
+    path: '/dev/generate',
+    children: [
+      {
+        meta: {
+          icon: 'mingcute:profile-line',
+          title: $t('生成配置'),
+        },
+        name: 'dev:generate:builder',
+        path: '/dev/generate/builder',
+        component: '/dev/builder/index',
+      },
+    ],
+  },
+];
+
+
+const launch: RouteRecordStringComponent[] = [
+  {
+    component: 'BasicLayout',
+    meta: {
+      icon: 'ant-design:user-outlined',
+      keepAlive: true,
+      order: 1000,
+      title: $t('发起流程'),
+      hideInMenu: true,
+      component: 'BasicLayout',
+    },
+    name: 'wf:manager',
+    path: '/wf/launch/start',
+    children: [
+      {
+        meta: {
+          icon: 'ant-design:user-switch-outlined',
+          title: $t('发起流程'),
+          hideInMenu: true,
+        },
+        name: 'launch:start',
+        path: '/wf/define/start',
+        component: '/wf/define/start',
+      },
+    ],
+  },
+];
 
 /**
  * 后端模式-前端静态路由
@@ -40,37 +114,24 @@ export const localRoutesList: RouteRecordStringComponent[] = [
   // {
   //   component: 'BasicLayout',
   //   meta: {
-  //     icon:'ant-design:home-outlined',
-  //     order: -1,
-  //     title: 'page.dashboard.title',
-  //     // 不使用基础布局（仅在顶级生效）
-  //     noBasicLayout: true,
+  //     hideChildrenInMenu: true,
+  //     icon: 'lucide:copyright',
+  //     order: 9999,
+  //     title: $t('demos.vben.about'),
   //   },
-  //   name: 'Dashboard',
-  //   path: '/',
-  //   redirect: '/analytics',
+  //   name: 'About',
+  //   path: '/about',
   //   children: [
   //     {
-  //       name: 'Analytics',
-  //       path: '/analytics',
-  //       component: '/dashboard/analytics/index',
+  //       component: '/_core/about/index',
   //       meta: {
-  //         affixTab: true,
-  //         title: 'page.dashboard.analytics',
+  //         title: $t('demos.vben.about'),
   //       },
+  //       name: 'VbenAbout',
+  //       path: '/vben-admin/about',
   //     },
-  //     {
-  //       name: 'Workspace',
-  //       path: '/workspace',
-  //       component: '/dashboard/workspace/index',
-  //       meta: {
-  //         title: 'page.dashboard.workspace',
-  //       },
-  //     },
-  //   ]
+  //   ],
   // },
-
-
   ...personal,
   // ...generate,
   // ...launch

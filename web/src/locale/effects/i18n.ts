@@ -134,7 +134,6 @@ async function loadLocaleMessages(lang: SupportedLanguagesType) {
 
   const mergeMessage = await loadMessages(lang);
   i18n.global.mergeLocaleMessage(lang, mergeMessage);
-
   return setI18nLanguage(lang);
 }
 

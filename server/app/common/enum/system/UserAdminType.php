@@ -20,8 +20,6 @@ enum UserAdminType:int implements IEnum
     case SUPER_ADMIN = 1;
     case NORMAL_ADMIN = 2;
 
-    case TENANT_ADMIN=3;
-
     public const CODE = 'sys_user_admin_type';
 
     /**
@@ -32,7 +30,6 @@ enum UserAdminType:int implements IEnum
         return match($this) {
             self::SUPER_ADMIN => '超级管理员',
             self::NORMAL_ADMIN => '普通管理员',
-            self::TENANT_ADMIN => '租户管理员',
         };
     }
 

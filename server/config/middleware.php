@@ -12,11 +12,20 @@
  */
 
 return [
+    //应用中间件
     'admin' => [
-//        \app\admin\middleware\RouteRestrictionMiddleware::class,// 演示过滤中间件
+        \app\middleware\Lang::class,//多语言切换中间件
+        \app\middleware\TenantMiddleware::class,//多租户中间件
+//        \app\middleware\RouteRestrictionMiddleware::class,// 演示过滤中间件
+        \app\middleware\RateLimiterMiddleware::class,//限流中间件
+        \app\middleware\AuthTokenMiddleware::class,//Token验证
+        \app\middleware\PermissionMiddleware::class,//接口权限验证
+        \app\admin\middleware\AdminLogMiddleware::class,//日志中间
     ],
-    // 全局中间件
-    '' => [
-        app\common\middleware\Lang::class,//多语言切换中间件
-    ]
+    // 超全局中间件-覆盖插件
+    '@'     => [
+        \app\middleware\AllowCrossOriginMiddleware::class,//跨域中间件
+    ],
+    // 全局中间件-主项目有效
+    ''      => [],
 ];

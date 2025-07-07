@@ -13,13 +13,13 @@
 
 namespace support;
 
-use madong\services\cache\CacheService;
+use madong\admin\services\cache\CacheService;
 use Spatie\Macroable\Macroable;
 
 /**
  * Class Request
  *
- * @property int|mixed|string $tenantId
+ * @property mixed $tenantAcme
  * @package support
  */
 class Request extends \Webman\Http\Request
@@ -27,6 +27,7 @@ class Request extends \Webman\Http\Request
 
     use Macroable;
 
+    public string|null|int $tenantAcme;
 
     /**
      * 不过滤变量名
@@ -288,7 +289,7 @@ class Request extends \Webman\Http\Request
     }
 
     /**
-     * 租户信息
+     * 账套信息
      *
      * @param bool $includeAll
      *
@@ -301,7 +302,7 @@ class Request extends \Webman\Http\Request
         }
 
         // 适配 header 大小写问题
-        $clientId = $this->header('X-Client-ID',null);
+        $clientId = $this->header('X-Client-ID', null);
         if (empty($clientId)) {
             return $includeAll ? [] : null;
         }
@@ -311,4 +312,5 @@ class Request extends \Webman\Http\Request
 
         return $includeAll ? $tenantCache : ($tenantCache['tenant_id'] ?? null);
     }
+
 }

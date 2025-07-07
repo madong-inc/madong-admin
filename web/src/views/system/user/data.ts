@@ -8,10 +8,14 @@ import { getPopupContainer } from '#/components/common/utils';
 import { $t } from '#/locale';
 
 import { getDictOptions } from '#/utils/dict';
-import { SystemRoleApi } from '#/api/system/role';
 import { useAccess } from '#/components/common/effects/access';
+import { SystemRoleApi } from '#/api/system/role';
+import { h, RendererElement, RendererNode, VNode, VNodeArrayChildren } from 'vue';
+import { Tag } from 'ant-design-vue';
 
-const roleApi = new SystemRoleApi();
+
+const roleApi= new SystemRoleApi();
+
 
 /**
  * 定义搜索表单
@@ -95,14 +99,17 @@ export function useColumns(
     {
       field: 'dept_name',
       title: $t('system.user.list.table.columns.dept_name'),
-      minWidth: 120,
+      minWidth: 100,
       slots: {
-        default: ({ row }) => {
-          const text = row.depts?.name || '';
-          return text;
-        },
+          default: ({ row }) => {
+              const data = row.depts || [];
+              return h('div', data.map((dept: { id: any; name: string | number | boolean | VNodeArrayChildren | { [name: string]: unknown; $stable?: boolean; } | VNode<RendererNode, RendererElement, { [key: string]: any; }> | (() => any) | undefined; }) => 
+                  h(Tag, { key: dept.id }, dept.name)
+              ));
+          },
       },
-    },
+  },
+  
     {
       field: 'mobile_phone',
       title: $t('system.user.list.table.columns.mobile_phone'),
@@ -116,7 +123,7 @@ export function useColumns(
         attrs: {
           beforeChange: onStatusChange,
           disabled: (row: User) => {
-            return !!(row.is_super == 1);
+           return row.is_super == 1|| row?.tenant?.is_super== 1
           }
         },
         name: useAccess().hasAccessByCodes(['admin', 'system.user.status']) ? 'CellSwitch' : 'CellTag',
@@ -158,7 +165,7 @@ export function useColumns(
             show: (_values: any) => {
               //超级角色屏蔽
               return ![1].includes(_values.is_super);
-            }
+            },
           },
           {
             code: 'delete',
@@ -167,6 +174,9 @@ export function useColumns(
             show: (_values: any) => {
               //超级角色屏蔽
               return ![1].includes(_values.is_super);
+            },
+            disabled:(_values:any)=>{
+              return [1].includes(_values.is_super)|| [1].includes(_values?.tenant?.is_super);
             }
           },
           {
@@ -175,6 +185,9 @@ export function useColumns(
             auth: ['admin', 'system:user:locked'],
             show: (_values: any) => {
               return ([0].includes(_values.is_locked) && ![1].includes(_values.is_super));
+            },
+            disabled:(_values:any)=>{
+              return [1].includes(_values.is_super)|| [1].includes(_values?.tenant?.is_super);
             }
           },
           {
@@ -247,16 +260,6 @@ export function drawerSchema(): FormSchema[] {
       rules: 'required',
     },
     {
-      component: 'TreeSelect',
-      defaultValue: undefined,
-      fieldName: 'dept_id',
-      label: $t('system.user.form.modal.dept_name'),
-      componentProps: {
-        placeholder: $t("system.user.form.placeholder.dept_name"),
-      },
-      rules: 'selectRequired',
-    },
-    {
       component: 'Input',
       fieldName: 'mobile_phone',
       label: $t('system.user.form.modal.mobile_phone'),
@@ -309,6 +312,19 @@ export function drawerSchema(): FormSchema[] {
       label: $t('system.user.form.modal.enabled'),
     },
     {
+      component: 'TreeSelect',
+      componentProps: {
+        getPopupContainer,
+        allowClear: true,
+        mode: 'multiple',
+        optionFilterProp: 'label',
+        optionLabelProp: 'label',
+        placeholder: $t("system.user.form.placeholder.dept_name"),
+      },
+      fieldName: 'dept_id',
+      label: $t('system.user.form.modal.dept_name'),
+    },
+    {
       component: 'Select',
       componentProps: {
         getPopupContainer,
@@ -318,7 +334,6 @@ export function drawerSchema(): FormSchema[] {
         placeholder: $t("system.user.form.placeholder.post_name"),
       },
       fieldName: 'post_id_list',
-      help: $t("system.user.form.help.post_name"),
       label: $t('system.user.form.modal.post_name'),
     },
     {

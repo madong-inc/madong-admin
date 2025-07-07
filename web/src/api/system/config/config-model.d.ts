@@ -12,7 +12,7 @@ export interface SiteConfig {
     site_open: '0' | '1';
 
     /** 站点访问地址 (需包含协议头) */
-    site_url: `http://${string}` | `https://${string}`;
+    site_url: string;
 
     /** 站点名称 (中文/英文品牌标识) */
     site_name: string;
@@ -34,6 +34,10 @@ export interface SiteConfig {
 
     /** ICP备案号 (省级备案编号) */
     site_record_no: string;
+
+    cdn_url?:string;
+
+    cdn_url_params?:string;
 
     /** 
      * ICP备案跳转链接 

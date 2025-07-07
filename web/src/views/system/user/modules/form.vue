@@ -70,15 +70,15 @@ const [Drawer, drawerApi] = useDrawer({
     const promises = [fetchDeptTreeSelect(), loadDefaultPassword(isUpdate.value)];
     if (isUpdate.value) {
       const user = await api.get(id); //获取用户信息详情
-      const roleIds = (user?.roles ?? []).map((item) => item.id);
-      const postIds = (user?.posts ?? []).map((item) => item.id);
+      // const roleIds = (user?.roles ?? []).map((item) => item.id);
+      // const postIds = (user?.posts ?? []).map((item) => item.id);
       promises.push(
         // 赋值基础信息
         formApi.setValues(user),
         // 添加角色
-        formApi.setFieldValue("role_id_list", roleIds),
-        // 添加角色
-        formApi.setFieldValue("post_id_list", postIds),
+        // formApi.setFieldValue("role_id_list", roleIds),
+        // // 添加角色
+        // formApi.setFieldValue("post_id_list", postIds),
         // 初始化职位
         fetchPostOptions(user.dept_id)
       );
@@ -142,10 +142,6 @@ async function fetchDeptTreeSelect() {
  */
 async function fetchPostOptions(deptId: number | string) {
   const options = await postApi.list({ dept_id: deptId,format:'select'});
-  // const options = result.map((item) => ({
-  //   label: item.label,
-  //   value: item.value,
-  // }));
   const placeholder = options.length > 0 ? "请选择" : "该部门下未设置职位";
   formApi.updateSchema([
     {
@@ -185,7 +181,7 @@ async function handleClosed() {
 </script>
 
 <template>
-  <Drawer :title="title" class="w-[600px]">
+  <Drawer :title="title" class="w-[50%]">
     <Form />
   </Drawer>
 </template>

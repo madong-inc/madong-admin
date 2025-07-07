@@ -1,3 +1,4 @@
+import { TenantRow } from "#/api/platform/tenant";
 import { BasicUserInfo } from "#/components/common/types";
 import { Dept } from "../dept";
 
@@ -30,8 +31,10 @@ export interface User extends BasicUserInfo {
     birthday: string;
     tel: string;
     is_locked?: string;
-    depts?:Dept;
-    posts?:Post[];
-    roles?:Role[];
-    login_date?:string;
+    depts?: Dept;
+    posts?: Post[];
+    roles?: Role[];
+    tenant?:any;
+    login_date?: string;
 }
+

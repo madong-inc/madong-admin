@@ -100,8 +100,6 @@ export const useNotifyStore = defineStore(
 
       //公告订阅
       notices_channel.on('notice', function (message: any) {
-      console.log('notice')
-
         if (Array.isArray(message)) {
           message.forEach((data: any) => {
             data['receiver_id'] = userId.value;//公告没有对应的接收人把本地登录的用户id追加到数据流
@@ -128,6 +126,9 @@ export const useNotifyStore = defineStore(
         }
       });
     }
+
+    //
+
 
     /**
      * 设置全部已读

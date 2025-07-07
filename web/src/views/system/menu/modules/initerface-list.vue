@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import { ref,  reactive } from "vue";
+import { ref, reactive } from "vue";
 import { IconifyIcon } from "#/components/common/icons";
 import { HttpMethod, RouteItem, SystemRuleApi } from "#/api/system/rule";
-import { useModal,ColPage} from '#/components/common-ui';
-import {SystemMenuApi} from '#/api/system/menu';
+import { useModal, ColPage } from '#/components/common-ui';
+import { SystemMenuApi } from '#/api/system/menu';
 import { $t } from '#/locale';
 import {
   Button,
@@ -16,14 +16,12 @@ import {
   Col,
 } from "ant-design-vue";
 
-
-const api= new SystemMenuApi();
-const routeApi= new SystemRuleApi();
+const api = new SystemMenuApi();
+const routeApi = new SystemRuleApi();
 
 const emit = defineEmits<{
   success: [];
 }>();
-
 
 const props = reactive({
   leftCollapsedWidth: 5,
@@ -39,14 +37,13 @@ const props = reactive({
 
 const record = ref();
 const gridApi = ref();
-const keyword=ref('');
+const keyword = ref('');
 const treeData = ref<any>([]);
 const expandedKeys = ref<(string | number)[]>();
 const autoExpandParent = ref<boolean>(true);
-const defaultSelectedKeys=ref<(string|number)[]>([])
+const defaultSelectedKeys = ref<(string | number)[]>([])
 const selectedRoute = ref<Pick<RouteItem, "path" | "method">[]>([]);
 const routeList = ref<RouteItem[]>([]);
-
 
 /**
  * 模态框
@@ -59,7 +56,7 @@ const [Modal, modalApi] = useModal({
       //1.0 获取左侧分组数据
       getTree()
       //2.0 获取右侧默认数据
-      loadData(defaultSelectedKeys.value[0]||null,null);
+      loadData(defaultSelectedKeys.value[0] || null, null);
     }
   },
   onConfirm() {
@@ -79,29 +76,26 @@ const [Modal, modalApi] = useModal({
   },
 });
 
-
 /**
  * 加载Tree数据
  */
-const getTree=async ()=>{
+const getTree = async () => {
   //1.0清空选中路由列表
   selectedRoute.value = [];
   //2.0获取tree数据
-  const result = await routeApi.cate({ page: 1, limit: 9999,format:'tree'});
-  treeData.value= result||[];
+  const result = await routeApi.cate({ page: 1, limit: 9999, format: 'tree' });
+  treeData.value = result || [];
   //3.0将第一个子级第一个节点设为默认节点
-  defaultSelectedKeys.value= getFirstLeafKeys(treeData.value);
-  console.log(defaultSelectedKeys.value)
+  defaultSelectedKeys.value = getFirstLeafKeys(treeData.value);
 }
-
 
 /**
  * 加载列表数据
  * @param cateId
  * @param name
  */
-const loadData=async (cateId: any,name: any)=>{
-  const result = await routeApi.list({ page: 1, limit: 9999,cate_id:cateId,LIKE_name:name});
+const loadData = async (cateId: any, name: any) => {
+  const result = await routeApi.list({ page: 1, limit: 9999, cate_id: cateId, LIKE_name: name });
   //@ts-ignore
   routeList.value = result?.items || [];
 }
@@ -109,48 +103,46 @@ const loadData=async (cateId: any,name: any)=>{
 /**
  * 搜索
  */
-const handleSearch=()=>{
-  loadData(defaultSelectedKeys.value[0]||null,keyword.value);
+const handleSearch = () => {
+  loadData(defaultSelectedKeys.value[0] || null, keyword.value);
 }
 
 /**
  * 路由同步
  */
-const handleSync=()=>{
+const handleSync = () => {
   modalApi.setState({ loading: true, confirmLoading: true });
   routeApi.sync({}).then(() => {
-            getTree();
-            message.success($t('common.message.success'));
-          })
-          .finally(() => {
-            modalApi.setState({ loading: false, confirmLoading: false });
-          });
-
+    getTree();
+    message.success($t('common.message.success'));
+  })
+    .finally(() => {
+      modalApi.setState({ loading: false, confirmLoading: false });
+    });
 }
-
 
 /**
  * 获取tree第一个子节点
  * @param tree
  */
-const getFirstLeafKeys=(tree: any)=> {
-    //@ts-ignore
-    const findLeafKeys = (nodes: any) => {
-      const keys = [];
-      for (const node of nodes) {
-        if (node.children && node.children.length > 0) {
-          // 如果有子节点，递归查找
-          keys.push(...findLeafKeys(node.children));
-        } else {
-          // 如果没有子节点，是叶子节点，加入 keys
-          keys.push(node.id);
-        }
+const getFirstLeafKeys = (tree: any) => {
+  //@ts-ignore
+  const findLeafKeys = (nodes: any) => {
+    const keys = [];
+    for (const node of nodes) {
+      if (node.children && node.children.length > 0) {
+        // 如果有子节点，递归查找
+        keys.push(...findLeafKeys(node.children));
+      } else {
+        // 如果没有子节点，是叶子节点，加入 keys
+        keys.push(node.id);
       }
-      return keys;
-    };
-    const allLeafKeys = findLeafKeys(tree);
-    return allLeafKeys.length > 0 ? [allLeafKeys[0]] : [];
-  }
+    }
+    return keys;
+  };
+  const allLeafKeys = findLeafKeys(tree);
+  return allLeafKeys.length > 0 ? [allLeafKeys[0]] : [];
+}
 
 /**
  * 展开/收起节事件
@@ -167,9 +159,8 @@ const onExpand = (keys: string[]) => {
  * @param e
  */
 const handleSelect = (selectedKeys: any, e: any) => {
-  loadData(selectedKeys[0]||null,null)
+  loadData(selectedKeys[0] || null, null)
 };
-
 
 // 统一方法类型格式
 const normalizeMethod = (method: string): HttpMethod => {
@@ -179,7 +170,6 @@ const normalizeMethod = (method: string): HttpMethod => {
   }
   return lowerMethod;
 };
-
 
 /**
  * 路由列表选中判断
@@ -231,13 +221,12 @@ const mergePropertiesToRoutes = (routes: any, propertiesToMerge: any): RouteItem
     ...propertiesToMerge, // 批量合并属性
   }));
 };
-
-
 </script>
+
 <template>
   <Modal :title="$t('system.menu.api.title')" class="w-[60%]">
     <div class="common-form">
-      <ColPage  v-bind="props" style="height: 500px;">
+      <ColPage v-bind="props" style="height: 500px;">
         <template #description>
           <p class="mr-2">1.接口可多选，可重复添加；</p>
           <p class="mr-2">2.开发者按照后端路由规则进行添加路由定义；</p>
@@ -268,45 +257,79 @@ const mergePropertiesToRoutes = (routes: any, propertiesToMerge: any): RouteItem
               :tree-data="treeData"
               :fieldNames="{title: 'name', key: 'id', children: 'children' }"
               v-model:selected-keys="defaultSelectedKeys"
-              :expand="onExpand"
+              @expand="onExpand"
               @select="handleSelect"
             ></Tree>
           </div>
         </template>
-          <Row :gutter="{ xs: 8, sm: 16, md: 24 }">
-            <Col
-              v-for="(item, index) in routeList"
-              :key="index"
-              :xs="{ span: 24 }"
-              :md="{ span: 12 }"
-              :lg="{ span: 12, offset: 0 }"
+        <Row :gutter="{ xs: 8, sm: 16, md: 24 }">
+          <Col
+            v-for="(item, index) in routeList"
+            :key="index"
+            :xs="{ span: 24 }"
+            :md="{ span: 12 }"
+            :lg="{ span: 12, offset: 0 }"
+          >
+            <Card
+              size="small"
+              class="mb-2 cursor-pointer transition-all duration-300"
+              :class="{
+                'selected-route-card': isSelected(item),
+                'hover:shadow-md': !isSelected(item),
+              }"
+              @click.stop="handleCardClick(item)"
             >
-              <Card
-                size="small"
-                class="mb-2 cursor-pointer transition-all duration-300"
-                :class="{
-                  'bg-blue-50 border-blue-300 ': isSelected(item),
-                  'hover:shadow-md': !isSelected(item),
-                }"
-                @click.stop="handleCardClick(item)"
-              >
-                <p>接口名称：{{ item.name }}</p>
-                <p>接口方式：{{ item.method }}</p>
-                <p>接口地址：{{ item.path }}</p>
-              </Card>
-            </Col>
-          </Row>
+              <p class="text-inherit">接口名称：{{ item.name }}</p>
+              <p class="text-inherit">接口方式：{{ item.method }}</p>
+              <p class="text-inherit">接口地址：{{ item.path }}</p>
+            </Card>
+          </Col>
+        </Row>
       </ColPage>
     </div>
   </Modal>
 </template>
+
 <style scoped lang="less">
+/* 修复黑暗模式选中问题 */
+.selected-route-card {
+  background-color: rgba(24, 144, 255, 0.1);
+  border-color: rgba(24, 144, 255, 0.5);
+  transition: all 0.3s ease;
+  
+  /* 黑暗模式适配 */
+  .dark & {
+    background-color: rgba(24, 144, 255, 0.2);
+    border-color: rgba(24, 144, 255, 0.7);
+    color: rgba(255, 255, 255, 0.85);
+  }
+}
+
+/* 确保文字在黑暗模式下可读 */
+:deep(.ant-card-body) {
+  .dark & {
+    color: rgba(255, 255, 255, 0.85);
+    
+    p {
+      color: inherit;
+    }
+  }
+}
+
+/* 悬停效果优化 */
+:deep(.ant-card):not(.selected-route-card):hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  
+  .dark & {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+}
 
 /* 页面容器样式 */
 .page-container {
-  overflow-y: auto; /* 启用垂直滚动条 */
+  overflow-y: auto;
   display: flex;
   height: 100%;
 }
-
 </style>

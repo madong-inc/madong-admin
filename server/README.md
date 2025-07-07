@@ -1,28 +1,28 @@
 
-# MaDong Admin
+# madong-admin
 
 
 #### 介绍
-MaDong Admin基于Webman快速开发平台框架搭建的后端工程
+madong-admin基于Webman快速开发平台框架搭建的后端工程
 
 
 
 #### 运行环境
 `Nignx/Apache
-PHP 8.1 ~ 8.4 
+PHP 8.2 ~ 8.4 
 MySQL 8.0
 Redis`
 
 
 #### 后端安装
-- cd MaDong 
+- cd server 
 - composer install
-- http://127.0.0.1:8899/install/index.html 
+- http://127.0.0.1:8899/app/install/index 
 
 
 #### 系统演示
 
-管理后台： http://antd-vben5.madong.tech 账号：admin 密码：123456
+管理后台： http://admin.madong.tech 账号：admin 密码：123456
 
 
 
@@ -32,11 +32,11 @@ Redis`
 
 #### 更新日志
 
-[CHANGELOG](https://gitee.com/motion-code/bolt/commits/master)
+[CHANGELOG](https://gitee.com/motion-code/madong/commits/master)
 
 #### 如何贡献
 
-非常欢迎你的加入！[提一个 Issue](https://gitee.com/motion-code/bolt/issues) 或者提交一个 Pull Request。
+非常欢迎你的加入！[提一个 Issue](https://gitee.com/motion-code/madong/issues) 或者提交一个 Pull Request。
 
 **Pull Request:**
 
