@@ -37,7 +37,7 @@ class TenantController extends Crud
     public function store(Request $request): \support\Response
     {
         try {
-            $data = $this->inputFilter($request->all(), ['password', 'account','db_name']);
+            $data = $this->inputFilter($request->all(), ['password', 'account','db_name','gran_subscription']);
             if (isset($this->validate) && $this->validate) {
                 if (!$this->validate->scene('store')->check($data)) {
                     throw new \Exception($this->validate->getError());

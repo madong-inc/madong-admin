@@ -21,6 +21,7 @@ use app\common\services\system\SysAdminService;
 use app\common\services\system\SysAdminTenantService;
 use InvalidArgumentException;
 use madong\admin\abstract\BaseService;
+use madong\helper\Arr;
 use madong\helper\PropertyCopier;
 use madong\admin\services\uuid\UUIDGenerator;
 use support\Container;
@@ -81,7 +82,11 @@ class TenantService extends BaseService
                 $userModel            = $service->dao->save($userInfo);
                 $casbinUserIdentifier = PolicyPrefix::USER->value . strval($userModel->id);
                 $userModel->casbin()->sync([$casbinUserIdentifier]);
-
+                //添加租户授权套餐
+                if (!empty($data['gran_subscription'])) {
+                    $model->packages()->sync(Arr::normalize($data['gran_subscription']));
+                }
+                throw new \Exception('tesst');
                 $userTenantData = [
                     'admin_id'   => $userModel->id,
                     'tenant_id'  => $model->id,

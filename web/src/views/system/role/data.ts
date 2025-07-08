@@ -71,19 +71,19 @@ export function formSchemas(): FormSchema[] {
       label: $t('system.role.form.modal.name'),
       rules: 'required',
     },
-    {
-      component: 'Select',
-      fieldName: 'role_type',
-      label: $t('system.role.form.modal.role_type'),
-      defaultValue: 1,
-      componentProps: {
-        allowClear: true,
-        options: getDictOptions(DictEnum.SYS_ROLE_TYPE),
-        class: 'w-full',
-      },
-      rules: 'required',
+    // {
+    //   component: 'Select',
+    //   fieldName: 'role_type',
+    //   label: $t('system.role.form.modal.role_type'),
+    //   defaultValue: 1,
+    //   componentProps: {
+    //     allowClear: true,
+    //     options: getDictOptions(DictEnum.SYS_ROLE_TYPE),
+    //     class: 'w-full',
+    //   },
+    //   rules: 'required',
 
-    },
+    // },
     {
       component: 'RadioGroup',
       componentProps: {
