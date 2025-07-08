@@ -116,26 +116,15 @@ class SysRole extends BaseModel
         return $this->belongsToMany(SysDept::class, SysRoleScopeDept::class, 'role_id', 'dept_id');
     }
 
-    // 关联管理员-租户中间表（通过中间表 admin_tenant_role）
-    public function adminTenants(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
-    {
-        return $this->belongsToMany(SysAdminTenant::class, SysAdminTenantRole::class, 'role_id', 'admin_tenant_id');
-    }
-
+    /**
+     * 关联casbin 策略
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function casbin(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
         $tenantId = config('tenant.enabled', false) ? 'domain:' . TenantContext::getTenantId() : 'default';
         return $this->belongsToMany(RuleModel::class, SysRoleCasbin::class, 'role_id', 'role_casbin_id', 'id', 'v0')->where('v1', $tenantId)->where('ptype', 'p');
-    }
-
-    /**
-     * 关联-casbin权限
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function permissions(): \Illuminate\Database\Eloquent\Relations\HasMany
-    {
-        return $this->hasMany(RuleModel::class, 'v0', 'code')->where('ptype', 'p')->where('trace_type', 'role');
     }
 
     /**

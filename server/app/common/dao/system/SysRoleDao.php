@@ -148,7 +148,7 @@ class SysRoleDao extends BaseDao
      */
     public function selectList(array $where, string $field = '*', int $page = 0, int $limit = 0, string $order = '', array $with = [], bool $search = false, ?array $withoutScopes = null): ?\Illuminate\Database\Eloquent\Collection
     {
-        $with = ['permissions'];
+        $with = ['casbin'];
         return parent::selectList($where, $field, $page, $limit, $order, $with, $search, $withoutScopes);
     }
 
