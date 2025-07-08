@@ -260,7 +260,6 @@ class Index
 
             // 6.0 提交pdo 数据
             $pdo->commit();
-            Util::reloadWebman();
             return Json::success('安装成功', $result);
         } catch (\Throwable $e) {
             return Json::fail($e->getMessage());
