@@ -1,10 +1,13 @@
 import { z, type FormSchema, type OnActionClickFn, type VxeTableGridOptions } from '#/adapter';
 import type { TenantRow } from '#/api/platform/tenant';
+import { TenantSubscriptionApi } from '#/api/platform/tenant-subscription';
 import { DictEnum } from '#/components/common/constants';
 import { $t } from '#/locale';
 import { getDictOptions, getPopupContainer } from '#/utils';
 import { Tag } from 'ant-design-vue';
 import { h } from 'vue';
+
+const api = new TenantSubscriptionApi();
 
 
 /***
@@ -280,6 +283,26 @@ export function formSchemas(): FormSchema[] {
       },
       rules: 'selectRequired',
     },
+
+    {
+      component: 'ApiTreeSelect',
+      fieldName: 'gran_subscription',
+      label: $t('platform.tenant.form.modal.gran_subscription'),
+      componentProps:{
+        placeholder: $t('platform.tenant.form.modal.placeholder.gran_subscription'),
+          api: () => {
+          return api.list({ format: 'select', page: 1, limit: 999 });
+        },
+        class: 'w-full',
+        allowClear: true,
+      },
+      dependencies: {
+        disabled: (values) => values?.id,
+        triggerFields: ['id'],
+      },
+      rules: 'selectRequired',
+    },
+    
 
     {
       component: 'Divider',

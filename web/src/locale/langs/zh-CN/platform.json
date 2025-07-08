@@ -158,6 +158,7 @@
                 "account": "用户账号",
                 "password": "用户密码",
                 "isolation_mode": "隔离模式",
+                "gran_subscription": "授权套餐",
                 "divider": {
                     "basic_info": "基本信息",
                     "account_info": "账号信息",
@@ -176,7 +177,8 @@
                     "description": "请输入描述",
                     "domain": "请输入域名",
                     "isolation_mode": "请选择隔离模式",
-                    "enabled": "请选择状态"
+                    "enabled": "请选择状态",
+                    "gran_subscription": "请选择授权套餐"
                 }
             }
         },
