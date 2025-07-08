@@ -20,7 +20,7 @@ global $argv;
 return [
     'webman'            => [
         'handler'     => Http::class,
-        'listen'      => 'http://0.0.0.0:8998',
+        'listen'      => 'http://0.0.0.0:8899',
         'count'       => cpu_count() * 4,
         'user'        => '',
         'group'       => '',
@@ -46,8 +46,8 @@ return [
                 base_path() . '/process',
                 base_path() . '/support',
                 base_path() . '/resource',
-                base_path() . '/.env',
-                base_path() . '/madong',
+                //                base_path() . '/.env',//这里注释避免安装过程中失联
+                base_path() . '/packages',
             ], glob(base_path() . '/plugin/*/app'), glob(base_path() . '/plugin/*/config'), glob(base_path() . '/plugin/*/api')),
             // Files with these suffixes will be monitored
             'monitorExtensions' => [
@@ -62,7 +62,7 @@ return [
     'webman-scheduler'  => [
         'handler' => \madong\admin\services\scheduler\SchedulerServer::class,
         'count'   => 1,
-        'listen'=>'text://'.config('task.listen','0.0.0.0:2346')
+        'listen'  => 'text://' . config('plugin.madong.admin.task.listen', '0.0.0.0:2346'),
     ],
     'push_notification' => [
         'handler' => \app\common\process\PushNotification::class,
