@@ -68,8 +68,9 @@ class TenantMemberController extends Crud
                     throw new \Exception($this->validate->getError());
                 }
             }
-            throw new \Exception('123');
             $model = $this->service->save($data);
+            throw new \Exception('123');
+
             if (empty($model)) {
                 throw new AdminException('插入失败');
             }

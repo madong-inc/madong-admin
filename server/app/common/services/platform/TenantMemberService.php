@@ -13,9 +13,12 @@
 namespace app\common\services\platform;
 
 use app\common\dao\system\SysAdminDao;
+use app\common\enum\system\PolicyPrefix;
 use app\common\model\system\SysAdmin;
 use app\common\scopes\global\TenantScope;
+use app\common\services\system\SysAdminTenantService;
 use madong\admin\abstract\BaseService;
+use madong\admin\context\TenantContext;
 use madong\admin\ex\AdminException;
 use support\Container;
 
@@ -46,14 +49,29 @@ class TenantMemberService extends BaseService
             return $this->transaction(function () use ($data) {
                 //1.0 添加用户数据
                 $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
-                $roles            = $data['role_id_list'] ?? [];
-                $posts            = $data['post_id_list'] ?? [];
-                $depts            = array_filter(explode(',', $data['dept_id'] ?? ''));
                 unset($data['role_id_list'], $data['post_id_list'], $data['dept_id']);
                 //中间表模型不会自动创建时间戳手动添加
                 $data['created_at'] = time();
                 $data['updated_at'] = time();
-                return $this->dao->save($data);
+                $model              = $this->dao->save($data);
+                //创建关联租户
+                $adminTenant = [
+                    'admin_id'   => $model->id,
+                    'tenant_id'  => TenantContext::getTenantId(),
+                    'is_super'   => 2,//普通用户
+                    'is_default' => 1,
+                    'priority'   => 0,
+                    'created_at' => time(),
+                    'updated_at' => time(),
+                ];
+                /** @var SysAdminTenantService $adminService */
+                $adminService = Container::make(SysAdminTenantService::class);
+                $adminService->dao->save($adminTenant);
+                //同步casbin 关联表
+                $userCasbin = PolicyPrefix::USER->value . $model->id;
+                $model->casbin()->sync([$userCasbin]);
+                return $model;
+
             });
         } catch (\Throwable $e) {
             throw new AdminException($e->getMessage());
