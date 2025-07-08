@@ -1,6 +1,6 @@
 English | [中文](./README.md)
-# Project Overview
 
+# Project Overview
 
 <p align="center">
     <img src="https://madong.tech/app/kbase/upload/avatar/202503/67e75c135c1f.md.png" width="120" />
@@ -9,49 +9,69 @@ English | [中文](./README.md)
     <a href="https://www.madong.tech" target="_blank">Official Website</a> |
     <a href="https://madong.tech/kbase/doc?name=md" target="_blank">Documentation</a> | 
     <a href="https://admin.madong.tech" target="_blank">Demo</a> |
-    <a href="https://www.workerman.net/doc/webman/" target="_blank">Webman Official Docs</a> 
+    <a href="https://www.workerman.net/doc/webman/" target="_blank">Webman Official Documentation</a> 
 </p>
 
+## Open Source Multi-Tenant SaaS Rapid Development Framework
+We are committed to breaking the illusion of pseudo-open source, striving to build an exemplary open-source SaaS multi-tenant cloud platform architecture that combines excellence, simplicity, and beauty. Upholding the principle of "taking from open source and giving back to open source," we aim to free developers' valuable time, allowing them to enjoy every moment of life—whether it's leisurely relaxing, immersing in self-improvement, cherishing time with family, or pursuing fitness; or even encountering soulmates and painting beautiful life scenarios together.
 
-In the PHP ecosystem, while there are many excellent backend management systems, few meet personal requirements while leveraging socket frameworks. We've developed a powerful backend management system that supports diverse scenarios including website administration, CMS, CRM, OA, and ERP systems.
+## Technical Features
+✅ Elegant Layout System: Simple interface + multiple themes + navigation mode, freely combinable as desired  
+✅ Enterprise-Level Function Stack: Out-of-the-box SaaS/multi-tenant/RBAC permission system  
+✅ Intelligent Message Push: Distributed messaging system based on WebSocket + Redis  
+✅ Efficient Traffic Control: Comprehensive traffic control and blacklist mechanism  
+✅ Modular Design: Core project + optional plugins, easily removable components  
 
-## Technical Architecture
-**Backend:** Built on the Webman framework with enterprise-grade layered architecture. This design efficiently serves startups and individuals with minimal server resources while achieving performance comparable to static languages.
+## Performance
+⚡ Extreme Response: API response < 300ms in a 2M network environment, generally maintained in the 10-150ms range  
 
-**Frontend:** Uses Vue3 + Vite6 + Pinia + Ant Design Vue 4. This modern stack enables seamless adaptation across PC, mobile, and tablet devices, ensuring consistent user experience.
-
-## Community
-Join our official community for technical discussions: <img src="https://svg.hamm.cn/badge.svg?key=QQ 频道&value= pd52261144"/>
-
-## Built-in Features
-> The system provides comprehensive management capabilities:
-
-- User Management: CRUD operations with role-based homepage customization
-- Role Management: Flexible menu/button permission assignment
-- Menu Management: Dynamic navigation structure configuration
-- Operation Logs: Detailed system operation tracking
-- Login Logs: Comprehensive authentication monitoring
-- Attachment Management: Centralized file/image storage
-- Cron Jobs: Visual task scheduling
-- System Monitoring: Real-time resource monitoring (CPU/memory/disk)
-- Dictionary Management: Unified maintenance of static data
+## Function Matrix
+### Basic Architecture
+- Multi-Tenant System: Product subscriptions, initial data, independent data sources, and other enterprise-level functions  
+- Permission Management: Complete RBAC permission control system  
+### Organizational Structure
+- User Management: System operator configuration center  
+- Department Structure: Tree-shaped organization management, supporting data permissions  
+- Position Management: Job position configuration  
+### System Management
+- Menu Permissions: Fine control over menu/operation/button permissions  
+- Role Management: Menu permission allocation + data scope division  
+- Dictionary System: Standardized maintenance of commonly used data  
+### Monitoring and Auditing
+- Notifications: System message publishing platform  
+- Operation Logs: Complete records of normal and abnormal operations  
+- Login Auditing: Including abnormal login monitoring  
+### Design Philosophy
+Simplicity is the ultimate sophistication — We adhere to:
+- Elegant and simple code  
+- Efficient and quick development  
+- Clear and straightforward architecture  
+- Enjoying the programming experience of **"getting it done quickly"** in both front-end and back-end development.  
 
 ## Environment Requirements
->Ensure your server meets these specifications:
-- PHP >= 8.1 with extensions:
-- mbstring, json, pdo, openssl, redis, pcntl
-- MySQL >= 5.7 (primary database)
-- Redis >= 4.0 (caching)
-- Git >= 2.x (version control)
-- Composer >= 2.x (dependency management)
+To ensure the normal operation of the system, please ensure that your server environment meets the following requirements:
+- PHP: Version >= 8.1, with the following extensions enabled:
+  - mbstring: For multi-byte string handling.  
+  - json: Supports encoding and decoding of JSON data.  
+  - pdo: Provides a unified database access interface.  
+  - openssl: For encryption and decryption operations, ensuring data transmission security.  
+  - redis: Supports Redis caching and data storage.  
+  - pcntl: For multi-process control.  
+- MySQL: Version >= 5.7, as the main database for storing data.  
+- Redis: Version >= 4.0, for caching data to improve system performance.  
+- Git: Version >= 2.x, for convenient code version management and collaborative development.  
+- Composer: Version >= 2.x, for PHP dependency management.  
 
-## Demo Access
-[Live Demo](https://admin.madong.tech) https://admin.madong.tech
+## Experience Address
 
-- Username: admin
-- Password: 123456
-- We welcome your feedback to continuously improve this system.
+[Experience Address](https://admin.madong.tech) https://admin.madong.tech  
+- Account: admin  
+- Password: 123456  
+We look forward to your use and feedback, and we will continue to optimize and improve the system to provide you with better services.
 
-## Joint communication
+## Official Community
+Welcome to join our official community for interaction and communication! <img src="https://svg.hamm.cn/badge.svg?key=QQ Channel&value=pd52261144"/>
 
+## Join Us
+Welcome to join the technical exchange group and communicate directly with core developers (scan the QR code to add the author on WeChat to join the group), working together to create a more powerful open-source enterprise-level platform!  
 <img src="https://madong.tech/app/admin/upload/files/20250605/684160e45fcc.png" width="240" />
