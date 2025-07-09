@@ -2,6 +2,7 @@
 
 /**
  * 设置是否允许下一步
+ *
  * @param $val
  */
 function setOk($val): void
@@ -12,13 +13,14 @@ function setOk($val): void
 
 /**
  * 测试可写性
+ *
  * @param $file
  */
 function isWrite($file): void
 {
-    if(is_writable(base_path() .$file)){
+    if (is_writable(base_path() . $file)) {
         echo '<b class="green">可写</b>';
-    }else{
+    } else {
         echo '<span>不可写</span>';
         setOk(false);
     }
@@ -26,6 +28,7 @@ function isWrite($file): void
 
 /**
  * 测试函数是否存在
+ *
  * @param $func
  *
  * @return bool|mixed
@@ -33,7 +36,7 @@ function isWrite($file): void
 function isFunExists($func): mixed
 {
     $state = function_exists($func);
-    if($state === false){
+    if ($state === false) {
         setOk(false);
     }
     return $state;
@@ -41,13 +44,14 @@ function isFunExists($func): mixed
 
 /**
  * 测试函数是否存在
+ *
  * @param $func
  */
 function isFunExistsTxt($func): void
 {
-    if(isFunExists($func)){
+    if (isFunExists($func)) {
         echo '<b class="layui-icon green">&#xe697;</b>';
-    }else{
+    } else {
         echo '<span>需安装</span>';
         setOk(false);
     }
