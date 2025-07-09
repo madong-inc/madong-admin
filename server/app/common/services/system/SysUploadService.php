@@ -133,6 +133,7 @@ class SysUploadService extends BaseService
     {
         try {
             return $this->transaction(function () use ($upload, $isLocal) {
+                /** @var  SysConfigService $systemConfigService */
                 $systemConfigService = Container::make(SysConfigService::class);
                 $baseConfig          = $systemConfigService->getConfigContentValue('basic_upload_setting');//获取上次配置
                 if (empty($baseConfig)) {

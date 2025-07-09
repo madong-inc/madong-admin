@@ -39,6 +39,7 @@ class UploadFile
      */
     public static function getConfig(string $name = ''): ?array
     {
+        /** @var  SysConfigService $systemConfigService */
         $systemConfigService = Container::make(SysConfigService::class);
         $config              = $systemConfigService->getConfigContentValue($name);
         return $config ?? [];
