@@ -14,6 +14,7 @@ namespace app\admin\controller\platform;
 
 use app\admin\controller\Crud;
 use app\admin\validate\platform\TenantValidate;
+use app\common\scopes\global\TenantScope;
 use app\common\services\platform\TenantPackageService;
 use app\common\services\platform\TenantService;
 use madong\admin\ex\AdminException;
@@ -37,7 +38,7 @@ class TenantController extends Crud
     public function store(Request $request): \support\Response
     {
         try {
-            $data = $this->inputFilter($request->all(), ['password', 'account','db_name','gran_subscription']);
+            $data = $this->inputFilter($request->all(), ['password', 'account', 'db_name', 'gran_subscription']);
             if (isset($this->validate) && $this->validate) {
                 if (!$this->validate->scene('store')->check($data)) {
                     throw new \Exception($this->validate->getError());
@@ -51,6 +52,40 @@ class TenantController extends Crud
             return Json::success('ok', [$pk => $model->getData($pk)]);
         } catch (\Throwable $e) {
             return Json::fail($e->getMessage());
+        }
+    }
+
+    public function update(Request $request): \support\Response
+    {
+        try {
+            $data = $this->inputFilter($request->all(), ['password', 'account', 'db_name', 'gran_subscription']);
+            if (isset($this->validate) && $this->validate) {
+                if (!$this->validate->scene('update')->check($data)) {
+                    throw new \Exception($this->validate->getError());
+                }
+            }
+            $model = $this->service->update($data['id'], $data);
+            if (empty($model)) {
+                throw new AdminException('更新失败');
+            }
+            $pk = $model->id;
+            return Json::success('ok', [$pk => $model->getData($pk)]);
+        } catch (\Throwable $e) {
+            return Json::fail($e->getMessage());
+        }
+    }
+
+    public function show(Request $request): \support\Response
+    {
+        try {
+            $id   = $request->route->param('id');
+            $data = $this->service->get($id, null, ['packages'], '', [TenantScope::class]);
+            if (empty($data)) {
+                throw new AdminException('数据未找到', 400);
+            }
+            return Json::success('ok', $data->toArray());
+        } catch (\Throwable $e) {
+            return Json::fail($e->getMessage(), [], $e->getCode());
         }
     }
 
@@ -109,7 +144,7 @@ class TenantController extends Crud
             }
 
             // 如果启用了账套模式，执行数据库查询并设置字段别名
-            $list = $this->service->selectList(['enabled' => 1], '*', 0, 0, '', [], false)->setVisible(['id','company_name'])->toArray();
+            $list = $this->service->selectList(['enabled' => 1], '*', 0, 0, '', [], false)->setVisible(['id', 'company_name'])->toArray();
             // 手动映射字段别名
             $mappedList = array_map(function ($item) {
                 return [

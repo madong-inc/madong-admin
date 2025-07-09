@@ -86,7 +86,6 @@ class TenantService extends BaseService
                 if (!empty($data['gran_subscription'])) {
                     $model->packages()->sync(Arr::normalize($data['gran_subscription']));
                 }
-                throw new \Exception('tesst');
                 $userTenantData = [
                     'admin_id'   => $userModel->id,
                     'tenant_id'  => $model->id,
@@ -139,7 +138,12 @@ class TenantService extends BaseService
                 }
                 $model = $this->dao->get($data['id']);
                 PropertyCopier::copyProperties((object)$data, $model);
-                return $model->save();
+                //添加租户授权套餐
+                if (!empty($data['gran_subscription'])) {
+                    $model->packages()->sync(Arr::normalize($data['gran_subscription']));
+                }
+                $model->save();
+                return $model;
             } catch (\Throwable $e) {
                 throw new \Exception($e->getMessage());
             }
@@ -166,7 +170,6 @@ class TenantService extends BaseService
                 }
                 $item->delete();
                 $item->packages()->detach();
-                $item->roles()->detach();
                 $item->admins()->detach();
                 $primaryKey   = $item->getPk();
                 $deletedIds[] = $item->{$primaryKey};
