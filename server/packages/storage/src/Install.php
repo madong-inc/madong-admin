@@ -10,6 +10,7 @@ class Install
 
     /**
      * Path relations for installation
+     *
      * @var array
      */
     protected static array $pathRelation = [
@@ -18,6 +19,7 @@ class Install
 
     /**
      * Install the plugin
+     *
      * @return void
      * @throws RuntimeException If installation fails
      */
@@ -27,9 +29,9 @@ class Install
     }
 
     /**
-     * Uninstall the plugin
+     * Uninstall
+     *
      * @return void
-     * @throws RuntimeException If uninstallation fails
      */
     public static function uninstall(): void
     {
@@ -37,46 +39,40 @@ class Install
     }
 
     /**
-     * Install files based on path relations
+     * installByRelation
+     *
      * @return void
-     * @throws RuntimeException If file operations fail
      */
-    protected static function installByRelation(): void
+    public static function installByRelation(): void
     {
         foreach (static::$pathRelation as $source => $dest) {
-            $destinationPath = base_path() . '/' . $dest;
-            $sourcePath = __DIR__ . '/' . $source;
-
-            // Create parent directory if needed
-            $parentDir = dirname($destinationPath);
-            if (!is_dir($parentDir) && !mkdir($parentDir, 0777, true) && !is_dir($parentDir)) {
-                throw new RuntimeException(sprintf('Directory "%s" could not be created', $parentDir));
+            if ($pos = strrpos($dest, '/')) {
+                $parent_dir = base_path() . '/' . substr($dest, 0, $pos);
+                if (!is_dir($parent_dir)) {
+                    mkdir($parent_dir, 0777, true);
+                }
             }
-
-            // Copy files
-            if (!copy_dir($sourcePath, $destinationPath)) {
-                throw new RuntimeException(sprintf('Failed to copy from "%s" to "%s"', $sourcePath, $destinationPath));
-            }
+            //symlink(__DIR__ . "/$source", base_path()."/$dest");
+            copy_dir(__DIR__ . "/$source", base_path() . "/$dest");
         }
     }
 
     /**
-     * Uninstall files based on path relations
+     * uninstallByRelation
+     *
      * @return void
-     * @throws RuntimeException If file operations fail
      */
-    protected static function uninstallByRelation(): void
+    public static function uninstallByRelation(): void
     {
-        foreach (static::$pathRelation as $dest) {
-            $path = base_path() . '/' . $dest;
-
-            if (!file_exists($path)) {
+        foreach (static::$pathRelation as $source => $dest) {
+            $path = base_path() . "/$dest";
+            if (!is_dir($path) && !is_file($path)) {
                 continue;
             }
-
-            if (!remove_dir($path)) {
-                throw new RuntimeException(sprintf('Failed to remove path "%s"', $path));
-            }
+            /*if (is_link($path) {
+                unlink($path);
+            }*/
+            remove_dir($path);
         }
     }
 }
