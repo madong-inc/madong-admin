@@ -83,9 +83,7 @@ class TenantService extends BaseService
                 $casbinUserIdentifier = PolicyPrefix::USER->value . strval($userModel->id);
                 $userModel->casbin()->sync([$casbinUserIdentifier]);
                 //添加租户授权套餐
-                if (!empty($data['gran_subscription'])) {
-                    $model->packages()->sync(Arr::normalize($data['gran_subscription']));
-                }
+                $model->packages()->sync(Arr::normalize($data['gran_subscription']));
                 $userTenantData = [
                     'admin_id'   => $userModel->id,
                     'tenant_id'  => $model->id,
@@ -139,9 +137,7 @@ class TenantService extends BaseService
                 $model = $this->dao->get($data['id']);
                 PropertyCopier::copyProperties((object)$data, $model);
                 //添加租户授权套餐
-                if (!empty($data['gran_subscription'])) {
-                    $model->packages()->sync(Arr::normalize($data['gran_subscription']));
-                }
+                $model->packages()->sync(Arr::normalize($data['gran_subscription']));
                 $model->save();
                 return $model;
             } catch (\Throwable $e) {
