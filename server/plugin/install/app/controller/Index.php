@@ -104,6 +104,8 @@ class Index
 
             $dataImporterService = new DataImporterService();
             $pdo                 = $dataImporterService->getPdo($dbHost, $dbUser, $dbPassword, $dbPort);
+            // 针对 MySQL 8+ 的严格模式进行设定，放宽SQL模式以兼容旧版行为
+            $pdo->exec("SET sql_mode = 'ONLY_FULL_GROUP_BY,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION'");
             // 关闭自动提交 使用手动事务提交
             $pdo->setAttribute(\PDO::ATTR_AUTOCOMMIT, false);
             $tablesToInstall = [
@@ -209,7 +211,7 @@ class Index
 
             //2.5 导入系统配置数据
             $configuration = include base_path() . '/scripts/config/configuration.php';
-            $field         = ["id", "tenant_id","group_code", "code", "name", "content", "is_sys", "enabled", "created_at", "created_by", "updated_at", "updated_by", "deleted_at", "remark"];
+            $field         = ["id", "tenant_id", "group_code", "code", "name", "content", "is_sys", "enabled", "created_at", "created_by", "updated_at", "updated_by", "deleted_at", "remark"];
             $dataImporterService->importData($pdo, 'ma_sys_config', $field, $configuration);
             //2.6 导入管理员数据
             $data  = [[
