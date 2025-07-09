@@ -2,14 +2,11 @@
 
 namespace plugin\install\app\controller;
 
-use madong\admin\services\jwt\JwtAuth;
 use madong\admin\services\db\DataImporterService;
 use madong\admin\utils\Util;
-use plugin\cmdr\app\service\CommandExecutor;
-use plugin\cmdr\app\service\EnvironmentChecker;
 use plugin\cmdr\app\service\Terminal;
 use plugin\install\app\common\Json;
-use plugin\install\app\exception\Error;
+use Webman\RedisQueue\Client;
 
 /**
  * 安装
@@ -105,7 +102,7 @@ class Index
             $dataImporterService = new DataImporterService();
             $pdo                 = $dataImporterService->getPdo($dbHost, $dbUser, $dbPassword, $dbPort);
             // 针对 MySQL 8+ 的严格模式进行设定，放宽SQL模式以兼容旧版行为
-            $pdo->exec("SET sql_mode = 'ONLY_FULL_GROUP_BY,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION'");
+//            $pdo->exec("SET sql_mode = 'ONLY_FULL_GROUP_BY,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION'");
             // 关闭自动提交 使用手动事务提交
             $pdo->setAttribute(\PDO::ATTR_AUTOCOMMIT, false);
             $tablesToInstall = [
@@ -215,14 +212,14 @@ class Index
             $dataImporterService->importData($pdo, 'ma_sys_config', $field, $configuration);
             //2.6 导入管理员数据
             $data  = [[
-                          'id'        => (int)1,
-                          'user_name' => $username,
-                          'password'  => password_hash($password, PASSWORD_DEFAULT),
-                          'real_name' => '超级管理员',
-                          'nick_name' => '超级管理员',
-                          'is_super'  => 1,//超级管理员标识
-                          'create_at' => time(),
-                          'update_at' => time(),
+                          'id'         => (int)1,
+                          'user_name'  => $username,
+                          'password'   => password_hash($password, PASSWORD_DEFAULT),
+                          'real_name'  => '超级管理员',
+                          'nick_name'  => '超级管理员',
+                          'is_super'   => 1,//超级管理员标识
+                          'created_at' => time(),
+                          'updated_at' => time(),
                       ]];
             $field = ['id', 'user_name', 'real_name', 'nick_name', 'password', 'is_super', 'mobile_phone', 'email', 'avatar', 'signed', 'dashboard', 'dept_id', 'enabled', 'login_ip', 'login_time', 'backend_setting', 'created_by', 'updated_by', 'created_at', 'updated_at', 'deleted_at', 'sex', 'remark', 'birthday', 'tel', 'is_locked'];
             $dataImporterService->importData($pdo, 'ma_sys_admin', $field, $data);

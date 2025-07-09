@@ -52,7 +52,6 @@ return [
                 "is_cache"  => 0,
                 "is_sync"   => 1,
                 "is_affix"  => 0,
-
                 "methods"  => "GET",
                 "is_frame" => null,
 

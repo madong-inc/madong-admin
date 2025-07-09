@@ -172,7 +172,7 @@
             if ($(this).hasClass('layui-btn-disabled')) return false;
             const d = data.field;
             const loadIndex = layer.msg('系统安装中...', {icon: 16, shade: 0.3, time: 0});
-            const url = '/app/install/index/step4?db_host=' + d.dbhost + '&db_name=' + d.dbname + '&db_pre=' + d.dbpre + '&db_user=' + d.dbuser + '&db_pwd=' + encodeURIComponent(d.dbpwd) + '&db_port=' + d.dbport + '&platform=' + d.platform + '&username=' + d.username + '&password=' + d.password + '&overwrite=' + d.overwrite + '&redis_host' + d.redis_host + '&redis_port=' + d.redis_port + '&redis_pwd=' + d.redis_pwd;
+            const url = '/app/install/index/step4?db_host=' + d.dbhost + '&db_name=' + d.dbname + '&db_pre=' + d.dbpre + '&db_user=' + d.dbuser + '&db_pwd=' + encodeURIComponent(d.dbpwd) + '&db_port=' + d.dbport + '&platform=' + d.platform + '&username=' + d.username + '&password=' + d.password + '&overwrite=' + d.overwrite + '&redis_host' + d.redis_host + '&redis_port=' + d.redis_port + '&redis_pwd=' + d.redis_pwd+'&company_name='+d.company_name;
 
             $.getJSON(url, function (res) {
                 layer.close(loadIndex);

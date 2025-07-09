@@ -26,9 +26,10 @@ class DbConfigManagerService
     public static function getConfig(array $base = [], string $defaultKey = 'mysql', bool $isDefaultAppend = false): array
     {
         try {
-            $is_install_file = base_path() . '/install.lock';
-            if (!is_file($is_install_file)) {
-                //没用安装返回空
+            $installLockPath = base_path() . '/install.lock';
+            $envFilePath     = base_path() . '/.env';
+            if (!file_exists($installLockPath) || !file_exists($envFilePath)) {
+                // 系统未安装，返回空数组
                 return [];
             }
 
