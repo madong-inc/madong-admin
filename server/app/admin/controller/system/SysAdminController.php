@@ -187,7 +187,7 @@ class SysAdminController extends Crud
             $ids      = $request->input('ids');
             $password = $request->input('password', 123456);
             $data     = ['password' => password_hash($password, PASSWORD_DEFAULT)];
-            $this->service->update(['id' => $ids], $data);
+            $this->service->batchUpdate(['id' => $ids], $data);
             return Json::success('ok');
         } catch (\Exception $e) {
             return Json::fail($e->getMessage());

@@ -14,6 +14,7 @@ namespace app\admin\controller\system;
 
 use app\admin\controller\Crud;
 use app\admin\validate\system\SysAdminTenantValidate;
+use app\common\scopes\global\TenantScope;
 use madong\admin\context\TenantContext;
 use app\common\model\platform\Tenant;
 use app\common\services\system\SysAdminTenantService;
@@ -32,12 +33,19 @@ class SysAdminTenantController extends Crud
         $this->validate = Container::make(SysAdminTenantValidate::class);
     }
 
+    /**
+     * 通过id 获取租户中间表数据-无作用域
+     *
+     * @param \support\Request $request
+     *
+     * @return \support\Response
+     */
     public function show(Request $request): \support\Response
     {
         try {
             $id      = $request->route->param('id');
             $service = Container::make(SysAdminTenantService::class);
-            $result  = $service->getAdminTenantById($id);
+            $result  = $service->get($id, null, [], '', [TenantScope::class]);
             return Json::success('ok', $result->toArray());
         } catch (\Throwable $e) {
             return Json::fail($e->getMessage());
@@ -60,7 +68,7 @@ class SysAdminTenantController extends Crud
                     throw new \Exception($this->validate->getError());
                 }
             }
-            $model             = $this->service->save($data);
+            $model = $this->service->save($data);
             if (empty($model)) {
                 throw new AdminException('插入失败');
             }
