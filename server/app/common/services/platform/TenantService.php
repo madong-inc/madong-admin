@@ -137,6 +137,7 @@ class TenantService extends BaseService
                 $model = $this->dao->get($data['id']);
                 PropertyCopier::copyProperties((object)$data, $model);
                 //添加租户授权套餐
+                $model->packages()->detach();//很奇怪linux更新不会同步删除,硬操作直接销毁后再同步
                 $model->packages()->sync(Arr::normalize($data['gran_subscription']));
                 $model->save();
                 return $model;

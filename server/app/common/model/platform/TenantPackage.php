@@ -38,6 +38,7 @@ class TenantPackage extends Pivot
         "subscription_id",
     ];
 
+
     /**
      * 默认链接
      */

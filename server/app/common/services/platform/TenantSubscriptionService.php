@@ -166,6 +166,7 @@ class TenantSubscriptionService extends BaseService
         try {
             return $this->transaction(function () use ($id, $data) {
                 $model = $this->dao->getModel()->findOrFail($id);
+                $model->tenants()->detach();
                 $model->tenants()->sync($data);
                 return $model;
             });

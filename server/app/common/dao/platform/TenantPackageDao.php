@@ -51,6 +51,7 @@ class TenantPackageDao extends BaseDao
 
     /**
      * 根据租户ID获取订阅ID列表（带作用域控制）
+     *
      * @param int  $tenantId
      * @param bool $withTrashed
      *
@@ -67,9 +68,5 @@ class TenantPackageDao extends BaseDao
             ->pluck('subscription_id')
             ->toArray();
     }
-
-
-
-
 
 }
