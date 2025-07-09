@@ -2,8 +2,10 @@ import { reactive } from 'vue';
 import { defineStore } from 'pinia';
 
 import { $t } from '#/locale';
-import {  SystemConfigApi } from '#/api/system/config';
+import { SystemConfigApi } from '#/api/system/config';
 import type { SiteConfig } from '#/api/system/config';
+import { updatePreferences } from '#/components/common/core/preferences';
+import { fullUrl } from '#/utils';
 
 
 
@@ -38,6 +40,17 @@ export const useSiteConfigStore = defineStore('site-config', () => {
     // 直接设置配置数据
     function setSiteConfig(config: Partial<SiteConfig>) {
         Object.assign(state, config);
+        //获取站点配置更新
+        updatePreferences({
+            app: {
+                name: state.site_name || '',
+            },
+            logo: {
+                enable: true,
+                source: state.site_logo,
+            },
+        });
+
     }
 
     function $reset() {

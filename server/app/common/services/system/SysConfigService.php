@@ -14,6 +14,7 @@ namespace app\common\services\system;
 
 use app\common\dao\system\SysConfigDao;
 use madong\admin\abstract\BaseService;
+use madong\admin\context\TenantContext;
 use madong\admin\ex\AdminException;
 use support\Container;
 
@@ -49,7 +50,7 @@ class SysConfigService extends BaseService
      */
     public function getConfigContentValue(string $groupCode): mixed
     {
-        $map1 = ['group_code' => $groupCode, 'enabled' => 1];
+        $map1 = ['group_code' => $groupCode, 'enabled' => 1,'tenant_id'=>TenantContext::getTenantId()];
         $data = $this->dao->getColumn($map1, 'content', 'code');
         if (empty($data)) {
             $data = $this->transformToKeyValue($this->template($groupCode));

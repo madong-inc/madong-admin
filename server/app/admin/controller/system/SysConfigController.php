@@ -23,7 +23,9 @@ class SysConfigController extends Crud
     public function __construct()
     {
         parent::__construct();
-        $this->service = Container::make(SysConfigService::class);
+        /** @var  SysConfigService $service */
+        $service = Container::make(SysConfigService::class);
+        $this->service = $service;
     }
 
     /**
