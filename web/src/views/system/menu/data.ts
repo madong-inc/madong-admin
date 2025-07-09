@@ -188,7 +188,7 @@ export const formSchamas: FormProps = {
       class: 'w-full',
     },
     formItemClass: 'col-span-2 md:col-span-2',
-    labelWidth: 110,
+    labelWidth: 120,
   },
   wrapperClass: 'grid-cols-2 gap-x-4',
   showDefaultActions: false,
@@ -286,9 +286,9 @@ export const formSchamas: FormProps = {
       },
       dependencies: {
         triggerFields: ['type'],
-        disabled: (values) => {
+        show: (values) => {
           // 请求类型只有接口才需配置
-          return ![4].includes(values.type);
+          return [4].includes(values.type);
         },
       },
     },
@@ -303,11 +303,12 @@ export const formSchamas: FormProps = {
       },
       dependencies: {
         triggerFields: ['type'],
-        disabled: (values) => {
+        show: (values) => {
           // 组件地址只有目录、菜单才需配置
-          return ![1, 2, 4].includes(values.type);
+          return [1, 2, 4].includes(values.type);
         },
       },
+      rules: 'required',
     },
     {
       fieldName: 'component',
@@ -320,17 +321,18 @@ export const formSchamas: FormProps = {
       },
       dependencies: {
         triggerFields: ['type'],
-        disabled: (values) => {
-          // 组件地址只有目录、菜单才需配置
-          return ![1, 2].includes(values.type);
+        show: (values) => {
+          // 组件地址只有菜单才需配置
+          return [2].includes(values.type);
         },
       },
+      rules: 'required',
     },
     {
       fieldName: 'open_type',
       label: $t('system.menu.form.modal.open_type'),
       component: 'RadioGroup',
-      defaultValue: 1,
+      defaultValue: 0,
       componentProps: {
         buttonStyle: 'solid',
         options: getDictOptions(DictEnum.SYS_MENU_OPEN_TYPE),
@@ -338,9 +340,8 @@ export const formSchamas: FormProps = {
       },
       dependencies: {
         triggerFields: ['type'],
-        disabled: (values) => {
-          // 打开方式只有菜单==2才需配置
-          return values.type !== 2;
+        show: (values) => {
+          return [2].includes(values.type);
         },
       },
     },
@@ -371,9 +372,9 @@ export const formSchamas: FormProps = {
       },
       dependencies: {
         triggerFields: ['open_type', 'type'],
-        disabled: (values) => {
+        show: (values) => {
           // 只有目录、菜单才需配置
-          return ![2, 3].includes(values.open_type);
+          return [2, 3].includes(values.open_type);
         },
       },
     },
