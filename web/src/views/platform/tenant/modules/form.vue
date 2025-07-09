@@ -46,7 +46,11 @@ const [Modal, drawerApi] = useDrawer({
       //编辑
       if (data?.id) {
         isUpdate.value = true;
-        record.value = await api.get(data.id);
+        const response = await api.get(data.id);
+        record.value = {
+          ...response,
+          gran_subscription: response.packages?.map((pkg) => pkg.id) || [],
+        };
         await formApi.setValues(record.value);
       }
 
@@ -92,14 +96,13 @@ async function handleConfirm() {
   }
 }
 
-
 const title = computed(() => {
   const EDIT_KEY = "common.edit";
   const CREATE_KEY = "common.create";
   // 缓存响应式值
   const isUpdateVal = isUpdate.value;
   // 条件判断逻辑
-   if (isUpdateVal) {
+  if (isUpdateVal) {
     return $t(EDIT_KEY);
   } else {
     return $t(CREATE_KEY);

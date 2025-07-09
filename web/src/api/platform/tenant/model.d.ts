@@ -1,5 +1,6 @@
 
 export interface TenantRow {
+    packages: any[];
     id?: string;
     db_id: string;
     code: string;
@@ -14,5 +15,6 @@ export interface TenantRow {
     domain: string;
     enabled: number|string;
     is_default: number;
+    gran_subscription?:any[];
 }
 

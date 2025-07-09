@@ -285,10 +285,11 @@ export function formSchemas(): FormSchema[] {
     },
 
     {
-      component: 'ApiTreeSelect',
+      component: 'ApiSelect',
       fieldName: 'gran_subscription',
       label: $t('platform.tenant.form.modal.gran_subscription'),
       componentProps:{
+        mode: 'multiple',
         placeholder: $t('platform.tenant.form.modal.placeholder.gran_subscription'),
           api: () => {
           return api.list({ format: 'select', page: 1, limit: 999 });
@@ -296,14 +297,9 @@ export function formSchemas(): FormSchema[] {
         class: 'w-full',
         allowClear: true,
       },
-      dependencies: {
-        disabled: (values) => values?.id,
-        triggerFields: ['id'],
-      },
       rules: 'selectRequired',
     },
     
-
     {
       component: 'Divider',
       componentProps: {
