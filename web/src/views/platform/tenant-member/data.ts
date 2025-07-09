@@ -95,20 +95,31 @@ export function useColumns(
       minWidth: 80,
       visible: false,
     },
-    {
-        field: 'managed_tenants',
-        title: $t('system.user.list.table.columns.tenants'),
-        minWidth: 170,
-        slots: {
-            default: ({ row }) => {
-                //@ts-ignore
-                const data = row?.managed_tenants || [];
-                return h('div', data.map((item: any) => 
-                    h(Tag, { key: item.tenant_id }, item?.tenant?.company_name||'')
-                ));
-            },
+{
+    field: 'managed_tenants',
+    title: $t('system.user.list.table.columns.tenants'),
+    minWidth: 170,
+    slots: {
+        default: ({ row }) => {
+          //@ts-ignore
+            const data = row?.managed_tenants || [];
+            const getColorFromName = (name:any) => {
+                let hash = 0;
+                for (let i = 0; i < name.length; i++) {
+                    hash += name.charCodeAt(i);
+                }
+                // 使用哈希值生成颜色
+                const color = `hsl(${hash % 360}, 70%, 50%)`; // HSL颜色
+                return color;
+            };
+
+            return h('div', data.map((item: any) => 
+                h(Tag, { key: item.id, style: { backgroundColor: getColorFromName(item?.company_name || ''), color: '#fff' } }, item?.company_name || '')
+            ));
         },
     },
+},
+
     {
       field: 'mobile_phone',
       title: $t('system.user.list.table.columns.mobile_phone'),
