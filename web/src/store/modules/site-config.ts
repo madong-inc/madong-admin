@@ -49,8 +49,16 @@ export const useSiteConfigStore = defineStore('site-config', () => {
                 enable: true,
                 source: state.site_logo,
             },
+              copyright: {
+                companyName: state?.site_name||'',
+                companySiteLink: state?.site_url||'',
+                date: '2024',
+                enable: true,
+                icp: state?.site_record_no||'',
+                icpLink:state?.site_icp_url||'',    
+                settingShow: true,
+            },
         });
-
     }
 
     function $reset() {

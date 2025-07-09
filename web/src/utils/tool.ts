@@ -145,8 +145,11 @@ export const getPort = (): string => {
 export const fullUrl = (relativeUrl: string, domain: string = ''): string => {
   const siteConfig = useSiteConfigStore();
   
+
   // 1. 处理空路径直接返回域名
   if (!relativeUrl) return domain || getUrl();
+
+
 
   // 2. 检测是否已经是完整URL或DataURL（正则合并优化）
   const isAbsoluteUrl = /^(https?:)?\/\//.test(relativeUrl);
