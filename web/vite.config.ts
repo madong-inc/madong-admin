@@ -1,5 +1,28 @@
 import { defineConfig } from './.vite/config';
+import { readFileSync } from 'fs';
+import path from 'path';
 
+
+// 读取环境变量文件
+function loadEnv() {
+  const envPath = path.resolve(process.cwd(), '.env.development');
+  try {
+    const content = readFileSync(envPath, 'utf-8');
+    return content.split('\n').reduce((acc, line) => {
+      const [key, value] = line.split('=');
+      if (key && value) {
+        acc[key.trim()] = value.trim().replace(/['"]/g, '');
+      }
+      return acc;
+    }, {} as Record<string, string>);
+  } catch (e) {
+    console.warn(`无法读取 .env.development 文件: ${e.message}`);
+    return {};
+  }
+}
+
+
+const env = loadEnv();
 export default defineConfig(async () => {
   return {
     application: {},
@@ -33,12 +56,12 @@ export default defineConfig(async () => {
           '/api': {
             changeOrigin: true,
             rewrite: (path) => path.replace(/^\/api/, ''),
-            target: 'http://127.0.0.1:8899/',
+            target: env.VITE_AXIOS_BASE_URL || 'http://127.0.0.1:88998',
             ws: true
           }
         },
         '/ws': {
-          target: 'ws://127.0.0.1:3898',
+          target: env.VITE_GLOB_WSS_URL || 'ws://127.0.0.1:3898',
           changeOrigin: true,
           ws: true,
           rewrite: (path: string) => path.replace(/^\/ws/, '')
@@ -47,3 +70,6 @@ export default defineConfig(async () => {
     }
   }
 });
+
+
+
