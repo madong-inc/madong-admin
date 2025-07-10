@@ -15,7 +15,7 @@ namespace app\common\dao\system;
 use app\common\model\system\SysAdmin;
 use InvalidArgumentException;
 use madong\admin\abstract\BaseDao;
-
+use madong\admin\context\TenantContext;
 
 class SysAdminDao extends BaseDao
 {
@@ -145,17 +145,32 @@ class SysAdminDao extends BaseDao
         if (!$roleId) {
             throw new InvalidArgumentException("Role ID is required.");
         }
-        $query = $this->getModel()->whereHas('roles', function ($query) use ($roleId) {
-            $query->where('id', $roleId);
-        });
+        $where['enabled']  = 1;//有效用户
+        $where['is_super'] = 0;//非顶级管理员
+        $tenantId          = TenantContext::getTenantId();
+        if (!$tenantId) {
+            throw new InvalidArgumentException("Tenant ID is required.");
+        }
+
+        $query = $this->getModel()->with(['tenant', 'roles'])
+            ->whereHas('roles', function ($query) use ($roleId) {
+                $query->where('id', $roleId);
+            })->has('tenant');
+
         if (!empty($where)) {
-            unset($where['role_id']);
+            unset($where['role_id'], $where['tenant_id']);
             $query->where($where);
         }
+
         $total = $query->count();
+
         $items = $query->when($page > 0 && $limit > 0, function ($query) use ($page, $limit) {
             return $query->skip(($page - 1) * $limit)->take($limit);
-        })->select($field)->get()->toArray();
+        })
+            ->select($field)
+            ->get()
+            ->toArray();
+
         return compact('total', 'items');
     }
 
@@ -169,6 +184,7 @@ class SysAdminDao extends BaseDao
      *
      * @return array
      * @throws \ReflectionException
+     * @throws \Exception
      */
     public function getUsersExcludingRole(array $where, string $field, int $page, int $limit): array
     {
@@ -176,6 +192,9 @@ class SysAdminDao extends BaseDao
         if (!$roleId) {
             throw new InvalidArgumentException("Role ID is required.");
         }
+
+        $where['enabled']  = 1;//有效用户
+        $where['is_super'] = 0;//非顶级管理员
 
         // 获取排除的用户ID列表
         $sysAdminRoleDao  = new SysAdminRoleDao();

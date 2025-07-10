@@ -197,6 +197,7 @@ class SysAuthController extends Crud
         try {
             [$where, $format, $limit, $field, $order, $page] = $this->selectInput($request);
             $where['role_id']  = $request->input('role_id');
+            /** @var SysAdminService  $systemUserService */
             $systemUserService = Container::make(SysAdminService::class);
             $data              = $systemUserService->getUsersListByRoleId($where, $field, $page, $limit);
             return Json::success('ok', $data);
