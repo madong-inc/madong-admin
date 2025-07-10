@@ -19,6 +19,7 @@ use app\common\enum\system\MessageType;
 use app\common\model\system\SysMessage;
 use app\common\model\system\SysNotice;
 use app\common\services\system\SysNoticeService;
+use madong\helper\Arr;
 use madong\ingenious\libs\utils\ArrayHelper;
 use madong\interface\IDict;
 use support\Container;
@@ -65,7 +66,7 @@ class MessagePushService
      */
     public static function pushNotificationToUser(string|array $uid, ?SysMessage $model = null): void
     {
-        $data = ArrayHelper::normalize($uid);
+        $data = Arr::normalize($uid);
         foreach ($data as $id) {
             if (!empty($model)) {
                 self::modelMessage($model, $id);

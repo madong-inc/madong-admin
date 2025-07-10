@@ -15,6 +15,7 @@ import {
 import { SystemProfileApi } from '#/api/system/profile';
 import UpdateAvatar from "./components/update-avatar.vue";
 import type { User } from '#/api/system/user';
+import { fullUrl } from '#/utils';
 
 
 const props = defineProps<{ profile?: User }>();
@@ -26,7 +27,7 @@ defineEmits<{
 }>();
 
 const avatar = computed(
-  () => props.profile?.avatar || preferences.app.defaultAvatar,
+  () => fullUrl(props.profile?.avatar) || preferences.app.defaultAvatar,
 );
 
 </script>

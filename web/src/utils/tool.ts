@@ -194,3 +194,11 @@ export const arrayFullUrl = (
   // 2. 使用map批量处理URL（避免直接修改原数组）
   return urlArray.map(url => fullUrl(url.trim(), domain));
 };
+
+
+// 可以提取为通用工具函数
+export const joinUrls = (base: string, ...paths: string[]) => {
+  return [base.replace(/\/+$/, ''), ...paths.map(p => p.replace(/^\/+/, ''))]
+    .filter(Boolean)
+    .join('/');
+};

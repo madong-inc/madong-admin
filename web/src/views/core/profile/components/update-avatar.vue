@@ -12,6 +12,7 @@ import {
 
 import { Icon } from '#/components/icon';
 import { SystemProfileApi } from '#/api/system/profile';
+import { joinUrls } from '#/utils';
 
 const api= new SystemProfileApi();
 
@@ -30,7 +31,7 @@ const authStore = useAuthStore();
 
 const getAction = computed(() => {
   //@ts-ignore
-  return `${import.meta.env.VITE_GLOB_API_URL}system/files/upload-image`;
+  return joinUrls(import.meta.env.VITE_GLOB_API_URL, 'system/files/upload-image')
 });
 
 const headers = {
