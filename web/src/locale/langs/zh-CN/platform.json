@@ -336,6 +336,9 @@
                     "priority": "请输入排序"
                 }
             }
+        },
+        "message":{
+            "success":"操作成功"
         }
     }
 }

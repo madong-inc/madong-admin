@@ -28,6 +28,8 @@ const props = defineProps({
   }
 });
 
+const emit = defineEmits<{ reload: [] }>();
+
 const api = new TenantMemberAdminApi();
 
 const [Modal, modalApi] = useModal({
@@ -162,6 +164,7 @@ async function onMultiDelete() {
  */
 function onRefresh() {
   gridApi.reload();
+  emit("reload");
 }
 </script>
 
