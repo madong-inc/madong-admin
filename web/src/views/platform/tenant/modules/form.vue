@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, reactive, ref } from "vue";
 
 import { useDrawer, useModal } from "#/components/common-ui";
 import { $t } from "#/locale";
@@ -13,11 +13,15 @@ import { formSchemas } from "../data";
 import type { TenantRow } from "#/api/platform/tenant";
 import { TenantApi } from "#/api/platform/tenant";
 import { DbSettingApi } from "#/api/platform/db";
+import { debounce } from "lodash-es";
+import { TenantMemberApi } from "#/api/platform/tenant-member";
+import { message, Alert, Select, Spin } from "ant-design-vue";
 
 const emit = defineEmits<{ reload: [] }>();
 
 const api = new TenantApi();
 const dbApi = new DbSettingApi();
+const mumberApi= new TenantMemberApi();
 
 const record = ref<TenantRow>();
 const isUpdate = ref<Boolean>(false);
@@ -49,8 +53,10 @@ const [Modal, drawerApi] = useDrawer({
         const response = await api.get(data.id);
         record.value = {
           ...response,
-          gran_subscription: response.packages?.map((pkg) => pkg.id) || [],
+          expired_at:response?.expired_date||null,
+          gran_subscription: response?.packages?.map((pkg) => pkg.id) || [],
         };
+        
         await formApi.setValues(record.value);
       }
 
@@ -108,11 +114,70 @@ const title = computed(() => {
     return $t(CREATE_KEY);
   }
 });
+
+
+let lastFetchId = 0;
+const selectType = ref("default"); // 默认多选，可以动态改为"default"切换单选
+
+const state = reactive({
+  data: [],
+  fetching: false,
+});
+
+// 统一的搜索处理函数
+const handleSearch = debounce((value) => {
+  fetchUser(value);
+}, 300);
+
+// 聚焦时自动加载一些数据（可选）
+const handleFocus = () => {
+  if (state.data.length === 0) {
+    fetchUser('');
+  }
+};
+
+// 获取成员列表
+const fetchUser = (value, fieldName = 'LIKE_real_name') => {
+  lastFetchId += 1;
+  const fetchId = lastFetchId;
+  state.data = [];
+  state.fetching = true;
+  
+  mumberApi.list({ [fieldName]: value, format: "select",page:1,limit:5}).then((response) => {
+    if (fetchId !== lastFetchId) {
+      return;
+    }
+    state.data = response;
+    state.fetching = false;
+  });
+};
+
 </script>
 
 <template>
   <Modal :title="title" class="w-[800px]">
-    <Form />
+    <Form>
+      <template #admin_id="slotProps">
+          <Select
+            v-bind="slotProps"
+           :mode="selectType"
+            :label-in-value="false"
+            placeholder="请选择站点管理员"
+            style="width: 100%"
+            :filter-option="false"
+            :show-search="true"
+            :allowClear="true"
+            :not-found-content="state.fetching ? undefined : null"
+            :options="state.data"
+            @search="fetchUser"
+            @focus="handleFocus"
+          >
+            <template v-if="state.fetching" #notFoundContent>
+              <Spin size="small" />
+            </template>
+          </Select>
+        </template>
+    </Form>
   </Modal>
 </template>
 <style scoped lang="less">

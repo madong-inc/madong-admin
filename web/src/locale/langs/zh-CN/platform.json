@@ -155,10 +155,11 @@
                 "description": "简称",
                 "domain": "域名",
                 "enabled": "状态",
-                "account": "用户账号",
-                "password": "用户密码",
+                "account": "账号",
+                "password": "密码",
                 "isolation_mode": "隔离模式",
                 "gran_subscription": "授权套餐",
+                "expired_at":"过期时间",
                 "divider": {
                     "basic_info": "基本信息",
                     "account_info": "账号信息",

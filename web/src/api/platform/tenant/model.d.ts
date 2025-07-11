@@ -16,5 +16,7 @@ export interface TenantRow {
     enabled: number|string;
     is_default: number;
     gran_subscription?:any[];
+    expired_at:number|string;
+    expired_date:string;
 }
 

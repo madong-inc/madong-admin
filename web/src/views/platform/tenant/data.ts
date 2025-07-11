@@ -5,6 +5,7 @@ import { DictEnum } from '#/components/common/constants';
 import { $t } from '#/locale';
 import { getDictOptions, getPopupContainer } from '#/utils';
 import { Tag } from 'ant-design-vue';
+import dayjs from 'dayjs';
 import { h } from 'vue';
 
 const api = new TenantSubscriptionApi();
@@ -176,6 +177,11 @@ export function querySchemas(): FormSchema[] {
 }
 
 
+const defaultExpireTime = dayjs()
+  .add(365, 'days')
+  .startOf('day')
+  .format('YYYY-MM-DD HH:mm:ss');
+
 /**
  * 表单定义
  * @returns 
@@ -199,6 +205,7 @@ export function formSchemas(): FormSchema[] {
       },
       fieldName: 'tenant_id',
       label: 'tenant_id',
+      formItemClass: "col-span-1",
     },
     {
       component: 'Divider',
@@ -216,38 +223,74 @@ export function formSchemas(): FormSchema[] {
       fieldName: 'company_name',
       label: $t('platform.tenant.form.modal.company_name'),
       rules: 'required',
+      formItemClass: "col-span-1",
     },
     {
-      component: 'Input',
-      fieldName: 'description',
-      label: $t('platform.tenant.form.modal.description'),
-      rules: 'required',
-    },
-  
-    {
-      component: 'Input',
-      fieldName: 'address',
-      label: $t('platform.tenant.form.modal.address'),
-      rules: 'required',
-    },
-    {
-      component: 'Input',
-      fieldName: 'license_number',
-      label: $t('platform.tenant.form.modal.license_number'),
-      rules: 'required',
+      component: 'Select',
+      fieldName: 'isolation_mode',
+      label: $t('platform.tenant.form.modal.isolation_mode'),
+      defaultValue:2,
+      componentProps:{
+        placeholder: $t('platform.tenant.form.modal.placeholder.isolation_mode'),
+        allowClear: true,
+        options: getDictOptions(DictEnum.SYS_ISOLATION_MODE),
+      },
+      dependencies: {
+        disabled: (values) => values?.id,
+        triggerFields: ['id'],
+      },
+      rules: 'selectRequired',
+      formItemClass: "col-span-1",
     },
     {
       component: 'Input',
       fieldName: 'contact_person',
       label: $t('platform.tenant.form.modal.contact_person'),
       rules: 'required',
+      formItemClass: "col-span-1",
     },
     {
       component: 'Input',
       fieldName: 'contact_phone',
       label: $t('platform.tenant.form.modal.contact_phone'),
       rules: 'required',
+      formItemClass: "col-span-1",
     },
+    {
+      component: 'Input',
+      fieldName: 'license_number',
+      label: $t('platform.tenant.form.modal.license_number'),
+      rules: 'required',
+      formItemClass: "col-span-1",
+    },
+    {
+      component: 'DatePicker',
+      componentProps: {
+        format: 'YYYY-MM-DD HH:mm:ss',
+        showTime: true,
+        valueFormat: 'YYYY-MM-DD HH:mm:ss',
+        getPopupContainer,
+      },
+      defaultValue: null,
+      fieldName: 'expired_at',
+      label: $t('platform.tenant.form.modal.expired_at'),
+      formItemClass: "col-span-1",
+    },
+    {
+      component: 'Textarea',
+      fieldName: 'description',
+      label: $t('platform.tenant.form.modal.description'),
+      rules: 'required',
+      formItemClass: "col-span-2",
+    },
+    {
+      component: 'Input',
+      fieldName: 'address',
+      label: $t('platform.tenant.form.modal.address'),
+      rules: 'required',
+    },
+
+
     {
       component: 'Input',
       fieldName: 'domain',
@@ -267,22 +310,7 @@ export function formSchemas(): FormSchema[] {
         )
         .optional(),
     },
-    {
-      component: 'Select',
-      fieldName: 'isolation_mode',
-      label: $t('platform.tenant.form.modal.isolation_mode'),
-      defaultValue:2,
-      componentProps:{
-        placeholder: $t('platform.tenant.form.modal.placeholder.isolation_mode'),
-        allowClear: true,
-        options: getDictOptions(DictEnum.SYS_ISOLATION_MODE),
-      },
-      dependencies: {
-        disabled: (values) => values?.id,
-        triggerFields: ['id'],
-      },
-      rules: 'selectRequired',
-    },
+
 
     {
       component: 'ApiSelect',
@@ -316,13 +344,47 @@ export function formSchemas(): FormSchema[] {
       }),
     },
     {
+      component: 'Select',
+      fieldName: 'is_create_admin',
+      label: "类型",
+      defaultValue:0,
+      componentProps:{
+        allowClear: true,
+        options: [{value:0,label:"选择管理员"},{value:1,label:"新增管理员"}],
+        class: 'w-full',
+      },
+      dependencies: {
+        show: (values) => {
+          return !values?.id
+        },
+        triggerFields: ['id'],
+      },
+      rules: 'selectRequired',
+      formItemClass: "col-span-2",
+    },
+    {
+      fieldName: "admin_id",
+      label: $t('platform.tenant.form.modal.account'),
+      component: "Select",
+      defaultValue: [],
+      dependencies: {
+        show: (values) => {
+          return !values?.id && values?.is_create_admin === 0
+        },
+        triggerFields: ['id','is_create_admin'],
+      },
+      rules: 'selectRequired',
+    },
+    {
       component: 'Input',
       fieldName: 'account',
       label: $t('platform.tenant.form.modal.account'),
       rules: 'required',
       dependencies: {
-        if: (values) => !values?.id,
-        triggerFields: ['id'],
+        show: (values) => {
+          return !values?.id && values?.is_create_admin === 1
+        },
+        triggerFields: ['id','is_create_admin'],
       },
     },
     {
@@ -331,8 +393,10 @@ export function formSchemas(): FormSchema[] {
       label: $t('platform.tenant.form.modal.password'),
       rules: 'required',
       dependencies: {
-        if: (values) => !values?.id,
-        triggerFields: ['id'],
+        show: (values) => {
+          return !values?.id && values?.is_create_admin === 1
+        },
+        triggerFields: ['id','is_create_admin'],
       },
     },
     {

@@ -44,7 +44,7 @@ class TenantMiddleware implements MiddlewareInterface
         if (!config('tenant.enabled', false)) {
             return $handler($request);
         }
-        
+
         /**
          * 免租户验证的 URI 列表（如登录、验证码等）
          */
@@ -106,10 +106,11 @@ class TenantMiddleware implements MiddlewareInterface
         $tenantId      = $tenantInfo->id;
         $connect       = $tenantInfo->db_name;
         $isolationMode = $tenantInfo->isolation_mode;
+        $expired       = $tenantInfo->expired_at ?? null;//过期时间
 
         // 11. 设置租户上下文
         try {
-            TenantContext::setContext($tenantId, $code, $isolationMode, $connect);
+            TenantContext::setContext($tenantId, $code, $isolationMode, $connect, $expired);
         } catch (\InvalidArgumentException $e) {
             return $this->unauthorizedResponse($e->getMessage());
         }
