@@ -12,7 +12,6 @@
 
 namespace app\common\services\platform;
 
-
 use app\common\dao\platform\DbSettingDao;
 use madong\admin\abstract\BaseService;
 use madong\admin\context\TenantContext;
@@ -40,6 +39,11 @@ class DbSettingService extends BaseService
                 if (!empty($result)) {
                     if ($result->database == TenantContext::getDatabaseConnection()) {
                         throw new \Exception(TenantContext::getDatabaseConnection() . '正在使用中');
+                    }
+                    $service       = new TenantService();
+                    $includeTenant = $service->getModel()->query()->where('db_name', $result->database)->pluck('company_name')->toArray();
+                    if (!empty($includeTenant)) {
+                        throw new \Exception('不允许操作,数据源包含租户:【' . implode(',', $includeTenant) . '】');
                     }
                     $result->delete();
                     if ($isLibrary) {
@@ -117,7 +121,7 @@ class DbSettingService extends BaseService
                         'ma_sys_role_scope_dept',
                         'ma_sys_route',
                         'ma_sys_route_cate',
-                        'ma_sys_upload'
+                        'ma_sys_upload',
                     ];
                     // $pdo->beginTransaction();
                     //1.0 安装数据表

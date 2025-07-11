@@ -75,7 +75,7 @@ class DbSettingController extends Crud
                 }
             }
             //第二参数是否删除实体表
-            $this->service->remove($id,true);
+            $this->service->remove($id, true);
             Util::reloadWebman();
             return Json::success('ok', []);
         } catch (\Exception $e) {
