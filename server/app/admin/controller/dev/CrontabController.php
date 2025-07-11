@@ -33,7 +33,9 @@ class CrontabController extends Crud
     public function __construct()
     {
         parent::__construct();//调用父类构造函数
-        $this->service  = Container::make(SysCrontabService::class);
+        /** @var  SysCrontabService $service */
+        $service        = Container::make(SysCrontabService::class);
+        $this->service  = $service;
         $this->validate = Container::make(SysCrontabValidate::class);
     }
 
@@ -48,12 +50,15 @@ class CrontabController extends Crud
     {
         try {
             $data = $this->inputFilter($request->all(), ['minute', 'hour', 'day', 'week', 'month', 'second']);
+
             if (isset($this->validate) && $this->validate) {
                 if (!$this->validate->scene('store')->check($data)) {
                     throw new \Exception($this->validate->getError());
                 }
             }
-            $model = $this->service->save($data);
+            /** @var SysCrontabService $service */
+            $service = $this->service;
+            $model   = $service->save($data);
             if (empty($model)) {
                 throw new AdminException('插入失败');
             }
@@ -150,6 +155,7 @@ class CrontabController extends Crud
                 }
             }
             $result = $this->service->runOneTask(['id' => $data['data']]);
+            var_dump($result);
             if ($result['code'] == OperationResult::FAILURE->value) {
                 throw new AdminException('执行失败' . $result['log']);
             }

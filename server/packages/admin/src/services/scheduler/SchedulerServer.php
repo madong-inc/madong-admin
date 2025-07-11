@@ -48,7 +48,7 @@ class SchedulerServer
      *
      * @var bool
      */
-    protected bool $enable = false;
+    protected bool $enabled = false;
 
     /**
      * 日志
@@ -92,9 +92,9 @@ class SchedulerServer
         $config         = config('plugin.madong.admin.task');
         $this->debug    = $config['debug'] ?? true;
         $this->writeLog = $config['write_log'] ?? true;
-        $this->enable   = $config['enable'] ?? true;
-        if (!$this->enable) {
-            $this->writeln('定时任务未开启，如需开启，请修改配置 config\\task.php enable = true ');
+        $this->enabled   = $config['enabled'] ?? true;
+        if (!$this->enabled) {
+            $this->writeln('定时任务未开启，如需开启，请修改配置 .env APP_TASK_ENABLED=true 或者config\\madong\\admin\\task.php. enabled = true ');
             return false;
         }
         $this->writeln("定时任务消息通道：{$config['listen']}，请注意端口是否冲突，");

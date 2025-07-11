@@ -158,7 +158,7 @@ function generateEnvTemplate(): string
                 CACHE_CUSTOM_REDIS_PREFIX=cache_custom
                 
                 # Feature Toggles
-                TASK_ENABLED=false                 # Timer switch
+                APP_TASK_ENABLED=false                 # Timer switch
                 APP_TENANT_ENABLED=true            # Tenant mode switch
                 APP_TENANT_AUTO_SELECT_FIRST=false # Tenant auto
                 CAPTCHA_ENABLED=false              # Captcha switch

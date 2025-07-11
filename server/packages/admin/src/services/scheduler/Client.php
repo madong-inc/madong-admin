@@ -15,7 +15,7 @@ class Client
      */
     public static function request(array $param): bool
     {
-        $listen = 'tcp://' . config('task.listen');
+        $listen = 'tcp://' . config('plugin.madong.admin.task.listen');
         try{
             $client = stream_socket_client($listen);
             fwrite($client, json_encode($param) . "\n"); // text协议末尾有个换行符"\n"
