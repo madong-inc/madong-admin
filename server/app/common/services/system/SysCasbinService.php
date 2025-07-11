@@ -89,7 +89,7 @@ class SysCasbinService extends BaseService
         return match ((int)$item['type']) {
             1, 2 => PolicyPrefix::MENU->value . $item['path'],  // 菜单项资源
             3 => PolicyPrefix::BUTTON->value . $item['code'],   // 按钮代码资源
-            4 => PolicyPrefix::ROLE->value . $item['path'],     // API路由资源
+            4 => PolicyPrefix::ROUTE->value . $item['path'],     // API路由资源
             default => '*'
         };
     }
