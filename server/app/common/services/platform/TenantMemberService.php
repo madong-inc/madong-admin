@@ -94,13 +94,9 @@ class TenantMemberService extends BaseService
                 if (isset($data['password'])) {
                     $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
                 }
-
-                $roles = $data['role_id_list'] ?? [];
-                $posts = $data['post_id_list'] ?? [];
-                $depts = array_filter(explode(',', $data['dept_id'] ?? ''));
-                unset($data['role_id_list'], $data['post_id_list'], $data['dept_id']);
                 //中间表模型不会自动创建时间戳手动添加
                 $data['updated_at'] = time();
+                $data['created_at'] = time();
 
                 // 更安全的查询方式
                 $model = $this->dao->getModel()

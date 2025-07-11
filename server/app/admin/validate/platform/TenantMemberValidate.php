@@ -82,7 +82,7 @@ class TenantMemberValidate extends Validate
         ],
         'update'             => [
             'user_name',
-            'dept_id',
+            'id',
             'mobile_phone',
         ],
         'update-info'        => [

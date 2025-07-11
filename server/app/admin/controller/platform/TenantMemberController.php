@@ -69,8 +69,6 @@ class TenantMemberController extends Crud
                 }
             }
             $model = $this->service->save($data);
-            throw new \Exception('123');
-
             if (empty($model)) {
                 throw new AdminException('插入失败');
             }
@@ -92,7 +90,7 @@ class TenantMemberController extends Crud
     {
         try {
             $id   = $request->input('id');
-            $data = $this->inputFilter($request->all(), ['post_id_list', 'role_id_list', 'dept_id']);
+            $data = $this->inputFilter($request->all());
             if (isset($this->validate) && $this->validate) {
                 if (!$this->validate->scene('update')->check($data)) {
                     throw new \Exception($this->validate->getError());
