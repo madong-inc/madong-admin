@@ -26,11 +26,10 @@ class TenantValidate extends Validate
         'id'                => 'require',
         'db_name'           => 'unique_db',
         'code'              => 'require',
-        'name'              => 'require|unique_name',
         'type'              => 'require',
         'contact_person'    => 'require',
         'contact_phone'     => 'require',
-        'company_name'      => 'require',
+        'company_name'      => 'require|unique_name',
         'license_number'    => 'require',
         'address'           => 'require',
         'description'       => 'require',
@@ -47,8 +46,7 @@ class TenantValidate extends Validate
         'id.require'                => '参数ID不能为空',
         'db_name.unique_db'         => '数据源已被使用',
         'code.require'              => '账套code不能为空',
-        'name.require'              => '账套名称不能为空',
-        'name.unique_name'          => '账套名已被占用',
+        'company_name.unique_name'  => '账套名已被占用',
         'type.require'              => '账套类型不能为空',
         'contact_person.require'    => '企业联系人不能为空',
         'contact_phone.require'     => '企业联系手机号不能为空',
@@ -74,7 +72,7 @@ class TenantValidate extends Validate
      */
     protected function unique_name($value, $rule, array $data = []): bool
     {
-        $query = Tenant::where('name', $value);
+        $query = Tenant::where('company_name', $value);
         // 如果是更新操作，可以排除当前记录
         if (isset($data['id'])) {
             $query->where('id', '<>', $data['id']);
@@ -130,16 +128,16 @@ class TenantValidate extends Validate
     protected $scene = [
         'store'              => [
             'db_name',
-            'account',
             'contact_person',
             'contact_phone',
             'company_name',
             'license_number',
             'address',
-            'gran_subscription'
+            'gran_subscription',
         ],
         'update'             => [
             'id',
+            'company_name'
         ],
         'destroy'            => [
             'id',

@@ -19,6 +19,8 @@ use app\common\model\system\SysAdmin;
 use app\common\scopes\global\TenantScope;
 use app\common\services\system\SysAdminService;
 use app\common\services\system\SysAdminTenantService;
+use DateTime;
+use Exception;
 use InvalidArgumentException;
 use madong\admin\abstract\BaseService;
 use madong\helper\Arr;
@@ -57,18 +59,8 @@ class TenantService extends BaseService
                     $data['db_name'] = $db->database;
                 }
 
-                $data['code'] = UUIDGenerator::generate('custom', 6);//自动生成uuid
-                $userInfo     = [
-                    'password'     => password_hash($data['password'], PASSWORD_DEFAULT),
-                    'user_name'    => $data['account'] ?? '',
-                    'real_name'    => $data['contact_person'] ?? '',
-                    'nick_name'    => $data['contact_person'] ?? '',
-                    'mobile_phone' => $data['contact_phone'] ?? '',
-                    'is_super'     => 0,//非管理员
-                    'avatar'       => '/upload/default.png',
-                    'enabled'      => 1,
-                    'created_at'   => time(),
-                ];
+                $data['code']       = UUIDGenerator::generate('custom', 6);//自动生成uuid
+                $data['expired_at'] = $this->normalizeToTimestamp($data['expired_at'] ?? null);
                 unset($data['password'], $data['account'], $data['db_id']);
                 if (!isset($data['type'])) {
                     $data['type'] = 1;
@@ -76,16 +68,9 @@ class TenantService extends BaseService
                 //2 添加租户信息
                 $model = $this->dao->save($data);
 
-                //3 添加用户信息
-                $service = new SysAdminService();
-                /** @var  SysAdmin $userModel */
-                $userModel            = $service->dao->save($userInfo);
-                $casbinUserIdentifier = PolicyPrefix::USER->value . strval($userModel->id);
-                $userModel->casbin()->sync([$casbinUserIdentifier]);
-                //添加租户授权套餐
-                $model->packages()->sync(Arr::normalize($data['gran_subscription']));
+                //构建管理员关联租户信息
                 $userTenantData = [
-                    'admin_id'   => $userModel->id,
+                    'admin_id'   => $data['admin_id'] ?? '',
                     'tenant_id'  => $model->id,
                     'is_super'   => 1,//管理员账号
                     'is_default' => 1,
@@ -93,6 +78,35 @@ class TenantService extends BaseService
                     'created_at' => time(),
                     'updated_at' => time(),
                 ];
+
+                //新增管理员
+                if (boolval($data['is_create_admin'])) {
+                    //3 添加用户信息
+                    $userInfo = [
+                        'password'     => password_hash($data['password'], PASSWORD_DEFAULT),
+                        'user_name'    => $data['account'] ?? '',
+                        'real_name'    => $data['contact_person'] ?? '',
+                        'nick_name'    => $data['contact_person'] ?? '',
+                        'mobile_phone' => $data['contact_phone'] ?? '',
+                        'is_super'     => 0,//非管理员
+                        'avatar'       => '/upload/default.png',
+                        'enabled'      => 1,
+                        'created_at'   => time(),
+                    ];
+                    $service  = new SysAdminService();
+                    /** @var  SysAdmin $userModel */
+                    $userModel            = $service->dao->save($userInfo);
+                    $casbinUserIdentifier = PolicyPrefix::USER->value . strval($userModel->id);
+                    $userModel->casbin()->sync([$casbinUserIdentifier]);
+                    $userTenantData['admin_id'] = $userModel->id;//覆盖初始id
+                }
+
+                //添加租户授权套餐
+                $model->packages()->sync(Arr::normalize($data['gran_subscription']));
+                if (empty($userTenantData['admin_id'])) {
+                    throw  new \Exception('请添加租户管理员账号');
+                }
+
                 //4 添加用户关联租户并设置管理员
                 $adminTenantService = new SysAdminTenantService();
                 $adminTenantService->dao->save($userTenantData);
@@ -134,6 +148,7 @@ class TenantService extends BaseService
                 if (!isset($data['type'])) {
                     $data['type'] = 1;
                 }
+                $data['expired_at'] = $this->normalizeToTimestamp($data['expired_at'] ?? null);
                 $model = $this->dao->get($data['id']);
                 PropertyCopier::copyProperties((object)$data, $model);
                 //添加租户授权套餐
@@ -160,11 +175,17 @@ class TenantService extends BaseService
         return $this->transaction(function () use ($id) {
             $data       = is_array($id) ? $id : explode(',', $id);
             $deletedIds = [];
+            /** @var SysAdminService $userService */
+            $userService = Container::make(SysAdminTenantService::class);
             foreach ($data as $i) {
                 $item = $this->get($i);
                 if (!$item) {
                     continue; // 如果找不到项，跳过
                 }
+                if ($userService->getModel()->query()->withoutGlobalScope('TenantScope')->where('tenant_id', $i)->count() > 0) {
+                    throw new \Exception('请先删除当前账套下的用户');
+                }
+
                 $item->delete();
                 $item->packages()->detach();
                 $item->admins()->detach();
@@ -190,6 +211,36 @@ class TenantService extends BaseService
             });
         } catch (\Exception $e) {
             throw new \Exception($e);
+        }
+    }
+
+    /**
+     * 自动识别并转换时间为时间戳
+     *
+     * @param mixed $input 输入值（可以是时间戳、日期字符串或null）
+     *
+     * @return int|null 返回时间戳或null
+     */
+    private function normalizeToTimestamp(null|string|int $input): ?int
+    {
+        // 处理空值
+        if ($input === null || $input === '') {
+            return null;
+        }
+        // 如果已经是时间戳（整数或数字字符串）
+        if (is_numeric($input)) {
+            $timestamp = (int)$input;
+            // 简单验证时间戳范围（1970-2038年之间）
+            if ($timestamp > 0 && $timestamp < 2147483647) {
+                return $timestamp;
+            }
+        }
+        // 尝试解析日期字符串
+        try {
+            $date = new DateTime($input);
+            return $date->getTimestamp();
+        } catch (Exception $e) {
+            return null;
         }
     }
 

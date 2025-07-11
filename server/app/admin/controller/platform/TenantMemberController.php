@@ -44,12 +44,34 @@ class TenantMemberController extends Crud
                 'table_tree' => 'formatTableTree',
                 'normal'     => 'formatNormal',
             ];
+            var_dump(8888);
             $format_function = $methods[$format] ?? 'formatNormal';
             [$total, $list] = $this->service->getTenantMemberList($where, $field, $page, $limit, $order, [], false);
+            var_dump(987);
             return call_user_func([$this, $format_function], $list, $total);
         } catch (\Throwable $e) {
             return Json::fail($e->getMessage());
         }
+    }
+
+    /**
+     * 格式化下拉列表
+     *
+     * @param $items
+     *
+     * @return \support\Response
+     */
+    public function formatSelect($items): \support\Response
+    {
+        $formatted_items = [];
+        foreach ($items as $item) {
+            $formatted_items[] = [
+                'label' => $item->real_name ?? $item->id,
+                'value' => $item->id,
+            ];
+        }
+        var_dump(88);
+        return Json::success('ok', $formatted_items);
     }
 
     /**

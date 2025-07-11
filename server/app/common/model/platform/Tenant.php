@@ -18,6 +18,7 @@ use app\common\model\system\SysAdminTenantRole;
 use app\common\model\system\SysRole;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Carbon;
 use madong\admin\abstract\BaseModel;
 
 /**
@@ -54,7 +55,7 @@ class Tenant extends BaseModel
 
     protected $table = 'mt_tenant';
 
-    protected $appends = ['created_date', 'updated_date'];
+    protected $appends = ['created_date', 'updated_date', 'expired_date'];
 
     protected $casts = [
         'isolation_mode' => 'integer',
@@ -82,6 +83,23 @@ class Tenant extends BaseModel
         'updated_by',
         'updated_at',
     ];
+
+    public function getExpiredDateAttribute(): ?string
+    {
+        if ($this->getAttribute('expired_at')) {
+            try {
+                $timestamp = $this->getRawOriginal('expired_at');
+                if (empty($timestamp)) {
+                    return null;
+                }
+                $carbonInstance = Carbon::createFromTimestamp($timestamp);
+                return $carbonInstance->setTimezone(config('app.default_timezone'))->format('Y-m-d H:i:s');
+            } catch (\Exception $e) {
+                return null;
+            }
+        }
+        return null;
+    }
 
     // 关联管理员（多对多，通过中间表 admin_tenant）
     public function admins(): BelongsToMany

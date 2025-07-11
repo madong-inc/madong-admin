@@ -27,6 +27,7 @@ use support\Container;
  *
  * @author Mr.April
  * @since  1.0
+ * @method getTenantMemberList(mixed $where, mixed $field, mixed $page, mixed $limit, mixed $order, array $array, false $false)
  */
 class TenantMemberService extends BaseService
 {

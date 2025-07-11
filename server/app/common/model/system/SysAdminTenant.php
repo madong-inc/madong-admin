@@ -62,37 +62,6 @@ class SysAdminTenant extends BasePivot
     ];
 
     /**
-     * 关联角色-通过中间表
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-//    public function roles(): BelongsToMany
-//    {
-//        return $this->belongsToMany(SysRole::class, SysAdminTenantRole::class, 'admin_tenant_id', 'role_id')->withoutGlobalScope(TenantScope::class);
-//    }
-
-
-    /**
-     * 关联角色-通过中间表
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-//    public function depts(): BelongsToMany
-//    {
-//        return $this->belongsToMany(SysDept::class, SysAdminTenantDept::class, 'admin_tenant_id', 'dept_id')->withoutGlobalScope(TenantScope::class);
-//    }
-
-    /**
-     * 关联角色-通过中间表
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-//    public function posts(): BelongsToMany
-//    {
-//        return $this->belongsToMany(SysPost::class, SysAdminTenantPost::class, 'admin_tenant_id', 'post_id')->withoutGlobalScope(TenantScope::class);
-//    }
-
-    /**
      * 关联租户
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
