@@ -34,25 +34,4 @@ return [
         app_path('common/enum/platform'),//平台枚举目录
         base_path('vendor/madong/ingenious/src/enums'),//目录枚举
     ],
-    //回收站排除的表
-    'exclude_from_recycle_bin' => [
-        'system_login_log',
-        'system_operate_log',
-        'system_recycle_bin',
-        'wf_process_cc_instance',
-        'wf_process_define',
-        'wf_process_define_favorite',
-        'wf_process_design',
-        'wf_process_design_history',
-        'wf_process_form',
-        'wf_process_form_history',
-        'wf_process_instance',
-        'wf_process_instance_history',
-        'wf_process_surrogate',
-        'wf_process_task',
-        'wf_process_task_actor',
-        'wf_process_task_actor_history',
-        'wf_process_task_history',
-        'wf_process_type',
-    ],
 ];

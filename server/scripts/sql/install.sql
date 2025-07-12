@@ -604,18 +604,22 @@ CREATE TABLE `ma_sys_rate_restrictions`  (
 -- Table structure for ma_sys_recycle_bin
 -- ----------------------------
 DROP TABLE IF EXISTS `ma_sys_recycle_bin`;
-CREATE TABLE `ma_sys_recycle_bin`  (
+CREATE TABLE `madong_db`.`ma_sys_recycle_bin`  (
   `id` bigint(20) UNSIGNED NOT NULL COMMENT 'ID',
-  `data` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '回收的数据',
+  `tenant_id` bigint(20) NULL DEFAULT NULL COMMENT '租户id',
+  `original_id` bigint(20) NULL DEFAULT NULL COMMENT '原始数据ID',
+  `data` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL COMMENT '回收的数据',
   `table_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '数据表',
   `table_prefix` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '表前缀',
   `enabled` tinyint(3) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否已还原',
   `ip` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '操作者IP',
   `operate_by` bigint(20) UNSIGNED NOT NULL DEFAULT 0 COMMENT '操作管理员',
   `created_at` bigint(20) UNSIGNED NULL DEFAULT NULL COMMENT '创建时间',
-  `updated_at` bigint(20) UNSIGNED NULL DEFAULT NULL COMMENT '更新时间',
+  `updated_at` bigint(20) NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '数据回收记录表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '数据回收记录表' ROW_FORMAT = DYNAMIC;
+
+
 
 -- ----------------------------
 -- Table structure for ma_sys_role

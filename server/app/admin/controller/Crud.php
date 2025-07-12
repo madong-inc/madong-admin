@@ -16,6 +16,7 @@ namespace app\admin\controller;
 use madong\admin\ex\AdminException;
 use madong\admin\services\jwt\JwtAuth;
 use madong\admin\utils\Json;
+use madong\helper\Arr;
 use madong\helper\DateTime;
 use madong\helper\Tree;
 use madong\ingenious\libs\utils\ArrayHelper;
@@ -249,7 +250,7 @@ class Crud extends Base
                         if (empty($condition[2])) {
                             continue;
                         }
-                        $value = ArrayHelper::normalize($condition[2]);
+                        $value = Arr::normalize($condition[2]);
                         $query->whereIn($condition[0], $value);
                     }
                 }

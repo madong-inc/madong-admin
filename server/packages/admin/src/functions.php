@@ -3,7 +3,6 @@
  * Here is your custom functions.
  */
 
-
 if (!function_exists('full_url')) {
     /**
      * 获取资源完整url地址；若安装了云存储或 config/upload.php 配置了cdn_url，则自动使用对应的cdn_url
@@ -55,4 +54,11 @@ if (!function_exists('full_url')) {
         return $url;
     }
 
+}
+
+if (!function_exists('array_except')) {
+    function array_except(array $array, array $keys): array
+    {
+        return array_diff_key($array, array_flip($keys));
+    }
 }

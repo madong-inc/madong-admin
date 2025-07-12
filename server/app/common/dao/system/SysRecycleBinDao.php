@@ -16,8 +16,8 @@ use app\common\model\system\SysRecycleBin;
 use madong\admin\abstract\BaseDao;
 
 /**
- *
  * 回收站
+ *
  * @author Mr.April
  * @since  1.0
  */
@@ -34,7 +34,7 @@ class SysRecycleBinDao extends BaseDao
         return parent::selectList($where, $field, $page, $limit, $order, ['operate'], $search, $withoutScopes);
     }
 
-    public function get($id, ?array $field = null, ?array $with = [], string $order = '', ?array $withoutScopes = null):SysRecycleBin
+    public function get($id, ?array $field = null, ?array $with = [], string $order = '', ?array $withoutScopes = null): SysRecycleBin
     {
         return parent::get($id, ['*'], ['operate'], '', $withoutScopes);
     }

@@ -12,8 +12,8 @@
 
 namespace madong\admin\abstract;
 
-
 use app\common\model\platform\Tenant;
+use app\common\model\system\SysRecycleBin;
 use app\common\scopes\global\AccessScope;
 use app\common\scopes\global\TenantScope;
 use app\common\scopes\global\TenantSharedTableScope;
@@ -30,9 +30,6 @@ class BaseModel extends Model
 {
     private const WORKER_ID = 1;
     private const DATA_CENTER_ID = 1;
-
-    // 定义常量
-    protected const CONNECTION_NAME = 'mysql';
 
     /**
      * 指明模型的ID是否自动递增。
@@ -245,17 +242,28 @@ class BaseModel extends Model
     public static function onAfterDelete(Model $model)
     {
         try {
-            if ($model->isSoftDeleteEnabled()) {
+            $table = $model->getTable();
+            /** @var SysRecycleBinService $recycleService */
+            $service = Container::make(SysRecycleBinService::class);
+            $config  = $service->getTableConfig($table);
+
+            // 检查是否启用回收站
+            if (!$config['enabled'] || $model->isSoftDeleteEnabled() || $config['strategy'] === 'logical') {
                 return;
             }
-            $table     = $model->getTable();
-            $tableData = $model->getAttributes();
-            $prefix    = $model->getConnection()->getTablePrefix();
-            if (self::shouldStoreInRecycleBin($table)) {
-                $data                    = self::prepareRecycleBinData($tableData, $table, $prefix);
-                $systemRecycleBinService = Container::make(SysRecycleBinService::class);
-                $systemRecycleBinService->save($data);
-            }
+            $prefix = $model->getConnection()->getTablePrefix();
+
+            // 准备数据（排除敏感字段）
+            $tableData                = array_except($model->getAttributes(), $config['exclude_fields'] ?? []);
+            $tableData['original_id'] = $model->getAttribute($model->getPk());
+
+            $data = self::prepareRecycleBinData($tableData, $table, $prefix);
+            // 动态选择存储方式
+            $handler = $config['storage_mode'] === 'central'
+                ? fn() => SysRecycleBin::centralConnection()
+                : fn() => SysRecycleBin::tenantConnection();
+
+            $handler()->create($data);
         } catch (\Exception $e) {
             throw new AdminException($e->getMessage());
         }
@@ -359,11 +367,6 @@ class BaseModel extends Model
         return $snowflake->nextId();
     }
 
-    private static function shouldStoreInRecycleBin($table): bool
-    {
-        return config('app.store_in_recycle_bin') && !in_array($table, config('app.exclude_from_recycle_bin'));
-    }
-
     private static function prepareRecycleBinData($tableData, $table, $prefix): array
     {
         return [
@@ -371,6 +374,7 @@ class BaseModel extends Model
             'table_name'   => $table,
             'table_prefix' => $prefix,
             'enabled'      => 0,
+            'tenant_id'    => TenantContext::getTenantId(),
             'ip'           => request()->getRealIp(),
             'operate_id'   => getCurrentUser(),
         ];

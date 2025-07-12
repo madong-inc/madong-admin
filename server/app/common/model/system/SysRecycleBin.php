@@ -13,6 +13,7 @@
 namespace app\common\model\system;
 
 use madong\admin\abstract\BaseModel;
+use madong\admin\context\TenantContext;
 
 /**
  * 附件模型
@@ -36,6 +37,8 @@ class SysRecycleBin extends BaseModel
 
     protected $fillable = [
         'id',
+        'original_id',
+        'tenant_id',
         'data',
         'table_name',
         'table_prefix',
@@ -46,9 +49,29 @@ class SysRecycleBin extends BaseModel
         'updated_at',
     ];
 
-    protected $casts = [
-        'data' => 'array',
-    ];
+//    protected $casts = [
+//        'data' => 'array',
+//    ];
+
+    /**
+     * 动态数据库链接(主库)
+     *
+     * @return \app\common\model\system\SysRecycleBin
+     */
+    public static function centralConnection(): SysRecycleBin
+    {
+        return (new static)->setConnection(config('database.default'));
+    }
+
+    /**
+     * 动态数据库链接
+     *
+     * @return \app\common\model\system\SysRecycleBin
+     */
+    public static function tenantConnection(): SysRecycleBin
+    {
+        return (new static)->setConnection(TenantContext::getDatabaseConnection());
+    }
 
     /**
      * 定义访问器
@@ -68,13 +91,5 @@ class SysRecycleBin extends BaseModel
     public function operate(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
         return $this->hasOne(SysAdmin::class, 'id', 'operate_id')->select(['id', 'real_name as operate_name']);
-    }
-
-    /**
-     * 默认链接
-     */
-    protected function initialize()
-    {
-        $this->connection = config('database.default');
     }
 }
