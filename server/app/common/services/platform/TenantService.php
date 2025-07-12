@@ -61,6 +61,8 @@ class TenantService extends BaseService
 
                 $data['code']       = UUIDGenerator::generate('custom', 6);//自动生成uuid
                 $data['expired_at'] = $this->normalizeToTimestamp($data['expired_at'] ?? null);
+                $password           = password_hash($data['password'], PASSWORD_DEFAULT);
+                $account            = $data['account'];
                 unset($data['password'], $data['account'], $data['db_id']);
                 if (!isset($data['type'])) {
                     $data['type'] = 1;
@@ -83,8 +85,8 @@ class TenantService extends BaseService
                 if (boolval($data['is_create_admin'])) {
                     //3 添加用户信息
                     $userInfo = [
-                        'password'     => password_hash($data['password'], PASSWORD_DEFAULT),
-                        'user_name'    => $data['account'] ?? '',
+                        'password'     => $password,
+                        'user_name'    => $account ?? '',
                         'real_name'    => $data['contact_person'] ?? '',
                         'nick_name'    => $data['contact_person'] ?? '',
                         'mobile_phone' => $data['contact_phone'] ?? '',
@@ -149,7 +151,7 @@ class TenantService extends BaseService
                     $data['type'] = 1;
                 }
                 $data['expired_at'] = $this->normalizeToTimestamp($data['expired_at'] ?? null);
-                $model = $this->dao->get($data['id']);
+                $model              = $this->dao->get($data['id']);
                 PropertyCopier::copyProperties((object)$data, $model);
                 //添加租户授权套餐
                 $model->packages()->detach();//很奇怪linux更新不会同步删除,硬操作直接销毁后再同步
