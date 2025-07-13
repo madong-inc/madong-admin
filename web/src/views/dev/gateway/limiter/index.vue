@@ -12,6 +12,7 @@ import { GatewayLimiterApi } from "#/api/dev/gateway";
 import type { GatewayLimiterRow } from "#/api/dev/gateway";
 import { $t } from "#/locale";
 import {confirm} from "#/utils";
+import { Recordable } from "#/components/common/types";
 
 const api = new GatewayLimiterApi();
 
@@ -92,17 +93,16 @@ function onActionClick({ code, row }: OnActionClickParams<GatewayLimiterRow>) {
  */
  async function onStatusChange(
   newStatus: number,
-  row: User,
+  row: GatewayLimiterRow,
 ) {
   const status: Recordable<string> = {
     0: $t('dev.limiter.list.table.columns.actions.status.disabled'),
     1: $t('dev.limiter.list.table.columns.actions.status.enabled'),
   };
   try {
-    await confirm($t('dev.limiter.list.table.columns.actions.status.confirm', {
-        name: row.real_name, 
-        status: status[newStatus.toString()]
-    }),$t('dev.limiter.list.table.columns.actions.status.title'));
+    await confirm($t('dev.limiter.list.table.columns.actions.status.confirm', [
+        row.name, 
+        status[newStatus.toString()]]),$t('dev.limiter.list.table.columns.actions.status.title'));
 
     await api.changStatus({ id:row.id,enabled: newStatus });
     return true;

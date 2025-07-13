@@ -100,10 +100,9 @@ function onActionClick({ code, row }: OnActionClickParams<GatewayBlacklistRow>) 
     1: $t('dev.blacklist.list.table.columns.actions.status.enabled'),
   };
   try {
-    await confirm($t('dev.blacklist.list.table.columns.actions.status.confirm', {
-        name: row.real_name, 
-        status: status[newStatus.toString()]
-    }),$t('dev.blacklist.list.table.columns.actions.status.title'));
+    await confirm($t('dev.blacklist.list.table.columns.actions.status.confirm', [
+        row.name, 
+        status[newStatus.toString()]]),$t('dev.blacklist.list.table.columns.actions.status.title'));
 
     await api.changStatus({ id:row.id,enabled: newStatus });
     return true;
