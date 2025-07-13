@@ -13,6 +13,6 @@
 use Webman\Route;
 
 Route::group(function () {
-    Route::get('/terminal', [\plugin\cmdr\app\controller\index::class, 'index'])->name('开发平台.Web终端.执行');
-    Route::put('/terminal/config', [\plugin\cmdr\app\controller\index::class, 'updateConfig'])->name('开发平台.Web终端.更新包管理');
+    Route::get('/terminal', [\plugin\cmdr\app\controller\Index::class, 'index'])->name('开发平台.Web终端.执行');
+    Route::put('/terminal/config', [\plugin\cmdr\app\controller\Index::class, 'updateConfig'])->name('开发平台.Web终端.更新包管理');
 });
