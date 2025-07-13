@@ -97,10 +97,10 @@ CREATE TABLE `ma_mt_tenant_package`  (
 DROP TABLE IF EXISTS `ma_mt_tenant_session`;
 CREATE TABLE `ma_mt_tenant_session`  (
   `id` bigint(20) NOT NULL COMMENT '雪花ID',
-  `key` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'key',
+  `key` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'key',
   `admin_id` bigint(20) NOT NULL COMMENT '管理员ID',
   `tenant_id` bigint(20) NOT NULL COMMENT '租户ID',
-  `token` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '会话token',
+  `token` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '会话token',
   `expire_at` bigint(20) NULL DEFAULT NULL COMMENT '过期时间戳',
   `created_at` bigint(20) NULL DEFAULT NULL COMMENT '创建时间戳',
   `updated_at` bigint(20) NULL DEFAULT NULL COMMENT '更新时间戳',
@@ -604,11 +604,11 @@ CREATE TABLE `ma_sys_rate_restrictions`  (
 -- Table structure for ma_sys_recycle_bin
 -- ----------------------------
 DROP TABLE IF EXISTS `ma_sys_recycle_bin`;
-CREATE TABLE `madong_db`.`ma_sys_recycle_bin`  (
+CREATE TABLE `ma_sys_recycle_bin`  (
   `id` bigint(20) UNSIGNED NOT NULL COMMENT 'ID',
   `tenant_id` bigint(20) NULL DEFAULT NULL COMMENT '租户id',
   `original_id` bigint(20) NULL DEFAULT NULL COMMENT '原始数据ID',
-  `data` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL COMMENT '回收的数据',
+  `data` json NULL COMMENT '回收的数据',
   `table_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '数据表',
   `table_prefix` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '表前缀',
   `enabled` tinyint(3) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否已还原',
