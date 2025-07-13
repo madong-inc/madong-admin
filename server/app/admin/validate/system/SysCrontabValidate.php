@@ -20,8 +20,8 @@ class SysCrontabValidate extends Validate
      * 定义验证规则
      */
     protected $rule = [
-        'data'    => 'require|task_enabled',
-        'title'   => 'require|task_enabled',
+        'data'    => 'require',
+        'title'   => 'require',
         'type'    => 'require',
         'rule'    => 'require',
         'target'  => 'require',
@@ -33,9 +33,8 @@ class SysCrontabValidate extends Validate
      */
     protected $message = [
         'data.require'       => '唯一标识ID不能为空',
-        'data.task_enabled'  => '定时任务未开启,.env文件APP_TASK_ENABLED=true',
         'title.require'      => '任务名称必须填写',
-        'title.task_enabled' => '定时任务未开启,.env文件APP_TASK_ENABLED=true',
+//        'title.task_enabled' => '定时任务未开启,.env文件APP_TASK_ENABLED=true',
         'type.require'       => '任务类型必须填写',
         'rule.require'       => '任务规则必须填写',
         'target.require'     => '调用目标必须填写',
