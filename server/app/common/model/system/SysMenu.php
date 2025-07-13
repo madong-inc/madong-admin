@@ -74,7 +74,7 @@ class SysMenu extends BaseModel
             'icon'                     => $data['icon'] ?? '',
             'title'                    => $title,
             'menuVisibleWithForbidden' => true,
-            'keepAlive' => true,
+            'keepAlive'                => true,
         ];
 
         // 2.添加fixed锁定菜单标记
@@ -134,25 +134,35 @@ class SysMenu extends BaseModel
         }
     }
 
+
     /**
-     * 自定义删除方法
+     * 自定义删除-支持模型事件
      *
      * @return array|bool
      */
     public function deleteWithAllChildren(): array|bool
     {
-        // 获取所有子级ID（递归）
-        $allChildIds = $this->getAllChildrenIds();
+        $allIds = array_merge([$this->id], $this->getAllChildrenIds());
 
-        // 添加当前记录的ID
-        $allChildIds[] = $this->id;
-
-        // 批量删除所有相关记录
-        $result = self::whereIn('id', $allChildIds)->delete();
-        if ($result > 0) {
-            return $allChildIds ?? [];
+        if (empty($allIds)) {
+            return false;
         }
-        return false;
+
+        $successIds = [];
+
+        // 分块处理以避免内存问题
+        collect($allIds)->chunk(100)->each(function ($chunk) use (&$successIds) {
+            $chunk->each(function ($id) use (&$successIds) {
+                if ($model = self::find($id)) {
+                    if ($model->delete()) {
+                        // 触发模型事件
+                        $successIds[] = $id;
+                    }
+                }
+            });
+        });
+
+        return !empty($successIds) ? $successIds : false;
     }
 
     /**

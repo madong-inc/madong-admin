@@ -49,9 +49,21 @@ class SysRecycleBin extends BaseModel
         'updated_at',
     ];
 
-//    protected $casts = [
-//        'data' => 'array',
-//    ];
+    protected $casts = [
+        'data' => 'array',
+
+    ];
+
+//    // 1. 定义访问器/修改器
+//    public function getDataAttribute($value)
+//    {
+//        return json_decode($value, true) ?? [];
+//    }
+//
+//    public function setDataAttribute($value)
+//    {
+//        $this->attributes['data'] = json_encode($value);
+//    }
 
     /**
      * 动态数据库链接(主库)

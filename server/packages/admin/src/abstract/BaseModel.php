@@ -370,7 +370,8 @@ class BaseModel extends Model
     private static function prepareRecycleBinData($tableData, $table, $prefix): array
     {
         return [
-            'data'         => json_encode($tableData),
+            'data'         => $tableData,
+            'original_id'  => $tableData['id'] ?? '',
             'table_name'   => $table,
             'table_prefix' => $prefix,
             'enabled'      => 0,

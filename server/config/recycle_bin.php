@@ -11,13 +11,13 @@
  */
 
 /**
- * 数据回收站-只能通过模型删除的才有效【直接使用DB操作许手动处理回收数据】
+ * 数据回收站-只能通过模型删除并且添加表配置的的才有效【直接使用DB操作需手动处理回收数据】
  */
 return [
     // 全局默认配置
     'default' => [
         'enabled'      => true,       // 是否启用回收站
-        'strategy'     => 'logical',  // logical|physical
+        'strategy'     => 'logical',  // logical|physical 默认软删
         'storage_days' => 30,         // 保留天数
         'storage_mode' => 'central',  // central|isolated (主库集中|分库隔离)
     ],
@@ -25,11 +25,12 @@ return [
     // 表级配置覆盖
     'tables'  => [
         'sys_upload' => [
-            'strategy'       => 'physical',  //物理删除
-            'storage_mode'   => 'isolated',  // 用户数据回收站存到主库
+            'strategy'     => 'physical',
+            'storage_mode' => 'isolated',//租户数据源
         ],
-        'orders'     => [
-            'storage_mode' => 'isolated',  // 订单数据存到各自租户库
+        'sys_menu'   => [
+            'strategy'     => 'physical',
+            'storage_mode' => 'central',//主库数据源
         ],
     ],
 ];
