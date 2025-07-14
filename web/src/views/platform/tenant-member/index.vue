@@ -270,6 +270,7 @@ function onMultiDelete() {
     onOk: async () => {
       await api.remove(0,{data:ids});
       await gridApi.query();
+      message.success($t('common.message.success'));
     },
   });
 }

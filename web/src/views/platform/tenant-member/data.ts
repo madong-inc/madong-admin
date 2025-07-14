@@ -9,7 +9,7 @@ import { $t } from '#/locale';
 
 import { getDictOptions } from '#/utils/dict';
 import { useAccess } from '#/components/common/effects/access';
-import type {  TenantMemberRow } from '#/api/platform/tenant-member';
+import type { TenantMemberRow } from '#/api/platform/tenant-member';
 import { h } from 'vue';
 import { Tag } from 'ant-design-vue';
 
@@ -95,30 +95,35 @@ export function useColumns(
       minWidth: 80,
       visible: false,
     },
-{
-    field: 'managed_tenants',
-    title: $t('system.user.list.table.columns.tenants'),
-    minWidth: 170,
-    slots: {
+    {
+      field: 'managed_tenants',
+      title: $t('system.user.list.table.columns.tenants'),
+      minWidth: 170,
+      slots: {
         default: ({ row }) => {
           //@ts-ignore
-            const data = row?.managed_tenants || [];
-            const getColorFromName = (name:any) => {
-                let hash = 0;
-                for (let i = 0; i < name.length; i++) {
-                    hash += name.charCodeAt(i);
-                }
-                // 使用哈希值生成颜色
-                const color = `hsl(${hash % 360}, 70%, 50%)`; // HSL颜色
-                return color;
-            };
+          const data = row?.managed_tenants || [];
+          const getColorFromName = (name: any) => {
+            let hash = 0;
+            for (let i = 0; i < name.length; i++) {
+              hash += name.charCodeAt(i);
+            }
+            // 使用哈希值生成颜色
+            const color = `hsl(${hash % 360}, 70%, 50%)`; // HSL颜色
+            return color;
+          };
 
-            return h('div', data.map((item: any) => 
-                h(Tag, { key: item.id, style: { backgroundColor: getColorFromName(item?.company_name || ''), color: '#fff' } }, item?.company_name || '')
-            ));
+          if (row.is_super == 1) {
+           return  h(Tag, { key: 1, style: { backgroundColor: getColorFromName('ALL'), color: '#fff' } }, 'ALL')
+          }
+
+
+          return h('div', data.map((item: any) =>
+            h(Tag, { key: item.id, style: { backgroundColor: getColorFromName(item?.company_name || ''), color: '#fff' } }, item?.company_name || '')
+          ));
         },
+      },
     },
-},
 
     {
       field: 'mobile_phone',
