@@ -118,7 +118,7 @@ class SysAdminDao extends BaseDao
      */
     public function getTenantMemberList(array $where, string $field = '*', int $page = 0, int $limit = 0, string $order = '', array $with = [], bool $search = false, ?array $withoutScopes = null): array
     {
-        $where['enabled'] = 1;
+//        $where['enabled'] = 1;//显示禁用用户
         if (empty($with)) {
             $with = ['managedTenants'];
         }
