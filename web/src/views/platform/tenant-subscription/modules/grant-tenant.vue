@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { ref,h } from 'vue';
+import { ref, h } from "vue";
 
-import { useDrawer,Page } from '#/components/common-ui';
+import { useDrawer, Page } from "#/components/common-ui";
 
-import GrantTenantIndex from '#/views/platform/tenant-subscription/modules/grant-tenant.vue';
+import GrantTenantIndex from "#/views/platform/tenant-subscription/modules/grant-tenant.vue";
 import { Button, message, Space } from "ant-design-vue";
 import { SaveOutlined } from "@ant-design/icons-vue";
 
@@ -15,21 +15,19 @@ import type { TenantRow } from "#/api/platform/tenant";
 import { TenantSubscriptionApi } from "#/api/platform/tenant-subscription";
 
 const record = ref();
-const tenants =ref([]);
+const tenants = ref([]);
 const api = new TenantSubscriptionApi();
 const tenantApi = new TenantApi();
 
 const [Drawer, drawerApi] = useDrawer({
   async onOpenChange(isOpen) {
     record.value = isOpen ? drawerApi.getData()?.record : {};
-    if(isOpen){
-      tenants.value=await api.packageTenantIds({id:record?.value?.id});
+    if (isOpen) {
+      tenants.value = await api.packageTenantIds({ id: record?.value?.id });
     }
   },
   onConfirm: handleConfirm,
 });
-
-
 
 const [Grid, gridApi] = useVxeGrid({
   // formOptions: {
@@ -69,7 +67,10 @@ const [Grid, gridApi] = useVxeGrid({
           setTimeout(() => {
             //@ts-ignore
             const data = res?.items || [];
-            const rowsToSelect = data.filter((row) => tenants?.value.includes(row.id));
+            const tenantIdStrings = tenants?.value.map((id) => String(id));
+            const rowsToSelect = data.filter((row) =>
+              tenantIdStrings.includes(String(row.id))
+            );
             gridApi.grid.setCheckboxRow(rowsToSelect, true);
           }, 0);
 
@@ -104,14 +105,14 @@ async function handleConfirm() {
     data: rows.map((row: TenantRow) => row.id),
   };
   await api.grantTenant(data);
+  message.success($t("platform.tenant_subscription.grant_tenant.message.save"));
 }
-
 
 /**
  * 标题
  */
-function getTitle():string{
-  return $t('platform.tenant_subscription.grant_tenant.title');
+function getTitle(): string {
+  return $t("platform.tenant_subscription.grant_tenant.title");
 }
 </script>
 <template>
