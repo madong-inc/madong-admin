@@ -273,6 +273,9 @@
                 "toolbar": {
                     "save": "Save"
                 }
+            },
+            "message":{
+                "save":"Save Successfully"
             }
         }
     },

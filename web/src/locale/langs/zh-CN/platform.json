@@ -273,6 +273,9 @@
                 "toolbar": {
                     "save": "保存"
                 }
+            },
+            "message":{
+                "save":"保存成功"
             }
         }
     },
