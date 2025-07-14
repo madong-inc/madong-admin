@@ -70,6 +70,7 @@ Route::group('/platform', function () {
         Route::get('/tenant-member/{id}', [\app\admin\controller\platform\TenantMemberController::class, 'show'])->name('平台管理.成员管理.详情');
         Route::post('/tenant-member', [\app\admin\controller\platform\TenantMemberController::class, 'store'])->name('平台管理.成员管理.保存');
         Route::put('/tenant-member', [\app\admin\controller\platform\TenantMemberController::class, 'update'])->name('平台管理.成员管理.更新');
+        Route::put('/tenant-member/change-status', [\app\admin\controller\platform\TenantMemberController::class, 'changeStatus'])->name('平台管理.成员管理.更新状态');
 
         Route::delete('/tenant-member/{id}', [\app\admin\controller\system\SysAdminController::class, 'destroy'])->name('平台管理.成员管理.删除');
         Route::put('/tenant-member/reset-password', [\app\admin\controller\system\SysAdminController::class, 'changePassword'])->name('系统设置.用户管理.重置密码');
