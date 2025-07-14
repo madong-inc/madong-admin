@@ -64,9 +64,14 @@ class SysCrontabService extends BaseService
                     'enabled'    => $status,
                     'singleton'  => $singleton,
                     'task_cycle' => $task_cycle,
-                    'cycle_rule' => json_encode([
-                        'month' => $month, 'week' => $week, 'day' => $day, 'hour' => $hour, 'minute' => $minute, 'second' => $second,
-                    ]),
+                    'cycle_rule' => [
+                        'month'  => $month,
+                        'week'   => $week,
+                        'day'    => $day,
+                        'hour'   => $hour,
+                        'minute' => $minute,
+                        'second' => $second,
+                    ],
                 ];
                 $model      = $this->dao->save($insertData);
                 //添加定时任务重启服务
@@ -120,14 +125,14 @@ class SysCrontabService extends BaseService
                     'enabled'    => $status,
                     'singleton'  => $singleton,
                     'task_cycle' => $task_cycle->value,
-                    'cycle_rule' => json_encode([
+                    'cycle_rule' => [
                         'month'  => $month,
                         'week'   => $week,
                         'day'    => $day,
                         'hour'   => $hour,
                         'minute' => $minute,
                         'second' => $second,
-                    ]),
+                    ],
                 ]);
 
                 // 更新之后重启服务

@@ -286,7 +286,7 @@ CREATE TABLE `ma_sys_crontab`  (
   `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '任务标题',
   `type` tinyint(1) NOT NULL DEFAULT 1 COMMENT '任务类型1 url,2 eval,3 shell',
   `task_cycle` tinyint(1) NOT NULL DEFAULT 1 COMMENT '任务周期',
-  `cycle_rule` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '任务周期规则',
+  `cycle_rule` json NULL DEFAULT NULL COMMENT '任务周期规则(JSON格式)',
   `rule` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '任务表达式',
   `target` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '调用任务字符串',
   `running_times` int(11) NOT NULL DEFAULT 0 COMMENT '已运行次数',
@@ -302,7 +302,6 @@ CREATE TABLE `ma_sys_crontab`  (
   INDEX `title`(`title`) USING BTREE,
   INDEX `status`(`enabled`) USING BTREE
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '定时器任务表' ROW_FORMAT = DYNAMIC;
-
 -- ----------------------------
 -- Table structure for ma_sys_crontab_log
 -- ----------------------------
