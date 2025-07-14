@@ -46,12 +46,14 @@ class RouteRestrictionMiddleware implements MiddlewareInterface
             '/platform/db',
             '/platform/tenant-subscription',
             '/platform/tenant-subscription/\d+',
+            '/platform/tenant-member',
+            '/platform/tenant-member/\d+',
         ];
         $currentPath      = $request->path();
 
         $method = $request->method();
         // 检查当前路径是否在限制的路由中
-        if (in_array($method, ['PUT', 'POST', 'DELETE'])) {
+        if (in_array(strtoupper($method), ['PUT', 'POST', 'DELETE'])) {
             foreach ($restrictedRoutes as $pattern) {
                 if (preg_match("#^$pattern$#", $currentPath)) {
                     if (JwtToken::getExtendVal('user_name') == 'root') {
