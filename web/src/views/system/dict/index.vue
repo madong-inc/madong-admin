@@ -133,10 +133,9 @@ async function onStatusChange(newStatus: number, row: SystemDictRow) {
   };
   try {
     await confirm(
-      $t("system.dict.list.table.columns.actions.status.confirm", {
-        name: row.name,
-        status: status[newStatus.toString()],
-      }),
+      $t("system.dict.list.table.columns.actions.status.confirm", [
+        row.name,
+        status[newStatus.toString()]]),
       $t("system.user.list.table.columns.actions.status.title")
     );
     await api.changStatus({ id: row.id, enabled: newStatus });
