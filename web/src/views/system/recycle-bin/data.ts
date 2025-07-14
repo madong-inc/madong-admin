@@ -31,14 +31,19 @@ export function useColumns(
       }
     },
     { field: 'ip', title: 'IP' },
-    {
-      field: 'enabled',
-      title: $t('system.recycle_bin.list.table.columns.enabled'),
-      width: 90,
-      cellRender: {
-        name: 'CellTag',
-        options: getDictOptions(DictEnum.SYS_YES_NO)
-      },
+    // {
+    //   field: 'enabled',
+    //   title: $t('system.recycle_bin.list.table.columns.enabled'),
+    //   width: 90,
+    //   cellRender: {
+    //     name: 'CellTag',
+    //     options: getDictOptions(DictEnum.SYS_YES_NO)
+    //   },
+    // },
+        {
+      field: 'created_date',
+      title: $t('system.recycle_bin.list.table.columns.created_date'),
+      width: 150
     },
     {
       align: 'center',
