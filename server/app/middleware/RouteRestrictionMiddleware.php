@@ -31,7 +31,9 @@ class RouteRestrictionMiddleware implements MiddlewareInterface
             '/system/role',
             '/system/role/\d+',
             '/system/dept/',
-            'system/dept/\d+',
+            '/system/dept/\d+',
+            '/system/post',
+            '/system/post/\d+',
             '/system/dict',
             '/system/dict/\d+',
             '/system/dict-item',
@@ -39,9 +41,11 @@ class RouteRestrictionMiddleware implements MiddlewareInterface
             '/system/recycle-bin',
             '/system/recycle-bin/\d+',
             '/system/config',
-            '/monitor/crontab',
-            '/monitor/crontab/\d+',
+            '/dev/crontab',
+            '/dev/crontab/\d+',
             '/platform/db',
+            '/platform/tenant-subscription',
+            '/platform/tenant-subscription/\d+',
         ];
         $currentPath      = $request->path();
 
