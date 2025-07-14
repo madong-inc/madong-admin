@@ -14,7 +14,6 @@ namespace app\common\model\platform;
 
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
-
 /**
  * 租户订阅套餐-中间表
  *
@@ -33,11 +32,14 @@ class TenantPackage extends Pivot
 
     protected $table = 'mt_tenant_package';
 
+    protected $casts = [
+        'id' => 'string',
+    ];
+
     protected $fillable = [
         "tenant_id",
         "subscription_id",
     ];
-
 
     /**
      * 默认链接

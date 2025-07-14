@@ -86,6 +86,7 @@ class TenantSubscriptionController extends Crud
     {
         try {
             $id                             = $request->input('id');
+            /** @var TenantPackageService $systemTenantPackageMenuService */
             $systemTenantPackageMenuService = Container::make(TenantPackageService::class);
             $data                           = $systemTenantPackageMenuService->getTenantIdsBySubscription($id, true);
             return Json::success('ok', $data);

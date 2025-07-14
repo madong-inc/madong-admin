@@ -44,10 +44,8 @@ class TenantMemberController extends Crud
                 'table_tree' => 'formatTableTree',
                 'normal'     => 'formatNormal',
             ];
-            var_dump(8888);
             $format_function = $methods[$format] ?? 'formatNormal';
             [$total, $list] = $this->service->getTenantMemberList($where, $field, $page, $limit, $order, [], false);
-            var_dump(987);
             return call_user_func([$this, $format_function], $list, $total);
         } catch (\Throwable $e) {
             return Json::fail($e->getMessage());

@@ -61,8 +61,8 @@ class TenantService extends BaseService
 
                 $data['code']       = UUIDGenerator::generate('custom', 6);//自动生成uuid
                 $data['expired_at'] = $this->normalizeToTimestamp($data['expired_at'] ?? null);
-                $password           = password_hash($data['password'], PASSWORD_DEFAULT);
-                $account            = $data['account'];
+                $password           = password_hash($data['password'] ?? '', PASSWORD_DEFAULT);
+                $account            = $data['account'] ?? '';
                 unset($data['password'], $data['account'], $data['db_id']);
                 if (!isset($data['type'])) {
                     $data['type'] = 1;
