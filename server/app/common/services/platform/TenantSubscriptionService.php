@@ -85,7 +85,7 @@ class TenantSubscriptionService extends BaseService
                     continue; // 如果找不到项，跳过
                 }
                 $item->delete();
-                $item->menus()->detach();//同步删除中间表
+                $item->casbin()->detach();//同步删除中间表
                 $item->tenants()->detach();//同步删除中间表
                 $primaryKey   = $item->getPk();
                 $deletedIds[] = $item->{$primaryKey};
