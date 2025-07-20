@@ -14,10 +14,10 @@ namespace app\common\services\system;
 
 use app\common\dao\system\SysAdminRoleDao;
 use app\common\enum\system\PolicyPrefix;
-use madong\admin\abstract\BaseService;
-use madong\admin\context\TenantContext;
-use madong\admin\ex\AdminException;
-use madong\casbin\Permission;
+use core\exception\handler\AdminException;
+use core\abstract\BaseService;
+use core\context\TenantContext;
+use core\casbin\Permission;
 use support\Container;
 
 /**

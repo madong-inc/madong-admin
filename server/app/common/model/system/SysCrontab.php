@@ -13,7 +13,7 @@
 namespace app\common\model\system;
 
 use InvalidArgumentException;
-use madong\admin\abstract\BaseModel;
+use core\abstract\BaseModel;
 use app\common\enum\system\TaskScheduleCycle;
 
 /**

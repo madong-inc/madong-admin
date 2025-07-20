@@ -52,7 +52,7 @@ class SysCrontabValidate extends Validate
      */
     protected function task_enabled($value, $rule, array $data = []): bool
     {
-        return config('plugin.madong.admin.task.enabled', false);
+        return config('core.scheduler.app.enable', false);
     }
 
     /**

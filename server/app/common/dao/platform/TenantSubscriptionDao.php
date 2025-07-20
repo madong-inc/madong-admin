@@ -14,7 +14,7 @@ namespace app\common\dao\platform;
 
 
 use app\common\model\platform\TenantSubscription;
-use madong\admin\abstract\BaseDao;
+use core\abstract\BaseDao;
 
 /**
  * 套餐订阅套餐

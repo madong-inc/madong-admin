@@ -15,7 +15,7 @@ namespace app\common\services\platform;
 
 
 use app\common\dao\platform\TenantSubscriptionPlanDao;
-use madong\admin\abstract\BaseService;
+use core\abstract\BaseService;
 use support\Container;
 
 /**

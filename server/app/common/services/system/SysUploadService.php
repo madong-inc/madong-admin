@@ -13,10 +13,10 @@
 namespace app\common\services\system;
 
 use app\common\dao\system\SysUploadDao;
-use madong\admin\abstract\BaseService;
-use madong\admin\ex\AdminException;
+use core\exception\handler\AdminException;
+use core\abstract\BaseService;
+use core\upload\UploadFile;
 use madong\helper\Arr;
-use madong\admin\services\upload\UploadFile;
 use support\Container;
 
 class SysUploadService extends BaseService

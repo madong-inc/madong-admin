@@ -17,9 +17,9 @@ use app\common\enum\system\PolicyPrefix;
 use app\common\model\system\SysAdmin;
 use app\common\scopes\global\TenantScope;
 use app\common\services\system\SysAdminTenantService;
-use madong\admin\abstract\BaseService;
-use madong\admin\context\TenantContext;
-use madong\admin\ex\AdminException;
+use core\exception\handler\AdminException;
+use core\abstract\BaseService;
+use core\context\TenantContext;
 use support\Container;
 
 /**

@@ -12,7 +12,7 @@
 
 namespace app\common\model\platform;
 
-use madong\admin\abstract\BaseModel;
+use core\abstract\BaseModel;
 
 /**
  * 多数据源

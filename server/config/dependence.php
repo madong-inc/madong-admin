@@ -11,8 +11,16 @@
  * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
+use core\context\RequestTenantContext;
+use core\context\RequestTenantContextInterface;
 use Psr\Container\ContainerInterface;
 
 return [
 
+    /**
+     * 注入租户上下文管理
+     */
+    RequestTenantContextInterface::class => function (ContainerInterface $container) {
+        return $container->make(RequestTenantContext::class);
+    },
 ];

@@ -17,8 +17,8 @@ use app\admin\validate\system\SysAdminValidate;
 use app\common\services\system\SysAdminRoleService;
 use app\common\services\system\SysAdminService;
 use app\common\services\system\SysLoginLogService;
-use madong\admin\ex\AdminException;
-use madong\admin\utils\Json;
+use core\exception\handler\AdminException;
+use core\utils\Json;
 use support\Container;
 use support\Request;
 

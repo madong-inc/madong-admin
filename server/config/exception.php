@@ -14,5 +14,5 @@
 
 return [
 //    '' => support\exception\Handler::class,
-      '' => madong\exception\Handler::class,
+'' => core\exception\Handler::class,
 ];

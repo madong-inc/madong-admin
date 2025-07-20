@@ -15,11 +15,11 @@ namespace app\middleware;
 use app\common\enum\system\PolicyPrefix;
 use app\common\services\system\SysMenuService;
 use Casbin\Exceptions\CasbinException;
-use madong\admin\context\TenantContext;
-use madong\casbin\Permission;
-use madong\exception\handler\ForbiddenHttpException;
-use madong\exception\handler\UnauthorizedHttpException;
-use madong\jwt\JwtToken;
+use core\jwt\JwtToken;
+use core\context\TenantContext;
+use core\casbin\Permission;
+use core\exception\handler\ForbiddenHttpException;
+use core\exception\handler\UnauthorizedHttpException;
 use Webman\Http\Request;
 use Webman\Http\Response;
 use Webman\MiddlewareInterface;
@@ -33,8 +33,8 @@ use Webman\MiddlewareInterface;
 class PermissionMiddleware implements MiddlewareInterface
 {
     /**
-     * @throws \madong\exception\handler\UnauthorizedHttpException
-     * @throws \madong\exception\handler\ForbiddenHttpException
+     * @throws \core\exception\handler\UnauthorizedHttpException
+     * @throws \core\exception\handler\ForbiddenHttpException
      * @throws \Exception
      */
     public function process(Request $request, callable $handler): Response

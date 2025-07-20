@@ -13,7 +13,7 @@
 namespace app\common\services\system;
 
 use app\common\dao\system\SysDeptLeaderDao;
-use madong\admin\abstract\BaseService;
+use core\abstract\BaseService;
 
 /**
  * @author Mr.April

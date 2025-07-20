@@ -13,7 +13,7 @@
 namespace app\common\services\system;
 
 use app\common\dao\system\SysNoticeDao;
-use madong\admin\abstract\BaseService;
+use core\abstract\BaseService;
 use support\Container;
 
 /**

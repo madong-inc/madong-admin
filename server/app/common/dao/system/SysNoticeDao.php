@@ -13,7 +13,7 @@
 namespace app\common\dao\system;
 
 use app\common\model\system\SysNotice;
-use madong\admin\abstract\BaseDao;
+use core\abstract\BaseDao;
 
 class SysNoticeDao extends BaseDao
 {

@@ -12,7 +12,7 @@
 
 namespace app\common\model\system;
 
-use madong\admin\abstract\BaseModel;
+use core\abstract\BaseModel;
 
 /**
  * 岗位模型

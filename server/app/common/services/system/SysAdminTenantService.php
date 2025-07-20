@@ -16,10 +16,10 @@ use app\common\dao\system\SysAdminTenantDao;
 use app\common\model\system\SysAdminTenant;
 use app\common\scopes\global\TenantScope;
 use app\common\services\platform\TenantService;
+use core\exception\handler\AdminException;
 use Exception;
 use InvalidArgumentException;
-use madong\admin\abstract\BaseService;
-use madong\admin\ex\AdminException;
+use core\abstract\BaseService;
 use support\Container;
 
 /**

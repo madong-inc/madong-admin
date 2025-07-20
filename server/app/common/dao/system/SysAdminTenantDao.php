@@ -16,7 +16,7 @@ use app\common\cntext\TenantContext;
 use app\common\model\system\SysAdmin;
 use app\common\model\system\SysAdminTenant;
 use app\common\scopes\global\TenantScope;
-use madong\admin\abstract\BaseDao;
+use core\abstract\BaseDao;
 
 class SysAdminTenantDao extends BaseDao
 {

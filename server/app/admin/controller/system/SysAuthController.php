@@ -14,9 +14,6 @@ namespace app\admin\controller\system;
 
 use app\admin\controller\Crud;
 use app\admin\validate\system\SysAuthValidate;
-use app\common\model\system\SysRole;
-use app\common\services\system\SysRoleService;
-use madong\admin\context\TenantContext;
 use app\common\scopes\global\TenantScope;
 use app\common\services\platform\TenantService;
 use app\common\services\platform\TenantSessionService;
@@ -24,14 +21,15 @@ use app\common\services\system\SysAdminRoleService;
 use app\common\services\system\SysAdminService;
 use app\common\services\system\SysAdminTenantService;
 use app\common\services\system\SysAuthService;
-use app\common\services\system\SysMenuService;
 use app\common\services\system\SysRoleMenuService;
 use app\common\services\system\SysRoleScopeDeptService;
-use madong\admin\ex\AuthException;
-use madong\admin\utils\Json;
-use madong\exception\handler\UnauthorizedHttpException;
+use app\common\services\system\SysRoleService;
+use core\exceptioncopy\AuthException;
+use core\jwt\JwtToken;
+use core\context\TenantContext;
+use core\utils\Json;
+use core\exception\handler\UnauthorizedHttpException;
 use madong\helper\Dict;
-use madong\jwt\JwtToken;
 use support\Container;
 use support\Request;
 
@@ -371,7 +369,7 @@ class SysAuthController extends Crud
      * @param \support\Request $request
      *
      * @return \support\Response
-     * @throws \madong\exception\handler\UnauthorizedHttpException
+     * @throws \core\exception\handler\UnauthorizedHttpException
      */
     public function refreshToken(Request $request): \support\Response
     {

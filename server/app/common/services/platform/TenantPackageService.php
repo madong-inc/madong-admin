@@ -15,8 +15,8 @@ namespace app\common\services\platform;
 use app\common\dao\platform\TenantPackageDao;
 use app\common\enum\system\PolicyPrefix;
 use InvalidArgumentException;
-use madong\admin\abstract\BaseService;
-use madong\casbin\Permission;
+use core\abstract\BaseService;
+use core\casbin\Permission;
 use support\Container;
 
 /**

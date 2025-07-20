@@ -12,9 +12,9 @@
 
 namespace app\common\model\system;
 
-use madong\admin\abstract\BaseModel;
-use madong\admin\context\TenantContext;
-use madong\casbin\model\RuleModel;
+use core\abstract\BaseModel;
+use core\context\TenantContext;
+use core\casbin\model\RuleModel;
 
 /**
  * 角色模型

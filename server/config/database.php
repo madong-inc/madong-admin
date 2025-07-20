@@ -44,5 +44,5 @@ $defaultKey = env('DB_DATABASE','');//默认数据库
 
 return [
     'default'     => $defaultKey,
-    'connections' => \madong\admin\services\db\DbConfigManagerService::getConfig($basic, $defaultKey, true),
+    'connections' => \core\db\DbConfigManagerService::getConfig($basic, $defaultKey, true),
 ];

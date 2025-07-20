@@ -13,7 +13,7 @@
 namespace app\common\dao\platform;
 
 use app\common\model\platform\TenantSubscriptionCasbin;
-use madong\admin\abstract\BaseDao;
+use core\abstract\BaseDao;
 
 /**
  * 套餐-关联策略表

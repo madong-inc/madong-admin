@@ -13,17 +13,13 @@
 namespace app\common\services\platform;
 
 use app\common\dao\platform\TenantSubscriptionDao;
-use app\common\enum\system\MenuType;
 use app\common\enum\system\PolicyPrefix;
 use app\common\model\platform\TenantSubscription;
 use app\common\services\system\SysCasbinService;
 use app\common\services\system\SysMenuService;
-use InvalidArgumentException;
-use LogicException;
-use madong\admin\abstract\BaseService;
-use madong\admin\context\TenantContext;
-use madong\admin\ex\AdminException;
-use madong\casbin\Permission;
+use core\abstract\BaseService;
+use core\context\TenantContext;
+use core\casbin\Permission;
 use support\Container;
 
 /**

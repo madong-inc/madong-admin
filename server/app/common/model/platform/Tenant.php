@@ -19,7 +19,7 @@ use app\common\model\system\SysRole;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
-use madong\admin\abstract\BaseModel;
+use core\abstract\BaseModel;
 
 /**
  * 账套中心

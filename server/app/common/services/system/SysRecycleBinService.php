@@ -15,9 +15,9 @@ namespace app\common\services\system;
 use app\common\dao\system\SysRecycleBinDao;
 use app\common\model\system\SysRecycleBin;
 use app\common\scopes\global\TenantScope;
-use madong\admin\abstract\BaseService;
-use madong\admin\context\TenantContext;
-use madong\admin\ex\AdminException;
+use core\exception\handler\AdminException;
+use core\abstract\BaseService;
+use core\context\TenantContext;
 use support\Db;
 
 /**

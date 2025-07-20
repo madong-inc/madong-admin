@@ -20,13 +20,12 @@ use app\common\model\system\SysAdminTenant;
 use app\common\scopes\global\TenantScope;
 use app\common\services\platform\TenantService;
 use app\common\services\platform\TenantSessionService;
-use madong\admin\abstract\BaseService;
-use madong\admin\context\TenantContext;
-use madong\admin\ex\AdminException;
+use core\exception\handler\AdminException;
+use core\jwt\JwtToken;
+use core\abstract\BaseService;
+use core\context\TenantContext;
 use madong\admin\services\jwt\JwtAuth;
-use madong\admin\services\cache\CacheService;
-use madong\casbin\Permission;
-use madong\jwt\JwtToken;
+use core\casbin\Permission;
 use support\Container;
 use Webman\Event\Event;
 

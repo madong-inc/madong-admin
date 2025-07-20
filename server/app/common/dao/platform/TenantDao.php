@@ -13,7 +13,7 @@
 namespace app\common\dao\platform;
 
 use app\common\model\platform\Tenant;
-use madong\admin\abstract\BaseDao;
+use core\abstract\BaseDao;
 
 /**
  * 账套中心

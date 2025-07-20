@@ -15,7 +15,7 @@ namespace app\admin\controller\system;
 use app\admin\controller\Crud;
 use app\admin\validate\system\SysDictValidate;
 use app\common\services\system\SysDictService;
-use madong\admin\utils\Json;
+use core\utils\Json;
 use support\Container;
 use support\Request;
 

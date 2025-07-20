@@ -15,8 +15,8 @@ namespace app\admin\controller\platform;
 use app\admin\controller\Crud;
 use app\admin\validate\platform\DbSettingValidate;
 use app\common\services\platform\DbSettingService;
-use madong\admin\utils\Json;
-use madong\admin\utils\Util;
+use core\utils\Json;
+use core\utils\Util;
 use support\Container;
 use support\Request;
 

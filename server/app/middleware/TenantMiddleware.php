@@ -14,8 +14,8 @@ namespace app\middleware;
 
 use app\common\scopes\global\TenantScope;
 use app\common\services\platform\TenantSessionService;
-use madong\admin\context\TenantContext;
-use madong\admin\utils\Json;
+use core\context\TenantContext;
+use core\utils\Json;
 use support\Container;
 use Webman\Http\Request;
 use Webman\Http\Response;
@@ -61,7 +61,7 @@ class TenantMiddleware implements MiddlewareInterface
         $clientId = $request->header('X-Client-ID', null);
 
         // 5. 尝试从请求头或参数中获取 token
-        $tokenHeader = $request->header(config('plugin.madong.jwt.app.jwt.token_name', 'Authorization'));
+        $tokenHeader = $request->header(config('core.jwt.app.token_name', 'Authorization'));
         $token       = '';
         if ($tokenHeader) {
             // 去掉 'Bearer ' 前缀（如果存在）

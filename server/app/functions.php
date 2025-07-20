@@ -5,7 +5,7 @@
 
 use app\common\model\system\SysAdmin;
 use app\common\services\system\SysConfigService;
-use madong\jwt\JwtToken;
+use core\jwt\JwtToken;
 use support\Container;
 
 /**
@@ -45,7 +45,7 @@ function resolveAuthorizationToken(): ?string
         return null;
     }
     // 尝试从header获取
-    $tokenName     = config('plugin.madong.jwt.app.jwt.token_name', 'Authorization');
+    $tokenName     = config('core.jwt.app.token_name', 'Authorization');
     $authorization = $request->header($tokenName);
     // 尝试从query参数获取
     if (empty($authorization) || $authorization === 'undefined') {

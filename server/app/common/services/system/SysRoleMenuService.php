@@ -13,8 +13,8 @@
 namespace app\common\services\system;
 
 use app\common\dao\system\SysRoleMenuDao;
-use madong\admin\abstract\BaseService;
-use madong\admin\ex\AdminException;
+use core\exception\handler\AdminException;
+use core\abstract\BaseService;
 
 /**
  * @method getColumn(int[]|string[] $array, string $string)

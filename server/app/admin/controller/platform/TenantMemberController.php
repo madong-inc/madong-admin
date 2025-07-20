@@ -16,8 +16,8 @@ use app\admin\controller\Crud;
 use app\admin\validate\platform\TenantMemberValidate;
 use app\admin\validate\system\SysAdminValidate;
 use app\common\services\platform\TenantMemberService;
-use madong\admin\ex\AdminException;
-use madong\admin\utils\Json;
+use core\exception\handler\AdminException;
+use core\utils\Json;
 use support\Container;
 use support\Request;
 

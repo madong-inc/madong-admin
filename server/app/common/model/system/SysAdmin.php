@@ -15,9 +15,9 @@ namespace app\common\model\system;
 use app\common\model\platform\Tenant;
 use app\common\scopes\global\TenantScope;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use madong\admin\abstract\BaseModel;
-use madong\admin\context\TenantContext;
-use madong\casbin\model\RuleModel;
+use core\abstract\BaseModel;
+use core\context\TenantContext;
+use core\casbin\model\RuleModel;
 use support\Db;
 
 /**

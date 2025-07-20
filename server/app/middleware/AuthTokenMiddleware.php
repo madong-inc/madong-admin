@@ -12,8 +12,8 @@
 
 namespace app\middleware;
 
-use madong\exception\handler\UnauthorizedHttpException;
-use madong\jwt\JwtToken;
+use core\jwt\JwtToken;
+use core\exception\handler\UnauthorizedHttpException;
 use Webman\Http\Request;
 use Webman\Http\Response;
 use Webman\MiddlewareInterface;
@@ -28,7 +28,7 @@ class AuthTokenMiddleware implements MiddlewareInterface
 {
 
     /**
-     * @throws \madong\exception\handler\UnauthorizedHttpException
+     * @throws \core\exception\handler\UnauthorizedHttpException
      */
     public function process(Request $request, callable $handler): Response
     {

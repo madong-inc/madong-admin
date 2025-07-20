@@ -12,8 +12,8 @@
 
 namespace app\middleware;
 
-use madong\admin\utils\Json;
-use madong\jwt\JwtToken;
+use core\jwt\JwtToken;
+use core\utils\Json;
 use Webman\Http\Request;
 use Webman\Http\Response;
 use Webman\MiddlewareInterface;

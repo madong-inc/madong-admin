@@ -41,7 +41,7 @@ $basic = [
  * 数据连接配置
  */
 $defaultKey  = 'mysql';
-$connections = \madong\admin\services\db\DbConfigManagerService::getConfig($basic, $defaultKey, true);
+$connections = \core\db\DbConfigManagerService::getConfig($basic, $defaultKey, true);
 return [
     'default'     => $defaultKey,
     'connections' => $connections??[],

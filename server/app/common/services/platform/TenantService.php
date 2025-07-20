@@ -22,10 +22,10 @@ use app\common\services\system\SysAdminTenantService;
 use DateTime;
 use Exception;
 use InvalidArgumentException;
-use madong\admin\abstract\BaseService;
+use core\abstract\BaseService;
 use madong\helper\Arr;
 use madong\helper\PropertyCopier;
-use madong\admin\services\uuid\UUIDGenerator;
+use core\uuid\UUIDGenerator;
 use support\Container;
 
 class TenantService extends BaseService

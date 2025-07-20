@@ -15,7 +15,7 @@ namespace app\admin\controller\system;
 use app\admin\controller\Crud;
 use app\admin\validate\system\SysNoticeValidate;
 use app\common\services\system\SysNoticeService;
-use madong\admin\services\email\MessagePushService;
+use core\email\MessagePushService;
 use support\Container;
 
 class SysNoticeController extends Crud

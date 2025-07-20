@@ -13,9 +13,9 @@
 namespace app\common\services\platform;
 
 use app\common\dao\platform\DbSettingDao;
-use madong\admin\abstract\BaseService;
-use madong\admin\context\TenantContext;
-use madong\admin\services\db\DataImporterService;
+use core\abstract\BaseService;
+use core\context\TenantContext;
+use core\db\DataImporterService;
 use support\Container;
 
 class DbSettingService extends BaseService

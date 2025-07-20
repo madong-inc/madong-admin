@@ -16,7 +16,7 @@ namespace app\common\scopes\global;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
-use madong\admin\context\TenantContext;
+use core\context\TenantContext;
 use support\Db;
 
 /**

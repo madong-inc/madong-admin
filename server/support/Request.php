@@ -13,7 +13,7 @@
 
 namespace support;
 
-use madong\admin\services\cache\CacheService;
+use core\cache\CacheService;
 use Spatie\Macroable\Macroable;
 
 /**

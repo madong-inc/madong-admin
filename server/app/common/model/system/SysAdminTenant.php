@@ -15,8 +15,8 @@ namespace app\common\model\system;
 use app\common\model\platform\Tenant;
 use app\common\scopes\global\TenantScope;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use madong\admin\abstract\BaseModel;
-use madong\admin\abstract\BasePivot;
+use core\abstract\BaseModel;
+use core\abstract\BasePivot;
 
 /**
  * 管理员-租户列表

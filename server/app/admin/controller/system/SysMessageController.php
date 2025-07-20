@@ -16,7 +16,7 @@ use app\admin\controller\Crud;
 use app\admin\validate\system\SysMessageValidate;
 use app\common\services\system\SysMessageService;
 use app\common\enum\system\MessageStatus;
-use madong\admin\utils\Json;
+use core\utils\Json;
 use support\Container;
 use support\Request;
 

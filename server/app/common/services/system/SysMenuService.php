@@ -14,7 +14,7 @@ namespace app\common\services\system;
 
 use app\common\dao\system\SysMenuDao;
 use app\common\model\system\SysMenu;
-use madong\admin\abstract\BaseService;
+use core\abstract\BaseService;
 use madong\helper\Arr;
 use madong\helper\Tree;
 use support\Container;

@@ -12,12 +12,10 @@
 
 namespace app\common\services\system;
 
-use app\common\dao\system\SysCasbinDao;
 use app\common\enum\system\PolicyPrefix;
-use madong\admin\abstract\BaseService;
-use madong\admin\ex\AdminException;
-use madong\casbin\Permission;
-use support\Container;
+use core\exception\handler\AdminException;
+use core\abstract\BaseService;
+use core\casbin\Permission;
 
 class SysCasbinService extends BaseService
 {

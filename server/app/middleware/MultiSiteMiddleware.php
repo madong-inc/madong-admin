@@ -14,9 +14,9 @@ namespace app\middleware;
 
 use app\common\scopes\global\TenantScope;
 use app\common\services\platform\TenantService;
-use madong\admin\context\TenantContext;
-use madong\exception\handler\ServerErrorHttpException;
-use madong\exception\handler\UnauthorizedHttpException;
+use core\context\TenantContext;
+use core\exception\handler\ServerErrorHttpException;
+use core\exception\handler\UnauthorizedHttpException;
 use support\Container;
 use Webman\Http\Request;
 use Webman\Http\Response;
@@ -32,8 +32,8 @@ class MultiSiteMiddleware implements MiddlewareInterface
 {
 
     /**
-     * @throws \madong\exception\handler\UnauthorizedHttpException
-     * @throws \madong\exception\handler\ServerErrorHttpException
+     * @throws \core\exception\handler\UnauthorizedHttpException
+     * @throws \core\exception\handler\ServerErrorHttpException
      */
     public function process(Request $request, callable $handler): Response
     {

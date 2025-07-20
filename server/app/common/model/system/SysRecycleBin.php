@@ -12,8 +12,8 @@
 
 namespace app\common\model\system;
 
-use madong\admin\abstract\BaseModel;
-use madong\admin\context\TenantContext;
+use core\abstract\BaseModel;
+use core\context\TenantContext;
 
 /**
  * 附件模型

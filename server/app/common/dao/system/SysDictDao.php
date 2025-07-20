@@ -13,7 +13,7 @@
 namespace app\common\dao\system;
 
 use app\common\model\system\SysDict;
-use madong\admin\abstract\BaseDao;
+use core\abstract\BaseDao;
 
 class SysDictDao extends BaseDao
 {

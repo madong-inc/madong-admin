@@ -14,12 +14,12 @@ namespace app\admin\controller\system;
 
 use app\admin\controller\Crud;
 use app\admin\validate\system\SysAdminTenantValidate;
-use app\common\scopes\global\TenantScope;
-use madong\admin\context\TenantContext;
 use app\common\model\platform\Tenant;
+use app\common\scopes\global\TenantScope;
 use app\common\services\system\SysAdminTenantService;
-use madong\admin\ex\AdminException;
-use madong\admin\utils\Json;
+use core\exception\handler\AdminException;
+use core\context\TenantContext;
+use core\utils\Json;
 use support\Container;
 use support\Request;
 

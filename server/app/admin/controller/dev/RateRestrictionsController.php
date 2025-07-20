@@ -15,8 +15,8 @@ namespace app\admin\controller\dev;
 use app\admin\controller\Crud;
 use app\admin\validate\dev\RateRestrictionsValidate;
 use app\common\services\system\SysRetaRestrictionsService;
-use madong\admin\ex\AdminException;
-use madong\admin\utils\Json;
+use core\exception\handler\AdminException;
+use core\utils\Json;
 use support\Container;
 use support\Request;
 

@@ -17,8 +17,8 @@ use app\admin\validate\platform\TenantValidate;
 use app\common\scopes\global\TenantScope;
 use app\common\services\platform\TenantPackageService;
 use app\common\services\platform\TenantService;
-use madong\admin\ex\AdminException;
-use madong\admin\utils\Json;
+use core\exception\handler\AdminException;
+use core\utils\Json;
 use support\Container;
 use support\Request;
 

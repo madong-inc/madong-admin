@@ -13,7 +13,7 @@
 namespace app\common\services\system;
 
 use app\common\dao\system\SysDictDao;
-use madong\admin\abstract\BaseService;
+use core\abstract\BaseService;
 use ReflectionClass;
 use ReflectionException;
 use support\Container;

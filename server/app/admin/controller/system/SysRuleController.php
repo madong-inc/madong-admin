@@ -15,7 +15,7 @@ namespace app\admin\controller\system;
 use app\admin\controller\Crud;
 use app\common\services\system\SysRuleCateService;
 use app\common\services\system\SysRuleService;
-use madong\admin\utils\Json;
+use core\utils\Json;
 use support\Container;
 use support\Request;
 

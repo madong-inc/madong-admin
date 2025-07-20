@@ -13,7 +13,7 @@
 namespace app\common\services\system;
 
 use app\common\dao\system\SysAdminTenantRoleDao;
-use madong\admin\abstract\BaseService;
+use core\abstract\BaseService;
 use support\Container;
 
 /**

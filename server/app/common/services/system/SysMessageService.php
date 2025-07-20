@@ -13,9 +13,9 @@
 namespace app\common\services\system;
 
 use app\common\dao\system\SysMessageDao;
-use madong\admin\abstract\BaseService;
+use core\abstract\BaseService;
 use app\common\enum\system\MessageStatus;
-use madong\admin\services\email\MessagePushService;
+use core\email\MessagePushService;
 use madong\ingenious\libs\utils\ArrayHelper;
 use support\Container;
 

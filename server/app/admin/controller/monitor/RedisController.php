@@ -13,8 +13,8 @@
 namespace app\admin\controller\monitor;
 
 use app\admin\controller\Crud;
-use madong\admin\utils\Json;
-use madong\admin\services\monitor\ServerMonitor;
+use core\utils\Json;
+use core\monitor\ServerMonitor;
 use support\Container;
 use support\Request;
 

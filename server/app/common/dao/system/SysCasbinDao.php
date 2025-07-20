@@ -12,7 +12,7 @@
 
 namespace app\common\dao\system;
 
-use madong\casbin\model\RuleModel;
+use core\casbin\model\RuleModel;
 
 /**
  *

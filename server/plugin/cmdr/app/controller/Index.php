@@ -12,7 +12,7 @@
 
 namespace plugin\cmdr\app\controller;
 
-use madong\admin\utils\Util;
+use core\utils\Util;
 use plugin\cmdr\app\common\Json;
 use plugin\cmdr\app\service\Terminal;
 use support\Request;

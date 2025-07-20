@@ -14,7 +14,7 @@ namespace app\common\services\system;
 
 
 use app\common\dao\system\SysTenantMenuDao;
-use madong\admin\abstract\BaseService;
+use core\abstract\BaseService;
 
 /**
  * @method save(array $data)

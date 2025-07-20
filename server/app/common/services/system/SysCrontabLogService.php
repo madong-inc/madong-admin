@@ -13,7 +13,7 @@
 namespace app\common\services\system;
 
 use app\common\dao\system\SysCrontabLogDao;
-use madong\admin\abstract\BaseService;
+use core\abstract\BaseService;
 
 class SysCrontabLogService extends BaseService
 {

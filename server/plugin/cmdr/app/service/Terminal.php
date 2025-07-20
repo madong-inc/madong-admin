@@ -13,7 +13,7 @@
 namespace plugin\cmdr\app\service;
 
 use Illuminate\Filesystem\Filesystem;
-use madong\admin\utils\Util;
+use core\utils\Util;
 use plugin\cmdr\app\enum\CommandEvent;
 
 /**

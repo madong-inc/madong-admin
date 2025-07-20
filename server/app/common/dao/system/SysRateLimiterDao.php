@@ -13,7 +13,7 @@
 namespace app\common\dao\system;
 
 use app\common\model\system\SysRateLimiter;
-use madong\admin\abstract\BaseDao;
+use core\abstract\BaseDao;
 
 /**
  *  限流

@@ -6,7 +6,7 @@ use app\common\services\platform\TenantSessionService;
 use app\common\services\system\SysLoginLogService;
 use app\common\services\system\SysMenuService;
 use app\common\services\system\SysOperateLogService;
-use madong\admin\context\TenantContext;
+use core\context\TenantContext;
 use support\Container;
 
 class UserActionLogEvent

@@ -14,8 +14,8 @@ namespace app\common\dao\system;
 
 use app\common\model\system\SysAdmin;
 use InvalidArgumentException;
-use madong\admin\abstract\BaseDao;
-use madong\admin\context\TenantContext;
+use core\abstract\BaseDao;
+use core\context\TenantContext;
 
 class SysAdminDao extends BaseDao
 {

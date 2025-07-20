@@ -13,9 +13,9 @@
 namespace app\admin\controller;
 
 use app\common\services\system\SysAdminService;
-use madong\admin\ex\AdminException;
-use madong\captcha\Captcha;
-use madong\admin\utils\Json;
+use core\exception\handler\AdminException;
+use core\utils\Json;
+use core\captcha\Captcha;
 use support\Container;
 use support\Request;
 

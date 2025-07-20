@@ -2,8 +2,8 @@
 
 namespace plugin\install\app\controller;
 
-use madong\admin\services\db\DataImporterService;
-use madong\admin\utils\Util;
+use core\db\DataImporterService;
+use core\utils\Util;
 use plugin\cmdr\app\service\Terminal;
 use plugin\install\app\common\Json;
 use Webman\RedisQueue\Client;

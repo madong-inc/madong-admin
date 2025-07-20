@@ -13,8 +13,8 @@
 namespace app\common\services\system;
 
 use app\common\dao\system\SysDeptDao;
-use madong\admin\abstract\BaseService;
-use madong\admin\ex\AdminException;
+use core\exception\handler\AdminException;
+use core\abstract\BaseService;
 use support\Container;
 
 class SysDeptService extends BaseService

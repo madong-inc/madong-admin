@@ -47,7 +47,7 @@ return [
                 base_path() . '/support',
                 base_path() . '/resource',
                 //                base_path() . '/.env',//这里注释避免安装过程中失联
-                base_path() . '/packages',
+                base_path() . '/core',
             ], glob(base_path() . '/plugin/*/app'), glob(base_path() . '/plugin/*/config'), glob(base_path() . '/plugin/*/api')),
             // Files with these suffixes will be monitored
             'monitorExtensions' => [
@@ -60,9 +60,9 @@ return [
         ],
     ],
     'webman-scheduler'  => [
-        'handler' => \madong\admin\services\scheduler\SchedulerServer::class,
+        'handler' => \core\scheduler\SchedulerServer::class,
         'count'   => 1,
-        'listen'  => 'text://' . config('plugin.madong.admin.task.listen', '0.0.0.0:2346'),
+        'listen'  => 'text://' . config('core.scheduler.app.listen', '0.0.0.0:2346'),
     ],
     'push_notification' => [
         'handler' => \app\common\process\PushNotification::class,

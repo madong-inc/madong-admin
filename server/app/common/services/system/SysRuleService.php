@@ -15,8 +15,8 @@ namespace app\common\services\system;
 use app\common\dao\system\SysRouteDao;
 use app\common\model\system\SysRoute;
 use app\common\model\system\SysRouteCate;
-use madong\admin\abstract\BaseService;
-use madong\admin\services\route\RouteOrganizerService;
+use core\abstract\BaseService;
+use core\route\RouteOrganizerService;
 use support\Container;
 
 /**

@@ -14,7 +14,7 @@ namespace app\common\dao\system;
 
 
 use app\common\model\system\SysAdminRole;
-use madong\admin\abstract\BaseDao;
+use core\abstract\BaseDao;
 
 class SysAdminRoleDao extends BaseDao
 {

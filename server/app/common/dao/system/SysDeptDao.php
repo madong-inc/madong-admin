@@ -14,7 +14,7 @@ namespace app\common\dao\system;
 
 use app\common\model\system\SysDept;
 use Illuminate\Support\Collection;
-use madong\admin\abstract\BaseDao;
+use core\abstract\BaseDao;
 
 class SysDeptDao extends BaseDao
 {

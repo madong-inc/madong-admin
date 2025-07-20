@@ -16,7 +16,7 @@ use app\common\model\system\SysRateLimiter;
 use app\common\model\system\SysRateRestrictions;
 use app\common\services\system\SysRetaLimiterService;
 use app\common\services\system\SysRetaRestrictionsService;
-use madong\admin\services\cache\CacheService;
+use core\cache\CacheService;
 use support\Container;
 use Webman\Http\Request;
 use Webman\Http\Response;

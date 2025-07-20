@@ -13,7 +13,7 @@
 namespace app\common\services\system;
 
 use app\common\dao\system\SysOperateLogDao;
-use madong\admin\abstract\BaseService;
+use core\abstract\BaseService;
 use support\Container;
 
 /**

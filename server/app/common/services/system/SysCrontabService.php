@@ -3,12 +3,12 @@
 namespace app\common\services\system;
 
 use app\common\dao\system\SysCrontabDao;
-use madong\admin\abstract\BaseService;
 use app\common\enum\system\OperationResult;
 use app\common\enum\system\TaskScheduleCycle;
-use madong\admin\ex\AdminException;
-use madong\admin\services\scheduler\Client;
-use madong\admin\services\scheduler\event\EventBootstrap;
+use core\exception\handler\AdminException;
+use core\abstract\BaseService;
+use core\scheduler\Client;
+use core\scheduler\event\EventBootstrap;
 use support\Container;
 
 /**
@@ -248,7 +248,7 @@ class SysCrontabService extends BaseService
     public function runOneTask($id): array
     {
         /**  @var $task_handle EventBootstrap[] */
-        $task_handle = config('plugin.madong.admin.task.task_handle');
+        $task_handle = config('core.scheduler.app.task_handle', []);
         $crontab     = $this->dao->get($id);
         $start_time  = microtime(true);
         try {

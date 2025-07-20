@@ -13,7 +13,7 @@
 namespace app\common\dao\platform;
 
 use app\common\model\platform\DbSetting;
-use madong\admin\abstract\BaseDao;
+use core\abstract\BaseDao;
 
 /**
  * 数据中心

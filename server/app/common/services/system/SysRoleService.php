@@ -16,15 +16,13 @@ use app\common\dao\system\SysRoleDao;
 use app\common\enum\system\PolicyPrefix;
 use app\common\model\system\SysRole;
 use app\common\scopes\global\TenantScope;
-use madong\admin\abstract\BaseService;
-use madong\admin\context\TenantContext;
-use app\common\enum\system\MenuType;
-use madong\admin\ex\AdminException;
-use madong\casbin\Permission;
+use core\exception\handler\AdminException;
+use core\abstract\BaseService;
+use core\context\TenantContext;
+use core\casbin\Permission;
 use madong\helper\Arr;
 use madong\helper\PropertyCopier;
 use support\Container;
-use support\Db;
 
 class SysRoleService extends BaseService
 {

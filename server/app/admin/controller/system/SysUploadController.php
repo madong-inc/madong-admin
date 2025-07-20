@@ -14,8 +14,8 @@ namespace app\admin\controller\system;
 
 use app\admin\controller\Crud;
 use app\common\services\system\SysUploadService;
-use madong\admin\ex\AdminException;
-use madong\admin\utils\Json;
+use core\exception\handler\AdminException;
+use core\utils\Json;
 use support\Request;
 use Webman\RedisQueue\Client;
 

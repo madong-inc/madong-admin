@@ -13,8 +13,8 @@
 namespace app\common\model\system;
 
 use Illuminate\Database\Eloquent\Relations\Pivot;
-use madong\admin\context\TenantContext;
-use madong\casbin\model\RuleModel;
+use core\context\TenantContext;
+use core\casbin\model\RuleModel;
 
 /**
  * 关联模型-策略表

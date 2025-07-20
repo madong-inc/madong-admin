@@ -13,7 +13,7 @@
 namespace app\common\model\system;
 
 use Illuminate\Support\Carbon;
-use madong\admin\abstract\BaseModel;
+use core\abstract\BaseModel;
 
 /**
  * 限访模型

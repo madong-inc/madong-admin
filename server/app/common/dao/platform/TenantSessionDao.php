@@ -13,7 +13,7 @@
 namespace app\common\dao\platform;
 
 use app\common\model\platform\TenantSession;
-use madong\admin\abstract\BaseDao;
+use core\abstract\BaseDao;
 
 /**
  *
