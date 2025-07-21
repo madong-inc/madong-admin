@@ -10,7 +10,7 @@
  * Official Website: http://www.madong.tech
  */
 
-namespace app\common\enum;
+namespace core\enum;
 
 interface IEnum
 {

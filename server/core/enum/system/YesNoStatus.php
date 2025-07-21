@@ -10,23 +10,21 @@
  * Official Website: http://www.madong.tech
  */
 
-namespace app\common\enum\system;
+namespace core\enum\system;
 
-use app\common\enum\IEnum;
-
-enum LockedStatus: int implements IEnum
+enum YesNoStatus: int
 {
-    case LOCKED = 1;   // 锁定状态
-    case UNLOCKED = 0; // 未锁定状态
+    case YES = 1;
+    case NO = 0;
 
     /**
      * 获取人类可读的标签
      */
     public function label(): string
     {
-        return match ($this) {
-            self::LOCKED => '是',    // 锁定状态显示"是"
-            self::UNLOCKED => '否',  // 未锁定状态显示"否"
+         return match ($this) {
+            self::YES => '是',
+            self::NO => '否',
         };
     }
 
@@ -36,8 +34,8 @@ enum LockedStatus: int implements IEnum
     public function color(): string
     {
         return match ($this) {
-            self::LOCKED => '#FF5252',  // 锁定状态显示红色
-            self::UNLOCKED => '#4CAF50',// 未锁定状态显示绿色
+            self::YES => '#4CAF50',  // 绿色
+            self::NO => '#FF5252',  // 红色
         };
     }
 }

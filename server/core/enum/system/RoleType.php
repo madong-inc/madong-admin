@@ -10,27 +10,28 @@
  * Official Website: http://www.madong.tech
  */
 
-namespace app\common\enum\system;
+namespace core\enum\system;
 
-use app\common\enum\IEnum;
+use core\enum\IEnum;
 
 /**
- * 字典数据类型枚举
+ * 角色类型枚举
  *
  * @author Mr.April
  * @since  1.0
  */
-enum DictDataType:int implements IEnum
+enum RoleType :int implements IEnum
 {
 
-    case STRING=1;
-    case INTEGER=2;
+    // 枚举成员定义
+    case NORMAL = 1;
+    case DATA = 2;
 
     public function label(): string
     {
-         return match($this) {
-            self::STRING => '字符串',
-            self::INTEGER => '整型',
+        return match ($this){
+            self::NORMAL=>'普通角色',
+            self::DATA=>'数据角色',
         };
     }
 }

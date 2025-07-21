@@ -12,8 +12,6 @@
 
 namespace core\context;
 
-use app\common\enum\platform\IsolationMode;
-
 interface RequestTenantContextInterface
 {
     public function get(?string $name = null, mixed $default = null): mixed;

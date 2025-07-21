@@ -12,14 +12,14 @@
 
 namespace app\middleware;
 
-use app\common\enum\system\PolicyPrefix;
 use app\common\services\system\SysMenuService;
 use Casbin\Exceptions\CasbinException;
-use core\jwt\JwtToken;
-use core\context\TenantContext;
 use core\casbin\Permission;
+use core\context\TenantContext;
+use core\enum\system\PolicyPrefix;
 use core\exception\handler\ForbiddenHttpException;
 use core\exception\handler\UnauthorizedHttpException;
+use core\jwt\JwtToken;
 use Webman\Http\Request;
 use Webman\Http\Response;
 use Webman\MiddlewareInterface;

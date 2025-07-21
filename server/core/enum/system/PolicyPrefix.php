@@ -10,9 +10,9 @@
  * Official Website: https://madong.tech
  */
 
-namespace app\common\enum\system;
+namespace core\enum\system;
 
-use app\common\enum\IEnum;
+use core\enum\IEnum;
 
 /**
  * Casbin 策略前缀

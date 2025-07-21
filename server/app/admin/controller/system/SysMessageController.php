@@ -15,7 +15,7 @@ namespace app\admin\controller\system;
 use app\admin\controller\Crud;
 use app\admin\validate\system\SysMessageValidate;
 use app\common\services\system\SysMessageService;
-use app\common\enum\system\MessageStatus;
+use core\enum\system\MessageStatus;
 use core\utils\Json;
 use support\Container;
 use support\Request;

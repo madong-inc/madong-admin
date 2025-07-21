@@ -13,13 +13,13 @@
 namespace app\common\services\system;
 
 use app\common\dao\system\SysRoleDao;
-use app\common\enum\system\PolicyPrefix;
 use app\common\model\system\SysRole;
 use app\common\scopes\global\TenantScope;
-use core\exception\handler\AdminException;
 use core\abstract\BaseService;
-use core\context\TenantContext;
 use core\casbin\Permission;
+use core\context\TenantContext;
+use core\enum\system\PolicyPrefix;
+use core\exception\handler\AdminException;
 use madong\helper\Arr;
 use madong\helper\PropertyCopier;
 use support\Container;

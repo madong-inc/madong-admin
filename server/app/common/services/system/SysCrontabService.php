@@ -3,10 +3,10 @@
 namespace app\common\services\system;
 
 use app\common\dao\system\SysCrontabDao;
-use app\common\enum\system\OperationResult;
-use app\common\enum\system\TaskScheduleCycle;
-use core\exception\handler\AdminException;
 use core\abstract\BaseService;
+use core\enum\system\OperationResult;
+use core\enum\system\TaskScheduleCycle;
+use core\exception\handler\AdminException;
 use core\scheduler\Client;
 use core\scheduler\event\EventBootstrap;
 use support\Container;
@@ -318,7 +318,7 @@ class SysCrontabService extends BaseService
     /**
      * 验证器
      *
-     * @param \app\common\enum\system\TaskScheduleCycle $task_cycle
+     * @param \core\enum\system\TaskScheduleCycle       $task_cycle
      * @param                                           $minute
      * @param                                           $hour
      * @param                                           $day
@@ -386,7 +386,7 @@ class SysCrontabService extends BaseService
     /**
      * 生成任务表达式
      *
-     * @param \app\common\enum\system\TaskScheduleCycle $task_cycle
+     * @param \core\enum\system\TaskScheduleCycle       $task_cycle
      * @param                                           $minute
      * @param                                           $hour
      * @param                                           $day

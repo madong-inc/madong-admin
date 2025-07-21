@@ -2,7 +2,7 @@
 
 namespace core\scheduler\event;
 
-use app\common\enum\system\OperationResult;
+use core\enum\system\OperationResult;
 
 class ShellTask implements EventBootstrap
 {

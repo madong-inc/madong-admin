@@ -10,30 +10,22 @@
  * Official Website: http://www.madong.tech
  */
 
-namespace app\common\enum\system;
+namespace core\enum\system;
 
-use app\common\enum\IEnum;
-
-/**
- * 租户成员类型
- *
- * @author Mr.April
- * @since  1.0
- */
-enum TenantAdminType: int implements IEnum
+enum NoticeType: string
 {
-    // 枚举成员定义
-    case ADMIN = 1;
-    case NORMAL_ADMIN = 2;
 
-    /**
-     * 获取显示标签
-     */
+    case ANNOUNCEMENT = 'announcement';
+    case NOTICE = 'notice';
+
+
+
+    //定义一个方法以获取状态的描述
     public function label(): string
     {
         return match ($this) {
-            self::ADMIN => '管理员',
-            self::NORMAL_ADMIN => '普通成员',
+            self::ANNOUNCEMENT => '公告',
+            self::NOTICE => '通知',
         };
     }
 
@@ -41,9 +33,8 @@ enum TenantAdminType: int implements IEnum
     public function color(): string
     {
         return match ($this) {
-            self::ADMIN => '#2196F3',
-            self::NORMAL_ADMIN => '#4CAF50',
+            self::ANNOUNCEMENT => '#2196F3',
+            self::NOTICE => '#4CAF50',
         };
     }
-
 }

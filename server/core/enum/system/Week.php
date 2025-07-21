@@ -10,7 +10,7 @@
  * Official Website: https://madong.tech
  */
 
-namespace app\common\enum\system;
+namespace core\enum\system;
 
 enum Week: int
 {

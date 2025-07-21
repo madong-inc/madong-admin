@@ -14,22 +14,17 @@ namespace app\common\services\system;
 
 use app\common\dao\system\SysAdminDao;
 use app\common\dao\system\SysDeptDao;
-use app\common\enum\system\PolicyPrefix;
 use app\common\model\system\SysAdmin;
 use app\common\model\system\SysRoleDept;
 use app\common\services\platform\TenantPackageService;
-use app\common\services\platform\TenantService;
-use Illuminate\Contracts\Validation\ValidatorAwareRule;
 use core\abstract\BaseService;
+use core\casbin\Permission;
 use core\context\TenantContext;
+use core\enum\system\PolicyPrefix;
 use core\exceptioncopy\AuthException;
 use madong\admin\services\jwt\JwtAuth;
-use core\casbin\Permission;
-use madong\helper\Dict;
 use madong\interface\IDict;
-use core\cache\CacheService;
 use support\Container;
-use support\Request;
 
 class SysAuthService extends BaseService
 {

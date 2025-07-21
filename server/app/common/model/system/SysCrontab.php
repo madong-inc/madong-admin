@@ -12,9 +12,9 @@
 
 namespace app\common\model\system;
 
-use InvalidArgumentException;
 use core\abstract\BaseModel;
-use app\common\enum\system\TaskScheduleCycle;
+use core\enum\system\TaskScheduleCycle;
+use InvalidArgumentException;
 
 /**
  * 定时任务

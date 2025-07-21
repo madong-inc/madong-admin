@@ -13,13 +13,13 @@
 namespace app\common\services\platform;
 
 use app\common\dao\platform\TenantSubscriptionDao;
-use app\common\enum\system\PolicyPrefix;
 use app\common\model\platform\TenantSubscription;
 use app\common\services\system\SysCasbinService;
 use app\common\services\system\SysMenuService;
 use core\abstract\BaseService;
-use core\context\TenantContext;
 use core\casbin\Permission;
+use core\context\TenantContext;
+use core\enum\system\PolicyPrefix;
 use support\Container;
 
 /**

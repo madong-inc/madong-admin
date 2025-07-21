@@ -10,7 +10,7 @@
  * Official Website: http://www.madong.tech
  */
 
-namespace app\common\enum\system;
+namespace core\enum\system;
 
 enum MessageType: int
 {

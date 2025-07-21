@@ -12,9 +12,9 @@
 
 namespace app\admin\validate\platform;
 
-use app\common\enum\platform\IsolationMode;
 use app\common\model\platform\Tenant;
 use app\common\model\system\SysAdmin;
+use core\enum\platform\IsolationMode;
 use think\Validate;
 
 class TenantValidate extends Validate

@@ -13,10 +13,10 @@
 namespace app\common\services\platform;
 
 use app\common\dao\platform\TenantPackageDao;
-use app\common\enum\system\PolicyPrefix;
-use InvalidArgumentException;
 use core\abstract\BaseService;
 use core\casbin\Permission;
+use core\enum\system\PolicyPrefix;
+use InvalidArgumentException;
 use support\Container;
 
 /**

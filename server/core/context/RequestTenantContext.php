@@ -12,7 +12,7 @@
 
 namespace core\context;
 
-use app\common\enum\platform\IsolationMode;
+use core\enum\platform\IsolationMode;
 use InvalidArgumentException;
 
 class RequestTenantContext implements RequestTenantContextInterface

@@ -10,9 +10,9 @@
  * Official Website: http://www.madong.tech
  */
 
-namespace app\common\enum\system;
+namespace core\enum\system;
 
-use app\common\enum\IEnum;
+use core\enum\IEnum;
 
 enum MenuOpenType:int implements IEnum
 {

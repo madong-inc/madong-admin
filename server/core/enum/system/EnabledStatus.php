@@ -10,28 +10,32 @@
  * Official Website: http://www.madong.tech
  */
 
-namespace app\common\enum\system;
+namespace core\enum\system;
 
-enum TaskScheduleMode: int
+enum EnabledStatus: int
 {
-    case CYCLE = 1;   // 循环模式
-    case ONCE = 0;    // 单次模式
+    case ENABLED = 1;
+    case DISABLED = 0;
 
+    /**
+     * 获取人类可读的标签
+     */
     public function label(): string
     {
-        return match ($this) {
-            self::CYCLE => '循环',
-            self::ONCE => '单次',
+         return match ($this) {
+            self::ENABLED => '启用',
+            self::DISABLED => '禁用',
         };
     }
 
-    // 设置标签颜色
+    /**
+     * 获取对应的颜色值
+     */
     public function color(): string
     {
         return match ($this) {
-            self::CYCLE => '#2196F3',
-            self::ONCE => '#4CAF50',
+            self::ENABLED => '#4CAF50',  // 绿色
+            self::DISABLED => '#FF5252',  // 红色
         };
     }
-
 }

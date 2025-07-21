@@ -12,10 +12,10 @@
 
 namespace app\common\services\system;
 
-use app\common\enum\system\PolicyPrefix;
-use core\exception\handler\AdminException;
 use core\abstract\BaseService;
 use core\casbin\Permission;
+use core\enum\system\PolicyPrefix;
+use core\exception\handler\AdminException;
 
 class SysCasbinService extends BaseService
 {

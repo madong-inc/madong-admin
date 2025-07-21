@@ -10,32 +10,29 @@
  * Official Website: http://www.madong.tech
  */
 
-namespace app\common\enum\system;
+namespace core\enum\system;
 
-enum MessagePriority: int
+enum MessageStatus: string
 {
-    case EMERGENCY = 1; // 紧急 - 最高优先级
-    case URGENT = 2;    // 急迫
-    case NORMAL = 3;    // 普通 - 默认优先级
+
+    case UNREAD = 'unread';
+    case READ = 'read';
 
     //定义一个方法以获取状态的描述
     public function label(): string
     {
         return match ($this) {
-            self::EMERGENCY => '紧急',
-            self::URGENT => '急迫',
-            self::NORMAL => '普通'
+            self::UNREAD => '未读',
+            self::READ => '已读',
         };
     }
 
-    //定义一个方法设置标签颜色-如果没有定义自动生成
+    // 设置标签颜色
     public function color(): string
     {
         return match ($this) {
-            self::EMERGENCY => 'red',
-            self::URGENT => 'orange',
-            self::NORMAL => 'blue'
+            self::UNREAD => 'orange',
+            self::READ => 'green',
         };
     }
-
 }

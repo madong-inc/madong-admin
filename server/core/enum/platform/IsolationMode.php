@@ -10,9 +10,9 @@
  * Official Website: https://madong.tech
  */
 
-namespace app\common\enum\platform;
+namespace core\enum\platform;
 
-use app\common\enum\IEnum;
+use core\enum\IEnum;
 
 /**
  * 租户模式

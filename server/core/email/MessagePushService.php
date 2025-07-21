@@ -13,15 +13,13 @@
 namespace core\email;
 
 use app\common\dao\system\SysMessageDao;
-use app\common\enum\system\MessagePriority;
-use app\common\enum\system\MessageStatus;
-use app\common\enum\system\MessageType;
 use app\common\model\system\SysMessage;
 use app\common\model\system\SysNotice;
 use app\common\services\system\SysNoticeService;
+use core\enum\system\MessagePriority;
+use core\enum\system\MessageStatus;
 use madong\helper\Arr;
 use madong\interface\IDict;
-use support\Container;
 use Webman\Push\Api;
 
 class MessagePushService

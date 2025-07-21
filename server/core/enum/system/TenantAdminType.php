@@ -10,20 +10,30 @@
  * Official Website: http://www.madong.tech
  */
 
-namespace app\common\enum\system;
+namespace core\enum\system;
 
-enum MessageStatus: string
+use core\enum\IEnum;
+
+/**
+ * 租户成员类型
+ *
+ * @author Mr.April
+ * @since  1.0
+ */
+enum TenantAdminType: int implements IEnum
 {
+    // 枚举成员定义
+    case ADMIN = 1;
+    case NORMAL_ADMIN = 2;
 
-    case UNREAD = 'unread';
-    case READ = 'read';
-
-    //定义一个方法以获取状态的描述
+    /**
+     * 获取显示标签
+     */
     public function label(): string
     {
         return match ($this) {
-            self::UNREAD => '未读',
-            self::READ => '已读',
+            self::ADMIN => '管理员',
+            self::NORMAL_ADMIN => '普通成员',
         };
     }
 
@@ -31,8 +41,9 @@ enum MessageStatus: string
     public function color(): string
     {
         return match ($this) {
-            self::UNREAD => 'orange',
-            self::READ => 'green',
+            self::ADMIN => '#2196F3',
+            self::NORMAL_ADMIN => '#4CAF50',
         };
     }
+
 }

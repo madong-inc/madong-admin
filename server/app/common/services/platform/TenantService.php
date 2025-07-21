@@ -13,19 +13,18 @@
 namespace app\common\services\platform;
 
 use app\common\dao\platform\TenantDao;
-use app\common\enum\system\PolicyPrefix;
 use app\common\model\platform\Tenant;
 use app\common\model\system\SysAdmin;
 use app\common\scopes\global\TenantScope;
 use app\common\services\system\SysAdminService;
 use app\common\services\system\SysAdminTenantService;
+use core\abstract\BaseService;
+use core\enum\system\PolicyPrefix;
+use core\uuid\UUIDGenerator;
 use DateTime;
 use Exception;
-use InvalidArgumentException;
-use core\abstract\BaseService;
 use madong\helper\Arr;
 use madong\helper\PropertyCopier;
-use core\uuid\UUIDGenerator;
 use support\Container;
 
 class TenantService extends BaseService
