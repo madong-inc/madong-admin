@@ -5,7 +5,7 @@
 
 if (!function_exists('full_url')) {
     /**
-     * 获取资源完整url地址；若安装了云存储或 config/upload.php 配置了cdn_url，则自动使用对应的cdn_url
+     * 获取资源完整url地址；若安装了云存储或 config/core/upload/app.php 配置了cdn_url，则自动使用对应的cdn_url
      *
      * @param string      $relativeUrl 资源相对地址 不传入则获取域名
      * @param bool|string $domain      是否携带域名 或者直接传入域名
@@ -16,7 +16,7 @@ if (!function_exists('full_url')) {
     function full_url(string $relativeUrl = '', bool|string $domain = true, string $default = ''): string
     {
         // 从配置获取 CDN URL
-        $cdnUrl = config('upload.cdn_url', '');
+        $cdnUrl = config('core.upload.app.cdn_url', '');
 
         // 如果 CDN URL 为空，则使用默认的主机名
         if (empty($cdnUrl)) {
@@ -46,7 +46,7 @@ if (!function_exists('full_url')) {
         $url = $domain . $relativeUrl;
 
         // 添加 CDN URL 参数
-        $cdnUrlParams = config('upload.cdn_url_params');
+        $cdnUrlParams = config('core.upload.app.cdn_url_params');
         if ($domain === $cdnUrl && $cdnUrlParams) {
             $separator = str_contains($url, '?') ? '&' : '?';
             $url       .= $separator . $cdnUrlParams;

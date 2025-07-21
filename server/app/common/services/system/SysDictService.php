@@ -32,7 +32,7 @@ class SysDictService extends BaseService
 
     public function __construct()
     {
-        $this->enumDirectory = config('app.enum_scan_directories');//获取配置扫描目录
+        $this->enumDirectory = config('core.enum.app.enum_scan_directories');//获取配置扫描目录
         $this->dao           = Container::make(SysDictDao::class);
     }
 

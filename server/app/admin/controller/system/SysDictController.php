@@ -61,7 +61,7 @@ class SysDictController extends Crud
     public function enumDictList(Request $request): \support\Response
     {
 
-        $enumDirectory = config('app.enum_scan_directories',[]);
+        $enumDirectory = config('core.enum.app.enum_scan_directories',[]);
         $result        = $this->service->scanEnums($enumDirectory);
         return Json::success('ok', $result);
     }
