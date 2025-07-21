@@ -78,7 +78,7 @@
         "webman/rate-limiter": "^1.1",
         "ext-pdo": "*",
         "topthink/think-template": "^3.0",
-        "ext-gd": "*",
+        "ext-gd": "*"
     },
     "suggest": {
         "ext-event": "For better performance. "
