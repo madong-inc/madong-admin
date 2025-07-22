@@ -54,7 +54,7 @@ class LoginController extends Crud
      */
     public function getCaptchaOpenFlag(Request $request): \support\Response
     {
-        return Json::success('ok', ['flag' => config('plugin.madong.captcha.app.enable', false)]);
+        return Json::success('ok', ['flag' => config('core.captcha.app.enable', false)]);
     }
 
     /**
@@ -122,7 +122,7 @@ class LoginController extends Crud
 //                throw new AdminException('请选择数据源！');
 //            }
 
-            if (config('plugin.madong.captcha.app.enable') && $grantType === 'default') {
+            if (config('core.captcha.app.enable') && $grantType === 'default') {
                 if (!$captcha->check($uuid, $code)) {
                     throw new AdminException('图片验证码错误！');
                 }
