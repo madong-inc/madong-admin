@@ -39,11 +39,4 @@ class SysRouteCate extends BaseModel
         'updated_at',
     ];
 
-    /**
-     * 默认链接
-     */
-    protected function initialize()
-    {
-        $this->connection = config('database.default');
-    }
 }

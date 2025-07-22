@@ -54,11 +54,4 @@ class SysRateLimiter extends BaseModel
         "updated_at",
     ];
 
-    /**
-     * 特殊表使用默认链接
-     */
-    protected function initialize()
-    {
-        $this->connection = config('database.default');
-    }
 }

@@ -30,6 +30,8 @@ class SysCasbinService extends BaseService
      *
      * @param array $currentPermissions
      * @param array $incomingPolicies
+     *
+     * @throws \core\exception\handler\AdminException
      */
     public function updateCasbinPolicies(array $currentPermissions, array $incomingPolicies): void
     {

@@ -160,12 +160,4 @@ class SysCrontab extends BaseModel
         return $this->hasMany(SysCrontabLog::class, 'crontab_id', 'id');
     }
 
-    /**
-     * 默认链接
-     */
-    protected function initialize()
-    {
-        $this->connection = config('database.default');
-    }
-
 }

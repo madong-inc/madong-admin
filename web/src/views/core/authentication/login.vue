@@ -8,7 +8,7 @@ import { AuthenticationLogin, ImageCaptcha, z } from '#/components/common-ui';
 import { $t } from '#/locale';
 
 import { useAuthStore } from '#/store';
-import { captcha, getCaptchaOpenFlag,getAccountSet, type AuthApi } from '#/api/core';
+import { captcha, getCaptchaOpenFlag, type AuthApi } from '#/api/core';
 
 defineOptions({ name: 'Login' });
 
@@ -23,16 +23,6 @@ const accountSetData =ref<any>({
   list: [],//账套列表
 });
 
-async function loadAccountSet() {
-  const result:AuthApi.AccountSetResponse  = await getAccountSet();
-  accountSetData.value = result;
-  if (result.tenant_enabled && result.list.length > 0) {
-    const firstNumber = result.list[0]!.tenant_id;
-    loginFormRef.value?.getFormApi().setFieldValue('tenant_id', firstNumber);
-  }
-}
-
-
 
 // 判断是否启用图验证码
 getCaptchaOpenFlag().then((res: any) => {
@@ -40,7 +30,7 @@ getCaptchaOpenFlag().then((res: any) => {
 });
 
 onMounted(async () => {
-  await Promise.all([loadAccountSet()]);
+
 });
 
 const formSchema = computed((): BasicFormSchema[] => {

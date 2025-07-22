@@ -71,6 +71,7 @@ class SysAuthService extends BaseService
      * 获取菜单
      *
      * @param \madong\interface\IDict $dict
+     * @param bool                    $includeButtons
      *
      * @return array
      */
@@ -83,34 +84,25 @@ class SysAuthService extends BaseService
             // 顶级管理员返回全部菜单
             return $menuService->getAllMenus($map1);
         }
-        $userId             = $dict->get('id');
-        $userName           = 'user:' . $userId;
-        $domain             = 'domain:' . TenantContext::getTenantId();
-        $adminTenant        = $dict->get('tenant', []);
-        $isTenantSuperAdmin = boolval($adminTenant['is_super'] ?? 0);
+        $userId   = $dict->get('id');
+        $userName = 'user:' . $userId;
+        $domain   = '*';
 
-        // 获取租户套餐权限id
-        $resultValues = (new TenantPackageService())->getTenantPackagePermissions(TenantContext::getTenantId());
+        // 普通成员 - 按角色分配权限
+        $userPermissions = Permission::getImplicitPermissionsForUser($userName, $domain);
+        // 过滤出包含菜单权限
+        $userFilteredPermissions = array_filter($userPermissions, function ($item) use ($includeButtons) {
+            if (!$includeButtons) {
+                return isset($item[2]) && str_starts_with($item[2], PolicyPrefix::MENU->value);
+            }
+            return true;
+        });
+        $userResultValues        = array_map(function ($item) {
+            return str_replace(PolicyPrefix::MENU->value, '', $item);
+        }, array_column($userFilteredPermissions, 5));
 
-        if ($isTenantSuperAdmin) {
-            // 租户管理员 - 返回套餐内所有权限
-            return $this->getMenusByIds($menuService, $resultValues, $includeButtons);
-        } else {
-            // 普通成员 - 按角色分配权限
-            $userPermissions = Permission::getImplicitPermissionsForUser($userName, $domain);
-            // 过滤出包含在套餐权限内的权限
-            $userFilteredPermissions = array_filter($userPermissions, function ($item) use ($resultValues, $includeButtons) {
-                if (!$includeButtons) {
-                    return isset($item[2]) && str_starts_with($item[2], PolicyPrefix::MENU->value) && in_array(str_replace(PolicyPrefix::MENU->value, '', $item[5]), $resultValues);
-                }
-                return true;
-            });
-            $userResultValues        = array_map(function ($item) {
-                return str_replace(PolicyPrefix::MENU->value, '', $item);
-            }, array_column($userFilteredPermissions, 5));
+        return $this->getMenusByIds($menuService, array_unique($userResultValues), $includeButtons);
 
-            return $this->getMenusByIds($menuService, array_unique($userResultValues), $includeButtons);
-        }
     }
 
     /**
@@ -147,31 +139,21 @@ class SysAuthService extends BaseService
             return ['admin'];
         }
 
-        $userName           = 'user:' . $dict->get('id');
-        $domain             = 'domain:' . TenantContext::getTenantId();
-        $adminTenant        = $dict->get('tenant', []);
-        $isTenantSuperAdmin = boolval($adminTenant['is_super'] ?? 0);
+        $userName = 'user:' . $dict->get('id');
+        $domain   = '*';
+        // 普通成员 - 按角色分配权限
+        $userPermissions = Permission::getImplicitPermissionsForUser($userName, $domain);
+        // 提取权限并仅保留带有 button 前缀的权限，去掉前缀
+        $permissions = array_filter($userPermissions, function ($item) {
+            return isset($item[2]) && str_starts_with($item[2], PolicyPrefix::BUTTON->value);
+        });
+        // 去掉前缀并返回去重结果
+        $cleanedPermissions = array_map(function ($item) {
+            return str_replace(PolicyPrefix::BUTTON->value, '', $item[2]); // 确保安全访问
+        }, $permissions);
 
-        // 获取租户套餐权限id
-        $resultValues = (new TenantPackageService())->getTenantPackagePermissionsCodes(TenantContext::getTenantId());
-
-        if (!$isTenantSuperAdmin) {
-            // 普通成员 - 按角色分配权限
-            $userPermissions = Permission::getImplicitPermissionsForUser($userName, $domain);
-
-            // 提取权限并仅保留带有 button 前缀的权限，去掉前缀
-            $permissions = array_filter($userPermissions, function ($item) {
-                return isset($item[2]) && str_starts_with($item[2], PolicyPrefix::BUTTON->value);
-            });
-
-            // 去掉前缀并返回去重结果
-            $cleanedPermissions = array_map(function ($item) {
-                return str_replace(PolicyPrefix::BUTTON->value, '', $item[2]); // 确保安全访问
-            }, $permissions);
-
-            // 去重并返回结果
-            $resultValues = array_values(array_unique($cleanedPermissions));
-        }
+        // 去重并返回结果
+        $resultValues = array_values(array_unique($cleanedPermissions));
 
         // 排序并返回结果
         sort($resultValues);

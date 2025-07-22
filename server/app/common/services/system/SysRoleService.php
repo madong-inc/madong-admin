@@ -14,10 +14,8 @@ namespace app\common\services\system;
 
 use app\common\dao\system\SysRoleDao;
 use app\common\model\system\SysRole;
-use app\common\scopes\global\TenantScope;
 use core\abstract\BaseService;
 use core\casbin\Permission;
-use core\context\TenantContext;
 use core\enum\system\PolicyPrefix;
 use core\exception\handler\AdminException;
 use madong\helper\Arr;
@@ -52,10 +50,8 @@ class SysRoleService extends BaseService
             function () {
                 $results = $this->dao->getModel()
                     ->where('enabled', 1)
-                    ->withoutGlobalScope(TenantScope::class)
                     ->orderBy('sort', 'asc')
                     ->get(["id",
-                           "tenant_id",
                            "pid",
                            "name",
                            "code",
@@ -64,11 +60,6 @@ class SysRoleService extends BaseService
                            "data_scope",
                            "enabled",
                            "sort"]);
-
-                // 确保在模型实例上调用 makeVisible
-                foreach ($results as $item) {
-                    $item->makeVisible(['tenant_id']);
-                }
 
                 return $results->toArray();
             }
@@ -116,11 +107,8 @@ class SysRoleService extends BaseService
      */
     public function getPermissionColumns(int|string $id, string|null $tenantId = null): array
     {
-        $tenantId = config('tenant.enabled', false)
-            ? TenantContext::getTenantId()
-            : 'default';
         $roleId   = PolicyPrefix::ROLE->value . $id;
-        $domain   = PolicyPrefix::DOMAIN->value . $tenantId;
+        $domain   = '*';
         $result   = Permission::getImplicitResourcesForUser($roleId, $domain);
         if (empty($result)) {
             return [];
@@ -137,6 +125,7 @@ class SysRoleService extends BaseService
      * @param array $data
      *
      * @return SysRole|null
+     * @throws \core\exception\handler\AdminException
      */
     public function save(array $data): SysRole|null
     {
@@ -144,17 +133,15 @@ class SysRoleService extends BaseService
             return $this->transaction(function () use ($data) {
                 $menus = $data['permissions'] ?? [];
                 $model = $this->dao->save($data);
-                // 租户ID
-                $tenantId = config('tenant.enabled', false)
-                    ? TenantContext::getTenantId()
-                    : 'default';
 
                 // 格式化用户标识符，用于 Casbin
                 $roleId = PolicyPrefix::ROLE->value . strval($model->id);
-                $domain = PolicyPrefix::DOMAIN->value . strval($tenantId);
+                $domain = '*';
 
                 // 获取当前用户在 Casbin 中的隐式资源权限
+
                 $currentPolicies = Permission::getImplicitResourcesForUser($roleId, $domain);
+
 
                 // 提取完整的当前权限（0-5）
                 $currentPermissions = array_map(
@@ -204,6 +191,7 @@ class SysRoleService extends BaseService
      * @param $data
      *
      * @return void
+     * @throws \core\exception\handler\AdminException
      */
     public function update($id, $data): void
     {
@@ -220,14 +208,9 @@ class SysRoleService extends BaseService
                 PropertyCopier::copyProperties((object)$data, $model);
                 $model->save();
 
-                // 确定租户ID
-                $tenantId = config('tenant.enabled', false)
-                    ? TenantContext::getTenantId()
-                    : 'default';
-
                 // 格式化用户标识符，用于 Casbin
                 $roleId = PolicyPrefix::ROLE->value . strval($model->id);
-                $domain = PolicyPrefix::DOMAIN->value . strval($tenantId);
+                $domain = '*';
 
                 // 获取当前用户在 Casbin 中的隐式资源权限
                 $currentPolicies = Permission::getImplicitResourcesForUser($roleId, $domain);
@@ -279,6 +262,7 @@ class SysRoleService extends BaseService
      * @param bool  $force
      *
      * @return mixed
+     * @throws \core\exception\handler\AdminException
      */
     public function destroy(array $id, bool $force = false): mixed
     {
@@ -286,8 +270,7 @@ class SysRoleService extends BaseService
             return $this->transaction(function () use ($id, $force) {
                 $data       = Arr::normalize($id);
                 $deletedIds = [];
-                $tenantId   = config('tenant.enabled', false) ? TenantContext::getTenantId() : 'default';
-                $domain     = PolicyPrefix::DOMAIN->value . strval($tenantId);
+                $domain     = '*';
                 foreach ($data as $id) {
                     $item = $this->get($id);
                     if ($item) {
@@ -313,6 +296,8 @@ class SysRoleService extends BaseService
      *
      * @param $id
      * @param $data
+     *
+     * @throws \core\exception\handler\AdminException
      */
     public function updateScope($id, $data): void
     {

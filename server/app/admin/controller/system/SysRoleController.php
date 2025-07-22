@@ -46,6 +46,7 @@ class SysRoleController extends Crud
     public function store(Request $request): \support\Response
     {
         try {
+
             $data = $this->inputFilter($request->all(), ['permissions']);
             if (isset($this->validate) && $this->validate) {
                 if (!$this->validate->scene('store')->check($data)) {

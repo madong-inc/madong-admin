@@ -23,9 +23,9 @@ class SysUploadService extends BaseService
 {
 
 
-    public function __construct(SysUploadDao $dao)
+    public function __construct()
     {
-        $this->dao = $dao;
+        $this->dao = Container::make(SysUploadDao::class);
     }
 
     /**

@@ -36,11 +36,4 @@ class SysAdminPost extends Pivot
         'post_id',
     ];
 
-    /**
-     * 默认链接
-     */
-    protected function initialize()
-    {
-        $this->connection = config('database.default');
-    }
 }

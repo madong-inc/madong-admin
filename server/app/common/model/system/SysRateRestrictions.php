@@ -91,11 +91,4 @@ class SysRateRestrictions extends BaseModel
         return null;
     }
 
-    /**
-     * 特殊表使用默认链接
-     */
-    protected function initialize()
-    {
-        $this->connection = config('database.default');
-    }
 }

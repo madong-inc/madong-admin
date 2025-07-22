@@ -75,32 +75,14 @@ class BaseModel extends Model
 
     public function __construct(array $data = [])
     {
-        $this->initialize();
         parent::__construct($data);
     }
 
-    protected function initialize()
-    {
-        /**
-         * 针对租户库模式切换数据源
-         */
-        if (TenantContext::isLibraryIsolation()) {
-            $this->connection = TenantContext::getDatabaseConnection();
-        }
-    }
 
     protected static function booted()
     {
-        // 1. 默认添加 TenantScope 和 AccessScope
-        static::addGlobalScope(new TenantScope);
+        // 1. 默认添加  AccessScope
         static::addGlobalScope(new AccessScope);
-
-        // 2. 检查当前模型是否在共享表配置中
-        $sharedModel  = config('tenant.shared_model', []);
-        $currentModel = static::class; // 获取当前模型的表名
-        if (in_array($currentModel, $sharedModel)) {
-            static::addGlobalScope(new TenantSharedTableScope());
-        }
     }
 
     protected static function boot()
@@ -112,7 +94,6 @@ class BaseModel extends Model
                 $model->{$model->getKeyName()} = self::generateSnowflakeID(); // 生成雪花 ID
             }
             self::setCreatedBy($model);
-            self::setTenantId($model);
         });
 
         // 注册更新事件
@@ -300,49 +281,6 @@ class BaseModel extends Model
     }
 
     /**
-     * 自动设置租户ID
-     *
-     * @param \support\Model $model
-     */
-    private static function setTenantId(Model $model): void
-    {
-        // 如果模型本身是 Tenant 类型，则无需设置 tenant_id
-        if ($model instanceof Tenant) {
-            return;
-        }
-
-        // 如果当前没有登录用户，则不设置 tenant_id
-        if (!getCurrentUser(true)) {
-            return;
-        }
-
-        // 如果模型不允许填充 tenant_id 字段，则跳过
-        if (!$model->isFillable('tenant_id')) {
-            return;
-        }
-
-        // 如果 tenant_id 已经被手动设置过，则不覆盖（避免外部赋值被覆盖）
-        if (!empty($model->getAttribute('tenant_id'))) {
-            return;
-        }
-
-        // 如果不是字段隔离模式以及共享表，则不需要设置 tenant_id
-//        if (!TenantContext::isFieldIsolation()) {
-//            $sharedModel  = config('tenant.shared_model', []);
-//            $currentModel = static::class; // 获取当前模型的表名
-//            if (!in_array($currentModel, $sharedModel)) {
-//                return;
-//            }
-//        }
-
-        // 从上下文中获取租户 ID，并设置到模型中（仅当 tenant_id 不为 null 时）
-        $tenantId = TenantContext::getTenantId();
-        if ($tenantId !== null) {
-            $model->setAttribute('tenant_id', $tenantId);
-        }
-    }
-
-    /**
      *  实例化雪花算法
      *
      * @return Snowflake
@@ -375,7 +313,6 @@ class BaseModel extends Model
             'table_name'   => $table,
             'table_prefix' => $prefix,
             'enabled'      => 0,
-            'tenant_id'    => TenantContext::getTenantId(),
             'ip'           => request()->getRealIp(),
             'operate_id'   => getCurrentUser(),
         ];

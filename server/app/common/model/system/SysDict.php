@@ -123,11 +123,4 @@ class SysDict extends BaseModel
         return $this->hasMany(SysDictItem::class, 'dict_id', 'id');
     }
 
-    /**
-     * 默认链接
-     */
-    protected function initialize()
-    {
-        $this->connection = config('database.default');
-    }
 }

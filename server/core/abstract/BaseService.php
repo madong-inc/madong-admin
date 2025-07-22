@@ -56,11 +56,11 @@ abstract class BaseService
         $request = request();
         $page    = $limit = 0;
         if ($isPage) {
-            $page  = $request->input(Config('thinkorm.page.pageKey', 'page') . '/d', 0);
-            $limit = $request->input(Config('thinkorm.page.limitKey', 'limit') . '/d', 0);
+            $page  = $request->input(Config('database.page.pageKey', 'page') . '/d', 0);
+            $limit = $request->input(Config('database.page.limitKey', 'limit') . '/d', 0);
         }
-        $limitMax     = Config('thinkorm.page.limitMax');
-        $defaultLimit = Config('thinkorm.page.defaultLimit', 10);
+        $limitMax     = Config('database.page.limitMax');
+        $defaultLimit = Config('database.page.defaultLimit', 10);
         if ($limit > $limitMax && $isRelieve) {
             $limit = $limitMax;
         }

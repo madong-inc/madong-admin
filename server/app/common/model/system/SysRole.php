@@ -13,7 +13,6 @@
 namespace app\common\model\system;
 
 use core\abstract\BaseModel;
-use core\context\TenantContext;
 use core\casbin\model\RuleModel;
 
 /**
@@ -38,7 +37,6 @@ class SysRole extends BaseModel
 
     protected $fillable = [
         'id',
-        'tenant_id',
         'pid',
         'name',
         'code',
@@ -123,15 +121,8 @@ class SysRole extends BaseModel
      */
     public function casbin(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
-        $tenantId = config('tenant.enabled', false) ? 'domain:' . TenantContext::getTenantId() : 'default';
+        $tenantId = "*";
         return $this->belongsToMany(RuleModel::class, SysRoleCasbin::class, 'role_id', 'role_casbin_id', 'id', 'v0')->where('v1', $tenantId)->where('ptype', 'p');
     }
 
-    /**
-     * 默认链接
-     */
-    protected function initialize()
-    {
-        $this->connection = config('database.default');
-    }
 }

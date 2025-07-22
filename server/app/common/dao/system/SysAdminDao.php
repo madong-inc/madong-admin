@@ -41,7 +41,7 @@ class SysAdminDao extends BaseDao
     {
         $result = $this->getModel()
             ->where('id', $id)
-            ->with(['depts', 'posts', 'casbin.roles', 'tenant', 'managedTenants'])
+            ->with(['depts', 'posts', 'casbin.roles'])
             ->first()
             ->makeHidden(['password']);
 
@@ -92,41 +92,14 @@ class SysAdminDao extends BaseDao
     {
         $where['enabled'] = 1;
         if (empty($with)) {
-            $with = ['tenant', 'depts', 'posts', 'casbin.roles'];
+            $with = ['depts', 'posts', 'casbin.roles'];
         }
         $query = parent::selectModel($where, $field, $page, $limit, $order, $with, $search, $withoutScopes);
-        $query->whereHas('tenant');
         $total = $query->count();
         $items = $query->get()->makeHidden(['password', 'backend_setting']);
         return [$total, $items];
     }
 
-    /**
-     * 平台管理-获取租户成员
-     *
-     * @param array      $where
-     * @param string     $field
-     * @param int        $page
-     * @param int        $limit
-     * @param string     $order
-     * @param array      $with
-     * @param bool       $search
-     * @param array|null $withoutScopes
-     *
-     * @return array
-     * @throws \Exception
-     */
-    public function getTenantMemberList(array $where, string $field = '*', int $page = 0, int $limit = 0, string $order = '', array $with = [], bool $search = false, ?array $withoutScopes = null): array
-    {
-//        $where['enabled'] = 1;//显示禁用用户
-        if (empty($with)) {
-            $with = ['managedTenants'];
-        }
-        $query = parent::selectModel($where, $field, $page, $limit, $order, $with, $search, $withoutScopes);
-        $total = $query->count();
-        $items = $query->get()->makeHidden(['password', 'backend_setting']);
-        return [$total, $items];
-    }
 
     /**
      * 获取用户列表-角色id
@@ -152,10 +125,10 @@ class SysAdminDao extends BaseDao
             throw new InvalidArgumentException("Tenant ID is required.");
         }
 
-        $query = $this->getModel()->with(['tenant', 'roles'])
+        $query = $this->getModel()->with(['roles'])
             ->whereHas('roles', function ($query) use ($roleId) {
                 $query->where('id', $roleId);
-            })->has('tenant');
+            });
 
         if (!empty($where)) {
             unset($where['role_id'], $where['tenant_id']);
@@ -202,7 +175,7 @@ class SysAdminDao extends BaseDao
 
         // 查询构建器
         $query = $this->getModel()->whereNotIn('id', $excludedAdminIds)
-            ->with(['roles', 'tenant'])->has('tenant');
+            ->with(['roles']);
 
         // 如果有额外的条件，则添加到查询中
         if (!empty($where)) {
@@ -234,7 +207,7 @@ class SysAdminDao extends BaseDao
     {
         $result = $this->getModel()
             ->where('id', $id)
-            ->with(['depts', 'posts', 'casbin.roles', 'tenant', 'managedTenants'])
+            ->with(['depts', 'posts', 'casbin.roles',])
             ->first()
             ->makeHidden(['password', 'backend_setting']);
 
@@ -277,9 +250,8 @@ class SysAdminDao extends BaseDao
     public function getAdminByName(string $name): ?SysAdmin
     {
         return $this->getModel()
-            ->withoutGlobalScope('TenantScope')
             ->where('user_name', $name)
-            ->with(['depts', 'posts', 'tenants', 'casbin.roles'])
+            ->with(['depts', 'posts', 'casbin.roles'])
             ->first();
     }
 

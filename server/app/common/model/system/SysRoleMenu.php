@@ -36,12 +36,4 @@ class SysRoleMenu extends Pivot
         'menu_id',
     ];
 
-    /**
-     * 默认链接
-     */
-    protected function initialize()
-    {
-        $this->connection = config('database.default');
-    }
-
 }

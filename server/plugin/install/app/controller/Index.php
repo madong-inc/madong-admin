@@ -6,7 +6,7 @@ use core\db\DataImporterService;
 use core\utils\Util;
 use plugin\cmdr\app\service\Terminal;
 use plugin\install\app\common\Json;
-use Webman\RedisQueue\Client;
+
 
 /**
  * 安装
@@ -83,8 +83,6 @@ class Index
             $redisPwd  = request()->get('redis_pwd', null);
 
             //用户信息配置
-            $company  = request()->get('company_name', 'xxxx 有限公司');
-            $platform = request()->get('platform', 'admin');
             $username = request()->get('username', 'admin');
             $password = request()->get('password', '123456');
 
@@ -106,20 +104,12 @@ class Index
             // 关闭自动提交 使用手动事务提交
             $pdo->setAttribute(\PDO::ATTR_AUTOCOMMIT, false);
             $tablesToInstall = [
-                //平台管理
-                'ma_mt_db_setting',
-                'ma_mt_tenant',
-                'ma_mt_tenant_package',
-                'ma_mt_tenant_session',
-                'ma_mt_tenant_subscription',
-                'ma_mt_tenant_subscription_casbin',
                 //系统设置
                 'ma_sys_admin',
                 'ma_sys_admin_casbin',
                 'ma_sys_admin_dept',
                 'ma_sys_admin_post',
                 'ma_sys_admin_role',
-                'ma_sys_admin_tenant',
                 'ma_sys_config',
                 'ma_sys_crontab',
                 'ma_sys_crontab_log',
@@ -161,56 +151,12 @@ class Index
             $field1 = ['group_code', 'name', 'code', 'sort', 'data_type', 'description', 'enabled', 'created_by', 'updated_by'];
             $field2 = ['label', 'value', 'code', 'sort', 'enabled', 'created_by', 'updated_by', 'remark'];
             $dataImporterService->importWithRelated($pdo, 'ma_sys_dict', $field1, 'ma_sys_dict_item', $field2, $dict, ['pidKey' => 'dict_id']);
-            //2.3 导入默认数据库配置
-            $dbInfo = [
-                [
-                    "id"          => 1,
-                    "name"        => $company,
-                    "description" => "默认数据库",
-                    "driver"      => "mysql",
-                    "host"        => $dbHost,
-                    "port"        => $dbPort,
-                    "database"    => $dbName,
-                    "username"    => $dbUser,
-                    "password"    => $dbPassword,
-                    "prefix"      => $dbPrefix,
-                    "is_default"  => 1,
-                    "enabled"     => 1,
-                    "created_at"  => time(),
-                    "created_by"  => 1,
-                ],
-            ];
-            $field  = ["id", "name", "description", "driver", "host", "port", "database", "username", "password", "prefix", "variable", "is_default", "enabled", "created_at", "created_by", "updated_at", "updated_by", "deleted_at"];
-            $dataImporterService->importData($pdo, 'ma_mt_db_setting', $field, $dbInfo);
 
-            //2.4导入租户信息
-            $tenantInfo = [
-                [
-                    "id"             => 1,
-                    "db_name"        => $dbName,
-                    "code"           => "platform",
-                    "type"           => 0,
-                    "contact_person" => $username,
-                    "contact_phone"  => "18888888888",
-                    "company_name"   => $company,
-                    "license_number" => "",
-                    "address"        => "中国",
-                    "description"    => "内置账号",
-                    "domain"         => "https://www.madong.tech",
-                    "enabled"        => 1,
-                    "is_default"     => 1,
-                    "created_by"     => 1,
-                    "created_at"     => time(),
-                ],
-            ];
-            $field      = ["id", "db_name", "code", "type", "contact_person", "contact_phone", "company_name", "license_number", "address", "description", "domain", "enabled", "is_default", "expired_at", "deleted_at", "created_by", "created_at", "updated_by", "updated_at"];
-            $dataImporterService->importData($pdo, 'ma_mt_tenant', $field, $tenantInfo);
-
-            //2.5 导入系统配置数据
+            //2.3 导入系统配置数据
             $configuration = include base_path() . '/scripts/config/configuration.php';
             $field         = ["id", "tenant_id", "group_code", "code", "name", "content", "is_sys", "enabled", "created_at", "created_by", "updated_at", "updated_by", "deleted_at", "remark"];
             $dataImporterService->importData($pdo, 'ma_sys_config', $field, $configuration);
-            //2.6 导入管理员数据
+            //2.5 导入管理员数据
             $data  = [[
                           'id'         => (int)1,
                           'user_name'  => $username,
@@ -223,18 +169,7 @@ class Index
                       ]];
             $field = ['id', 'user_name', 'real_name', 'nick_name', 'password', 'is_super', 'mobile_phone', 'email', 'avatar', 'signed', 'dashboard', 'dept_id', 'enabled', 'login_ip', 'login_time', 'backend_setting', 'created_by', 'updated_by', 'created_at', 'updated_at', 'deleted_at', 'sex', 'remark', 'birthday', 'tel', 'is_locked'];
             $dataImporterService->importData($pdo, 'ma_sys_admin', $field, $data);
-            //2.7 导入管理员关联租户数据
-            $data  = [[
-                          'admin_id'   => 1,
-                          'tenant_id'  => 1,
-                          'is_super'   => 1,
-                          'is_default' => 1,
-                          'priority'   => -1,
-                          'create_at'  => time(),
-                          'update_at'  => time(),
-                      ]];
-            $field = ['id', 'admin_id', 'tenant_id', 'is_super', 'is_default', 'priority', 'created_at', 'updated_at'];
-            $dataImporterService->importData($pdo, 'ma_sys_admin_tenant', $field, $data);
+
             // 3.0 获取env模板内容
             $envStr = generateEnvTemplate();
             $envStr = str_replace('~db_host~', $dbHost, $envStr);

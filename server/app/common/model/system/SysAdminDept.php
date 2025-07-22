@@ -35,12 +35,4 @@ class SysAdminDept extends Pivot
         'admin_id',
         'dept_id',
     ];
-
-    /**
-     * 默认链接
-     */
-    protected function initialize()
-    {
-        $this->connection = config('database.default');
-    }
 }

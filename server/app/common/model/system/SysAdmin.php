@@ -122,33 +122,6 @@ class SysAdmin extends BaseModel
     }
 
     /**
-     * 用户-获取管理员所有租户
-     */
-    public function managedTenants(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
-    {
-        return $this->belongsToMany(Tenant::class, SysAdminTenant::class, 'admin_id', 'tenant_id')->withoutGlobalScope(TenantScope::class);
-    }
-
-    /**
-     * 关联-当前租户
-     */
-    public function tenant(): \Illuminate\Database\Eloquent\Relations\HasOne
-    {
-        return $this->hasOne(SysAdminTenant::class, 'admin_id', 'id')
-            ->when(TenantContext::getTenantId(), function ($query) {
-                $query->where('tenant_id', TenantContext::getTenantId());
-            });
-    }
-
-    /**
-     * 用户-关联租户列表
-     */
-    public function tenants(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
-    {
-        return $this->belongsToMany(Tenant::class, SysAdminTenant::class, 'admin_id', 'tenant_id');
-    }
-
-    /**
      * 关联-用户部门
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
@@ -183,15 +156,7 @@ class SysAdmin extends BaseModel
      */
     public function casbin(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
-        $tenantId = config('tenant.enabled', false) ? 'domain:' . TenantContext::getTenantId() : 'default';
-        return $this->belongsToMany(RuleModel::class, SysAdminCasbin::class, 'admin_id', 'admin_casbin_id', 'id', 'v0')->where('v2', $tenantId);
+        return $this->belongsToMany(RuleModel::class, SysAdminCasbin::class, 'admin_id', 'admin_casbin_id', 'id', 'v0');
     }
 
-    /**
-     * 默认链接
-     */
-    protected function initialize()
-    {
-        $this->connection = config('database.default');
-    }
 }

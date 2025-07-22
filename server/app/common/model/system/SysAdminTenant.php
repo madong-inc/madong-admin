@@ -80,12 +80,4 @@ class SysAdminTenant extends BasePivot
     {
         return $this->hasMany(Tenant::class, 'id', 'tenant_id');
     }
-
-    /**
-     * 默认链接
-     */
-    protected function initialize()
-    {
-        $this->connection = config('database.default');
-    }
 }

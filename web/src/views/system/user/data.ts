@@ -102,7 +102,7 @@ export function useColumns(
       minWidth: 100,
       slots: {
           default: ({ row }) => {
-              const data = row.depts || [];
+              const data = row?.depts || [];
               return h('div', data.map((dept: { id: any; name: string | number | boolean | VNodeArrayChildren | { [name: string]: unknown; $stable?: boolean; } | VNode<RendererNode, RendererElement, { [key: string]: any; }> | (() => any) | undefined; }) => 
                   h(Tag, { key: dept.id }, dept.name)
               ));
@@ -123,7 +123,7 @@ export function useColumns(
         attrs: {
           beforeChange: onStatusChange,
           disabled: (row: User) => {
-           return row.is_super == 1|| row?.tenant?.is_super== 1
+           return row.is_super == 1
           }
         },
         name: useAccess().hasAccessByCodes(['admin', 'system.user.status']) ? 'CellSwitch' : 'CellTag',
@@ -176,7 +176,7 @@ export function useColumns(
               return ![1].includes(_values.is_super);
             },
             disabled:(_values:any)=>{
-              return [1].includes(_values.is_super)|| [1].includes(_values?.tenant?.is_super);
+              return [1].includes(_values.is_super);
             }
           },
           {
@@ -187,7 +187,7 @@ export function useColumns(
               return ([0].includes(_values.is_locked) && ![1].includes(_values.is_super));
             },
             disabled:(_values:any)=>{
-              return [1].includes(_values.is_super)|| [1].includes(_values?.tenant?.is_super);
+              return [1].includes(_values.is_super);
             }
           },
           {

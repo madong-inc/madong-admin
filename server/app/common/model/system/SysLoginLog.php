@@ -47,12 +47,4 @@ class SysLoginLog extends BaseModel
         'remark',
     ];
 
-    /**
-     * 默认链接
-     */
-    protected function initialize()
-    {
-        $this->connection = config('database.default');
-    }
-
 }

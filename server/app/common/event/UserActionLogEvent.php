@@ -22,7 +22,6 @@ class UserActionLogEvent
         $ip                  = request()->getRealIp();
         $http_user_agent     = request()->header('user-agent', null);
         $data['user_name']   = $item['user_name'];
-        $data['tenant_id']   = TenantContext::getTenantId() ?? null;
         $data['ip']          = $ip;
         $data['ip_location'] = '未知';
         $data['os']          = self::getOs($http_user_agent);
@@ -34,20 +33,6 @@ class UserActionLogEvent
         $data['expires_at']  = $item['expires_time'] ?? time();
         $service             = new SysLoginLogService();
         $service->save($data);
-        //创建租户会话session
-        if (config('tenant.enabled', false) && (int)$item['status'] == 1) {
-            $session              = [
-                "key"        => $item['client_id'] ?? '',
-                "admin_id"   => $item['id'] ?? '',
-                "tenant_id"  => $item['tenant_id'] ?? '',
-                "token"      => md5($item['access_token']),
-                "expire_at"  => $item['expires_time'] ?? time(),
-                "created_at" => time(),
-                "updated_at" => time(),
-            ];
-            $tenantSessionService = new TenantSessionService();
-            $tenantSessionService->save($session);
-        }
     }
 
     /**

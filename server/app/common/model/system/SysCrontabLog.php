@@ -64,13 +64,6 @@ class SysCrontabLog extends BaseModel
         return number_format($value, 2) . 'ms'; // 将时间戳格式化为日期时间字符串
     }
 
-    /**
-     * 默认链接
-     */
-    protected function initialize()
-    {
-        $this->connection = config('database.default');
-    }
 }
 
 

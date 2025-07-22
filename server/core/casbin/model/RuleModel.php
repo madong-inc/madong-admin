@@ -92,11 +92,4 @@ class RuleModel extends BaseModel
         return $this->belongsToMany(SysRole::class, SysRoleCasbin::class, 'role_casbin_id', 'role_id', 'v1', 'id');
     }
 
-    /**
-     * 默认链接
-     */
-    protected function initialize()
-    {
-        $this->connection = config('database.default');
-    }
 }

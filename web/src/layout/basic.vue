@@ -24,7 +24,6 @@ import { openWindow } from "#/components/common/utils";
 import { $t } from "#/locale";
 import LoginForm from "#/views/core/authentication/login.vue";
 import Terminal from "./modules/terminal.vue";
-import TenantSwithc from "./modules/tenant-switch.vue";
 import { BasicIconButton } from "#/components/common/core/ui-kit/shadcn-ui";
 
 const { setMenuList } = useTabbarStore();
@@ -58,13 +57,6 @@ const router = useRouter();
 const menus = computed(() => [
   {
     handler: () => {
-      onSwitchTenant();
-    },
-    icon: BookOpenText,
-    text: "切换部门",
-  },
-  {
-    handler: () => {
       router.push("/profile");
     },
     icon: BookOpenText,
@@ -76,9 +68,6 @@ const [TerminalModal, terminalApi] = useModal({
   connectedComponent: Terminal,
 });
 
-const [TenantSwitchModal, tenantSwitchApi] = useModal({
-  connectedComponent: TenantSwithc,
-});
 
 const avatar = computed(() => {
   return userStore.userInfo?.avatar ?? preferences.app.defaultAvatar;
@@ -92,9 +81,6 @@ function onTerminal() {
   terminalApi.setData({}).open();
 }
 
-function onSwitchTenant(){
-  tenantSwitchApi.setData({}).open();
-}
 
 /**
  * 切换租户刷新操作
@@ -182,5 +168,4 @@ onMounted(() => {
     </template>
   </BasicLayout>
   <TerminalModal />
-  <TenantSwitchModal @reload="handleReload"/>
 </template>

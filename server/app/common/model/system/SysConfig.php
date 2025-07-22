@@ -106,13 +106,4 @@ class SysConfig extends BaseModel
             $query->$queryMethod('enable', $value);
         }
     }
-
-    /**
-     * 默认链接
-     */
-    protected function initialize()
-    {
-        $this->connection = config('database.default');
-    }
-
 }

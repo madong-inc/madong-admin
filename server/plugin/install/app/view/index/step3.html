@@ -96,13 +96,6 @@
                     <span id="admin_map">admin</span></div>
             </div>
             <div class="layui-form-item">
-                <label class="layui-form-label"><font color="red">*</font> 企业的名称</label>
-                <div class="layui-input-inline">
-                    <input type="text" class="layui-input" name="company_name" id="company_name" autocomplete="off" lay-verify="required" value="xxxx 有限公司"/>
-                </div>
-                <div class="layui-form-mid layui-word-aux">请输入企业名称</div>
-            </div>
-            <div class="layui-form-item">
                 <label class="layui-form-label"><font color="red">*</font> 管理的账号</label>
                 <div class="layui-input-inline">
                     <input type="text" class="layui-input" name="username" autocomplete="off" lay-verify="required" value="admin"/>
@@ -172,7 +165,7 @@
             if ($(this).hasClass('layui-btn-disabled')) return false;
             const d = data.field;
             const loadIndex = layer.msg('系统安装中...', {icon: 16, shade: 0.3, time: 0});
-            const url = '/app/install/index/step4?db_host=' + d.dbhost + '&db_name=' + d.dbname + '&db_pre=' + d.dbpre + '&db_user=' + d.dbuser + '&db_pwd=' + encodeURIComponent(d.dbpwd) + '&db_port=' + d.dbport + '&platform=' + d.platform + '&username=' + d.username + '&password=' + d.password + '&overwrite=' + d.overwrite + '&redis_host' + d.redis_host + '&redis_port=' + d.redis_port + '&redis_pwd=' + d.redis_pwd+'&company_name='+d.company_name;
+            const url = '/app/install/index/step4?db_host=' + d.dbhost + '&db_name=' + d.dbname + '&db_pre=' + d.dbpre + '&db_user=' + d.dbuser + '&db_pwd=' + encodeURIComponent(d.dbpwd) + '&db_port=' + d.dbport + '&platform=' + d.platform + '&username=' + d.username + '&password=' + d.password + '&overwrite=' + d.overwrite + '&redis_host' + d.redis_host + '&redis_port=' + d.redis_port + '&redis_pwd=' + d.redis_pwd;
 
             $.getJSON(url, function (res) {
                 layer.close(loadIndex);

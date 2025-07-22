@@ -82,19 +82,9 @@ class PermissionMiddleware implements MiddlewareInterface
             return $handler($request);
         }
 
-        $tenantId = TenantContext::getTenantCode();
         $uid      = PolicyPrefix::USER->value . $userId;
-        $domain   = PolicyPrefix::DOMAIN->value . $tenantId;
+        $domain   = '*';
         $policy   = PolicyPrefix::ROUTE->value . $rule;
-
-        //租户过期不允许使用PUT POST DELETE 等接口
-        if (TenantContext::isExpired()) {
-            // 统一转为小写比较
-            $normalizedRule = strtolower($rule);
-            if (in_array($normalizedRule, ['post', 'put', 'delete'])) {
-                throw new ForbiddenHttpException('租户已过期，接口被限制使用');
-            }
-        }
 
         // 权限检查
         try {

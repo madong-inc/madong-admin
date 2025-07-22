@@ -50,7 +50,7 @@ class SysConfigService extends BaseService
      */
     public function getConfigContentValue(string $groupCode): mixed
     {
-        $map1 = ['group_code' => $groupCode, 'enabled' => 1,'tenant_id'=>TenantContext::getTenantId()];
+        $map1 = ['group_code' => $groupCode, 'enabled' => 1];
         $data = $this->dao->getColumn($map1, 'content', 'code');
         if (empty($data)) {
             $data = $this->transformToKeyValue($this->template($groupCode));

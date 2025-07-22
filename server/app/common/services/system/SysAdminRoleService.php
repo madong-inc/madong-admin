@@ -15,7 +15,6 @@ namespace app\common\services\system;
 use app\common\dao\system\SysAdminRoleDao;
 use core\abstract\BaseService;
 use core\casbin\Permission;
-use core\context\TenantContext;
 use core\enum\system\PolicyPrefix;
 use core\exception\handler\AdminException;
 use support\Container;
@@ -36,12 +35,14 @@ class SysAdminRoleService extends BaseService
      * 移除用户-关联角色
      *
      * @param array $data
+     *
+     * @throws \core\exception\handler\AdminException
      */
     public function removeUserRole(array $data)
     {
         try {
             $this->transaction(function () use ($data) {
-                $domain = PolicyPrefix::DOMAIN->value . TenantContext::getTenantId();
+                $domain = '*';
                 foreach ($data as $item) {
                     $this->dao->getModel()->where($item)->delete();
                     Permission::deleteRoleForUser(PolicyPrefix::USER->value . $item['admin_id'], PolicyPrefix::ROLE->value . $item['role_id'], $domain);
@@ -63,7 +64,7 @@ class SysAdminRoleService extends BaseService
     {
         try {
             $this->transaction(function () use ($data) {
-                $domain = PolicyPrefix::DOMAIN->value . TenantContext::getTenantId();
+                $domain = '*';
                 $this->dao->saveAll($data);
                 foreach ($data as $item) {
                     Permission::addRoleForUser(PolicyPrefix::USER->value . $item['admin_id'], PolicyPrefix::ROLE->value . $item['role_id'], $domain);

@@ -15,7 +15,6 @@ return [
     //应用中间件
     'admin' => [
         \app\middleware\Lang::class,//多语言切换中间件
-        \app\middleware\TenantMiddleware::class,//多租户中间件
 //        \app\middleware\RouteRestrictionMiddleware::class,// 演示过滤中间件
         \app\middleware\RateLimiterMiddleware::class,//限流中间件
         \app\middleware\AuthTokenMiddleware::class,//Token验证

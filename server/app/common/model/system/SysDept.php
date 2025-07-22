@@ -98,12 +98,4 @@ class SysDept extends BaseModel
         return $this->belongsToMany(SysAdmin::class, SysDeptLeader::class, 'dept_id', 'admin_id');
     }
 
-    /**
-     * 默认链接
-     */
-    protected function initialize()
-    {
-        $this->connection = config('database.default');
-    }
-
 }

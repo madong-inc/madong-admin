@@ -145,12 +145,4 @@ class SysDictItem extends BaseModel
         return json_decode($value, 1);
     }
 
-    /**
-     * 默认链接
-     */
-    protected function initialize()
-    {
-        $this->connection = config('database.default');
-    }
-
 }

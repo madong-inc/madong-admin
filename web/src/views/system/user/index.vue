@@ -91,7 +91,7 @@ const [Grid, gridApi] = useVxeGrid({
       // 翻页时保留选中状态
       reserve: true,
       trigger: "cell",
-      checkMethod: ({ row }) => row.is_super !== 1&& row.tenant.is_super!== 1,//顶级管理员禁止
+      checkMethod: ({ row }) => row.is_super !== 1,//顶级管理员禁止
     },
     columns: useColumns(onActionClick, onStatusChange),
     height: "auto",

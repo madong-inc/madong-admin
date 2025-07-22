@@ -53,11 +53,4 @@ class SysOperateLog extends BaseModel
         'result' => 'array',
     ];
 
-    /**
-     * 默认链接
-     */
-    protected function initialize()
-    {
-        $this->connection = config('database.default');
-    }
 }

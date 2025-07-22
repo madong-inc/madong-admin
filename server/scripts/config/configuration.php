@@ -16,7 +16,6 @@
 return [
     [
         "group_code" => "local",
-        "tenant_id"  => 1,
         "code"       => "root",
         "name"       => "",
         "content"    => "public",
@@ -31,7 +30,6 @@ return [
     ],
     [
         "group_code" => "local",
-        "tenant_id"  => 1,
         "code"       => "dirname",
         "name"       => "",
         "content"    => "upload",
@@ -46,7 +44,6 @@ return [
     ],
     [
         "group_code" => "local",
-        "tenant_id"  => 1,
         "code"       => "domain",
         "name"       => "",
         "content"    => "http=>>//43.138.153.216=>>8899/",
@@ -61,7 +58,6 @@ return [
     ],
     [
         "group_code" => "oss",
-        "tenant_id"  => 1,
         "code"       => "accessKeyId",
         "name"       => "",
         "content"    => "1",
@@ -76,7 +72,6 @@ return [
     ],
     [
         "group_code" => "oss",
-        "tenant_id"  => 1,
         "code"       => "accessKeySecret",
         "name"       => "",
         "content"    => "2",
@@ -91,7 +86,6 @@ return [
     ],
     [
         "group_code" => "oss",
-        "tenant_id"  => 1,
         "code"       => "bucket",
         "name"       => "",
         "content"    => "3",
@@ -106,7 +100,6 @@ return [
     ],
     [
         "group_code" => "oss",
-        "tenant_id"  => 1,
         "code"       => "dirname",
         "name"       => "",
         "content"    => "4",
@@ -121,7 +114,6 @@ return [
     ],
     [
         "group_code" => "oss",
-        "tenant_id"  => 1,
         "code"       => "domain",
         "name"       => "",
         "content"    => "5",
@@ -136,7 +128,6 @@ return [
     ],
     [
         "group_code" => "oss",
-        "tenant_id"  => 1,
         "code"       => "endpoint",
         "name"       => "",
         "content"    => "6",
@@ -151,7 +142,6 @@ return [
     ],
     [
         "group_code" => "oss",
-        "tenant_id"  => 1,
         "code"       => "remark",
         "name"       => "",
         "content"    => "7",
@@ -166,7 +156,6 @@ return [
     ],
     [
         "group_code" => "cos",
-        "tenant_id"  => 1,
         "code"       => "secretId",
         "name"       => "",
         "content"    => "11",
@@ -181,7 +170,6 @@ return [
     ],
     [
         "group_code" => "cos",
-        "tenant_id"  => 1,
         "code"       => "secretKey",
         "name"       => "",
         "content"    => "22",
@@ -196,7 +184,6 @@ return [
     ],
     [
         "group_code" => "cos",
-        "tenant_id"  => 1,
         "code"       => "bucket",
         "name"       => "",
         "content"    => "33",
@@ -211,7 +198,6 @@ return [
     ],
     [
         "group_code" => "cos",
-        "tenant_id"  => 1,
         "code"       => "dirname",
         "name"       => "",
         "content"    => "44",
@@ -226,7 +212,6 @@ return [
     ],
     [
         "group_code" => "cos",
-        "tenant_id"  => 1,
         "code"       => "domain",
         "name"       => "",
         "content"    => "55",
@@ -241,7 +226,6 @@ return [
     ],
     [
         "group_code" => "cos",
-        "tenant_id"  => 1,
         "code"       => "region",
         "name"       => "",
         "content"    => "66",
@@ -256,7 +240,6 @@ return [
     ],
     [
         "group_code" => "cos",
-        "tenant_id"  => 1,
         "code"       => "remark",
         "name"       => "",
         "content"    => "77",
@@ -271,7 +254,6 @@ return [
     ],
     [
         "group_code" => "qiniu",
-        "tenant_id"  => 1,
         "code"       => "accessKey",
         "name"       => "",
         "content"    => "99",
@@ -286,7 +268,6 @@ return [
     ],
     [
         "group_code" => "qiniu",
-        "tenant_id"  => 1,
         "code"       => "secretKey",
         "name"       => "",
         "content"    => "88",
@@ -301,7 +282,6 @@ return [
     ],
     [
         "group_code" => "qiniu",
-        "tenant_id"  => 1,
         "code"       => "bucket",
         "name"       => "",
         "content"    => "7",
@@ -316,7 +296,6 @@ return [
     ],
     [
         "group_code" => "qiniu",
-        "tenant_id"  => 1,
         "code"       => "dirname",
         "name"       => "",
         "content"    => "78",
@@ -331,7 +310,6 @@ return [
     ],
     [
         "group_code" => "qiniu",
-        "tenant_id"  => 1,
         "code"       => "domain",
         "name"       => "",
         "content"    => "8",
@@ -346,7 +324,6 @@ return [
     ],
     [
         "group_code" => "qiniu",
-        "tenant_id"  => 1,
         "code"       => "region",
         "name"       => "",
         "content"    => "",
@@ -361,7 +338,6 @@ return [
     ],
     [
         "group_code" => "qiniu",
-        "tenant_id"  => 1,
         "code"       => "remark",
         "name"       => "",
         "content"    => "897",
@@ -376,7 +352,6 @@ return [
     ],
     [
         "group_code" => "s3",
-        "tenant_id"  => 1,
         "code"       => "key",
         "name"       => "",
         "content"    => "12",
@@ -391,7 +366,6 @@ return [
     ],
     [
         "group_code" => "s3",
-        "tenant_id"  => 1,
         "code"       => "secret",
         "name"       => "",
         "content"    => "12",
@@ -406,7 +380,6 @@ return [
     ],
     [
         "group_code" => "s3",
-        "tenant_id"  => 1,
         "code"       => "bucket",
         "name"       => "",
         "content"    => "12",
@@ -421,7 +394,6 @@ return [
     ],
     [
         "group_code" => "s3",
-        "tenant_id"  => 1,
         "code"       => "dirname",
         "name"       => "",
         "content"    => "12",
@@ -436,7 +408,6 @@ return [
     ],
     [
         "group_code" => "s3",
-        "tenant_id"  => 1,
         "code"       => "domain",
         "name"       => "",
         "content"    => "12",
@@ -451,7 +422,6 @@ return [
     ],
     [
         "group_code" => "s3",
-        "tenant_id"  => 1,
         "code"       => "endpoint",
         "name"       => "",
         "content"    => "12",
@@ -466,7 +436,6 @@ return [
     ],
     [
         "group_code" => "s3",
-        "tenant_id"  => 1,
         "code"       => "region",
         "name"       => "",
         "content"    => "12",
@@ -481,7 +450,6 @@ return [
     ],
     [
         "group_code" => "s3",
-        "tenant_id"  => 1,
         "code"       => "acl",
         "name"       => "",
         "content"    => "6",
@@ -496,7 +464,6 @@ return [
     ],
     [
         "group_code" => "s3",
-        "tenant_id"  => 1,
         "code"       => "remark",
         "name"       => "",
         "content"    => "4",
@@ -511,7 +478,6 @@ return [
     ],
     [
         "group_code" => "email_setting",
-        "tenant_id"  => 1,
         "code"       => "SMTPSecure",
         "name"       => "",
         "content"    => "ssl",
@@ -526,7 +492,6 @@ return [
     ],
     [
         "group_code" => "email_setting",
-        "tenant_id"  => 1,
         "code"       => "Host",
         "name"       => "",
         "content"    => "smtp.qq.com",
@@ -541,7 +506,6 @@ return [
     ],
     [
         "group_code" => "email_setting",
-        "tenant_id"  => 1,
         "code"       => "Port",
         "name"       => "",
         "content"    => "465",
@@ -556,7 +520,6 @@ return [
     ],
     [
         "group_code" => "email_setting",
-        "tenant_id"  => 1,
         "code"       => "Username",
         "name"       => "",
         "content"    => "kzhzjdyw888@qq.com",
@@ -571,7 +534,6 @@ return [
     ],
     [
         "group_code" => "email_setting",
-        "tenant_id"  => 1,
         "code"       => "Password",
         "name"       => "",
         "content"    => "",
@@ -586,7 +548,6 @@ return [
     ],
     [
         "group_code" => "email_setting",
-        "tenant_id"  => 1,
         "code"       => "From",
         "name"       => "",
         "content"    => "",
@@ -601,7 +562,6 @@ return [
     ],
     [
         "group_code" => "email_setting",
-        "tenant_id"  => 1,
         "code"       => "FromName",
         "name"       => "",
         "content"    => "kzhzjdyw888@qq.com",
@@ -616,7 +576,6 @@ return [
     ],
     [
         "group_code" => "basic_upload_setting",
-        "tenant_id"  => 1,
         "code"       => "mode",
         "name"       => "上传模式",
         "content"    => "local",
@@ -631,7 +590,6 @@ return [
     ],
     [
         "group_code" => "basic_upload_setting",
-        "tenant_id"  => 1,
         "code"       => "single_limit",
         "name"       => "上传大小",
         "content"    => "1024",
@@ -646,7 +604,6 @@ return [
     ],
     [
         "group_code" => "basic_upload_setting",
-        "tenant_id"  => 1,
         "code"       => "total_limit",
         "name"       => "文件限制",
         "content"    => "1024",
@@ -661,7 +618,6 @@ return [
     ],
     [
         "group_code" => "basic_upload_setting",
-        "tenant_id"  => 1,
         "code"       => "nums",
         "name"       => "数量限制",
         "content"    => "10",
@@ -676,7 +632,6 @@ return [
     ],
     [
         "group_code" => "basic_upload_setting",
-        "tenant_id"  => 1,
         "code"       => "exclude",
         "name"       => "不允许文件类型",
         "content"    => "php,ext,exe",
@@ -691,7 +646,6 @@ return [
     ],
     [
         "group_code" => "site_setting",
-        "tenant_id"  => 1,
         "code"       => "site_open",
         "name"       => "站点开启",
         "content"    => "1",
@@ -706,7 +660,6 @@ return [
     ],
     [
         "group_code" => "site_setting",
-        "tenant_id"  => 1,
         "code"       => "site_url",
         "name"       => "网站地址",
         "content"    => "http://127.0.0.1:8998",
@@ -721,7 +674,6 @@ return [
     ],
     [
         "group_code" => "site_setting",
-        "tenant_id"  => 1,
         "code"       => "site_name",
         "name"       => "站点名称",
         "content"    => "madong-admin",
@@ -736,7 +688,6 @@ return [
     ],
     [
         "group_code" => "site_setting",
-        "tenant_id"  => 1,
         "code"       => "site_logo",
         "name"       => "站点Logo",
         "content"    => "https://madong.tech/assets/images/logo.svg",
@@ -751,7 +702,6 @@ return [
     ],
     [
         "group_code" => "site_setting",
-        "tenant_id"  => 1,
         "code"       => "site_network_security",
         "name"       => "网备案号",
         "content"    => "2024042441号-2",
@@ -766,7 +716,6 @@ return [
     ],
     [
         "group_code" => "site_setting",
-        "tenant_id"  => 1,
         "code"       => "site_description",
         "name"       => "网站描述",
         "content"    => "快速开发框架",
@@ -781,7 +730,6 @@ return [
     ],
     [
         "group_code" => "site_setting",
-        "tenant_id"  => 1,
         "code"       => "site_record_no",
         "name"       => "网站ICP",
         "content"    => "2024042442",
@@ -796,7 +744,6 @@ return [
     ],
     [
         "group_code" => "site_setting",
-        "tenant_id"  => 1,
         "code"       => "site_icp_url",
         "name"       => "ICP URL",
         "content"    => "https://beian.miit.gov.cn/",
@@ -811,7 +758,6 @@ return [
     ],
     [
         "group_code" => "site_setting",
-        "tenant_id"  => 1,
         "code"       => "site_network_security_url",
         "name"       => "网安备案链接",
         "content"    => "",
@@ -826,7 +772,6 @@ return [
     ],
     [
         "group_code" => "sms_setting",
-        "tenant_id"  => 1,
         "code"       => "enable",
         "name"       => "是否开启",
         "content"    => "1",
@@ -841,7 +786,6 @@ return [
     ],
     [
         "group_code" => "sms_setting",
-        "tenant_id"  => 1,
         "code"       => "access_key_id",
         "name"       => "access_key_id",
         "content"    => "234813346262818816",
@@ -856,7 +800,6 @@ return [
     ],
     [
         "group_code" => "sms_setting",
-        "tenant_id"  => 1,
         "code"       => "access_key_secret",
         "name"       => "access_key_secret",
         "content"    => "238164553517768704",
@@ -871,7 +814,6 @@ return [
     ],
     [
         "group_code" => "sms_setting",
-        "tenant_id"  => 1,
         "code"       => "sign_name",
         "name"       => "sign_name",
         "content"    => "【码动开源】，你的验证码是{code}，有效期5分钟。",

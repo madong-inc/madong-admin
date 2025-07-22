@@ -28,113 +28,6 @@ CREATE TABLE `ma_cache`  (
   `create_time` int(11) NULL DEFAULT NULL
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = DYNAMIC;
 
--- ----------------------------
--- Table structure for ma_mt_db_setting
--- ----------------------------
-DROP TABLE IF EXISTS `ma_mt_db_setting`;
-CREATE TABLE `ma_mt_db_setting`  (
-  `id` bigint(20) NOT NULL COMMENT 'id',
-  `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '链接名',
-  `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '描述',
-  `driver` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '驱动类型',
-  `host` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'ip',
-  `port` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '端口',
-  `database` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '数据库名称',
-  `username` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '用户名',
-  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '用户密码',
-  `prefix` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT 'ma_' COMMENT '前缀',
-  `variable` text NULL COMMENT '变量', -- 使用 TEXT 替代 JSON
-  `is_default` tinyint(1) NULL DEFAULT 0 COMMENT '是否默认数据源',
-  `enabled` tinyint(3) UNSIGNED NULL DEFAULT 1 COMMENT '状态',
-  `created_at` bigint(20) NULL DEFAULT NULL COMMENT '创建时间',
-  `created_by` bigint(20) NULL DEFAULT NULL COMMENT '创建人',
-  `updated_at` bigint(20) NULL DEFAULT NULL COMMENT '更新人',
-  `updated_by` bigint(20) NULL DEFAULT NULL COMMENT '更新时间',
-  `deleted_at` bigint(20) NULL DEFAULT NULL COMMENT '删除',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 1 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据中心配置' ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Table structure for ma_mt_tenant
--- ----------------------------
-DROP TABLE IF EXISTS `ma_mt_tenant`;
-CREATE TABLE `ma_mt_tenant`  (
-  `id` bigint(20) NOT NULL COMMENT 'id',
-  `db_name` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '数据源名称',
-  `code` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '租户编号',
-  `type` tinyint(1) NULL DEFAULT NULL COMMENT '0其他  1 企业',
-  `contact_person` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '联系人',
-  `contact_phone` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '联系电话',
-  `company_name` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '企业名称',
-  `license_number` varchar(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '统一社会信用代码',
-  `address` varchar(200) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '地址',
-  `description` varchar(200) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '企业简介',
-  `domain` varchar(200) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '域名',
-  `enabled` tinyint(1) NULL DEFAULT 1 COMMENT '状态（1正常 0停用）',
-  `isolation_mode` tinyint(4) NULL DEFAULT 2 COMMENT '隔离模式（1字段隔离  2库隔离）',
-  `is_default` tinyint(1) NULL DEFAULT 0 COMMENT '是否默认',
-  `expired_at` bigint(20) UNSIGNED ZEROFILL NULL DEFAULT NULL COMMENT '过期时间',
-  `deleted_at` bigint(20) NULL DEFAULT NULL COMMENT '删除标志',
-  `created_at` bigint(20) NULL DEFAULT NULL COMMENT '创建时间',
-  `created_by` bigint(20) NULL DEFAULT NULL COMMENT '创建者',
-  `updated_by` bigint(20) NULL DEFAULT NULL COMMENT '更新者',
-  `updated_at` bigint(20) NULL DEFAULT NULL COMMENT '更新时间',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARSET = utf8 COLLATE = utf8_unicode_ci COMMENT = '租户' ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Table structure for ma_mt_tenant_package
--- ----------------------------
-DROP TABLE IF EXISTS `ma_mt_tenant_package`;
-CREATE TABLE `ma_mt_tenant_package`  (
-  `tenant_id` bigint(20) UNSIGNED NOT NULL COMMENT '租户ID',
-  `subscription_id` bigint(20) UNSIGNED NOT NULL COMMENT '套餐ID'
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '租户-订阅关联表' ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Table structure for ma_mt_tenant_session
--- ----------------------------
-DROP TABLE IF EXISTS `ma_mt_tenant_session`;
-CREATE TABLE `ma_mt_tenant_session`  (
-  `id` bigint(20) NOT NULL COMMENT '雪花ID',
-  `key` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'key',
-  `admin_id` bigint(20) NOT NULL COMMENT '管理员ID',
-  `tenant_id` bigint(20) NOT NULL COMMENT '租户ID',
-  `token` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '会话token',
-  `expire_at` bigint(20) NULL DEFAULT NULL COMMENT '过期时间戳',
-  `created_at` bigint(20) NULL DEFAULT NULL COMMENT '创建时间戳',
-  `updated_at` bigint(20) NULL DEFAULT NULL COMMENT '更新时间戳',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `uk_token`(`token`) USING BTREE,
-  INDEX `idx_admin_tenant`(`admin_id`, `tenant_id`) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '租户-会话表' ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Table structure for ma_mt_tenant_subscription
--- ----------------------------
-DROP TABLE IF EXISTS `ma_mt_tenant_subscription`;
-CREATE TABLE `ma_mt_tenant_subscription`  (
-  `id` bigint(20) UNSIGNED NOT NULL COMMENT '雪花ID',
-  `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '套餐ID',
-  `description` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '描述',
-  `sort` int(11) NULL DEFAULT 0 COMMENT '排序',
-  `start_time` bigint(20) NULL DEFAULT NULL COMMENT '开始时间戳',
-  `end_time` bigint(20) NULL DEFAULT NULL COMMENT '结束时间戳',
-  `enabled` tinyint(4) NULL DEFAULT 1 COMMENT '状态:0-已过期,1-有效',
-  `created_at` bigint(20) NULL DEFAULT NULL COMMENT '创建时间戳',
-  `updated_at` bigint(20) NULL DEFAULT NULL COMMENT '更新时间戳',
-  `remark` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '备注',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '租户-套餐订阅表' ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Table structure for ma_mt_tenant_subscription_casbin
--- ----------------------------
-DROP TABLE IF EXISTS `ma_mt_tenant_subscription_casbin`;
-CREATE TABLE `ma_mt_tenant_subscription_casbin`  (
-  `subscription_id` bigint(20) UNSIGNED NOT NULL COMMENT '套餐主键',
-  `subscription_casbin_id` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'casb 策略关联ID'
-) ENGINE = InnoDB DEFAULT CHARSET = utf8 COLLATE = utf8_unicode_ci COMMENT = '租户-套餐订阅策略关联表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for ma_sys_admin
@@ -210,24 +103,6 @@ CREATE TABLE `ma_sys_admin_role`  (
   `role_id` bigint(20) UNSIGNED NOT NULL COMMENT '角色主键'
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8 COLLATE = utf8_unicode_ci COMMENT = '用户与角色关联表' ROW_FORMAT = DYNAMIC;
 
--- ----------------------------
--- Table structure for ma_sys_admin_tenant
--- ----------------------------
-DROP TABLE IF EXISTS `ma_sys_admin_tenant`;
-CREATE TABLE `ma_sys_admin_tenant`  (
-  `id` bigint(20) NOT NULL COMMENT '雪花ID',
-  `admin_id` bigint(20) NOT NULL COMMENT '管理员ID',
-  `tenant_id` bigint(20) NOT NULL COMMENT '租户ID',
-  `is_super` tinyint(4) NOT NULL DEFAULT 0 COMMENT '角色:1-管理员,0-普通用户',
-  `is_default` tinyint(4) NULL DEFAULT 0 COMMENT '是否默认租户',
-  `priority` int(11) NULL DEFAULT 0 COMMENT '优先级(数值越小优先级越高)',
-  `created_at` bigint(20) NULL DEFAULT NULL COMMENT '创建时间戳',
-  `updated_at` bigint(20) NULL DEFAULT NULL COMMENT '更新时间戳',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `uk_admin_tenant`(`admin_id`, `tenant_id`) USING BTREE,
-  INDEX `idx_tenant_id`(`tenant_id`) USING BTREE,
-  INDEX `idx_admin_primary`(`admin_id`) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '租户-管理员关联表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for ma_sys_casbin_rule
@@ -258,7 +133,6 @@ CREATE TABLE `ma_sys_casbin_rule`  (
 DROP TABLE IF EXISTS `ma_sys_config`;
 CREATE TABLE `ma_sys_config`  (
   `id` bigint(20) NOT NULL COMMENT '配置ID',
-  `tenant_id` bigint(20) NULL DEFAULT NULL COMMENT '租户ID',
   `group_code` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '分组编码',
   `code` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '唯一编码',
   `name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '配置名称',
@@ -326,7 +200,6 @@ CREATE TABLE `ma_sys_crontab_log`  (
 DROP TABLE IF EXISTS `ma_sys_dept`;
 CREATE TABLE `ma_sys_dept`  (
   `id` bigint(20) UNSIGNED NOT NULL COMMENT '主键',
-  `tenant_id` bigint(20) NULL DEFAULT NULL COMMENT '租户隔离ID',
   `pid` bigint(20) UNSIGNED NULL DEFAULT NULL COMMENT '父ID',
   `level` varchar(500) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '组级集合',
   `code` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '部门唯一编码',
@@ -405,7 +278,6 @@ CREATE TABLE `ma_sys_dict_item`  (
 DROP TABLE IF EXISTS `ma_sys_login_log`;
 CREATE TABLE `ma_sys_login_log`  (
   `id` bigint(20) UNSIGNED NOT NULL COMMENT '主键',
-  `tenant_id` bigint(20) NULL DEFAULT NULL COMMENT '租户id',
   `user_name` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '用户名',
   `ip` varchar(45) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '登录IP地址',
   `ip_location` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT 'IP所属地',
@@ -491,7 +363,6 @@ CREATE TABLE `ma_sys_message`  (
 DROP TABLE IF EXISTS `ma_sys_notice`;
 CREATE TABLE `ma_sys_notice`  (
   `id` bigint(20) NOT NULL COMMENT '公告ID',
-  `tenant_id` bigint(20) NULL DEFAULT NULL COMMENT '租户id',
   `type` enum('announcement','notice') CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'announcement' COMMENT '公告类型（notice=>通知 announcement=>公告）',
   `title` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '公告标题',
   `content` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL COMMENT '公告内容',
@@ -512,7 +383,6 @@ CREATE TABLE `ma_sys_notice`  (
 DROP TABLE IF EXISTS `ma_sys_operate_log`;
 CREATE TABLE `ma_sys_operate_log`  (
   `id` bigint(20) NOT NULL COMMENT '主键',
-  `tenant_id` bigint(20) NULL DEFAULT NULL COMMENT '租户id',
   `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '内容',
   `app` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '应用名称',
   `ip` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '请求ip',
@@ -537,7 +407,6 @@ CREATE TABLE `ma_sys_operate_log`  (
 DROP TABLE IF EXISTS `ma_sys_post`;
 CREATE TABLE `ma_sys_post`  (
   `id` bigint(20) UNSIGNED NOT NULL COMMENT '主键',
-  `tenant_id` bigint(20) NULL DEFAULT NULL COMMENT '租户id',
   `dept_id` bigint(20) NULL DEFAULT NULL COMMENT '部门id',
   `code` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '岗位代码',
   `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '岗位名称',
@@ -605,7 +474,6 @@ CREATE TABLE `ma_sys_rate_restrictions`  (
 DROP TABLE IF EXISTS `ma_sys_recycle_bin`;
 CREATE TABLE `ma_sys_recycle_bin`  (
   `id` bigint(20) UNSIGNED NOT NULL COMMENT 'ID',
-  `tenant_id` bigint(20) NULL DEFAULT NULL COMMENT '租户id',
   `original_id` bigint(20) NULL DEFAULT NULL COMMENT '原始数据ID',
   `data` json NULL COMMENT '回收的数据',
   `table_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '数据表',
@@ -626,7 +494,6 @@ CREATE TABLE `ma_sys_recycle_bin`  (
 DROP TABLE IF EXISTS `ma_sys_role`;
 CREATE TABLE `ma_sys_role`  (
   `id` bigint(20) UNSIGNED NOT NULL COMMENT '主键',
-  `tenant_id` bigint(20) NULL DEFAULT NULL COMMENT '租户id 默认null',
   `pid` bigint(20) NULL DEFAULT 0 COMMENT '父级id',
   `name` varchar(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '角色名称',
   `code` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '角色代码',
@@ -731,7 +598,6 @@ CREATE TABLE `ma_sys_route_cate`  (
 DROP TABLE IF EXISTS `ma_sys_upload`;
 CREATE TABLE `ma_sys_upload`  (
   `id` bigint(20) NOT NULL COMMENT '文件信息ID',
-  `tenant_id` bigint(20) NULL DEFAULT NULL COMMENT '租户id',
   `url` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '文件访问地址',
   `size` bigint(20) NULL DEFAULT NULL COMMENT '文件大小，单位字节',
   `size_info` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '文件大小，有单位',

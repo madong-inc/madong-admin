@@ -188,12 +188,4 @@ class SysMenu extends BaseModel
     {
         return $this->hasMany(self::class, 'pid');
     }
-
-    /**
-     * 默认链接
-     */
-    protected function initialize()
-    {
-        $this->connection = config('database.default');
-    }
 }
