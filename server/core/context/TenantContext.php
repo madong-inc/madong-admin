@@ -33,6 +33,7 @@ use support\Container;
  * @method static bool isLibraryIsolation()
  * @method static ?int getExpirationTime()
  * @method static bool isExpired()
+ * @method static getTenantId()
  */
 class TenantContext
 {
@@ -53,4 +54,5 @@ class TenantContext
     {
         self::instance()->reset();
     }
+
 }
