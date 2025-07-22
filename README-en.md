@@ -1,77 +1,84 @@
 English | [中文](./README.md)
-
 # Project Overview
 
 <p align="center">
     <img src="https://madong.tech/app/kbase/upload/avatar/202503/67e75c135c1f.md.png" width="120" />
 </p>
 <p align="center">
-    <a href="https://www.madong.tech" target="_blank">Official Website</a> |
+    <a href="https://www.madong.tech" target="_blank">Official Site</a> |
     <a href="https://madong.tech/kbase/doc?name=md" target="_blank">Documentation</a> | 
     <a href="https://admin.madong.tech" target="_blank">Demo</a> |
-    <a href="https://www.workerman.net/doc/webman/" target="_blank">Webman Official Documentation</a> 
+    <a href="https://www.workerman.net/doc/webman/" target="_blank">Webman Docs</a> 
 </p>
 
-## Open Source Multi-Tenant SaaS Rapid Development Framework
-We are committed to breaking the illusion of pseudo-open source, striving to build an exemplary open-source SaaS multi-tenant cloud platform architecture that combines excellence, simplicity, and beauty. Upholding the principle of "taking from open source and giving back to open source," we aim to free developers' valuable time, allowing them to enjoy every moment of life—whether it's leisurely relaxing, immersing in self-improvement, cherishing time with family, or pursuing fitness; or even encountering soulmates and painting beautiful life scenarios together.
+## Open-Source Single-User Rapid Development Framework
+We are committed to providing an excellent, simple and elegant open-source single-user independent application development framework. Adhering to the philosophy of "Take from open-source, Give back to open-source", we aim to save developers valuable time, allowing them to enjoy every moment of life - whether it's relaxation, self-improvement, family time, fitness, or encountering beauty.
+
+## Difference from SaaS Version
+This project is a single-user standalone version, suitable for scenarios requiring independent deployment and single-user management. For the multi-tenant SaaS version, please visit:
+[SaaS Multi-tenant Version Repository](https://gitcode.com/motion-code/madong) 
 
 ## Technical Features
-✅ Elegant Layout System: Simple interface + multiple themes + navigation mode, freely combinable as desired  
-✅ Enterprise-Level Function Stack: Out-of-the-box SaaS/multi-tenant/RBAC permission system  
-✅ Intelligent Message Push: Distributed messaging system based on WebSocket + Redis  
-✅ Efficient Traffic Control: Comprehensive traffic control and blacklist mechanism  
-✅ Modular Design: Core project + optional plugins, easily removable components  
+- ✅ Elegant Layout System: Clean interface + multiple themes + guided mode, freely combinable
+- ✅ Enterprise-grade Feature Stack: Out-of-the-box RBAC permission system
+- ✅ Intelligent Message Push: Distributed messaging system based on WebSocket+Redis
+- ✅ Efficient Traffic Control: Comprehensive flow control and blacklist mechanism
+- ✅ Modular Design: Core project + optional plugins, simply delete unwanted components
 
 ## Performance
-⚡ Extreme Response: API response < 300ms in a 2M network environment, generally maintained in the 10-150ms range  
+⚡ Extreme Responsiveness: API response <300ms in 2M network environment, typically 10-150ms
 
-## Function Matrix
-### Basic Architecture
-- Multi-Tenant System: Product subscriptions, initial data, independent data sources, and other enterprise-level functions  
-- Permission Management: Complete RBAC permission control system  
+## Feature Matrix
+### Core Architecture
+- Multi-tenant System: Product subscription, initial data, independent data sources and other enterprise features
+- Permission Management: Complete RBAC permission control system
 ### Organizational Structure
-- User Management: System operator configuration center  
-- Department Structure: Tree-shaped organization management, supporting data permissions  
-- Position Management: Job position configuration  
+- User Management: System operator configuration center
+- Department Structure: Tree organization management with data permissions
+- Position Management: Job title system configuration
 ### System Management
-- Menu Permissions: Fine control over menu/operation/button permissions  
-- Role Management: Menu permission allocation + data scope division  
-- Dictionary System: Standardized maintenance of commonly used data  
-### Monitoring and Auditing
-- Notifications: System message publishing platform  
-- Operation Logs: Complete records of normal and abnormal operations  
-- Login Auditing: Including abnormal login monitoring  
+- Menu Permissions: Fine-grained control over menu/operation/button permissions
+- Role Management: Menu permission assignment + data scope division
+- Dictionary System: Standardized maintenance of common data
+### Monitoring & Auditing
+- Notices: System message publishing platform
+- Operation Logs: Complete recording of normal and abnormal operations
+- Login Audit: Includes abnormal login monitoring
 ### Design Philosophy
-Simplicity is the ultimate sophistication — We adhere to:
-- Elegant and simple code  
-- Efficient and quick development  
-- Clear and straightforward architecture  
-- Enjoying the programming experience of **"getting it done quickly"** in both front-end and back-end development.  
+Simplicity is the Ultimate Sophistication — We adhere to:
+
+- Elegant and concise code
+- Efficient and rapid development
+- Clear and understandable architecture
+- Both frontend and backend developers can enjoy the **"Just Get It Done"** programming experience.
 
 ## Environment Requirements
-To ensure the normal operation of the system, please ensure that your server environment meets the following requirements:
-- PHP: Version >= 8.1, with the following extensions enabled:
-  - mbstring: For multi-byte string handling.  
-  - json: Supports encoding and decoding of JSON data.  
-  - pdo: Provides a unified database access interface.  
-  - openssl: For encryption and decryption operations, ensuring data transmission security.  
-  - redis: Supports Redis caching and data storage.  
-  - pcntl: For multi-process control.  
-- MySQL: Version >= 5.7, as the main database for storing data.  
-- Redis: Version >= 4.0, for caching data to improve system performance.  
-- Git: Version >= 2.x, for convenient code version management and collaborative development.  
-- Composer: Version >= 2.x, for PHP dependency management.  
+To ensure proper system operation, please make sure your server meets the following requirements:
+- PHP: Version >= 8.1 with these extensions:
+- mbstring: For multibyte string processing.
+- json: Supports JSON data encoding/decoding.
+- pdo: Provides unified database access interface.
+- openssl: For encryption/decryption operations to ensure data security.
+- redis: Supports Redis caching and data storage.
+- pcntl: For multi-process control.
+- MySQL: Version >= 5.7, as the primary database for data storage.
+- Redis: Version >= 4.0, for caching data and improving performance.
+- Git: Version >= 2.x, for version control and collaborative development.
+- Composer: Version >= 2.x, for PHP dependency management.
 
-## Experience Address
+## Demo Access
 
-[Experience Address](https://admin.madong.tech) https://admin.madong.tech  
-- Account: admin  
-- Password: 123456  
-We look forward to your use and feedback, and we will continue to optimize and improve the system to provide you with better services.
+[Demo Site](https://admin.madong.tech) https://admin.madong.tech
+- Username: admin
+- Password: 123456
+We look forward to your feedback as we continue to optimize and improve the system to provide better service.
 
 ## Official Community
-Welcome to join our official community for interaction and communication! <img src="https://svg.hamm.cn/badge.svg?key=QQ Channel&value=pd52261144"/>
+Join our official community for discussion <img src="https://svg.hamm.cn/badge.svg?key=QQ Channel&value= pd52261144"/>
+
+## Join the Discussion
+
+<img src="https://madong.tech/app/admin/upload/files/20250605/684160e45fcc.png" width="240" />
 
 ## Join Us
-Welcome to join the technical exchange group and communicate directly with core developers (scan the QR code to add the author on WeChat to join the group), working together to create a more powerful open-source enterprise-level platform!  
-<img src="https://madong.tech/app/admin/upload/files/20250605/684160e45fcc.png" width="240" />
+Welcome to join our technical exchange group (scan QR code to add WeChat), communicate directly with core developers, and jointly build a more powerful open-source enterprise platform!
