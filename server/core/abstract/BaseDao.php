@@ -14,7 +14,6 @@ namespace core\abstract;
 
 use madong\helper\Arr;
 
-
 /**
  * @method count(array $where = [], bool $search = true)
  * @method selectList(array $where, string $field = '*', int $page = 0, int $limit = 0, string $order = '', array $with = [], bool $search = false)
@@ -384,7 +383,7 @@ abstract class BaseDao
             if (empty($condition[2])) {
                 continue;
             }
-            $value = ArrayHelper::normalize($condition[2]);
+            $value = Arr::normalize($condition[2]);
             $query->whereIn($condition[0], $value);
         }
 
@@ -550,11 +549,31 @@ abstract class BaseDao
      * @param array $data
      *
      * @return bool
-     * @throws \Exception
      */
     public function saveAll(array $data): bool
     {
-        return $this->getModel()->insert($data);
+        if (empty($data)) {
+            return false;
+        }
+
+        try {
+            $models = $this->getModel()->newCollection();
+
+            foreach ($data as $item) {
+                $models->push($this->getModel()->newInstance($item));
+            }
+
+            $savedAll = true;
+            $models->each(function ($model) use (&$savedAll) {
+                if (!$model->save()) {
+                    $savedAll = false;
+                }
+            });
+
+            return $savedAll;
+        } catch (\Exception $e) {
+            return false;
+        }
     }
 
     /**
