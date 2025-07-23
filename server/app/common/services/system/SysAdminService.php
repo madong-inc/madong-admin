@@ -142,7 +142,7 @@ class SysAdminService extends BaseService
         // 格式化用户标识符
         $userIdentifier = 'user:' . strval($model->id);
 
-        $domain   = '*';
+        $domain = '*';
 
         // 获取当前用户在 Casbin 中的角色（带前缀）
         // Permission::getRolesForUser 返回的是带前缀的角色代码数组，如 ['role:admin', 'role:editor']
@@ -151,7 +151,7 @@ class SysAdminService extends BaseService
         // 获取传入角色的详细信息
         $roleService = new SysRoleService();
         $rolesData   = $roleService->getAllRoles([
-            'id'        => $roles,
+            'id' => $roles,
         ]);
 
         // 将传入角色的代码转换为数组，并添加 'role:' 前缀
@@ -383,7 +383,7 @@ class SysAdminService extends BaseService
      * @param array    $tokenData
      * @param int|null $tenantId
      */
-    private function emitLoginSuccessEvent(array $tokenData, ?int $tenantId=null): void
+    private function emitLoginSuccessEvent(array $tokenData, ?int $tenantId = null): void
     {
         $tokenData['tenant_id'] = $tenantId;
         $tokenData['status']    = 1;
@@ -477,7 +477,6 @@ class SysAdminService extends BaseService
     {
         $this->transaction(function () use ($token) {
             $systemLoginLogService = Container::make(SysLoginLogService::class);
-            $tenantSessionService  = Container::make(TenantSessionService::class);
             // 使用 firstOrFail 避免空值检查
             $loginLog = $systemLoginLogService->getModel()
                 ->where('key', $token)
@@ -490,11 +489,11 @@ class SysAdminService extends BaseService
                 'updated_at' => time(), // 确保更新时间戳
             ]);
 
-            // 删除会话记录
-            $tenantSessionService->getModel()
-                ->where('token', $token)
-                ->delete();
-            JwtToken::clear();
+            // 添加Token 致黑名单
+            $result = JwtToken::addToBlacklist($token, true);
+            if (!$result) {
+                throw new AdminException('操作失败');
+            }
         });
     }
 

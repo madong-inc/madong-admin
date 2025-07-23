@@ -18,6 +18,7 @@ use app\common\services\system\SysAdminRoleService;
 use app\common\services\system\SysAdminService;
 use app\common\services\system\SysLoginLogService;
 use core\exception\handler\AdminException;
+use core\jwt\JwtToken;
 use core\utils\Json;
 use support\Container;
 use support\Request;
@@ -110,7 +111,7 @@ class SysAdminController extends Crud
     public function show(Request $request): \support\Response
     {
         try {
-            $id      = $request->route->param('id');
+            $id = $request->route->param('id');
             /** @var  SysAdminService $service */
             $service = $this->service;
             $result  = $service->getAdminById($id)->toArray();
