@@ -36,7 +36,6 @@ class SysNotice extends BaseModel
 
     protected $fillable = [
         'id',
-        'tenant_id',
         'message_id',
         'title',
         'type',

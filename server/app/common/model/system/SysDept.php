@@ -37,7 +37,6 @@ class SysDept extends BaseModel
     protected $fillable = [
         'id',
         'pid',
-        'tenant_id',
         'level',
         'code',
         'name',

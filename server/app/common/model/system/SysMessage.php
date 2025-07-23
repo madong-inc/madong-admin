@@ -36,7 +36,6 @@ class SysMessage extends BaseModel
 
     protected $fillable = [
         'id',
-        'tenant_id',
         'type',
         'title',
         'content',

@@ -30,7 +30,6 @@ class SysOperateLog extends BaseModel
 
     protected $fillable = [
         'id',
-        'tenant_id',
         'name',
         'app',
         'ip',

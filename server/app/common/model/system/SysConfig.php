@@ -36,7 +36,6 @@ class SysConfig extends BaseModel
 
     protected $fillable = [
         'id',
-        'tenant_id',
         'group_code',
         'code',
         'name',

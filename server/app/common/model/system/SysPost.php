@@ -36,7 +36,6 @@ class SysPost extends BaseModel
 
     protected $fillable = [
         'id',
-        'tenant_id',
         'dept_id',
         'code',
         'name',

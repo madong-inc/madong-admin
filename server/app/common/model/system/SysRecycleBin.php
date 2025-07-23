@@ -38,7 +38,6 @@ class SysRecycleBin extends BaseModel
     protected $fillable = [
         'id',
         'original_id',
-        'tenant_id',
         'data',
         'table_name',
         'table_prefix',
