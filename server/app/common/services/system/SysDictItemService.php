@@ -12,7 +12,7 @@
 
 namespace app\common\services\system;
 
-use app\common\dao\system\SystemDictItemDao;
+use app\common\dao\system\SysDictItemDao;
 use core\abstract\BaseService;
 use support\Container;
 
@@ -27,7 +27,7 @@ class SysDictItemService extends BaseService
 
     public function __construct()
     {
-        $this->dao = Container::make(SystemDictItemDao::class);
+        $this->dao = Container::make(SysDictItemDao::class);
     }
 
 }

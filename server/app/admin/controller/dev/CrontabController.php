@@ -15,6 +15,7 @@ namespace app\admin\controller\dev;
 use app\admin\controller\Crud;
 use app\admin\validate\system\SysCrontabValidate;
 use app\common\services\system\SysCrontabService;
+use core\enum\system\OperationResult;
 use core\exception\handler\AdminException;
 use core\utils\Json;
 use support\Container;
@@ -154,7 +155,7 @@ class CrontabController extends Crud
                 }
             }
             $result = $this->service->runOneTask(['id' => $data['data']]);
-            var_dump($result);
+
             if ($result['code'] == OperationResult::FAILURE->value) {
                 throw new AdminException('执行失败' . $result['log']);
             }
