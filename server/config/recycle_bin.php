@@ -19,7 +19,7 @@ return [
         'enabled'      => true,       // 是否启用回收站
         'strategy'     => 'logical',  // logical|physical 默认软删
         'storage_days' => 30,         // 保留天数-需自行扩展任务清理数据
-        'storage_mode' => 'central',  // central|isolated (主库集中|分库隔离)
+//        'storage_mode' => 'central',  // central|isolated (主库集中|分库隔离)
     ],
 
     // 表级配置覆盖

@@ -78,7 +78,6 @@ class BaseModel extends Model
         parent::__construct($data);
     }
 
-
     protected static function booted()
     {
         // 1. 默认添加  AccessScope
@@ -219,6 +218,8 @@ class BaseModel extends Model
      * 删除事件
      *
      * @param \support\Model $model
+     *
+     * @throws \core\exception\handler\AdminException
      */
     public static function onAfterDelete(Model $model)
     {
@@ -240,10 +241,7 @@ class BaseModel extends Model
 
             $data = self::prepareRecycleBinData($tableData, $table, $prefix);
             // 动态选择存储方式
-            $handler = $config['storage_mode'] === 'central'
-                ? fn() => SysRecycleBin::centralConnection()
-                : fn() => SysRecycleBin::tenantConnection();
-
+            $handler = fn() => SysRecycleBin::centralConnection();
             $handler()->create($data);
         } catch (\Exception $e) {
             throw new AdminException($e->getMessage());

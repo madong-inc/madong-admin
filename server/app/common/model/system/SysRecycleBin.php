@@ -76,16 +76,6 @@ class SysRecycleBin extends BaseModel
     }
 
     /**
-     * 动态数据库链接
-     *
-     * @return \app\common\model\system\SysRecycleBin
-     */
-    public static function tenantConnection(): SysRecycleBin
-    {
-        return (new static)->setConnection(TenantContext::getDatabaseConnection());
-    }
-
-    /**
      * 定义访问器
      *
      * @return null

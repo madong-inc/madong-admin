@@ -14,10 +14,9 @@ namespace app\common\services\system;
 
 use app\common\dao\system\SysRecycleBinDao;
 use app\common\model\system\SysRecycleBin;
-use app\common\scopes\global\TenantScope;
 use core\exception\handler\AdminException;
 use core\abstract\BaseService;
-use core\context\TenantContext;
+use support\Container;
 use support\Db;
 
 /**
@@ -29,9 +28,9 @@ use support\Db;
 class SysRecycleBinService extends BaseService
 {
 
-    public function __construct(SysRecycleBinDao $dao)
+    public function __construct()
     {
-        $this->dao = $dao;
+        $this->dao = Container::make(SysRecycleBinDao::class);
     }
 
     /**
@@ -44,7 +43,7 @@ class SysRecycleBinService extends BaseService
     public function restoreRecycleBin(int $recycleId)
     {
         $this->transaction(function () use ($recycleId) {
-            $record = $this->dao->get($recycleId, null, [], '', [TenantScope::class]);
+            $record = $this->dao->get($recycleId, null, [], '');
             if (empty($record)) {
                 throw new AdminException("回收站记录不存在");
             }
@@ -65,13 +64,9 @@ class SysRecycleBinService extends BaseService
         $config       = self::getTableConfig($tableName);
         $storage_mode = $config['storage_mode'];
         $connection   = config('database.default');
-        if ($storage_mode == 'isolated') {
-            $connection = TenantContext::getDatabaseConnection();
-        }
-        $tableData              = json_decode($record->getData('data'), true);
-        $tableData['tenant_id'] = TenantContext::getTenantId();
-        $columns                = $this->getTableColumns($tableName, $connection);
-        $tableData              = array_intersect_key($tableData, array_flip($columns));
+        $tableData    = json_decode($record->getData('data'), true);
+        $columns      = $this->getTableColumns($tableName, $connection);
+        $tableData    = array_intersect_key($tableData, array_flip($columns));
         Db::connection($connection)->table($tableName)->insert($tableData);
     }
 
@@ -91,7 +86,7 @@ class SysRecycleBinService extends BaseService
     /**
      * 获取表配置（合并全局+表级配置）
      *
-     * @param $table
+     * @param string $table
      *
      * @return array
      */
