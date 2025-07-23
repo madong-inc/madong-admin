@@ -93,6 +93,7 @@ class SchedulerServer
         $this->debug    = $config['debug'] ?? true;
         $this->writeLog = $config['write_log'] ?? true;
         $this->enabled   = $config['enable'] ?? false;
+
         if (!$this->enabled) {
             $this->writeln('定时任务未开启，如需开启，请修改配置 .env APP_TASK_ENABLED=true 或者config\\core\\scheduler\\app.php. enable = true ');
             return false;

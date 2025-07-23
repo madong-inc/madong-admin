@@ -21,7 +21,7 @@ use core\abstract\BaseDao;
  * @author Mr.April
  * @since  1.0
  */
-class SystemDictItemDao extends BaseDao
+class SysDictItemDao extends BaseDao
 {
 
     protected function setModel(): string
