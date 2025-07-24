@@ -13,7 +13,6 @@
 namespace app\common\model\system;
 
 use Illuminate\Database\Eloquent\Relations\Pivot;
-use core\context\TenantContext;
 use core\casbin\model\RuleModel;
 
 /**

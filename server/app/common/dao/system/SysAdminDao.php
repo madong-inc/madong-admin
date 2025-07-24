@@ -120,18 +120,12 @@ class SysAdminDao extends BaseDao
         }
         $where['enabled']  = 1;//有效用户
         $where['is_super'] = 0;//非顶级管理员
-        $tenantId          = TenantContext::getTenantId();
-        if (!$tenantId) {
-            throw new InvalidArgumentException("Tenant ID is required.");
-        }
-
         $query = $this->getModel()->with(['roles'])
             ->whereHas('roles', function ($query) use ($roleId) {
                 $query->where('id', $roleId);
             });
 
         if (!empty($where)) {
-            unset($where['role_id'], $where['tenant_id']);
             $query->where($where);
         }
 

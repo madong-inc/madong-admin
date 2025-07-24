@@ -13,7 +13,7 @@
 namespace app\common\dao\system;
 
 
-use app\common\model\system\SysAdminTenantPost;
+use app\common\model\system\SysAdminPost;
 use core\abstract\BaseDao;
 
 class SysAdminPostDao extends BaseDao
@@ -21,6 +21,6 @@ class SysAdminPostDao extends BaseDao
 
     protected function setModel(): string
     {
-        return SysAdminTenantPost::class;
+        return SysAdminPost::class;
     }
 }
