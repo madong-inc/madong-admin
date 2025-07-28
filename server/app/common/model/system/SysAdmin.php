@@ -159,4 +159,14 @@ class SysAdmin extends BaseModel
         return $this->belongsToMany(RuleModel::class, SysAdminCasbin::class, 'admin_id', 'admin_casbin_id', 'id', 'v0');
     }
 
+    /**
+     * 管理消息-列表
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function message(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(SysMessage::class, 'receiver_id', 'id');
+    }
+
 }

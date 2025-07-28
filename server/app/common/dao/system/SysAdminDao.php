@@ -90,7 +90,7 @@ class SysAdminDao extends BaseDao
      */
     public function getList(array $where, string $field = '*', int $page = 0, int $limit = 0, string $order = '', array $with = [], bool $search = false, ?array $withoutScopes = null): array
     {
-        $where['enabled'] = 1;
+//        $where['enabled'] = 1;//显示禁用用户列表
         if (empty($with)) {
             $with = ['depts', 'posts', 'casbin.roles'];
         }
