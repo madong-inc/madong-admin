@@ -48,6 +48,7 @@ class SysMessage extends BaseModel
         'related_type',
         'action_url',
         'action_params',
+        'message_uuid',
         'read_at',
         'created_at',
         'expired_at',
