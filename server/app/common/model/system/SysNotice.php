@@ -41,6 +41,7 @@ class SysNotice extends BaseModel
         'type',
         'content',
         'enabled',
+        'uuid',
         'created_dept',
         'created_by',
         'created_at',

@@ -294,8 +294,11 @@ class SysAdminService extends BaseService
         if (!$adminInfo) {
             throw new AdminException('账号或密码错误，请重新输入!');
         }
-        if ($adminInfo->is_locked === 1) {
+        if ($adminInfo->enabled === 0) {
             throw new AdminException('您已被禁止登录!');
+        }
+        if ($adminInfo->is_locked === 1) {
+            throw new AdminException('您的账号已被锁定，禁止登录!');
         }
     }
 
