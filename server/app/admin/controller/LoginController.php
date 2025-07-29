@@ -14,6 +14,7 @@ namespace app\admin\controller;
 
 use app\common\services\system\SysAdminService;
 use core\exception\handler\AdminException;
+use core\jwt\JwtToken;
 use core\utils\Json;
 use core\captcha\Captcha;
 use support\Container;
@@ -154,12 +155,26 @@ class LoginController extends Crud
      */
     public function logout(Request $request): \support\Response
     {
+        // 1. 获取token
+        $token = $request->header(config('core.jwt.app.token_name', 'Authorization')) ?: $request->get('token');
+
+        // 2. 快速验证无效token情况
+        if (empty($token) || $token === 'undefined') {
+            return Json::success('ok', []);
+        }
+
+        // 3. 处理Bearer Token格式
+        if (str_starts_with($token, 'Bearer ')) {
+            $token = substr($token, 7); // 移除"Bearer "前缀
+            if (empty($token) || $token === 'undefined') {
+                return Json::success('ok', []);
+            }
+        }
+
+        // 4. 加入黑名单
+        JwtToken::addToBlacklist($token);
+
         return Json::success('ok', []);
-    }
-
-    public function test(Request $request)
-    {
-
     }
 
 }

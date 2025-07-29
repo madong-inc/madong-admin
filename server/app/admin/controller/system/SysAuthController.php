@@ -14,19 +14,13 @@ namespace app\admin\controller\system;
 
 use app\admin\controller\Crud;
 use app\admin\validate\system\SysAuthValidate;
-use app\common\scopes\global\TenantScope;
-use app\common\services\platform\TenantService;
-use app\common\services\platform\TenantSessionService;
 use app\common\services\system\SysAdminRoleService;
 use app\common\services\system\SysAdminService;
-use app\common\services\system\SysAdminTenantService;
 use app\common\services\system\SysAuthService;
 use app\common\services\system\SysRoleMenuService;
 use app\common\services\system\SysRoleScopeDeptService;
 use app\common\services\system\SysRoleService;
-use core\exceptioncopy\AuthException;
 use core\jwt\JwtToken;
-use core\context\TenantContext;
 use core\utils\Json;
 use core\exception\handler\UnauthorizedHttpException;
 use madong\helper\Dict;
@@ -261,38 +255,6 @@ class SysAuthController extends Crud
             return Json::success('ok', $data);
         } catch (\Throwable $e) {
             return Json::fail($e->getMessage(), [], $e->getCode());
-        }
-    }
-
-    /**
-     * 获取用户租户列表
-     *
-     * @param \support\Request $request
-     *
-     * @return \support\Response
-     */
-    public function getUserTenant(Request $request): \support\Response
-    {
-        try {
-            $id      = getCurrentUser(false);
-            $service = new SysAdminService();
-            $result  = $service->getAdminById($id);
-            if (empty($result)) {
-                return Json::success('ok', []);
-            }
-            $result->current_tenant_id = TenantContext::getTenantId();
-
-            $data                      = $result->toArray();
-            $data['current_tenant_id'] = TenantContext::getTenantId();
-
-            if (boolval($result->is_super)) {
-                $tenant                  = (new TenantService())->selectList([], '*', 0, 0, '', [], false, [TenantScope::class]);
-                $data['managed_tenants'] = $tenant; // 直接在数组中更新
-            }
-
-            return Json::success('ok', $data);
-        } catch (\Throwable $e) {
-            return Json::fail($e->getMessage());
         }
     }
 
