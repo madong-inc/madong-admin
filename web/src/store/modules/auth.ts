@@ -85,6 +85,7 @@ export const useAuthStore = defineStore('auth', () => {
     } catch {
       // 不做任何处理
     }
+
     resetAllStores();
     accessStore.setLoginExpired(false);
 

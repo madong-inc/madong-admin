@@ -72,7 +72,6 @@ Route::group('/system', function () {
         Route::get('/auth/role-menu-list', [\app\admin\controller\system\SysAuthController::class, 'dev'])->name('系统设置.权限管理.获取角色菜单列表');
         Route::get('/auth/role-menu-tree', [\app\admin\controller\system\SysAuthController::class, 'dev'])->name('系统设置.权限管理.获取角色菜单树');
         Route::get('/auth/user-list-by-role-id', [\app\admin\controller\system\SysAuthController::class, 'getUsersByRoleId'])->name('系统设置.权限管理.通过角色ID获取用户列表');
-        Route::get('/auth/user-tenant', [\app\admin\controller\system\SysAuthController::class, 'getUserTenant'])->name('系统设置.权限管理.获取用户关联租户');
         Route::get('/auth/user-list-exclude-role-id', [\app\admin\controller\system\SysAuthController::class, 'getUsersExcludingRole'])->name('系统设置.权限管理.获取用户列表-排除指定角色');
         Route::put('/auth/change-tenant', [\app\admin\controller\system\SysAuthController::class, 'changeTenant'])->name('系统设置.权限管理.切换租户');
         Route::put('/auth/tenant-grant', [\app\admin\controller\system\SysAuthController::class, 'tenantGrant'])->name('系统设置.权限管理.授权角色');
