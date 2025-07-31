@@ -51,6 +51,7 @@ class SysCrontab extends BaseModel
         'updated_at',
         'deleted_at',
         'singleton',
+        'remark',
     ];
 
     /**
