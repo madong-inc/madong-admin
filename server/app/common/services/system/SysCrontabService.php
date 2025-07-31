@@ -48,6 +48,7 @@ class SysCrontabService extends BaseService
                 $hour       = $data['hour'] ?? '';
                 $minute     = $data['minute'] ?? '';
                 $second     = $data['second'] ?? '';
+                $remark     = $data['remark'] ?? '';
 
                 //验证传入参数
                 $this->validateTaskData($task_cycle, $minute, $hour, $day, $week, $month, $second);
@@ -72,6 +73,7 @@ class SysCrontabService extends BaseService
                         'minute' => $minute,
                         'second' => $second,
                     ],
+                    'remark'     => $remark,
                 ];
                 $model      = $this->dao->save($insertData);
                 //添加定时任务重启服务
@@ -110,6 +112,7 @@ class SysCrontabService extends BaseService
                 $hour       = $data['hour'] ?? '';
                 $minute     = $data['minute'] ?? '';
                 $second     = $data['second'] ?? '';
+                $remark     = $data['remark'] ?? '';
                 //验证传入参数
                 $this->validateTaskData($task_cycle, $minute, $hour, $day, $week, $month, $second);
 
@@ -133,6 +136,7 @@ class SysCrontabService extends BaseService
                         'minute' => $minute,
                         'second' => $second,
                     ],
+                    'remark'     => $remark,
                 ]);
 
                 // 更新之后重启服务
