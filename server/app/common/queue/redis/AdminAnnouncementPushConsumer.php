@@ -13,6 +13,9 @@
 namespace app\common\queue\redis;
 
 use app\common\services\system\SysAdminService;
+use core\enum\system\BusinessPlatform;
+use core\enum\system\MessageEvent;
+use core\enum\system\MessageType;
 use core\logger\Logger;
 use core\notify\enum\PushClientType;
 use core\notify\Notification;
@@ -54,6 +57,7 @@ class AdminAnnouncementPushConsumer implements Consumer
             Logger::debug("公告推送完成: {$data['title']}");
             return true;
         } catch (\Throwable $e) {
+            var_dump($e->getMessage());
             Logger::error("公告推送失败: " . $e->getMessage(), [
                 'error' => $e->getTraceAsString(),
                 'data'  => $data,
@@ -127,15 +131,16 @@ class AdminAnnouncementPushConsumer implements Consumer
         $sendData = [];
         foreach ($adminIds as $id) {
             $sendData[] = [
-                'module'       => 'admin',
+                'module'       => BusinessPlatform::ADMIN->value,
                 'receiver_id'  => $id,
-                'event'        => 'message',
+                'event'        => MessageEvent::DEFAULT->value,
                 'data'         => [],
                 'title'        => $data['title'],
                 'content'      => $data['content'],
-                'message_type' => 'message',
+                'message_type' => MessageEvent::DEFAULT->value,
                 'priority'     => 1,
                 'related_id'   => $data['id'] ?? '',
+                'related_type'=> MessageType::ANNOUNCEMENT->value,
                 'expired_at'   => time() + 86400 * 7,
                 'message_uuid' => $data['uuid'] ?? null,
             ];
