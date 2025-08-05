@@ -1,6 +1,7 @@
+import { getApiBaseUrl } from './../../request';
 import { requestClient } from "#/api/request";
 import { useAccessStore } from "#/components/common/stores";
-import { getUrl } from "#/utils"
+
 
 
 
@@ -27,7 +28,7 @@ export class TerminalApi {
         const accessStore = useAccessStore();
         const token = this.formatToken(accessStore.accessToken);
         return (
-            getUrl() + this.baseUrl + '?command=' + commandKey + '&uuid=' + uuid + '&extend=' + extend + '&token=' + token + '&server=crmd'
+            getApiBaseUrl() + this.baseUrl + '?command=' + commandKey + '&uuid=' + uuid + '&extend=' + extend + '&token=' + token + '&server=crmd'
         )
     }
 

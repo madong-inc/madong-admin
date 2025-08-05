@@ -2873,11 +2873,11 @@
         },
         {
             "name": "madong/helper",
-            "version": "v1.1.0",
+            "version": "v1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://gitcode.com/motion-code/helper.git",
-                "reference": "d13e1d7715b02d87342419643094b53b2218adaf"
+                "reference": "7d6029c0e8d3e09414e5db7bae0aa8b398267276"
             },
             "require": {
                 "illuminate/collections": "*",
@@ -2904,7 +2904,7 @@
                 }
             ],
             "description": "The ingen Helper Package",
-            "time": "2025-07-04T01:40:03+00:00"
+            "time": "2025-08-05T03:16:37+00:00"
         },
         {
             "name": "maennchen/zipstream-php",
@@ -8177,7 +8177,7 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {},
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
@@ -8186,6 +8186,6 @@
         "ext-pdo": "*",
         "ext-gd": "*"
     },
-    "platform-dev": [],
+    "platform-dev": {},
     "plugin-api-version": "2.6.0"
 }

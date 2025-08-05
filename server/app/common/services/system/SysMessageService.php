@@ -14,6 +14,8 @@ namespace app\common\services\system;
 
 use app\common\dao\system\SysMessageDao;
 use core\abstract\BaseService;
+use core\enum\system\BusinessPlatform;
+use core\enum\system\MessageEvent;
 use core\enum\system\MessageStatus;
 use core\notify\enum\PushClientType;
 use core\notify\Notification;
@@ -43,10 +45,10 @@ class SysMessageService extends BaseService
     {
         try {
             // 获取历史消息记录
-            $models = $this->selectList(['status' => MessageStatus::UNREAD], '*', 0, 0, '', [])->toArray();
+            $models = $this->selectList(['status' => MessageStatus::UNREAD->value], '*', 0, 0, '', [])->toArray();
             if (!empty($models)) {
                 foreach ($models as $value) {
-                    Notification::pushOnly(PushClientType::BACKEND, 'admin', '*', $value['receiver_id'], 'message', [], $value,null);
+                    Notification::pushOnly(PushClientType::BACKEND, BusinessPlatform::ADMIN->value, '*', $value['receiver_id'], MessageEvent::DEFAULT->value, [], $value,null);
                 }
             }
         } catch (\Throwable $e) {
