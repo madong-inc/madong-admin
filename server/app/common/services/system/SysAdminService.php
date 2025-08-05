@@ -13,19 +13,12 @@
 namespace app\common\services\system;
 
 use app\common\dao\system\SysAdminDao;
-use app\common\model\platform\Tenant;
 use app\common\model\system\SysAdmin;
-use app\common\model\system\SysAdminTenant;
-use app\common\scopes\global\TenantScope;
-use app\common\services\platform\TenantService;
-use app\common\services\platform\TenantSessionService;
 use core\abstract\BaseService;
 use core\casbin\Permission;
-use core\context\TenantContext;
 use core\enum\system\PolicyPrefix;
 use core\exception\handler\AdminException;
 use core\jwt\JwtToken;
-use madong\admin\services\jwt\JwtAuth;
 use support\Container;
 use Webman\Event\Event;
 
@@ -78,6 +71,7 @@ class SysAdminService extends BaseService
      * @param array $data
      *
      * @return \app\common\model\system\SysAdmin|null
+     * @throws \core\exception\handler\AdminException
      */
     public function update(int $id, array $data): ?SysAdmin
     {
@@ -90,7 +84,6 @@ class SysAdminService extends BaseService
                 $depts = array_filter(explode(',', $data['dept_id'] ?? ''));
                 unset($data['role_id_list'], $data['post_id_list'], $data['dept_id']);
                 $model = $this->dao->getModel()
-                    ->withoutGlobalScope(TenantScope::class)
                     ->findOrFail($id);
                 $this->updateModel($model, $data, $depts, $posts, $roles);
                 $this->syncRoles($model, $roles);
@@ -256,29 +249,6 @@ class SysAdminService extends BaseService
         $adminInfo = $this->getAdminByName($username);
         $this->validateAdminStatus($adminInfo);
         $this->validatePassword($adminInfo, $password, $grantType);
-
-//        if (config('tenant.enabled', false)) {
-//            if ($adminInfo->is_super !== 1) {
-//                //非超级管理员
-//                $tenant = $this->resolveTenant($adminInfo, $tenantId);
-//
-//                if (empty($tenant)) {
-//                    throw new AdminException('没有权限访问,请联系管理员处理x00003');
-//                }
-//                TenantContext::setContext((string)$tenant->id, (string)$tenant->code, $tenant->isolation_mode, $tenant->db_name);
-//            }
-//            if ($adminInfo->is_super == 1) {
-//
-//                //顶级管理员
-//                $map1   = empty($tenantId) ? ['is_default' => 1] : $tenantId;
-//                $tenant = (Container::make(TenantService::class))->get($map1, null, [], '', [TenantScope::class]);
-//                if (empty($tenant)) {
-//                    throw new AdminException('异常请联系管理员处理');
-//                }
-//                TenantContext::setContext((string)$tenant->id, (string)$tenant->code, $tenant->isolation_mode, $tenant->db_name);
-//            }
-//        }
-
         [$userInfo, $token] = $this->generateTokenData($adminInfo, $type);
         $this->emitLoginSuccessEvent(array_merge($userInfo, $token), $tenant?->id ?? null);
         return $token ?? [];
@@ -288,6 +258,8 @@ class SysAdminService extends BaseService
      * 验证管理员状态
      *
      * @param \app\common\model\system\SysAdmin|null $adminInfo
+     *
+     * @throws \core\exception\handler\AdminException
      */
     private function validateAdminStatus(?SysAdmin $adminInfo): void
     {
@@ -308,6 +280,8 @@ class SysAdminService extends BaseService
      * @param \app\common\model\system\SysAdmin $adminInfo
      * @param string                            $password
      * @param string                            $grantType
+     *
+     * @throws \core\exception\handler\AdminException
      */
     private function validatePassword(SysAdmin $adminInfo, string $password, string $grantType): void
     {
@@ -318,37 +292,6 @@ class SysAdminService extends BaseService
         }
     }
 
-    /**
-     * 租户处理
-     *
-     * @param \app\common\model\system\SysAdmin $adminInfo
-     * @param string|int                        $tenantId
-     *
-     * @return \app\common\model\platform\Tenant|null
-     */
-//    private function resolveTenant(SysAdmin $adminInfo, string|int $tenantId): ?Tenant
-//    {
-//        if (config('tenant.enabled', false)) {
-//            $tenantPivotList = $adminInfo->tenants ?? [];
-//            if ($tenantPivotList->isEmpty()) {
-//                $msg = '没有权限访问,请联系管理员处理x00001';
-//                $this->emitLoginFailedEvent($adminInfo->user_name, $msg);
-//                throw new AdminException($msg);
-//            }
-//
-//            $pivot = $tenantId
-//                ? $tenantPivotList->firstWhere('id', $tenantId)
-//                : $tenantPivotList->first();
-//
-//            if (!$pivot) {
-//                $msg = '没有权限访问,请联系管理员处理x00002';
-//                $this->emitLoginFailedEvent($adminInfo->user_name, $msg);
-//                throw new AdminException($msg);
-//            }
-//            return $pivot ?? null;
-//        }
-//        return null;
-//    }
 
     /**
      * token生成

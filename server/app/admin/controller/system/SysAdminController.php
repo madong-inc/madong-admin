@@ -18,7 +18,6 @@ use app\common\services\system\SysAdminRoleService;
 use app\common\services\system\SysAdminService;
 use app\common\services\system\SysLoginLogService;
 use core\exception\handler\AdminException;
-use core\jwt\JwtToken;
 use core\utils\Json;
 use support\Container;
 use support\Request;

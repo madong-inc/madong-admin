@@ -13,16 +13,9 @@
 namespace app\common\services\system;
 
 use app\common\dao\system\SysAdminDao;
-use app\common\dao\system\SysDeptDao;
-use app\common\model\system\SysAdmin;
-use app\common\model\system\SysRoleDept;
-use app\common\services\platform\TenantPackageService;
 use core\abstract\BaseService;
 use core\casbin\Permission;
-use core\context\TenantContext;
 use core\enum\system\PolicyPrefix;
-use core\exceptioncopy\AuthException;
-use madong\admin\services\jwt\JwtAuth;
 use madong\interface\IDict;
 use support\Container;
 
@@ -32,39 +25,6 @@ class SysAuthService extends BaseService
     public function __construct()
     {
         $this->dao = Container::make(SysAdminDao::class);
-    }
-
-    /**
-     * 数据权限【1=>默认所有，2=>自定义数据权限，3=>本部门数据权限，4=>本部门及以下数据权限,5=>本人数据权限】
-     *
-     * @param \app\common\model\system\SysAdmin $adminInfo
-     */
-    public function dataAuth(SysAdmin $adminInfo): void
-    {
-        $roles        = $adminInfo['roles'] ?? null;
-        $depts        = $adminInfo['depts']['id'] ?? 0;
-        $isSuperAdmin = (int)$adminInfo['is_super_admin'] ?? 0;
-        $dataScope    = [];
-        $dataAuth     = [];
-        if (!empty($roles)) {
-            $dataScope = array_unique(array_column($roles->toArray(), 'data_scope'));
-        }
-        if ($isSuperAdmin) {
-            $dataScope = [1];
-        }
-        if (!in_array(1, $dataScope)) {
-            if (in_array(2, $dataScope)) {
-                $dataAuth = array_merge($dataAuth, (new SysRoleDept())->where('role_id', 2)->pluck('dept_id')->toArray());
-            }
-            if (in_array(3, $dataScope)) {
-                $dataAuth = array_merge($dataAuth, [$depts]);
-            }
-            if (in_array(4, $dataScope)) {
-                $dataAuth = array_merge($dataAuth, (new SysDeptDao())->getChildIdsIncludingSelf($depts));
-            }
-        }
-        $adminInfo->set('data_auth', $dataAuth);
-        $adminInfo->set('data_scope', $dataScope);
     }
 
     /**

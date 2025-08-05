@@ -89,6 +89,7 @@ class SysDeptService extends BaseService
      * @param $force
      *
      * @return void
+     * @throws \core\exception\handler\AdminException
      */
     public function destroy($id, $force): void
     {

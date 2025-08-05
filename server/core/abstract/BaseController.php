@@ -32,7 +32,7 @@ abstract class BaseController
     protected array $middleware = [];
 
     /**
-     * @var \madong\admin\basic\BaseService|null
+     * @var \core\abstract\BaseService|null
      */
     protected ?BaseService $service;
 

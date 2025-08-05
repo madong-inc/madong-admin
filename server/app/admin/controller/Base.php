@@ -23,39 +23,12 @@ use core\abstract\BaseController;
 class Base extends BaseController
 {
 
-    /**
-     * 当前登陆管理员信息
-     *
-     * @var
-     */
-    protected $adminInfo;
-
-    /**
-     * 当前登陆管理员ID
-     *
-     * @var string|int
-     */
-    protected string|int $adminId = 0;
-
-    /**
-     * 当前管理员权限
-     *
-     * @var array
-     */
-    protected array $auth = [];
 
     /**
      * 初始化
      */
     protected function initialize(): void
     {
-        $request = request();
-        if ($request->hasMacro('adminId')) {
-            $this->adminId = request()->adminId();//管理员id
-        }
-        if ($request->hasMacro('adminInfo')) {
-            $this->adminInfo = request()->adminInfo();//管理员详情
-            $this->auth      = $this->adminInfo['rules'] ?? [];//管理员权限
-        }
+
     }
 }

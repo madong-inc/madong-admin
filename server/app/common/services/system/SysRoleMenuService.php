@@ -32,6 +32,8 @@ class SysRoleMenuService extends BaseService
      * 更新设置角色权限
      *
      * @param $data
+     *
+     * @throws \core\exception\handler\AdminException
      */
     public function save($data): void
     {
