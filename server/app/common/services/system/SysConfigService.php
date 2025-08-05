@@ -15,7 +15,6 @@ namespace app\common\services\system;
 use app\common\dao\system\SysConfigDao;
 use core\exception\handler\AdminException;
 use core\abstract\BaseService;
-use core\context\TenantContext;
 use support\Container;
 
 class SysConfigService extends BaseService
