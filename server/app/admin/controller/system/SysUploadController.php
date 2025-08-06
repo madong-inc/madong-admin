@@ -145,49 +145,4 @@ class SysUploadController extends Crud
         }
     }
 
-
-
-
-//    public function downloadExcel(Request $request)
-//    {
-//        try {
-//            $param = $request->all();
-//            $file  = ltrim($param['file_path'] ?? '', '/');
-//
-//            // 路径安全校验
-//            $basePath = realpath(runtime_path());
-//            $realPath = realpath($basePath . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $file));
-//            if (!$realPath || strpos($realPath, $basePath) !== 0 || !is_file($realPath)) {
-//                throw new \RuntimeException('文件不存在或路径非法');
-//            }
-//
-//            // 统一使用UTF-8编码
-//            $downloadName = $param['file'] ?? date('Y-m-d_His');
-//            $encodedName  = rawurlencode($downloadName);
-//
-//            // 创建响应
-//            $response = new BinaryFileResponse($realPath);
-//            $response->setContentDisposition(
-//                ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-//                "filename*=UTF-8''{$encodedName}.xlsx"
-//            );
-//
-//            $response->headers->add([
-//                'Cache-Control' => 'private, max-age=600',
-//                'Content-Type'  => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-//            ]);
-//
-//            $response->headers->set('Content-Length', filesize($realPath));
-//
-//            $response->deleteFileAfterSend(true);
-//
-//            return $response;
-//        } catch (\Throwable $e) {
-//            return response()->json([
-//                'code' => 500,
-//                'msg'  => '下载失败：' . $e->getMessage(),
-//            ], 500);
-//        }
-//    }
-
 }
