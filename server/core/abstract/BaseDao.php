@@ -13,6 +13,7 @@
 namespace core\abstract;
 
 use madong\helper\Arr;
+use support\Db;
 
 /**
  * @method count(array $where = [], bool $search = true)
@@ -726,24 +727,25 @@ abstract class BaseDao
     }
 
     /**
-     * 高精度加法
+     * 高精度加法（修正精度问题）
      *
-     * @param             $key
-     * @param string      $incField
-     * @param string      $inc
-     * @param string|null $keyField
-     * @param int         $acc
+     * @param mixed $key 主键值或条件值
+     * @param string $incField 要增加的字段
+     * @param string $inc 增加的值
+     * @param string|null $keyField 条件字段名，默认为'id'
+     * @param int $acc 精度（小数位数）
      *
      * @return bool
+     * @throws \Exception
      */
-    public function bcInc($key, string $incField, string $inc, string $keyField = null, int $acc = 2): bool
+    public function bcInc(mixed $key, string $incField, string $inc, string $keyField = null, int $acc = 2): bool
     {
         // 获取模型实例
         $model = $this->getModel();
         // 构建查询条件
         $query = $keyField ? $model->where($keyField, $key) : $model->where('id', $key);
-        // 执行增量操作
-        return $query->update([$incField => \DB::raw("COALESCE($incField, 0) + CAST($inc AS DECIMAL($acc, $acc))")]) > 0;
+        // 执行增量操作，使用合适的精度 DECIMAL(10, $acc)
+        return $query->update([$incField => Db::raw("COALESCE($incField, 0) + CAST($inc AS DECIMAL(10, $acc))")]) > 0;
     }
 
     /**
