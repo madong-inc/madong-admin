@@ -14,6 +14,7 @@ namespace app\middleware;
 
 use core\jwt\JwtToken;
 use core\exception\handler\UnauthorizedHttpException;
+use core\utils\Json;
 use Webman\Http\Request;
 use Webman\Http\Response;
 use Webman\MiddlewareInterface;
@@ -49,9 +50,13 @@ class AuthTokenMiddleware implements MiddlewareInterface
             return $handler($request);
         }
 
-        $userId = JwtToken::getCurrentId();
-        if (0 === $userId) {
-            throw new UnauthorizedHttpException();
+        try {
+            $userId = JwtToken::getCurrentId();
+            if (0 === $userId) {
+                throw new UnauthorizedHttpException();
+            }
+        }catch (\Exception $e){
+            return Json::fail($e->getMessage(), [], 401);
         }
         return $handler($request);
     }

@@ -201,7 +201,7 @@ class SysAdminDao extends BaseDao
     {
         $result = $this->getModel()
             ->where('id', $id)
-            ->with(['depts', 'posts', 'casbin.roles',])
+            ->with(['depts', 'posts', 'casbin.roles','roles'])
             ->first()
             ->makeHidden(['password', 'backend_setting']);
 

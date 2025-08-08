@@ -20,6 +20,7 @@ use core\enum\system\PolicyPrefix;
 use core\exception\handler\ForbiddenHttpException;
 use core\exception\handler\UnauthorizedHttpException;
 use core\jwt\JwtToken;
+use core\utils\Json;
 use Webman\Http\Request;
 use Webman\Http\Response;
 use Webman\MiddlewareInterface;
@@ -63,9 +64,13 @@ class PermissionMiddleware implements MiddlewareInterface
             return $handler($request);
         }
 
-        $userId = JwtToken::getCurrentId();
-        if ($userId === 0) {
-            throw new UnauthorizedHttpException();
+        try {
+            $userId = JwtToken::getCurrentId();
+            if (0 === $userId) {
+                throw new UnauthorizedHttpException();
+            }
+        }catch (\Exception $e){
+            return Json::fail($e->getMessage(), [], 401);
         }
         $userData = JwtToken::getExtend();
         // 顶级管理员直接跳过权限验证
