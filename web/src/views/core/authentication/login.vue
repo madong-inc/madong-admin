@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import type { BasicFormSchema } from '#/components/common-ui';
-import type { BasicOption } from '#/components/common/types';
 
 import { computed, markRaw, onMounted, ref, useTemplateRef } from 'vue';
 
@@ -9,20 +8,13 @@ import { $t } from '#/locale';
 
 import { useAuthStore } from '#/store';
 import { captcha, getCaptchaOpenFlag, type AuthApi } from '#/api/core';
-
+import { JSEncrypt } from 'jsencrypt';
 defineOptions({ name: 'Login' });
 
 const loginFormRef = useTemplateRef('loginFormRef');
 const authStore = useAuthStore();
 const captchaFlag = ref(true);
 const refreshCaptcha = ref(false);
-
-
-const accountSetData =ref<any>({
-  tenant_enabled: false,//是否开启账套模式
-  list: [],//账套列表
-});
-
 
 // 判断是否启用图验证码
 getCaptchaOpenFlag().then((res: any) => {
@@ -36,30 +28,6 @@ onMounted(async () => {
 const formSchema = computed((): BasicFormSchema[] => {
   // 公共字段
   const commonFields = [
-    {
-      component: 'BasicSelect',
-      defaultValue: '',
-      componentProps: {
-        placeholder: '',
-        options:accountSetData.value.list?.map((item: { name: string; tenant_id: string|number; }) => ({
-          label: item.name,
-          value: item.tenant_id,
-        })),
-      },
-      fieldName: 'tenant_id',
-      rules: z.union([
-        z.string().min(1, { message: '请选择对应数据源' }),
-        z.number()
-      ]),
-      formItemClass: 'col-span-12',
-      dependencies: {
-        if: () => accountSetData.value.tenant_enabled,
-        componentProps: (_values: { tenant_id: string|number}) => {
-          return {};
-        },
-        triggerFields: ['', 'tenant_id'],
-      },
-    },
     {
       component: 'BasicInput',
       defaultValue: '',
@@ -119,25 +87,66 @@ const formSchema = computed((): BasicFormSchema[] => {
   return commonFields;
 });
 
+const handleSubmit = async (data: any) => {
+  try {
+    // 获取加密相关信息（包括公钥和key_id）
+    const captchaRes: any = await getCaptchaOpenFlag();
 
-const handleSubmit = (data: any) => {
-  authStore.authLogin(data).catch(() => {
-    refreshCaptcha.value = true;
-  });
+    // 检查是否返回了公钥和key_id
+    if (captchaRes.public_key && captchaRes.key_id) {
+      // 创建 JSEncrypt 实例
+      const encrypt = new JSEncrypt();
+      // 设置公钥
+      encrypt.setPublicKey(captchaRes.public_key);
+
+      // 对密码进行 RSA 加密
+      const encryptedPassword = encrypt.encrypt(data.password);
+
+      if (encryptedPassword) {
+        // 修改提交数据，添加 key_id 并替换密码为加密后的密码
+        const submitData = {
+          user_name: data.user_name,
+          password: encryptedPassword, // 使用加密后的密码
+          key_id: captchaRes.key_id    // 添加 key_id
+        };
+
+        // 如果有验证码相关字段，也添加进去
+        if (data.code) {
+          submitData.code = data.code;
+        }
+        if (data.uuid) {
+          submitData.uuid = data.uuid;
+        }
+
+        await authStore.authLogin(submitData).catch(() => {
+          refreshCaptcha.value = true;
+        });
+      } else {
+        console.error('RSA encryption failed');
+        // 可以添加用户提示
+      }
+    } else {
+      console.error('Missing public key or key_id for encryption');
+      // 可以添加用户提示
+    }
+  } catch (error) {
+    console.error('Login encryption process failed:', error);
+    // 可以添加用户提示
+  }
 };
 </script>
 
 <template>
   <AuthenticationLogin
-    ref="loginFormRef"
-    :form-schema="formSchema"
-    :loading="authStore.loginLoading"
-    :show-code-login="true"
-    :show-forget-password="false"
-    :show-qrcode-login="true"
-    :show-register="false"
-    :show-remember-me="false"
-    :show-third-party-login="false"
-    @submit="handleSubmit"
+      ref="loginFormRef"
+      :form-schema="formSchema"
+      :loading="authStore.loginLoading"
+      :show-code-login="true"
+      :show-forget-password="false"
+      :show-qrcode-login="true"
+      :show-register="false"
+      :show-remember-me="false"
+      :show-third-party-login="false"
+      @submit="handleSubmit"
   />
 </template>
