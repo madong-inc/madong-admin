@@ -13,6 +13,7 @@
 namespace app\admin\controller;
 
 use app\common\services\system\SysAdminService;
+use core\cache\CacheService;
 use core\exception\handler\AdminException;
 use core\jwt\JwtToken;
 use core\utils\Json;
@@ -55,7 +56,18 @@ class LoginController extends Crud
      */
     public function getCaptchaOpenFlag(Request $request): \support\Response
     {
-        return Json::success('ok', ['flag' => config('core.captcha.app.enable', false)]);
+        try {
+            // 生成密钥对
+            $cache = Container::make(CacheService::class,[]);
+            // 使用 uniqid 增加唯一性
+            $keyId = bin2hex(random_bytes(8)) . uniqid();
+            $keys = $this->service->generateRSAKeys();
+            // 存储私钥到缓存，用于解密密码
+            $cache->set("rsa_private_key:$keyId", $keys['private'], 60); // 5分钟过期
+            return Json::success('ok', ['flag' => config('core.captcha.app.enable', false),'key_id'=>$keyId,'public_key'=>$keys['public']]);
+        } catch (\Throwable $e) {
+            return Json::fail($e->getMessage());
+        }
     }
 
     /**
@@ -113,9 +125,8 @@ class LoginController extends Crud
             $code      = $request->input('code', '');
             $uuid      = $request->input('uuid', '');
             $type      = $request->input('type', 'admin');
-            $tenantId  = $request->input('tenant_id', '');
             $grantType = $request->input('grant_type', 'default');//refresh_token   sms   default 可以自行定义拓展登录方式
-
+            $keyId     = $request->input('key_id', '');//获取公钥Id
             $service = Container::make(SysAdminService::class);
 
             $captcha = new Captcha();
@@ -139,7 +150,7 @@ class LoginController extends Crud
                 }
                 $username = $info->getData('user_name');
             }
-            $data = $service->login($username, $password, $type, $grantType, $tenantId);
+            $data = $service->login($username, $password, $type, $grantType, ['keyId'=> $keyId ?? '']);
             return Json::success('ok', $data);
         } catch (\Throwable $e) {
             return Json::fail($e->getMessage());
