@@ -1,13 +1,14 @@
 <script lang="ts" setup>
 import type { BasicFormSchema } from '#/components/common-ui';
 
-import { computed, nextTick, markRaw, onMounted, ref, useTemplateRef, watch } from 'vue';
+import { computed, markRaw, onMounted, ref, useTemplateRef } from 'vue';
 
 import { AuthenticationLogin, ImageCaptcha, z } from '#/components/common-ui';
 import { $t } from '#/locale';
 
 import { useAuthStore } from '#/store';
-import { captcha, getCaptchaOpenFlag, type AuthApi } from '#/api/core';
+import { captcha, getCaptchaOpenFlag } from '#/api/core';
+
 import { JSEncrypt } from 'jsencrypt';
 defineOptions({ name: 'Login' });
 
@@ -15,39 +16,57 @@ const loginFormRef = useTemplateRef('loginFormRef');
 const authStore = useAuthStore();
 const captchaFlag = ref(true);
 const refreshCaptcha = ref(false);
-const formSchemaRef = ref<BasicFormSchema[]>([]); // 新增：用于存储最新的表单结构
+const captchaData = ref<any>(null);
+const isCaptchaLoaded = ref(false); // 添加加载状态
 
-// 更新表单结构的函数
-const updateFormSchema = (flag: boolean) => {
-  // 公共字段
-  const commonFields = [
-    {
-      component: 'BasicInput',
-      defaultValue: '',
-      componentProps: {
-        placeholder: $t('authentication.usernameTip'),
-      },
-      fieldName: 'user_name',
-      label: $t('authentication.username'),
-      rules: z.string().min(1, { message: $t('authentication.usernameTip') }),
-      formItemClass: 'col-span-12',
+// 公共字段（用户名和密码）
+const commonFields = [
+  {
+    component: 'BasicInput',
+    defaultValue: '',
+    componentProps: {
+      placeholder: $t('authentication.usernameTip'),
     },
-    {
-      component: 'BasicInputPassword',
-      defaultValue: '',
-      componentProps: {
-        placeholder: $t('authentication.password'),
-      },
-      fieldName: 'password',
-      label: $t('authentication.password'),
-      rules: z.string().min(1, { message: $t('authentication.passwordTip') }),
-      formItemClass: 'col-span-12',
+    fieldName: 'user_name',
+    label: $t('authentication.username'),
+    rules: z.string().min(1, { message: $t('authentication.usernameTip') }),
+    formItemClass: 'col-span-12',
+  },
+  {
+    component: 'BasicInputPassword',
+    defaultValue: '',
+    componentProps: {
+      placeholder: $t('authentication.password'),
     },
-  ];
+    fieldName: 'password',
+    label: $t('authentication.password'),
+    rules: z.string().min(1, { message: $t('authentication.passwordTip') }),
+    formItemClass: 'col-span-12',
+  },
+];
 
-  // 根据 flag 添加验证码相关字段
-  if (flag) {
-    formSchemaRef.value = [
+// 判断是否启用图验证码
+onMounted(async () => {
+  try {
+    const res: any = await getCaptchaOpenFlag();
+    captchaData.value = res;
+    captchaFlag.value = res.flag;
+    isCaptchaLoaded.value = true; // 标记加载完成
+  } catch (error) {
+    isCaptchaLoaded.value = true; // 即使失败也标记加载完成
+  }
+});
+
+const formSchema = computed((): BasicFormSchema[] => {
+  // 在配置加载完成前，先返回基础字段（用户名和密码）
+  if (!isCaptchaLoaded.value) {
+    return commonFields;
+  }
+
+  // 根据 captchaFlag 添加验证码相关字段
+  if (captchaFlag.value) {
+
+    return [
       ...commonFields,
       {
         component: 'BasicInput',
@@ -75,66 +94,39 @@ const updateFormSchema = (flag: boolean) => {
         formItemClass: 'col-span-4',
       },
     ];
-  } else {
-    formSchemaRef.value = commonFields;
   }
-};
 
-// 判断是否启用图验证码
-getCaptchaOpenFlag().then((res: any) => {
-  captchaFlag.value = res.flag;
-  // 使用 nextTick 确保 DOM 更新
-  nextTick(() => {
-    updateFormSchema(res.flag);
-  });
+  return commonFields;
 });
 
-// 监听 captchaFlag 变化
-watch(captchaFlag, (newFlag) => {
-  updateFormSchema(newFlag);
-});
-
-const handleSubmit = async (data: any) => {
+const handleSubmit = (data: any) => {
   try {
-      // 获取加密相关信息（包括公钥和key_id）
-      const captchaRes: any = await getCaptchaOpenFlag();
+    const currentCaptchaData = captchaData.value;
+    const { public_key, key_id } = currentCaptchaData;
+    if (public_key && key_id) {
+      const encrypt = new JSEncrypt();
+      encrypt.setPublicKey(public_key);
+      const encryptedPassword = encrypt.encrypt(data.password);
 
-      // 检查是否返回了公钥和key_id
-      if (captchaRes.public_key && captchaRes.key_id) {
-        // 创建 JSEncrypt 实例
-        const encrypt = new JSEncrypt();
-        // 设置公钥
-        encrypt.setPublicKey(captchaRes.public_key);
+      if (encryptedPassword) {
+        const submitData = {
+          user_name: data.user_name,
+          password: encryptedPassword,
+          key_id,
+        };
 
-        // 对密码进行 RSA 加密
-        const encryptedPassword = encrypt.encrypt(data.password);
+        if (captchaFlag.value && data.code) submitData.code = data.code;
+        if (captchaFlag.value && data.uuid) submitData.uuid = data.uuid;
 
-        if (encryptedPassword) {
-          // 修改提交数据，添加 key_id 并替换密码为加密后的密码
-          const submitData = {
-            user_name: data.user_name,
-            password: encryptedPassword, // 使用加密后的密码
-            key_id: captchaRes.key_id    // 添加 key_id
-          };
-
-          // 如果有验证码相关字段，也添加进去
-          if (data.code) {
-            submitData.code = data.code;
-          }
-          if (data.uuid) {
-            submitData.uuid = data.uuid;
-          }
-
-          await authStore.authLogin(submitData).catch(() => {
-            refreshCaptcha.value = true;
-          });
-        } else {
-          console.error('RSA encryption failed');
-        }
+        authStore.authLogin(submitData).catch(() => {
+          refreshCaptcha.value = true;
+        });
       } else {
-        console.error('Missing public key or key_id for encryption');
+        console.error('RSA encryption failed');
       }
-
+    } else {
+      console.error('Missing public key or key_id for encryption');
+    }
   } catch (error) {
     console.error('Login process failed:', error);
   }
@@ -144,7 +136,7 @@ const handleSubmit = async (data: any) => {
 <template>
   <AuthenticationLogin
       ref="loginFormRef"
-      :form-schema="formSchemaRef"
+      :form-schema="formSchema"
       :loading="authStore.loginLoading"
       :show-code-login="true"
       :show-forget-password="false"
