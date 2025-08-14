@@ -7,6 +7,7 @@ export namespace AuthApi {
     user_name?: string;
     uuid?:string;
     code?:string;
+    key_id?:string;
     mobile_phone?:number|string;
   }
 
@@ -26,7 +27,6 @@ export namespace AuthApi {
 
   export interface AccountSet {
     id: number|string;
-    tenant_id:string|number;
     name: string;
   }
 

@@ -86,6 +86,9 @@ importers:
       epic-designer:
         specifier: ^1.0.1
         version: 1.0.1(ant-design-vue@4.2.6(vue@3.5.13(typescript@5.7.3)))(element-plus@2.9.9(vue@3.5.13(typescript@5.7.3)))(monaco-editor@0.52.2)(naive-ui@2.41.0(vue@3.5.13(typescript@5.7.3)))(vue@3.5.13(typescript@5.7.3))
+      jsencrypt:
+        specifier: ^3.5.4
+        version: 3.5.4
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21

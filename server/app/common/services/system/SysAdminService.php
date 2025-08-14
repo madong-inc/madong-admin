@@ -251,7 +251,6 @@ class SysAdminService extends BaseService
         $this->validateAdminStatus($adminInfo);
         $decryptedPassword = $this->validateRsaKeys($params['keyId'], $password);
         $this->validatePassword($adminInfo, $decryptedPassword, $grantType);
-        $this->validatePassword($adminInfo, $password, $grantType);
         [$userInfo, $token] = $this->generateTokenData($adminInfo, $type);
         $this->emitLoginSuccessEvent(array_merge($userInfo, $token), $tenant?->id ?? null);
         return $token ?? [];
