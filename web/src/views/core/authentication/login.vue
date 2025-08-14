@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { BasicFormSchema } from '#/components/common-ui';
 
-import { computed, markRaw, onMounted, ref, useTemplateRef } from 'vue';
+import { computed, nextTick, markRaw, onMounted, ref, useTemplateRef, watch } from 'vue';
 
 import { AuthenticationLogin, ImageCaptcha, z } from '#/components/common-ui';
 import { $t } from '#/locale';
@@ -15,17 +15,10 @@ const loginFormRef = useTemplateRef('loginFormRef');
 const authStore = useAuthStore();
 const captchaFlag = ref(true);
 const refreshCaptcha = ref(false);
+const formSchemaRef = ref<BasicFormSchema[]>([]); // 新增：用于存储最新的表单结构
 
-// 判断是否启用图验证码
-getCaptchaOpenFlag().then((res: any) => {
-  captchaFlag.value = res.flag;
-});
-
-onMounted(async () => {
-
-});
-
-const formSchema = computed((): BasicFormSchema[] => {
+// 更新表单结构的函数
+const updateFormSchema = (flag: boolean) => {
   // 公共字段
   const commonFields = [
     {
@@ -52,9 +45,9 @@ const formSchema = computed((): BasicFormSchema[] => {
     },
   ];
 
-  // 根据 captchaFlag 添加验证码相关字段
-  if (captchaFlag.value) {
-    return [
+  // 根据 flag 添加验证码相关字段
+  if (flag) {
+    formSchemaRef.value = [
       ...commonFields,
       {
         component: 'BasicInput',
@@ -82,56 +75,68 @@ const formSchema = computed((): BasicFormSchema[] => {
         formItemClass: 'col-span-4',
       },
     ];
+  } else {
+    formSchemaRef.value = commonFields;
   }
+};
 
-  return commonFields;
+// 判断是否启用图验证码
+getCaptchaOpenFlag().then((res: any) => {
+  captchaFlag.value = res.flag;
+  // 使用 nextTick 确保 DOM 更新
+  nextTick(() => {
+    updateFormSchema(res.flag);
+  });
+});
+
+// 监听 captchaFlag 变化
+watch(captchaFlag, (newFlag) => {
+  updateFormSchema(newFlag);
 });
 
 const handleSubmit = async (data: any) => {
   try {
-    // 获取加密相关信息（包括公钥和key_id）
-    const captchaRes: any = await getCaptchaOpenFlag();
+      // 获取加密相关信息（包括公钥和key_id）
+      const captchaRes: any = await getCaptchaOpenFlag();
 
-    // 检查是否返回了公钥和key_id
-    if (captchaRes.public_key && captchaRes.key_id) {
-      // 创建 JSEncrypt 实例
-      const encrypt = new JSEncrypt();
-      // 设置公钥
-      encrypt.setPublicKey(captchaRes.public_key);
+      // 检查是否返回了公钥和key_id
+      if (captchaRes.public_key && captchaRes.key_id) {
+        // 创建 JSEncrypt 实例
+        const encrypt = new JSEncrypt();
+        // 设置公钥
+        encrypt.setPublicKey(captchaRes.public_key);
 
-      // 对密码进行 RSA 加密
-      const encryptedPassword = encrypt.encrypt(data.password);
+        // 对密码进行 RSA 加密
+        const encryptedPassword = encrypt.encrypt(data.password);
 
-      if (encryptedPassword) {
-        // 修改提交数据，添加 key_id 并替换密码为加密后的密码
-        const submitData = {
-          user_name: data.user_name,
-          password: encryptedPassword, // 使用加密后的密码
-          key_id: captchaRes.key_id    // 添加 key_id
-        };
+        if (encryptedPassword) {
+          // 修改提交数据，添加 key_id 并替换密码为加密后的密码
+          const submitData = {
+            user_name: data.user_name,
+            password: encryptedPassword, // 使用加密后的密码
+            key_id: captchaRes.key_id    // 添加 key_id
+          };
 
-        // 如果有验证码相关字段，也添加进去
-        if (data.code) {
-          submitData.code = data.code;
+          // 如果有验证码相关字段，也添加进去
+          if (data.code) {
+            submitData.code = data.code;
+          }
+          if (data.uuid) {
+            submitData.uuid = data.uuid;
+          }
+
+          await authStore.authLogin(submitData).catch(() => {
+            refreshCaptcha.value = true;
+          });
+        } else {
+          console.error('RSA encryption failed');
         }
-        if (data.uuid) {
-          submitData.uuid = data.uuid;
-        }
-
-        await authStore.authLogin(submitData).catch(() => {
-          refreshCaptcha.value = true;
-        });
       } else {
-        console.error('RSA encryption failed');
-        // 可以添加用户提示
+        console.error('Missing public key or key_id for encryption');
       }
-    } else {
-      console.error('Missing public key or key_id for encryption');
-      // 可以添加用户提示
-    }
+
   } catch (error) {
-    console.error('Login encryption process failed:', error);
-    // 可以添加用户提示
+    console.error('Login process failed:', error);
   }
 };
 </script>
@@ -139,7 +144,7 @@ const handleSubmit = async (data: any) => {
 <template>
   <AuthenticationLogin
       ref="loginFormRef"
-      :form-schema="formSchema"
+      :form-schema="formSchemaRef"
       :loading="authStore.loginLoading"
       :show-code-login="true"
       :show-forget-password="false"
