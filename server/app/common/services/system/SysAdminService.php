@@ -15,6 +15,7 @@ namespace app\common\services\system;
 use app\common\dao\system\SysAdminDao;
 use app\common\model\system\SysAdmin;
 use core\abstract\BaseService;
+use core\cache\CacheService;
 use core\casbin\Permission;
 use core\enum\system\PolicyPrefix;
 use core\exception\handler\AdminException;
@@ -244,11 +245,12 @@ class SysAdminService extends BaseService
      * @return array
      * @throws \Exception
      */
-    public function login(string $username, string $password = '', string $type = 'admin', string $grantType = 'default', string|int $tenantId = ''): array
+    public function login(string $username, string $password = '', string $type = 'admin', string $grantType = 'default', array $params = []): array
     {
         $adminInfo = $this->getAdminByName($username);
         $this->validateAdminStatus($adminInfo);
-        $this->validatePassword($adminInfo, $password, $grantType);
+        $decryptedPassword = $this->validateRsaKeys($params['keyId'], $password);
+        $this->validatePassword($adminInfo, $decryptedPassword, $grantType);
         [$userInfo, $token] = $this->generateTokenData($adminInfo, $type);
         $this->emitLoginSuccessEvent(array_merge($userInfo, $token), $tenant?->id ?? null);
         return $token ?? [];
@@ -480,5 +482,29 @@ class SysAdminService extends BaseService
         #x';
         preg_match($pattern, $url, $matches);
         return $matches[1] ?? '';
+    }
+    /**
+     * 校验密钥
+     * @param $keyId
+     * @param $encryptedPassword
+     * @return string
+     * @throws AdminException
+     */
+    private function validateRsaKeys($keyId, $encryptedPassword): string
+    {
+        $cache = Container::make(CacheService::class,[]);
+        $privateKey = $cache->get("rsa_private_key:$keyId");
+        if (!$privateKey) {
+            throw new AdminException('私钥不存在或已过期，请刷新页面重试');
+        }
+        $privateKeyResource = openssl_pkey_get_private($privateKey);
+        $decrypted = '';
+        $encryptedData = base64_decode($encryptedPassword);
+        if (openssl_private_decrypt($encryptedData, $decrypted, $privateKeyResource)) {
+            $cache->delete("rsa_private_key:$keyId"); // 删除私钥，防止泄露
+            return $decrypted;
+        } else {
+            throw new AdminException('解密失败！');
+        }
     }
 }

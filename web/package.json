@@ -39,6 +39,7 @@
     "dotenv": "^16.4.7",
     "echarts": "^5.6.0",
     "epic-designer": "^1.0.1",
+    "jsencrypt": "^3.5.4",
     "lodash-es": "^4.17.21",
     "lodash.clonedeep": "^4.5.0",
     "lodash.get": "^4.4.2",

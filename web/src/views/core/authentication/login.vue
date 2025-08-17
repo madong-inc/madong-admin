@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import type { BasicFormSchema } from '#/components/common-ui';
-import type { BasicOption } from '#/components/common/types';
 
 import { computed, markRaw, onMounted, ref, useTemplateRef } from 'vue';
 
@@ -8,84 +7,65 @@ import { AuthenticationLogin, ImageCaptcha, z } from '#/components/common-ui';
 import { $t } from '#/locale';
 
 import { useAuthStore } from '#/store';
-import { captcha, getCaptchaOpenFlag, type AuthApi } from '#/api/core';
+import { captcha, getCaptchaOpenFlag } from '#/api/core';
 
+import { JSEncrypt } from 'jsencrypt';
 defineOptions({ name: 'Login' });
 
 const loginFormRef = useTemplateRef('loginFormRef');
 const authStore = useAuthStore();
 const captchaFlag = ref(true);
 const refreshCaptcha = ref(false);
+const captchaData = ref<any>(null);
+const isCaptchaLoaded = ref(false); // 添加加载状态
 
-
-const accountSetData =ref<any>({
-  tenant_enabled: false,//是否开启账套模式
-  list: [],//账套列表
-});
-
+// 公共字段（用户名和密码）
+const commonFields = [
+  {
+    component: 'BasicInput',
+    defaultValue: '',
+    componentProps: {
+      placeholder: $t('authentication.usernameTip'),
+    },
+    fieldName: 'user_name',
+    label: $t('authentication.username'),
+    rules: z.string().min(1, { message: $t('authentication.usernameTip') }),
+    formItemClass: 'col-span-12',
+  },
+  {
+    component: 'BasicInputPassword',
+    defaultValue: '',
+    componentProps: {
+      placeholder: $t('authentication.password'),
+    },
+    fieldName: 'password',
+    label: $t('authentication.password'),
+    rules: z.string().min(1, { message: $t('authentication.passwordTip') }),
+    formItemClass: 'col-span-12',
+  },
+];
 
 // 判断是否启用图验证码
-getCaptchaOpenFlag().then((res: any) => {
-  captchaFlag.value = res.flag;
-});
-
 onMounted(async () => {
-
+  try {
+    const res: any = await getCaptchaOpenFlag();
+    captchaData.value = res;
+    captchaFlag.value = res.flag;
+    isCaptchaLoaded.value = true; // 标记加载完成
+  } catch (error) {
+    isCaptchaLoaded.value = true; // 即使失败也标记加载完成
+  }
 });
 
 const formSchema = computed((): BasicFormSchema[] => {
-  // 公共字段
-  const commonFields = [
-    {
-      component: 'BasicSelect',
-      defaultValue: '',
-      componentProps: {
-        placeholder: '',
-        options:accountSetData.value.list?.map((item: { name: string; tenant_id: string|number; }) => ({
-          label: item.name,
-          value: item.tenant_id,
-        })),
-      },
-      fieldName: 'tenant_id',
-      rules: z.union([
-        z.string().min(1, { message: '请选择对应数据源' }),
-        z.number()
-      ]),
-      formItemClass: 'col-span-12',
-      dependencies: {
-        if: () => accountSetData.value.tenant_enabled,
-        componentProps: (_values: { tenant_id: string|number}) => {
-          return {};
-        },
-        triggerFields: ['', 'tenant_id'],
-      },
-    },
-    {
-      component: 'BasicInput',
-      defaultValue: '',
-      componentProps: {
-        placeholder: $t('authentication.usernameTip'),
-      },
-      fieldName: 'user_name',
-      label: $t('authentication.username'),
-      rules: z.string().min(1, { message: $t('authentication.usernameTip') }),
-      formItemClass: 'col-span-12',
-    },
-    {
-      component: 'BasicInputPassword',
-      defaultValue: '',
-      componentProps: {
-        placeholder: $t('authentication.password'),
-      },
-      fieldName: 'password',
-      label: $t('authentication.password'),
-      rules: z.string().min(1, { message: $t('authentication.passwordTip') }),
-      formItemClass: 'col-span-12',
-    },
-  ];
+  // 在配置加载完成前，先返回基础字段（用户名和密码）
+  if (!isCaptchaLoaded.value) {
+    return commonFields;
+  }
 
   // 根据 captchaFlag 添加验证码相关字段
   if (captchaFlag.value) {
+
     return [
       ...commonFields,
       {
@@ -119,25 +99,51 @@ const formSchema = computed((): BasicFormSchema[] => {
   return commonFields;
 });
 
-
 const handleSubmit = (data: any) => {
-  authStore.authLogin(data).catch(() => {
-    refreshCaptcha.value = true;
-  });
+  try {
+    const currentCaptchaData = captchaData.value;
+    const { public_key, key_id } = currentCaptchaData;
+    if (public_key && key_id) {
+      const encrypt = new JSEncrypt();
+      encrypt.setPublicKey(public_key);
+      const encryptedPassword = encrypt.encrypt(data.password);
+
+      if (encryptedPassword) {
+        const submitData = {
+          user_name: data.user_name,
+          password: encryptedPassword,
+          key_id,
+        };
+
+        if (captchaFlag.value && data.code) submitData.code = data.code;
+        if (captchaFlag.value && data.uuid) submitData.uuid = data.uuid;
+
+        authStore.authLogin(submitData).catch(() => {
+          refreshCaptcha.value = true;
+        });
+      } else {
+        console.error('RSA encryption failed');
+      }
+    } else {
+      console.error('Missing public key or key_id for encryption');
+    }
+  } catch (error) {
+    console.error('Login process failed:', error);
+  }
 };
 </script>
 
 <template>
   <AuthenticationLogin
-    ref="loginFormRef"
-    :form-schema="formSchema"
-    :loading="authStore.loginLoading"
-    :show-code-login="true"
-    :show-forget-password="false"
-    :show-qrcode-login="true"
-    :show-register="false"
-    :show-remember-me="false"
-    :show-third-party-login="false"
-    @submit="handleSubmit"
+      ref="loginFormRef"
+      :form-schema="formSchema"
+      :loading="authStore.loginLoading"
+      :show-code-login="true"
+      :show-forget-password="false"
+      :show-qrcode-login="true"
+      :show-register="false"
+      :show-remember-me="false"
+      :show-third-party-login="false"
+      @submit="handleSubmit"
   />
 </template>
