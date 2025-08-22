@@ -15,7 +15,6 @@ namespace app\common\dao\system;
 use app\common\model\system\SysAdmin;
 use InvalidArgumentException;
 use core\abstract\BaseDao;
-use core\context\TenantContext;
 
 class SysAdminDao extends BaseDao
 {
@@ -28,11 +27,11 @@ class SysAdminDao extends BaseDao
     /**
      * 用户详情
      *
-     * @param            $id
-     * @param array|null $field
-     * @param array|null $with
-     * @param string     $order
-     * @param array|null $withoutScopes
+     * @param                   $id
+     * @param array|null        $field
+     * @param array|null        $with
+     * @param string            $order
+     * @param array|null        $withoutScopes
      *
      * @return SysAdmin|null
      * @throws \Exception
@@ -90,16 +89,52 @@ class SysAdminDao extends BaseDao
      */
     public function getList(array $where, string $field = '*', int $page = 0, int $limit = 0, string $order = '', array $with = [], bool $search = false, ?array $withoutScopes = null): array
     {
-//        $where['enabled'] = 1;//显示禁用用户列表
+        // 初始化部门ID
+        $deptId = null;
+
+        // 遍历$where数组，查找并移除dept_id条件
+        foreach ($where as $index => $condition) {
+            // 条件可能是索引数组，第一个元素是字段名
+            if (is_array($condition) && count($condition) >= 2) {
+                $fieldName = $condition[0];
+                // 如果字段名是'dept_id'
+                if ($fieldName === 'dept_id') {
+                    // 根据条件数组的长度判断操作符和值的位置
+                    if (count($condition) === 2) {
+                        // 条件格式为 ['dept_id', 值]
+                        $deptId = $condition[1];
+                    } elseif (count($condition) === 3) {
+                        // 条件格式为 ['dept_id', '=', 值]
+                        $deptId = $condition[2];
+                    }
+                    // 移除这个条件
+                    unset($where[$index]);
+                    // 因为我们只处理一个dept_id条件，所以找到后跳出循环
+                    break;
+                }
+            }
+        }
+
+        // 重新索引数组，防止父类处理时出错
+        $where = array_values($where);
+
         if (empty($with)) {
             $with = ['depts', 'posts', 'casbin.roles'];
         }
+
         $query = parent::selectModel($where, $field, $page, $limit, $order, $with, $search, $withoutScopes);
+
+        // 如果存在deptId条件，则添加关联条件
+        if (!is_null($deptId)) {
+            $query->whereHas('depts', function ($q) use ($deptId) {
+                $q->where('id', $deptId); // 假设部门模型的主键是id
+            });
+        }
+
         $total = $query->count();
         $items = $query->get()->makeHidden(['password', 'backend_setting']);
         return [$total, $items];
     }
-
 
     /**
      * 获取用户列表-角色id
@@ -120,7 +155,7 @@ class SysAdminDao extends BaseDao
         }
         $where['enabled']  = 1;//有效用户
         $where['is_super'] = 0;//非顶级管理员
-        $query = $this->getModel()->with(['roles'])
+        $query             = $this->getModel()->with(['roles'])
             ->whereHas('roles', function ($query) use ($roleId) {
                 $query->where('id', $roleId);
             });
@@ -201,7 +236,7 @@ class SysAdminDao extends BaseDao
     {
         $result = $this->getModel()
             ->where('id', $id)
-            ->with(['depts', 'posts', 'casbin.roles','roles'])
+            ->with(['depts', 'posts', 'casbin.roles', 'roles'])
             ->first()
             ->makeHidden(['password', 'backend_setting']);
 
