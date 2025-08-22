@@ -388,15 +388,15 @@ abstract class BaseDao
      * 获取一条数据
      *
      * @param            $id
-     * @param string|array|null $field
+     * @param array|null $field
      * @param array|null $with
-     * @param string $order
+     * @param string     $order
      * @param array|null $withoutScopes
      *
      * @return Model|null
-     * @throws Exception
+     * @throws \Exception
      */
-    public function get($id, string|array $field = null, ?array $with = [], string $order = '', ?array $withoutScopes = null): ?Model
+    public function get($id, ?array $field = null, ?array $with = [], string $order = '', ?array $withoutScopes = null): ?Model
     {
         $where = is_array($id) ? $id : [$this->getPk() => $id];
         $query = $this->getModel()->query();

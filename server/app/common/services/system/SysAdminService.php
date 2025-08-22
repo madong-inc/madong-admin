@@ -20,6 +20,8 @@ use core\casbin\Permission;
 use core\enum\system\PolicyPrefix;
 use core\exception\handler\AdminException;
 use core\jwt\JwtToken;
+use core\utils\RSAService;
+use phpseclib3\Crypt\RSA;
 use support\Container;
 use Webman\Event\Event;
 
@@ -236,20 +238,20 @@ class SysAdminService extends BaseService
     /**
      * 用户登录
      *
-     * @param string     $username
-     * @param string     $password
-     * @param string     $type
-     * @param string     $grantType
-     * @param string|int $tenantId
+     * @param string $username
+     * @param string $password
+     * @param string $type
+     * @param string $grantType
+     * @param array  $params
      *
      * @return array
-     * @throws \Exception
+     * @throws \core\exception\handler\AdminException
      */
     public function login(string $username, string $password = '', string $type = 'admin', string $grantType = 'default', array $params = []): array
     {
         $adminInfo = $this->getAdminByName($username);
         $this->validateAdminStatus($adminInfo);
-        $decryptedPassword = $this->validateRsaKeys($params['keyId'], $password);
+        $decryptedPassword = $this->validateRsaKeys($params['key_id'], $password);
         $this->validatePassword($adminInfo, $decryptedPassword, $grantType);
         [$userInfo, $token] = $this->generateTokenData($adminInfo, $type);
         $this->emitLoginSuccessEvent(array_merge($userInfo, $token), $tenant?->id ?? null);
@@ -293,7 +295,6 @@ class SysAdminService extends BaseService
             throw new AdminException($msg);
         }
     }
-
 
     /**
      * token生成
@@ -483,28 +484,25 @@ class SysAdminService extends BaseService
         preg_match($pattern, $url, $matches);
         return $matches[1] ?? '';
     }
+
     /**
      * 校验密钥
+     *
      * @param $keyId
      * @param $encryptedPassword
+     *
      * @return string
      * @throws AdminException
      */
     private function validateRsaKeys($keyId, $encryptedPassword): string
     {
-        $cache = Container::make(CacheService::class,[]);
-        $privateKey = $cache->get("rsa_private_key:$keyId");
+        $cache      = Container::make(CacheService::class, []);
+        $privateKey = $cache->get("rsa_private_key_$keyId");
         if (!$privateKey) {
             throw new AdminException('私钥不存在或已过期，请刷新页面重试');
         }
-        $privateKeyResource = openssl_pkey_get_private($privateKey);
-        $decrypted = '';
-        $encryptedData = base64_decode($encryptedPassword);
-        if (openssl_private_decrypt($encryptedData, $decrypted, $privateKeyResource)) {
-            $cache->delete("rsa_private_key:$keyId"); // 删除私钥，防止泄露
-            return $decrypted;
-        } else {
-            throw new AdminException('解密失败！');
-        }
+        return RSAService::decrypt($encryptedPassword, $privateKey);
     }
 }
+
+
