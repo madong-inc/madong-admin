@@ -130,35 +130,35 @@ function generateEnvTemplate(): string
                 
                 # Database Configuration
                 DB_CONNECTION=mysql
-                DB_HOST    = ~db_host~
-                DB_PORT    = ~db_port~
-                DB_DATABASE= ~db_name~
-                DB_USERNAME= ~db_user~
-                DB_PASSWORD= ~db_pwd~
-                DB_PREFIX  = ~db_prefix~
+                DB_HOST=~db_host~
+                DB_PORT=~db_port~
+                DB_DATABASE=~db_name~
+                DB_USERNAME=~db_user~
+                DB_PASSWORD=~db_pwd~
+                DB_PREFIX=~db_prefix~
                 
                 # Redis Configuration
-                REDIS_HOST= ~redis_host~
-                REDIS_PORT= ~redis_port~
-                REDIS_PASSWORD= ~redis_pwd~
+                REDIS_HOST=~redis_host~
+                REDIS_PORT=~redis_port~
+                REDIS_PASSWORD=~redis_pwd~
                 REDIS_DB=0
                 
                 # Queue Redis Configuration
-                QUEUE_REDIS_HOST= ~redis_host~
-                QUEUE_REDIS_PORT= ~redis_port~
-                QUEUE_REDIS_PASSWORD= ~redis_pwd~
+                QUEUE_REDIS_HOST=~redis_host~
+                QUEUE_REDIS_PORT=~redis_port~
+                QUEUE_REDIS_PASSWORD=~redis_pwd~
                 QUEUE_REDIS_DB=0
                 QUEUE_REDIS_PREFIX=queue
                 
                 # Cache Configuration
-                CACHE_CUSTOM_REDIS_HOST= ~redis_host~
-                CACHE_CUSTOM_REDIS_PORT= ~redis_port~
-                CACHE_CUSTOM_REDIS_PASSWORD= ~redis_pwd~
+                CACHE_CUSTOM_REDIS_HOST=~redis_host~
+                CACHE_CUSTOM_REDIS_PORT=~redis_port~
+                CACHE_CUSTOM_REDIS_PASSWORD=~redis_pwd~
                 CACHE_CUSTOM_REDIS_DB=0
                 CACHE_CUSTOM_REDIS_PREFIX=cache_custom
                 
                 # Feature Toggles
-                APP_TASK_ENABLED=false                 # Timer switch
+                APP_TASK_ENABLED=false             # Timer switch
                 APP_TENANT_ENABLED=true            # Tenant mode switch
                 APP_TENANT_AUTO_SELECT_FIRST=false # Tenant auto
                 CAPTCHA_ENABLED=false              # Captcha switch

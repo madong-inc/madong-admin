@@ -29,7 +29,7 @@ class SysUploadDao extends BaseDao
         return SysUpload::class;
     }
 
-    public function selectList(array $where, string $field = '*', int $page = 0, int $limit = 0, string $order = '', array $with = [], bool $search = false, ?array $withoutScopes = null): ?\Illuminate\Database\Eloquent\Collection
+    public function selectList(array $where, string|array $field = '*', int $page = 0, int $limit = 0, string $order = '', array $with = [], bool $search = false, ?array $withoutScopes = null): ?\Illuminate\Database\Eloquent\Collection
     {
         //重写追加两个关联模型
         return parent::selectList($where, $field, $page, $limit, $order, ['createds', 'updateds'], $search, $withoutScopes);

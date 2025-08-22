@@ -18,6 +18,8 @@ use core\exception\handler\AdminException;
 use core\jwt\JwtToken;
 use core\utils\Json;
 use core\captcha\Captcha;
+use core\utils\RSAService;
+use core\uuid\UUIDGenerator;
 use support\Container;
 use support\Request;
 
@@ -58,13 +60,12 @@ class LoginController extends Crud
     {
         try {
             // 生成密钥对
-            $cache = Container::make(CacheService::class,[]);
-            // 使用 uniqid 增加唯一性
-            $keyId = bin2hex(random_bytes(8)) . uniqid();
-            $keys = $this->service->generateRSAKeys();
+            $cache = Container::make(CacheService::class, []);
+            $keyId = md5(UUIDGenerator::generate());
+            $keys  = RSAService::generateKeys();
             // 存储私钥到缓存，用于解密密码
-            $cache->set("rsa_private_key:$keyId", $keys['private'], 60); // 5分钟过期
-            return Json::success('ok', ['flag' => config('core.captcha.app.enable', false),'key_id'=>$keyId,'public_key'=>$keys['public']]);
+            $cache->set("rsa_private_key_$keyId", $keys['private'], 60); // 5分钟过期
+            return Json::success('ok', ['flag' => config('core.captcha.app.enable', false), 'key_id' => $keyId, 'public_key' => $keys['public']]);
         } catch (\Throwable $e) {
             return Json::fail($e->getMessage());
         }
@@ -127,12 +128,10 @@ class LoginController extends Crud
             $type      = $request->input('type', 'admin');
             $grantType = $request->input('grant_type', 'default');//refresh_token   sms   default 可以自行定义拓展登录方式
             $keyId     = $request->input('key_id', '');//获取公钥Id
+            /** @var  SysAdminService $service */
             $service = Container::make(SysAdminService::class);
 
             $captcha = new Captcha();
-//            if (config('tenant.enabled') && empty($tenantId)) {
-//                throw new AdminException('请选择数据源！');
-//            }
 
             if (config('core.captcha.app.enable') && $grantType === 'default') {
                 if (!$captcha->check($uuid, $code)) {
@@ -150,7 +149,8 @@ class LoginController extends Crud
                 }
                 $username = $info->getData('user_name');
             }
-            $data = $service->login($username, $password, $type, $grantType, ['keyId'=> $keyId ?? '']);
+
+            $data = $service->login($username, $password, $type, $grantType, ['key_id' => $keyId ?? '']);
             return Json::success('ok', $data);
         } catch (\Throwable $e) {
             return Json::fail($e->getMessage());

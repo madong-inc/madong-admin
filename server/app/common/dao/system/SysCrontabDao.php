@@ -38,7 +38,7 @@ class SysCrontabDao extends BaseDao
      * @return \Illuminate\Database\Eloquent\Collection|null
      * @throws \Exception
      */
-    public function selectList(array $where, string $field = '*', int $page = 0, int $limit = 0, string $order = '', array $with = [], bool $search = false,?array $withoutScopes = null): ?\Illuminate\Database\Eloquent\Collection
+    public function selectList(array $where, string|array $field = '*', int $page = 0, int $limit = 0, string $order = '', array $with = [], bool $search = false, ?array $withoutScopes = null): ?\Illuminate\Database\Eloquent\Collection
     {
         $result = parent::selectList($where, $field, $page, $limit, $order, [], $search,$withoutScopes);
 

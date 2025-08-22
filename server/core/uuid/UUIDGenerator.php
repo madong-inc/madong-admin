@@ -29,7 +29,7 @@ class UUIDGenerator
      * @return string|null
      * @throws \Exception
      */
-    public static function generate(string $format = 'uuid', int $length = 36)
+    public static function generate(string $format = 'uuid', int $length = 36): ?string
     {
         if ($format === 'uuid') {
             return self::generateUUID();
