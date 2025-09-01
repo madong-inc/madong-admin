@@ -249,6 +249,7 @@ class SchedulerServer
                 return;
             }
             try {
+                /** @var  SysCrontabService $systemCrontabService */
                 $systemCrontabService = Container::make(SysCrontabService::class);
                 $reData               = $systemCrontabService->runOneTask($data['id']);
                 $this->writeln( $data['title'].' 任务#' . $data['id'] . ' ' . $data['rule'] . ' ' . $data['target'], $reData['code']);

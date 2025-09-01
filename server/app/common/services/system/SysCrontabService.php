@@ -35,7 +35,7 @@ class SysCrontabService extends BaseService
     public function save(array $data): mixed
     {
         try {
-            return $this->transaction(function () use ($data) {
+            $model = $this->transaction(function () use ($data) {
                 $title      = $data['title'] ?? '';
                 $type       = $data['type'] ?? '';
                 $target     = $data['target'] ?? '';
@@ -75,14 +75,15 @@ class SysCrontabService extends BaseService
                     ],
                     'remark'     => $remark,
                 ];
-                $model      = $this->dao->save($insertData);
-                //添加定时任务重启服务
-                if (!empty($model)) {
-                    $pk = $model->getPk();
-                    $this->requestData($model->getData($pk));
-                }
-                return $model;
+                return $this->dao->save($insertData);
             });
+
+            //添加定时任务重启服务
+            if (!empty($model)) {
+                $pk = $model->getPk();
+                $this->requestData($model->getData($pk));
+            }
+            return $model;
         } catch (\Exception $e) {
             throw new AdminException($e->getMessage());
         }
@@ -138,10 +139,9 @@ class SysCrontabService extends BaseService
                     ],
                     'remark'     => $remark,
                 ]);
-
-                // 更新之后重启服务
-                $this->requestData($id);
             });
+            // 更新之后重启服务
+            $this->requestData($id);
         } catch (\Exception $e) {
             throw new AdminException($e->getMessage());
         }
@@ -158,11 +158,12 @@ class SysCrontabService extends BaseService
     public function destroy(array|int|string $id): bool
     {
         try {
+            //1.0 先关闭再删除,避免删了后直接连不上服务的情况出现
+            $this->dao->update([['id', 'in', $id]], ['enabled' => 0]);
+            //2.0 重启任务
+            $this->requestData($id);
             return $this->transaction(function () use ($id) {
-                //1.0 先关闭再删除,避免删了后直接连不上服务的情况出现
-                $this->dao->update([['id', 'in', $id]], ['enabled' => 0]);
-                //2.0 重启任务
-                $this->requestData($id);
+
                 //3.0 删除定时任务跟日志数据
                 $this->dao->destroy($id);
                 $systemCrontabLogService = Container::make(SysCrontabLogService::class);

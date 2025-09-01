@@ -69,6 +69,22 @@ class CrontabController extends Crud
         }
     }
 
+    public function destroy(Request $request): \support\Response
+    {
+        try {
+            $id = $request->route->param('id');
+            $data = $request->input('data', []);
+            $data = !empty($id) && $id !== '0' ? $id : $data;
+            if (empty($data)) {
+                throw new AdminException('参数错误');
+            }
+            $this->service->destroy($data);
+            return Json::success('操作成功');
+        } catch (\Exception $e) {
+            return Json::fail($e->getMessage(), [], $e->getCode());
+        }
+    }
+
     /**
      * 更新
      *
