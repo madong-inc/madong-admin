@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { reactive, ref } from 'vue';
 
-import { useDrawer, useModal } from '#/components/common-ui';
+import { useDrawer, useModal } from '#/components/core/effects/common-ui';
 
 import { Col, Row ,Tag} from 'ant-design-vue';
 

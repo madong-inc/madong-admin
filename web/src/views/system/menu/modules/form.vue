@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { computed,  ref } from 'vue';
-import { useDrawer } from '#/components/common-ui';
+import { useDrawer } from '#/components/core/effects/common-ui';
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core';
 import { useForm, z } from '#/adapter/form';
 import {SystemMenuApi} from '#/api/system/menu';

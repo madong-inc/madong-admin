@@ -1,9 +1,9 @@
 import type { FormSchema, OnActionClickFn, VxeTableGridOptions } from '#/adapter';
 import { GatewayLimiterRow } from '#/api/dev/gateway';
-import { DictEnum } from '#/components/common/constants';
+import { DictEnum } from '#/components/core/constants';
 import { $t } from '#/locale';
 import { getDictOptions } from '#/utils';
-import { useAccess } from '#/components/common/effects/access';
+import { useAccess } from '#/components/core/effects/access';
 
 
 /***

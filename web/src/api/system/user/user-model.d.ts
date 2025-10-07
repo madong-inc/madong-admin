@@ -1,5 +1,5 @@
 import { TenantRow } from "#/api/platform/tenant";
-import { BasicUserInfo } from "#/components/common/types";
+import { BasicUserInfo } from "#/components/core/types";
 import { Dept } from "../dept";
 
 /**

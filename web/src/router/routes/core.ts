@@ -1,6 +1,6 @@
 import type { RouteRecordRaw } from 'vue-router';
 
-import { DEFAULT_HOME_PATH, LOGIN_PATH } from '#/components/common/constants';
+import { DEFAULT_HOME_PATH, LOGIN_PATH } from '#/components/core/constants';
 
 import { AuthPageLayout, BasicLayout } from '#/layout';
 import { $t } from '#/locale';

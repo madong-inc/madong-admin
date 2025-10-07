@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { OnActionClickParams } from "#/adapter";
 
-import { Page, useDrawer } from "#/components/common-ui";
+import { Page, useDrawer } from "#/components/core/effects/common-ui";
 import { message } from "ant-design-vue";
 
 import { isCheckboxChecked, useVxeGrid } from "#/adapter";

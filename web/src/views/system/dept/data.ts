@@ -1,14 +1,14 @@
-import type { VxeTableGridOptions } from '#/components/common/effects/plugins/vxe-table';
+import type { VxeTableGridOptions } from '#/components/core/effects/plugins/vxe-table';
 
 import type { FormSchema } from '#/adapter/form';
 import type { OnActionClickFn } from '#/adapter/vxe-table';
 import { z } from '#/adapter/form';
 import { type SystemDept, SystemDeptApi } from '#/api/system/dept';
 import { $t } from '#/locale';
-import { getPopupContainer } from '#/components/common/utils';
+import { getPopupContainer } from '#/components/core/utils';
 import { getDictOptions } from '#/utils/dict';
-import { DictEnum } from '#/components/common/constants';
-import { useAccess } from '#/components/common/effects/access';
+import { DictEnum } from '#/components/core/constants';
+import { useAccess } from '#/components/core/effects/access';
 import { h, RendererElement, RendererNode, VNode, VNodeArrayChildren } from 'vue';
 import { Tag } from 'ant-design-vue';
 

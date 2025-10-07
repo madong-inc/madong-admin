@@ -1,4 +1,4 @@
-import type { UserInfo } from '#/components/common/types';
+import type { UserInfo } from '#/components/core/types';
 
 import { requestClient } from '#/api/request';
 

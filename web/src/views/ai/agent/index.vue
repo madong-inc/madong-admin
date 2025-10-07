@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Page } from '#/components/common-ui';
+import { Page } from '#/components/core/effects/common-ui';
 
 import Chat from '#/views/ai/agent/chat/index.vue';
 </script>

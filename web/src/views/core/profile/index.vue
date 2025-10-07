@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue';
 
-import { Page } from '#/components/common-ui';
-import { useUserStore } from '#/components/common/stores';
+import { Page } from '#/components/core/effects/common-ui';
+import { useUserStore } from '#/components/core/stores';
 
 import { SystemProfileApi } from '#/api/system/profile';
 import { useAuthStore } from '#/store';

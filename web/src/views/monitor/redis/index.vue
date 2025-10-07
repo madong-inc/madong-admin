@@ -2,10 +2,10 @@
 
 import { onMounted, ref } from 'vue';
 
-import { BasicRenderContent } from '#/components/common/core/ui-kit/shadcn-ui';
+import { BasicRenderContent } from '#/components/core/@core/ui-kit/shadcn-ui';
 
 import { RedisApi,DescriptionItem, RedisProps } from '#/api/monitor/redis';
-import {Page} from '#/components/common-ui';
+import {Page} from '#/components/core/effects/common-ui';
 import { labelMapping } from '#/views/monitor/redis/data';
 import { $t } from '#/locale';
 

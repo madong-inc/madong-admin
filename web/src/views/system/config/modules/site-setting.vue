@@ -1,12 +1,12 @@
 <script lang="ts" setup>
 import { useForm } from "#/adapter/form";
 import { info, save } from "#/api/system/config/config";
-import { Page } from "#/components/common-ui";
+import { Page } from "#/components/core/effects/common-ui";
 import { Button, message } from "ant-design-vue";
 import { h, onMounted } from "vue";
 import { transformData, convertStringNumbers } from "../data";
 import { getDictOptions } from "#/utils";
-import { DictEnum } from "#/components/common/constants";
+import { DictEnum } from "#/components/core/constants";
 import { $t } from "#/locale";
 
 const fieldLink = {

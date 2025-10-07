@@ -1,4 +1,4 @@
-import type { RouteRecordStringComponent } from '#/components/common/types';
+import type { RouteRecordStringComponent } from '#/components/core/types';
 
 import { $t } from '#/locale';
 

@@ -1,12 +1,12 @@
-import type { ExtendedFormApi } from '#/components/common-ui';
-import type { MaybePromise } from '#/components/common/types';
+import type { ExtendedFormApi } from '#/components/core/effects/common-ui';
+import type { MaybePromise } from '#/components/core/types';
 
 import { ref } from 'vue';
 
 import { $t } from '#/locale';
 
 import { Modal } from 'ant-design-vue';
-import { isFunction } from '#/components/common/utils';
+import { isFunction } from '#/components/core/utils';
 
 
 interface BeforeCloseDiffProps {

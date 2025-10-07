@@ -4,9 +4,9 @@ import type { OnActionClickFn, VxeTableGridOptions } from '#/adapter/vxe-table';
 import { SystemDeptApi } from '#/api/system/dept';
 import type{ SystemPostRow } from '#/api/system/post';
 
-import { DictEnum } from '#/components/common/constants';
-import { Recordable } from '#/components/common/types';
-import { getPopupContainer } from '#/components/common/utils';
+import { DictEnum } from '#/components/core/constants';
+import { Recordable } from '#/components/core/types';
+import { getPopupContainer } from '#/components/core/utils';
 import { Icon } from '#/components/icon';
 import { $t } from '#/locale';
 

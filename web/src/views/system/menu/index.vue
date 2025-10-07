@@ -6,11 +6,11 @@ import type {
   VxeTableGridOptions,
 } from "#/adapter/vxe-table";
 
-import { Page, useDrawer, useModal } from "#/components/common-ui";
-import { IconifyIcon } from "#/components/common/icons";
+import { Page, useDrawer, useModal } from "#/components/core/effects/common-ui";
+import { IconifyIcon } from "#/components/core/icons";
 import { $t } from "#/locale";
 
-import { MenuBadge } from "#/components/common/core/ui-kit/menu-ui";
+import { MenuBadge } from "#/components/core/@core/ui-kit/menu-ui";
 
 import { Button, Space, message } from "ant-design-vue";
 import { PlusOutlined, ShrinkOutlined, ArrowsAltOutlined } from "@ant-design/icons-vue";
@@ -21,7 +21,7 @@ import { SystemMenuApi } from "#/api/system/menu";
 import type { SystemMenuRow } from "#/api/system/menu";
 
 import { querySchema, useColumns } from "./data";
-import { eachTree } from "#/components/common/utils";
+import { eachTree } from "#/components/core/utils";
 import Form from "./modules/form.vue";
 import InterfaceForm from "./modules/initerface-list.vue";
 import { record } from "zod";

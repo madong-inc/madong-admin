@@ -1,4 +1,4 @@
-import { mitt } from '#/components/common/utils';
+import { mitt } from '#/components/core/utils';
 
 type Events = {
   updateProfile: void;

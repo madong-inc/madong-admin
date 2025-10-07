@@ -1,17 +1,17 @@
-import type { Recordable, UserInfo } from '#/components/common/types';
+import type { Recordable, UserInfo } from '#/components/core/types';
 
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
-import { DEFAULT_HOME_PATH, LOGIN_PATH } from '#/components/common/constants';
-import { resetAllStores, useAccessStore, useUserStore } from '#/components/common/stores';
+import { DEFAULT_HOME_PATH, LOGIN_PATH } from '#/components/core/constants';
+import { resetAllStores, useAccessStore, useUserStore } from '#/components/core/stores';
 
 import { notification, theme } from 'ant-design-vue';
 import { defineStore } from 'pinia';
 
 import { getAccessCodesApi, getUserInfoApi, loginApi, logoutApi } from '#/api';
 import { $t } from '#/locale';
-import { updatePreferences } from '#/components/common/core/preferences';
+import { updatePreferences } from '#/components/core/@core/preferences';
 import { fullUrl } from '#/utils';
 
 export const useAuthStore = defineStore('auth', () => {

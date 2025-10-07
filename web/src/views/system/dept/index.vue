@@ -4,7 +4,7 @@ import type {
   VxeTableGridOptions,
 } from '#/adapter/vxe-table';
 
-import { Page, useModal } from '#/components/common-ui';
+import { Page, useModal } from '#/components/core/effects/common-ui';
 
 
 import { Button,Space, message } from "ant-design-vue";
@@ -16,7 +16,7 @@ import { $t } from '#/locale';
 
 import { querySchema, useColumns } from './data';
 import Form from './modules/form.vue';
-import { eachTree } from '#/components/common/utils';
+import { eachTree } from '#/components/core/utils';
 import { ref,h } from 'vue';
 
 

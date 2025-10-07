@@ -10,9 +10,9 @@ import {
   watch,
 } from "vue";
 
-import { useDrawer, useModal } from "#/components/common-ui";
+import { useDrawer, useModal } from "#/components/core/effects/common-ui";
 import { $t } from "#/locale";
-import { cloneDeep } from "#/components/common/utils";
+import { cloneDeep } from "#/components/core/utils";
 
 import { useForm } from "#/adapter/form";
 
@@ -42,7 +42,7 @@ import {
   DownOutlined,
   RollbackOutlined,
 } from "@ant-design/icons-vue";
-import { DictEnum, taskStatus } from "#/components/common/constants";
+import { DictEnum, taskStatus } from "#/components/core/constants";
 import { useTerminalStore } from "#/store";
 import { confirm, getDictOptions } from "#/utils";
 

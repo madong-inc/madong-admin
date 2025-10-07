@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import type { Recordable } from '#/components/common/types';
+import type { Recordable } from '#/components/core/types';
 
 
 import { onMounted } from 'vue';
 
-import { DictEnum } from '#/components/common/constants';
-import { useUserStore } from '#/components/common/stores';
+import { DictEnum } from '#/components/core/constants';
+import { useUserStore } from '#/components/core/stores';
 
 import { pick } from 'lodash-es';
 

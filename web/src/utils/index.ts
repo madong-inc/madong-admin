@@ -1,4 +1,4 @@
-export * from "#/components/common/utils";
+export * from "#/components/core/utils";
 export * from "./modal";
 export * from "./popup";
 export * from "./dict";

@@ -5,8 +5,8 @@ import type { ActionItem, PopConfirm } from './types';
 
 import { computed, type PropType, toRaw } from 'vue';
 
-import { useAccess } from '#/components/common/effects/access';
-import { isBoolean, isFunction } from '#/components/common/utils';
+import { useAccess } from '#/components/core/effects/access';
+import { isBoolean, isFunction } from '#/components/core/utils';
 
 import { MoreOutlined } from '@ant-design/icons-vue';
 import { Button, Dropdown, Menu, Popconfirm, Space } from 'ant-design-vue';

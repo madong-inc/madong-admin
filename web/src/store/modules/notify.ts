@@ -1,8 +1,8 @@
-import type { NotificationItem } from '#/components/common/effects/layouts';
+import type { NotificationItem } from '#/components/core/effects/layouts';
 
 import { computed, ref } from 'vue';
 
-import { useUserStore } from '#/components/common/stores';
+import { useUserStore } from '#/components/core/stores';
 
 import { notification } from 'ant-design-vue';
 import { defineStore } from 'pinia';

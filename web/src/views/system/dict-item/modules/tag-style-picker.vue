@@ -3,7 +3,7 @@ import type { RadioChangeEvent } from 'ant-design-vue';
 
 import { computed } from 'vue';
 
-import { usePreferences } from '#/components/common/core/preferences';
+import { usePreferences } from '#/components/core/@core/preferences';
 
 import { RadioGroup, Select } from 'ant-design-vue';
 import { ColorPicker } from 'vue3-colorpicker';

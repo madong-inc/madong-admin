@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { OnActionClickParams } from "#/adapter";
 
-import { Page, useDrawer } from "#/components/common-ui";
+import { Page, useDrawer } from "#/components/core/effects/common-ui";
 import { message } from "ant-design-vue";
 
 import { isCheckboxChecked, useVxeGrid } from "#/adapter";
@@ -12,7 +12,7 @@ import { GatewayBlacklistApi } from "#/api/dev/gateway";
 import type { GatewayBlacklistRow } from "#/api/dev/gateway";
 import { $t } from "#/locale";
 import {confirm} from "#/utils";
-import { Recordable } from "#/components/common/types";
+import { Recordable } from "#/components/core/types";
 
 const api = new GatewayBlacklistApi();
 

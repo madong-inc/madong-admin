@@ -3,8 +3,8 @@ import type { FormSchema, FormSchemaGetter } from '#/adapter/form';
 import type { OnActionClickFn } from '#/adapter/vxe-table';
 import type { SystemNoticeRow } from '#/api/system/notice';
 
-import { DictEnum } from '#/components/common/constants';
-import { getPopupContainer } from '#/components/common/utils';
+import { DictEnum } from '#/components/core/constants';
+import { getPopupContainer } from '#/components/core/utils';
 
 import { getDictOptions } from '#/utils/dict';
 

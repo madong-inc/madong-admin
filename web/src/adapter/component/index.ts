@@ -5,8 +5,8 @@
 
 import type { Component } from 'vue';
 
-import type { BaseFormComponentType } from '#/components/common-ui';
-import type { Recordable } from '#/components/common/types';
+import type { BaseFormComponentType } from '#/components/core/effects/common-ui';
+import type { Recordable } from '#/components/core/types';
 
 import {
   defineAsyncComponent,
@@ -16,7 +16,7 @@ import {
   ref,
 } from 'vue';
 
-import { ApiComponent, globalShareState, IconPicker } from '#/components/common-ui';
+import { ApiComponent, globalShareState, IconPicker } from '#/components/core/effects/common-ui';
 import { $t } from '#/locale';
 
 import { notification } from 'ant-design-vue';

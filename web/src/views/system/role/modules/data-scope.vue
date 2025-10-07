@@ -1,12 +1,12 @@
 <script lang="ts" setup>
 import type { DataNode } from "ant-design-vue/es/tree";
 
-import type { Recordable } from "#/components/common/types";
+import type { Recordable } from "#/components/core/types";
 
 import { computed, ref } from "vue";
 
-import { useDrawer, Tree, useModal } from "#/components/common-ui";
-import { IconifyIcon } from "#/components/common/icons";
+import { useDrawer, Tree, useModal } from "#/components/core/effects/common-ui";
+import { IconifyIcon } from "#/components/core/icons";
 
 import { Spin } from "ant-design-vue";
 

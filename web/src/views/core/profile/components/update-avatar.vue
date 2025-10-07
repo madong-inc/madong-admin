@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 
-import { useAccessStore, useAuthStore, useUserStore } from '#/components/common/stores';
+import { useAccessStore, useAuthStore, useUserStore } from '#/components/core/stores';
 
 import {
   Avatar,

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 
-import { useDrawer } from '#/components/common-ui';
+import { useDrawer } from '#/components/core/effects/common-ui';
 
 import DictItemIndex from '#/views/system/dict-item/index.vue';
 import { $t } from '#/locale';

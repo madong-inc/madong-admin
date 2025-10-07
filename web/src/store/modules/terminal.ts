@@ -2,7 +2,7 @@ import { nextTick, reactive } from 'vue';
 import { defineStore } from 'pinia';
 
 import { Terminal, TerminalApi } from '#/api/dev/terminal';
-import { taskStatus } from '#/components/common/constants';
+import { taskStatus } from '#/components/core/constants';
 import { timestampFormat, uuid } from '#/utils';
 import { $t } from '#/locale';
 import { notification } from 'ant-design-vue';

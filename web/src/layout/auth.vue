@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
 
-import { AuthPageLayout } from '../components/common/effects/layouts/authentication';
-import { preferences } from '#/components/common/core/preferences';
+import { AuthPageLayout } from '../components/core/effects/layouts/authentication';
+import { preferences } from '#/components/core/@core/preferences';
 
 import { $t } from '#/locale';
 

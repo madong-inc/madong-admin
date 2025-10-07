@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { Recordable } from '#/components/common/types';
+import type { Recordable } from '#/components/core/types';
 
 import type {
   OnActionClickParams,
@@ -8,8 +8,8 @@ import type {
 import { SystemRoleApi } from '#/api/system/role';
 import type { SystemRoleRow } from '#/api/system/role';
 
-import { Page, useDrawer, useModal } from '#/components/common-ui';
-import { Plus } from '#/components/common/icons';
+import { Page, useDrawer, useModal } from '#/components/core/effects/common-ui';
+import { Plus } from '#/components/core/icons';
 
 import { Button, message, Modal } from 'ant-design-vue';
 

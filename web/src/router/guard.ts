@@ -1,12 +1,12 @@
 import type { Router } from 'vue-router';
 
-import { DEFAULT_HOME_PATH, LOGIN_PATH } from '#/components/common/constants';
-import { preferences } from '#/components/common/core/preferences';
-import { useAccessStore, useUserStore } from '#/components/common/stores';
-import { startProgress, stopProgress } from '#/components/common/utils';
+import { DEFAULT_HOME_PATH, LOGIN_PATH } from '#/components/core/constants';
+import { preferences } from '#/components/core/@core/preferences';
+import { useAccessStore, useUserStore } from '#/components/core/stores';
+import { startProgress, stopProgress } from '#/components/core/utils';
 
 import { accessRoutes, coreRouteNames } from '#/router/routes';
-import { useAuthStore } from '#/components/common/stores';
+import { useAuthStore } from '#/components/core/stores';
 
 import { generateAccess } from './access';
 

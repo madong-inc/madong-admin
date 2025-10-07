@@ -1,5 +1,5 @@
 import type { FormProps, VxeGridProps } from '#/adapter';
-import { DictEnum } from '#/components/common/constants';
+import { DictEnum } from '#/components/core/constants';
 import { $t } from '#/locale';
 import { getDictOptions } from '#/utils';
 // 表格参数定义

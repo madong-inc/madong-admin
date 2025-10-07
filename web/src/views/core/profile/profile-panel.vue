@@ -2,7 +2,7 @@
 
 import { computed } from 'vue';
 
-import { preferences } from '#/components/common/core/preferences';
+import { preferences } from '#/components/core/@core/preferences';
 
 import {
   Card,

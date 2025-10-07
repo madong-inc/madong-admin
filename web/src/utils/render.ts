@@ -3,7 +3,7 @@ import type { DictOptions} from '#/api/system/dict';
 import { h } from 'vue';
 import {
   IconifyIcon,
-} from '#/components/common/icons';
+} from '#/components/core/icons';
 import { Tag } from 'ant-design-vue';
 import { DictTag } from '#/components/dict';
 import { getDictOptions } from './dict';

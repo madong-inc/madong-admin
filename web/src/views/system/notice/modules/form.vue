@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 
-import {  useModal } from "#/components/common-ui";
+import {  useModal } from "#/components/core/effects/common-ui";
 import { $t } from "#/locale";
-import { cloneDeep } from "#/components/common/utils";
+import { cloneDeep } from "#/components/core/utils";
 
 import { useForm } from "#/adapter/form";
 

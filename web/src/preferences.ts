@@ -1,4 +1,4 @@
-import {defineOverridesPreferences, updatePreferences} from '#/components/common/core/preferences';
+import {defineOverridesPreferences, updatePreferences} from '#/components/core/@core/preferences';
 
 
 

@@ -1,7 +1,7 @@
 import type { FormSchema, OnActionClickFn, VxeTableGridOptions } from '#/adapter';
 import type{ SystemDictRow } from '#/api/system/dict';
-import { DictEnum } from '#/components/common/constants';
-import { useAccess } from '#/components/common/effects/access';
+import { DictEnum } from '#/components/core/constants';
+import { useAccess } from '#/components/core/effects/access';
 import { $t } from '#/locale';
 import { getDictOptions } from '#/utils/dict';
 

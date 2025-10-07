@@ -3,7 +3,7 @@ import type { OnActionClickParams, VxeGridProps } from "#/adapter/vxe-table";
 
 import { ref,h} from "vue";
 
-import { Page, useDrawer } from "#/components/common-ui";
+import { Page, useDrawer } from "#/components/core/effects/common-ui";
 
 import { Modal, Popconfirm, Space, Button } from "ant-design-vue";
 import { MenuFoldOutlined, MenuUnfoldOutlined,DeleteOutlined,PlusOutlined} from "@ant-design/icons-vue";

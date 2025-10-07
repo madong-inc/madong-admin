@@ -5,7 +5,7 @@ import type { OnActionClickParams, VxeGridProps } from "#/adapter/vxe-table";
 
 import { ref } from "vue";
 
-import { Page, useDrawer, useModal } from "#/components/common-ui";
+import { Page, useDrawer, useModal } from "#/components/core/effects/common-ui";
 
 
 import { Modal, Popconfirm, Space,Button, message } from "ant-design-vue";
@@ -18,7 +18,7 @@ import DeptTree from "#/views/system/dept/modules/dept-tree.vue";
 import { useColumns, querySchema } from "./data";
 import Form from "./modules/form.vue";
 import { SystemUserApi ,type User} from "#/api/system/user";
-import { Recordable } from "#/components/common/types";
+import { Recordable } from "#/components/core/types";
 import { $t } from "#/locale";
 import {confirm} from "#/utils";
 import { TableAction } from "#/components/table";

@@ -6,7 +6,7 @@ import {ref} from 'vue';
 import type {LocaleSetupOptions, SupportedLanguagesType} from './effects';
 import {$t, loadLocalesMapFromDir, setupI18n as coreSetup, useI18n, i18n, loadLocaleMessages} from './effects';
 
-import {preferences} from '#/components/common/core/preferences';
+import {preferences} from '#/components/core/@core/preferences';
 
 import antdEnLocale from 'ant-design-vue/es/locale/en_US';
 import antdDefaultLocale from 'ant-design-vue/es/locale/zh_CN';

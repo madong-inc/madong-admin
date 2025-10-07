@@ -2,7 +2,7 @@
 
 import { computed, ref } from 'vue';
 
-import { useModal } from '#/components/common-ui';
+import { useModal } from '#/components/core/effects/common-ui';
 
 import { Button } from 'ant-design-vue';
 

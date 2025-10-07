@@ -4,7 +4,7 @@ import { defineStore } from 'pinia';
 import { $t } from '#/locale';
 import { SystemConfigApi } from '#/api/system/config';
 import type { SiteConfig } from '#/api/system/config';
-import { updatePreferences } from '#/components/common/core/preferences';
+import { updatePreferences } from '#/components/core/@core/preferences';
 import { fullUrl } from '#/utils';
 
 

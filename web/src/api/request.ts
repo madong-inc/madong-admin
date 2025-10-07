@@ -1,13 +1,13 @@
-import type { HttpResponse, RequestClientOptions } from '#/components/common/effects/request';
+import type { HttpResponse, RequestClientOptions } from '#/components/core/effects/request';
 
-import { preferences } from '#/components/common/core/preferences';
+import { preferences } from '#/components/core/@core/preferences';
 import {
   authenticateResponseInterceptor,
   defaultResponseInterceptor,
   errorMessageResponseInterceptor,
   RequestClient,
-} from '#/components/common/effects/request';
-import { useAccessStore, useAuthStore } from '#/components/common/stores';
+} from '#/components/core/effects/request';
+import { useAccessStore, useAuthStore } from '#/components/core/stores';
 
 import { message } from 'ant-design-vue';
 

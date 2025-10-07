@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useDrawer, useForm } from "#/components/common-ui";
+import { useDrawer, useForm } from "#/components/core/effects/common-ui";
 import { ref } from "vue";
 import { drawerFormSchamas, templateField, transformData ,fieldLink} from "../data";
 import { info, save } from "#/api/system/config/config";

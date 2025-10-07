@@ -1,6 +1,6 @@
 import type { FormSchema, OnActionClickFn, VxeTableGridOptions } from '#/adapter';
 import type { SystemDictItemRow } from '#/api/system/dict';
-import { DictEnum } from '#/components/common/constants';
+import { DictEnum } from '#/components/core/constants';
 import { $t } from '#/locale';
 import { getDictOptions } from '#/utils';
 import { Tag } from 'ant-design-vue';

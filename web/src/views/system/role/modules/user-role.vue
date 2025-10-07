@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { computed, ref } from 'vue';
 
-import { useDrawer, useModal } from '#/components/common-ui';
+import { useDrawer, useModal } from '#/components/core/effects/common-ui';
 
 import { Button, message } from 'ant-design-vue';
 

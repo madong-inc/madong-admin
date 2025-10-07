@@ -8,7 +8,7 @@ import type {
 
 import { ref,h } from "vue";
 
-import { Page, useModal } from "#/components/common-ui";
+import { Page, useModal } from "#/components/core/effects/common-ui";
 
 import { Button, message, Space } from "ant-design-vue";
 import {DeleteOutlined,PlusOutlined} from "@ant-design/icons-vue";

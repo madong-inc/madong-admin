@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
 
-import { Page } from "#/components/common-ui";
+import { Page } from "#/components/core/effects/common-ui";
 import {Col, Row} from "ant-design-vue";
 
 

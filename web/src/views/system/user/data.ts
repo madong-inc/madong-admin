@@ -3,12 +3,12 @@ import { z, type FormSchema } from '#/adapter/form';
 import type { OnActionClickFn, VxeTableGridOptions } from '#/adapter/vxe-table';
 import { User } from '#/api/system/user';
 
-import { DictEnum } from '#/components/common/constants';
-import { getPopupContainer } from '#/components/common/utils';
+import { DictEnum } from '#/components/core/constants';
+import { getPopupContainer } from '#/components/core/utils';
 import { $t } from '#/locale';
 
 import { getDictOptions } from '#/utils/dict';
-import { useAccess } from '#/components/common/effects/access';
+import { useAccess } from '#/components/core/effects/access';
 import { SystemRoleApi } from '#/api/system/role';
 import { h, RendererElement, RendererNode, VNode, VNodeArrayChildren } from 'vue';
 import { Tag } from 'ant-design-vue';

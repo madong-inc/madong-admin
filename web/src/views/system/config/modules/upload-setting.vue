@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { Page, useDrawer } from "#/components/common-ui";
+import { Page, useDrawer } from "#/components/core/effects/common-ui";
 import { Button, message } from "ant-design-vue";
 import { useForm } from "#/adapter/form";
 import { h, onMounted, ref } from "vue";
@@ -7,7 +7,7 @@ import uploadSettingDrawer from "./upload-setting-drawer.vue";
 import { info, save } from "#/api/system/config/config";
 import { transformData } from "../data";
 import { getDictOptions } from "#/utils";
-import { DictEnum } from "#/components/common/constants";
+import { DictEnum } from "#/components/core/constants";
 import { $t } from "#/locale";
 
 

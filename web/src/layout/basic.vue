@@ -1,30 +1,30 @@
 <script lang="ts" setup>
-import type { NotificationItem } from "../components/common/effects/layouts/widgets";
+import type { NotificationItem } from "../components/core/effects/layouts/widgets";
 
 import { computed, onBeforeMount, onMounted, ref, watch } from "vue";
 import { useRouter } from "vue-router";
 
-import { AuthenticationLoginExpiredModal, useModal } from "#/components/common-ui";
-import { useWatermark } from "#/components/common/effects/hooks";
-import { BasicLayout } from "../components/common/effects/layouts/basic";
+import { AuthenticationLoginExpiredModal, useModal } from "#/components/core/effects/common-ui";
+import { useWatermark } from "#/components/core/effects/hooks";
+import { BasicLayout } from "../components/core/effects/layouts/basic";
 import {
   LockScreen,
   Notification,
   UserDropdown,
-} from "../components/common/effects/layouts/widgets";
-import { preferences } from "#/components/common/core/preferences";
+} from "../components/core/effects/layouts/widgets";
+import { preferences } from "#/components/core/@core/preferences";
 import {
   useAccessStore,
   useTabbarStore,
   useUserStore,
   useAuthStore,
-} from "#/components/common/stores";
-import { openWindow } from "#/components/common/utils";
+} from "#/components/core/stores";
+import { openWindow } from "#/components/core/utils";
 
 import { $t } from "#/locale";
 import LoginForm from "#/views/core/authentication/login.vue";
 import Terminal from "./modules/terminal.vue";
-import { BasicIconButton } from "#/components/common/core/ui-kit/shadcn-ui";
+import { BasicIconButton } from "#/components/core/@core/ui-kit/shadcn-ui";
 
 const { setMenuList } = useTabbarStore();
 setMenuList([
@@ -46,7 +46,7 @@ const authStore = useAuthStore();
 const accessStore = useAccessStore();
 const { destroyWatermark, updateWatermark } = useWatermark();
 
-import { BookOpenText} from "#/components/common/icons";
+import { BookOpenText} from "#/components/core/icons";
 import { useNotifyStore } from "#/store";
 import { message } from "ant-design-vue";
 import { CodeOutlined } from "@ant-design/icons-vue";

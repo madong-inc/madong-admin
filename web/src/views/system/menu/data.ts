@@ -1,10 +1,10 @@
 import type { FormProps, FormSchema, OnActionClickFn, VxeTableGridOptions } from '#/adapter';
 import { SystemMenuApi } from '#/api/system/menu';
 import type { SystemMenuRow } from '#/api/system/menu';
-import { DictEnum } from '#/components/common/constants';
-import { IconifyIcon } from '#/components/common/icons';
-import { Recordable } from '#/components/common/types';
-import { getPopupContainer } from '#/components/common/utils';
+import { DictEnum } from '#/components/core/constants';
+import { IconifyIcon } from '#/components/core/icons';
+import { Recordable } from '#/components/core/types';
+import { getPopupContainer } from '#/components/core/utils';
 import { $t } from '#/locale';
 import { getDictOptions } from '#/utils/dict';
 import { h } from 'vue';

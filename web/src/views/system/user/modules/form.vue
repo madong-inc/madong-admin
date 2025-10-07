@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { computed, h, ref } from "vue";
 
-import { useDrawer } from "#/components/common-ui";
+import { useDrawer } from "#/components/core/effects/common-ui";
 import { $t } from "#/locale";
-import { addFullName, cloneDeep, getPopupContainer } from "#/components/common/utils";
+import { addFullName, cloneDeep, getPopupContainer } from "#/components/core/utils";
 
 import { useForm } from "#/adapter/form";
 import { PostItem, SystemPostApi } from "#/api/system/post";

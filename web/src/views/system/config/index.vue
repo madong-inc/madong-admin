@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, defineAsyncComponent } from "vue";
-import { Page } from "#/components/common-ui";
+import { Page } from "#/components/core/effects/common-ui";
 import { TabPane, Tabs, Card } from "ant-design-vue";
 import { $t } from "#/locale";
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Recordable } from "#/components/common/types";
+import type { Recordable } from "#/components/core/types";
 
 import type { VxeGridProps } from "#/adapter/vxe-table";
 

@@ -3,7 +3,7 @@ import type { FormProps, VxeGridListeners, VxeGridProps } from "#/adapter";
 
 import { ref } from "vue";
 
-import { Page } from "#/components/common-ui";
+import { Page } from "#/components/core/effects/common-ui";
 
 import { DownOutlined } from "@ant-design/icons-vue";
 import { Button, message, Modal } from "ant-design-vue";

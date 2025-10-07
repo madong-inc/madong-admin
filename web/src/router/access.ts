@@ -2,20 +2,20 @@ import { SiteConfig } from './../api/system/config/config-model.d';
 import type {
   ComponentRecordType,
   GenerateMenuAndRoutesOptions,
-} from '#/components/common/types';
+} from '#/components/core/types';
 
-import { generateAccessible } from '#/components/common/effects/access';
-import { preferences } from '#/components/common/core/preferences';
+import { generateAccessible } from '#/components/core/effects/access';
+import { preferences } from '#/components/core/@core/preferences';
 
 import { message } from 'ant-design-vue';
 
 import { BasicLayout, IFrameView } from '#/layout';
 import { $t } from '#/locale';
 import { localRoutesList } from './routes/local';
-import { cloneDeep } from '#/components/common/utils';
+import { cloneDeep } from '#/components/core/utils';
 import { getAllMenusApi } from '#/api/core/menu';
 import { getAccessCodesApi } from '#/api';
-import { useAccessStore, useUserStore } from '#/components/common/stores';
+import { useAccessStore, useUserStore } from '#/components/core/stores';
 import { SystemConfigApi } from '#/api/system/config';
 import { useSiteConfigStore } from '#/store/modules/site-config';
 

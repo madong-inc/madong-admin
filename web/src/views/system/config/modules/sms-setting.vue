@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { Page } from "#/components/common-ui";
+import { Page } from "#/components/core/effects/common-ui";
 import { Button, message } from "ant-design-vue";
 import { useForm } from "#/adapter/form";
 import { convertStringNumbers, transformData } from "../data";
@@ -7,7 +7,7 @@ import { h, onMounted } from "vue";
 import { info, save } from "#/api/system/config/config";
 import { $t } from "#/locale";
 import { getDictOptions } from "#/utils";
-import { DictEnum } from "#/components/common/constants";
+import { DictEnum } from "#/components/core/constants";
 
 const fieldLink={
   access_key_id:$t('system.config.sms.access_key_id'),

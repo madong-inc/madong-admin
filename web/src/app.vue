@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
 
-import { useAntdDesignTokens } from '#/components/common/effects/hooks';
-import { preferences, usePreferences } from '#/components/common/core/preferences';
+import { useAntdDesignTokens } from '#/components/core/effects/hooks';
+import { preferences, usePreferences } from '#/components/core/@core/preferences';
 
 import { App, ConfigProvider, theme } from 'ant-design-vue';
 

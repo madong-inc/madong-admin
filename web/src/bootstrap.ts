@@ -1,20 +1,20 @@
 import {createApp, watchEffect} from 'vue';
-import {registerAccessDirective} from '#/components/common/effects/access';
+import {registerAccessDirective} from '#/components/core/effects/access';
 import {VueQueryPlugin} from '@tanstack/vue-query';
 import {useTitle} from '@vueuse/core';
-import {preferences} from '#/components/common/core/preferences';
+import {preferences} from '#/components/core/@core/preferences';
 import {router} from '#/router';
 import {$t, setupI18n} from '#/locale';
-import {initStores} from '#/components/common/stores';
+import {initStores} from '#/components/core/stores';
 
 
 // 引入epic-designer样式
 import "epic-designer/dist/style.css";
 
 
-import {initTippy, MotionPlugin, registerLoadingDirective} from '#/components/common-ui';
+import {initTippy, MotionPlugin, registerLoadingDirective} from '#/components/core/effects/common-ui';
 
-import '#/components/common/styles';
+import '#/components/core/styles';
 
 import { initComponentAdapter } from './adapter/component';
 import App from './app.vue';

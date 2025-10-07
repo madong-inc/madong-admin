@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, h } from 'vue';
 
-import { IconifyIcon as BasicIcon } from '#/components/common/icons';
-import { capitalizeFirstLetter, kebabToCamelCase } from '#/components/common/utils';
+import { IconifyIcon as BasicIcon } from '#/components/core/icons';
+import { capitalizeFirstLetter, kebabToCamelCase } from '#/components/core/utils';
 
 import * as icons from '@ant-design/icons-vue';
 

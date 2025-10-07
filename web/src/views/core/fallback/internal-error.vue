@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { Fallback } from '#/components/common-ui';
+import { Fallback } from '#/components/core/effects/common-ui';
 
 defineOptions({ name: 'Fallback500' });
 </script>

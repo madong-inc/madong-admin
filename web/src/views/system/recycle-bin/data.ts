@@ -1,6 +1,6 @@
 import type { FormSchema, OnActionClickFn, VxeTableGridOptions } from '#/adapter';
 import { getDictOptions } from '#/utils';
-import { DictEnum } from '#/components/common/constants';
+import { DictEnum } from '#/components/core/constants';
 import { SystemRecycleBinRow } from '#/api/system/recycle-bin';
 import { $t } from '#/locale';
 

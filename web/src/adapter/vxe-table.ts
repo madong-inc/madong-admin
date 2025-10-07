@@ -1,16 +1,16 @@
-import type { Recordable } from '#/components/common/types';
+import type { Recordable } from '#/components/core/types';
 
 import { h } from 'vue';
 
-import { setupVxeTable, useVxeGrid } from '#/components/common/effects/plugins/vxe-table';
-import { get, isString } from '#/components/common/utils';
+import { setupVxeTable, useVxeGrid } from '#/components/core/effects/plugins/vxe-table';
+import { get, isString } from '#/components/core/utils';
 
 import { Button, Dropdown, Image, Menu, Popconfirm, Switch, Tag } from 'ant-design-vue';
 
 import { $t } from '#/locale';
 
 import { useForm } from './form';
-import { useAccess } from '#/components/common/effects/access';
+import { useAccess } from '#/components/core/effects/access';
 import { Icon } from '#/components/icon';
 
 
@@ -381,7 +381,7 @@ export type OnActionClickFn<T = Recordable<any>> = (
   params: OnActionClickParams<T>,
 ) => void;
 
-export type * from '#/components/common/effects/plugins/vxe-table';
+export type * from '#/components/core/effects/plugins/vxe-table';
 
 
 

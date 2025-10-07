@@ -1,11 +1,11 @@
 import type {
   BasicFormSchema,
   BasicFormProps as FormProps,
-} from '#/components/common-ui';
+} from '#/components/core/effects/common-ui';
 
 import type { ComponentType } from './component';
 
-import { setupForm, useForm as useBasicForm, z } from '#/components/common-ui';
+import { setupForm, useForm as useBasicForm, z } from '#/components/core/effects/common-ui';
 import { $t } from '#/locale';
 
 setupForm<ComponentType>({

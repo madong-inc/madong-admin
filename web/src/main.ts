@@ -1,5 +1,5 @@
-import { initPreferences } from '#/components/common/core/preferences';
-import { unmountGlobalLoading } from '#/components/common/utils';
+import { initPreferences } from '#/components/core/@core/preferences';
+import { unmountGlobalLoading } from '#/components/core/utils';
 
 import { overridesPreferences } from './preferences';
 

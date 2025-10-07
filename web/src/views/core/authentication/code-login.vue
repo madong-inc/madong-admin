@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import type { BasicFormSchema } from "#/components/common-ui";
+import type { BasicFormSchema } from "#/components/core/effects/common-ui";
 
 import { computed, ref } from "vue";
 
-import { AuthenticationCodeLogin, z } from "#/components/common-ui";
+import { AuthenticationCodeLogin, z } from "#/components/core/effects/common-ui";
 import { $t } from "#/locale";
 
 import { Alert, message } from "ant-design-vue";

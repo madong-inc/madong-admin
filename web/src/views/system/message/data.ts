@@ -3,12 +3,12 @@ import type { FormSchema } from '#/adapter/form';
 import type { OnActionClickFn } from '#/adapter/vxe-table';
 import type { SystemMessageRow } from '#/api/system/message';
 
-import { getPopupContainer } from '#/components/common/utils';
+import { getPopupContainer } from '#/components/core/utils';
 
 import { getDictOptions } from '#/utils/dict';
 import { Button } from 'ant-design-vue';
 import { h } from 'vue';
-import { DictEnum } from '#/components/common/constants';
+import { DictEnum } from '#/components/core/constants';
 
 
 

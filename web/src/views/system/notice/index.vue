@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { OnActionClickParams, VxeGridProps } from "#/adapter/vxe-table";
 
-import { Page, useModal } from "#/components/common-ui";
+import { Page, useModal } from "#/components/core/effects/common-ui";
 
 import { message, Modal, Popconfirm, Space } from "ant-design-vue";
 

@@ -8,7 +8,7 @@ import type {
 
 import { ref } from "vue";
 
-import { Page, useDrawer, useModal } from "#/components/common-ui";
+import { Page, useDrawer, useModal } from "#/components/core/effects/common-ui";
 
 import { DownOutlined } from "@ant-design/icons-vue";
 import { Button, message } from "ant-design-vue";
@@ -20,7 +20,7 @@ import type { SystemDictRow } from "#/api/system/dict";
 import DictItemWrap from "./modules/dict-item-wrap.vue";
 import Form from "./modules/form.vue";
 import { useColumns, querySchema } from "./data";
-import { Recordable } from "#/components/common/types";
+import { Recordable } from "#/components/core/types";
 import { $t } from "#/locale";
 import { confirm } from "#/utils";
 import { TableAction } from "#/components/table";

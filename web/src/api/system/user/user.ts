@@ -1,4 +1,4 @@
-import { preferences } from '#/components/common/core/preferences';
+import { preferences } from '#/components/core/@core/preferences';
 import BaseApi from '#/api/base-api';
 import { requestClient } from '#/api/request';
 import { User } from './user-model';

@@ -4,7 +4,7 @@ import { computed, ref } from 'vue';
 import { $t } from '#/locale';
 
 import { Modal, Switch } from 'ant-design-vue';
-import { isFunction } from '#/components/common/utils';
+import { isFunction } from '#/components/core/utils';
 import type { CheckedType,Props} from './types';
 
 

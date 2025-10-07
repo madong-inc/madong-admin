@@ -4,7 +4,7 @@ import type {
   WorkbenchQuickNavItem,
   WorkbenchTodoItem,
   WorkbenchTrendItem,
-} from '#/components/common-ui';
+} from '#/components/core/effects/common-ui';
 
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
@@ -16,10 +16,10 @@ import {
   WorkbenchQuickNav,
   WorkbenchTodo,
   WorkbenchTrends,
-} from '#/components/common-ui';
-import { preferences } from '#/components/common/core/preferences';
-import { useUserStore } from '#/components/common/stores';
-import { openWindow } from '#/components/common/utils';
+} from '#/components/core/effects/common-ui';
+import { preferences } from '#/components/core/@core/preferences';
+import { useUserStore } from '#/components/core/stores';
+import { openWindow } from '#/components/core/utils';
 
 import AnalyticsVisitsSource from '../analytics/analytics-visits-source.vue';
 

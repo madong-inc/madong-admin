@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { ref, reactive } from "vue";
-import { IconifyIcon } from "#/components/common/icons";
+import { IconifyIcon } from "#/components/core/icons";
 import { HttpMethod, RouteItem, SystemRuleApi } from "#/api/system/rule";
-import { useModal, ColPage } from '#/components/common-ui';
+import { useModal, ColPage } from '#/components/core/effects/common-ui';
 import { SystemMenuApi } from '#/api/system/menu';
 import { $t } from '#/locale';
 import {

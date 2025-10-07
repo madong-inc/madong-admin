@@ -11,7 +11,7 @@ import type {
 import { unref } from 'vue';
 import { createI18n } from 'vue-i18n';
 
-import { useSimpleLocale } from '#/components/common/effects/hooks';
+import { useSimpleLocale } from '#/components/core/effects/hooks';
 
 const i18n = createI18n({
   globalInjection: true,

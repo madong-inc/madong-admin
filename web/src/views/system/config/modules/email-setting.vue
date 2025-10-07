@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { Page } from "#/components/common-ui";
+import { Page } from "#/components/core/effects/common-ui";
 import { Button, message, Tooltip } from "ant-design-vue";
 import { useForm } from "#/adapter/form";
 import { transformData } from "../data";

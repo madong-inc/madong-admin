@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import type { BasicFormSchema } from '#/components/common-ui';
+import type { BasicFormSchema } from '#/components/core/effects/common-ui';
 
 import { computed, markRaw, onMounted, ref, useTemplateRef } from 'vue';
 
-import { AuthenticationLogin, ImageCaptcha, z } from '#/components/common-ui';
+import { AuthenticationLogin, ImageCaptcha, z } from '#/components/core/effects/common-ui';
 import { $t } from '#/locale';
 
 import { useAuthStore } from '#/store';

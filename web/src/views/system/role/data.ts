@@ -1,8 +1,8 @@
 import type { FormSchema } from '#/adapter/form';
 import type { OnActionClickFn, VxeTableGridOptions } from '#/adapter/vxe-table';
 import type { SystemRoleRow} from '#/api/system/role';
-import { DictEnum } from '#/components/common/constants';
-import { useAccess } from '#/components/common/effects/access';
+import { DictEnum } from '#/components/core/constants';
+import { useAccess } from '#/components/core/effects/access';
 
 import { $t } from '#/locale';
 import { getDictOptions } from '#/utils/dict';

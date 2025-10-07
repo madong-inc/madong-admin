@@ -1,10 +1,10 @@
 <script lang="ts" setup>
-import type { BasicFormSchema } from '#/components/common-ui';
-import type { Recordable } from '#/components/common/types';
+import type { BasicFormSchema } from '#/components/core/effects/common-ui';
+import type { Recordable } from '#/components/core/types';
 
 import { computed, ref } from 'vue';
 
-import { AuthenticationForgetPassword, z } from '#/components/common-ui';
+import { AuthenticationForgetPassword, z } from '#/components/core/effects/common-ui';
 import { $t } from '#/locale';
 
 defineOptions({ name: 'ForgetPassword' });
