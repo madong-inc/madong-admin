@@ -2,7 +2,7 @@
 <?php
 
 use Webman\Config;
-use Webman\Console\Command;
+use core\command;
 use Webman\Console\Util;
 use support\Container;
 if (!Phar::running()) {
