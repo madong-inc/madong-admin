@@ -38,7 +38,7 @@ class GenServiceCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $name = $input->getArgument('name');
-        $output->writeln("Gen dao $name");
+        $output->writeln("Gen service $name");
 
         $suffix = config('app.service_suffix', 'Service');
 

@@ -74,7 +74,8 @@
         "ext-gd": "*",
         "php-di/php-di": "^7.0",
         "casbin/casbin": "^4.0",
-        "phpseclib/phpseclib": "^3.0"
+        "phpseclib/phpseclib": "^3.0",
+        "robmorgan/phinx": "^0.16.10"
     },
     "suggest": {
         "ext-event": "For better performance. "
