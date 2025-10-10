@@ -29,7 +29,7 @@
         "php": ">=8.1",
         "workerman/webman-framework": "~2.1",
         "monolog/monolog": "^2.0",
-        "webman/redis-queue": "~1.3",
+        "webman/redis-queue": "^2.0",
         "webman/console": "^1.3",
         "webman/event": "^1.0",
         "spatie/macroable": "^2.0",
