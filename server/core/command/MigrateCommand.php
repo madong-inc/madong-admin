@@ -9,13 +9,13 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-//创建迁移（自动表名）	migrate make RoleBelongsMenu	                生成小写蛇形文件名，提示表名
-//创建迁移（手动表名）	migrate make RoleBelongsMenu --table=user_roles	使用指定表名，生成对应文件名
-//创建种子	            migrate make-seed User	                        生成UserSeeder.php
-//执行迁移	            migrate up	                                    输出已迁移的文件名
-//迁移+种子	            migrate up --seed	                            先迁移，后运行种子
-//回滚迁移	            migrate rollback	                            输出回滚的文件名，清理日志
-//运行种子	            migrate seed	                                输出已运行的种子类名
+//创建迁移（自动表名）	madong:migrate make RoleBelongsMenu	                生成小写蛇形文件名，提示表名
+//创建迁移（手动表名）	madong:migrate make RoleBelongsMenu --table=user_roles	使用指定表名，生成对应文件名
+//创建种子	            madong:migrate make-seed User	                        生成UserSeeder.php
+//执行迁移	            madong:migrate up	                                    输出已迁移的文件名
+//迁移+种子	            madong:migrate up --seed	                            先迁移，后运行种子
+//回滚迁移	            madong:migrate rollback	                            输出回滚的文件名，清理日志
+//运行种子	            madong:migrate seed	                                输出已运行的种子类名
 
 /**
  * 数据迁移
@@ -25,7 +25,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class MigrateCommand extends Command
 {
-    protected static string $defaultName = 'migrate';
+    protected static string $defaultName = 'madong:migrate';
     protected static string $defaultDescription = 'Database migration and seeding';
     protected ?string $connection = null;
 
@@ -69,9 +69,6 @@ class MigrateCommand extends Command
         return self::SUCCESS;
     }
 
-    // ------------------------------
-    // 工具方法：字符串转换（保持不变）
-    // ------------------------------
     /**
      * 驼峰转下划线（小写）
      */
@@ -87,7 +84,6 @@ class MigrateCommand extends Command
     {
         return str_replace('_', '', ucwords($str, '_'));
     }
-
 
     /**
      * 生成表名（驼峰转下划线 + 复数）
@@ -239,7 +235,6 @@ class {$className}
 EOF;
     }
 
-
     protected function runSeeders(OutputInterface $output)
     {
         $seederDir = base_path('database/seeds');
@@ -281,6 +276,12 @@ EOF;
         }
     }
 
+    /**
+     * 迁移
+     *
+     * @param \Symfony\Component\Console\Output\OutputInterface $output
+     * @param bool                                              $runSeed
+     */
     protected function runMigrations(OutputInterface $output, bool $runSeed = false)
     {
         $logFile            = $this->getMigrationLogFile();
@@ -294,7 +295,6 @@ EOF;
 
         foreach ($dir as $file) {
             if ($file->isDot() || !$file->isFile()) continue;
-
             $basename = $file->getBasename('.php');
             if (!in_array($basename, $existingMigrations)) {
                 $newMigrations[] = [$file->getRealPath(), $basename];
@@ -304,11 +304,14 @@ EOF;
         if (!empty($newMigrations)) {
             sort($newMigrations);
             $schema = $this->getSchemaBuilder();
-
             foreach ($newMigrations as $migration) {
-                $migrationClass = require $migration[0];
-                $migrationClass->up($schema);
-                $output->writeln("<info>⬆️ Migrated: {$migration[1]}</info>");
+                try {
+                    $migrationClass = require $migration[0];
+                    $migrationClass->up($schema);
+                    $output->writeln("<info>⬆️ Migrated: {$migration[1]}</info>");
+                } catch (\Throwable $e) {
+                    $output->writeln("<error>❌ Error migrating {$migration[1]}: {$e->getMessage()}</error>");
+                }
             }
 
             // 记录日志
@@ -352,9 +355,6 @@ EOF;
         }
     }
 
-    // ------------------------------
-    // 基础工具方法（保持不变）
-    // ------------------------------
     protected function getMigrationLogFile(): string
     {
         return runtime_path('logs/' . ($this->connection ?? 'default') . '-migrations.log');

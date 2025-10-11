@@ -18,9 +18,9 @@ use Webman\Console\Util;
  * @author Mr.April
  * @since  1.0
  */
-class GenModelCommand extends Command
+class MarkModelCommand extends Command
 {
-    protected static string $defaultName = 'gen:model';
+    protected static string $defaultName = 'madong-mark:model';
     protected static string $defaultDescription = 'Gen model';
 
     /**

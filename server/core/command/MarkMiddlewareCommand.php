@@ -15,9 +15,9 @@ use Webman\Console\Util;
  * @author Mr.April
  * @since  1.0
  */
-class GenMiddlewareCommand extends Command
+class MarkMiddlewareCommand extends Command
 {
-    protected static string $defaultName = 'gen:middleware';
+    protected static string $defaultName = 'madong-mark:middleware';
     protected static string $defaultDescription = 'Gen middleware';
 
     /**

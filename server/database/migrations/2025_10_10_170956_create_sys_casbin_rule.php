@@ -9,6 +9,7 @@ return new class {
     public function up(Builder $schema): void
     {
         $schema->create('sys_casbin_rule', function (Blueprint $table) {
+            $table->comment('Casbin策略规则表');
             $table->bigInteger('id')->unsigned()->primary()->comment('ID');
             // 策略类型（ptype）、主体（v0）、域（v1）、资源（v2）、动作（v3）、扩展字段（v4-v5）
             $fields = [

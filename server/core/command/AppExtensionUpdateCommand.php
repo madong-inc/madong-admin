@@ -1,5 +1,4 @@
 <?php
-declare(strict_types=1);
 
 namespace core\command;
 
@@ -10,18 +9,16 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Webman\Console\Util;
 
-class TestCoreCommand extends Command
+class AppExtensionUpdateCommand extends Command
 {
-
-    protected static string $defaultName = 'test:core';
-    protected static string $defaultDescription = '这是一个应用命令（来自 core/command）';
+    protected static string $defaultName = 'madong-extension:update';
+    protected static string $defaultDescription = 'App Plugin Update';
 
     /**
      * @return void
      */
-    protected function configure(): void
+    protected function configure()
     {
-        $this->setName(static::$defaultName)->setDescription(static::$defaultDescription);
         $this->addArgument('name', InputArgument::REQUIRED, 'App plugin name');
     }
 
@@ -32,8 +29,13 @@ class TestCoreCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-
-        $output->writeln('<info>执行成功：应用命令 test:core</info>');
+        $name = $input->getArgument('name');
+        $output->writeln("Update App Plugin $name");
+        $class = "\\plugin\\$name\\api\\Install";
+        if (!method_exists($class, 'update')) {
+            throw new \RuntimeException("Method $class::update not exists");
+        }
+        call_user_func([$class, 'update'], config("plugin.$name.app.version"), config("plugin.$name.app.version"));
         return self::SUCCESS;
     }
 

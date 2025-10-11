@@ -10,22 +10,22 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Webman\Console\Util;
 
 /**
- * 生成Dao
+ * 生成控制器
  *
  * @author Mr.April
  * @since  1.0
  */
-class GenDaoCommand extends Command
+class MarkControllerCommand extends Command
 {
-    protected static string $defaultName = 'gen:dao';
-    protected static string $defaultDescription = 'Gen dao';
+    protected static string $defaultName = 'madong-mark:controller';
+    protected static string $defaultDescription = 'Gen controller';
 
     /**
      * @return void
      */
     protected function configure(): void
     {
-        $this->addArgument('name', InputArgument::REQUIRED, 'Dao name');
+        $this->addArgument('name', InputArgument::REQUIRED, 'Controller name');
     }
 
     /**
@@ -37,9 +37,8 @@ class GenDaoCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $name = $input->getArgument('name');
-        $output->writeln("Gen dao $name");
-
-        $suffix = config('app.dao_suffix', 'Dao');
+        $output->writeln("Gen controller $name");
+        $suffix = config('app.controller_suffix', '');
 
         if ($suffix && !strpos($name, $suffix)) {
             $name .= $suffix;
@@ -48,16 +47,16 @@ class GenDaoCommand extends Command
         $name = str_replace('\\', '/', $name);
         if (!($pos = strrpos($name, '/'))) {
             $name           = ucfirst($name);
-            $controller_str = Util::guessPath(app_path(), 'Dao') ?: 'dao';
+            $controller_str = Util::guessPath(app_path(), 'controller') ?: 'controller';
             $file           = app_path() . DIRECTORY_SEPARATOR . $controller_str . DIRECTORY_SEPARATOR . "$name.php";
-            $namespace      = $controller_str === 'Dao' ? 'App\dao' : 'app\dao';
+            $namespace      = $controller_str === 'Controller' ? 'App\Controller' : 'app\controller';
         } else {
             $name_str = substr($name, 0, $pos);
             if ($real_name_str = Util::guessPath(app_path(), $name_str)) {
                 $name_str = $real_name_str;
             } else if ($real_section_name = Util::guessPath(app_path(), strstr($name_str, '/', true))) {
                 $upper = strtolower($real_section_name[0]) !== $real_section_name[0];
-            } else if ($real_base_controller = Util::guessPath(app_path(), 'dao')) {
+            } else if ($real_base_controller = Util::guessPath(app_path(), 'controller')) {
                 $upper = strtolower($real_base_controller[0]) !== $real_base_controller[0];
             }
             $upper = $upper ?? strtolower($name_str[0]) !== $name_str[0];
@@ -66,7 +65,7 @@ class GenDaoCommand extends Command
                     return '/' . strtoupper($matches[1]);
                 }, ucfirst($name_str));
             }
-            $path      = "$name_str/" . ($upper ? 'Dao' : 'dao');
+            $path      = "$name_str/" . ($upper ? 'Controller' : 'controller');
             $name      = ucfirst(substr($name, $pos + 1));
             $file      = app_path() . DIRECTORY_SEPARATOR . $path . DIRECTORY_SEPARATOR . "$name.php";
             $namespace = str_replace('/', '\\', ($upper ? 'App/' : 'app/') . $path);
@@ -80,7 +79,7 @@ class GenDaoCommand extends Command
             }
         }
 
-        $this->createDao($name, $namespace, $file);
+        $this->createController($name, $namespace, $file);
 
         return self::SUCCESS;
     }
@@ -92,54 +91,30 @@ class GenDaoCommand extends Command
      *
      * @return void
      */
-    protected function createDao($name, $namespace, $file): void
+    protected function createController($name, $namespace, $file): void
     {
         $path = pathinfo($file, PATHINFO_DIRNAME);
         if (!is_dir($path)) {
             mkdir($path, 0777, true);
         }
-
-        // 后缀配置
-        $daoSuffix = config('app.dao_suffix', 'Dao');
-
-        // 移除名称中的DAO后缀
-        $cleanName = $this->removeSuffix($name, $daoSuffix);
-
-        $dao_content = <<<EOF
+        $controller_content = <<<EOF
 <?php
 
 namespace $namespace;
 
-use core\abstract\BaseDao;
+use support\Request;
 
-class $name extends BaseDao
+class $name
 {
-     protected function setModel(): string
+    public function index(Request \$request)
     {
-        return $cleanName::class;
+        return response(__CLASS__);
     }
 
 }
 
 EOF;
-        file_put_contents($file, $dao_content);
+        file_put_contents($file, $controller_content);
     }
 
-    /**
-     * 从名称末尾移除指定后缀（若存在）
-     *
-     * @param string $name   原始名称（支持多级目录，如`Api/UserDao`）
-     * @param string $suffix 要移除的后缀（如`dao`）
-     *
-     * @return string 移除后缀后的名称
-     */
-    protected function removeSuffix(string $name, string $suffix): string
-    {
-        // 无后缀或名称不以该后缀结尾，直接返回原名称
-        if (empty($suffix) || !str_ends_with($name, $suffix)) {
-            return $name;
-        }
-        // 截断末尾的后缀（计算后缀长度，取前面的内容）
-        return substr($name, 0, -strlen($suffix));
-    }
 }

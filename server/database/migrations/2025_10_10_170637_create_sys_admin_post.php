@@ -9,6 +9,7 @@ return new class {
     public function up(Builder $schema): void
     {
         $schema->create('sys_admin_post', function (Blueprint $table) {
+            $table->comment('用户与职位关联表');
             $table->bigInteger('admin_id')->comment('管理员主键');
             $table->bigInteger('post_id')->comment('岗位主键');
         });

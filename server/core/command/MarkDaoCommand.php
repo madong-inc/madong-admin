@@ -2,7 +2,6 @@
 
 namespace core\command;
 
-use support\Container;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -11,22 +10,22 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Webman\Console\Util;
 
 /**
- * 生成服务层
+ * 生成Dao
  *
  * @author Mr.April
  * @since  1.0
  */
-class GenServiceCommand extends Command
+class MarkDaoCommand extends Command
 {
-    protected static string $defaultName = 'gen:service';
-    protected static string $defaultDescription = 'Gen service';
+    protected static string $defaultName = 'madong-mark:dao';
+    protected static string $defaultDescription = 'Gen dao';
 
     /**
      * @return void
      */
     protected function configure(): void
     {
-        $this->addArgument('name', InputArgument::REQUIRED, 'Service name');
+        $this->addArgument('name', InputArgument::REQUIRED, 'Dao name');
     }
 
     /**
@@ -38,9 +37,9 @@ class GenServiceCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $name = $input->getArgument('name');
-        $output->writeln("Gen service $name");
+        $output->writeln("Gen dao $name");
 
-        $suffix = config('app.service_suffix', 'Service');
+        $suffix = config('app.dao_suffix', 'Dao');
 
         if ($suffix && !strpos($name, $suffix)) {
             $name .= $suffix;
@@ -49,16 +48,16 @@ class GenServiceCommand extends Command
         $name = str_replace('\\', '/', $name);
         if (!($pos = strrpos($name, '/'))) {
             $name           = ucfirst($name);
-            $controller_str = Util::guessPath(app_path(), 'Service') ?: 'service';
+            $controller_str = Util::guessPath(app_path(), 'Dao') ?: 'dao';
             $file           = app_path() . DIRECTORY_SEPARATOR . $controller_str . DIRECTORY_SEPARATOR . "$name.php";
-            $namespace      = $controller_str === 'Service' ? 'App\service' : 'app\service';
+            $namespace      = $controller_str === 'Dao' ? 'App\dao' : 'app\dao';
         } else {
             $name_str = substr($name, 0, $pos);
             if ($real_name_str = Util::guessPath(app_path(), $name_str)) {
                 $name_str = $real_name_str;
             } else if ($real_section_name = Util::guessPath(app_path(), strstr($name_str, '/', true))) {
                 $upper = strtolower($real_section_name[0]) !== $real_section_name[0];
-            } else if ($real_base_controller = Util::guessPath(app_path(), 'service')) {
+            } else if ($real_base_controller = Util::guessPath(app_path(), 'dao')) {
                 $upper = strtolower($real_base_controller[0]) !== $real_base_controller[0];
             }
             $upper = $upper ?? strtolower($name_str[0]) !== $name_str[0];
@@ -67,7 +66,7 @@ class GenServiceCommand extends Command
                     return '/' . strtoupper($matches[1]);
                 }, ucfirst($name_str));
             }
-            $path      = "$name_str/" . ($upper ? 'Service' : 'service');
+            $path      = "$name_str/" . ($upper ? 'Dao' : 'dao');
             $name      = ucfirst(substr($name, $pos + 1));
             $file      = app_path() . DIRECTORY_SEPARATOR . $path . DIRECTORY_SEPARATOR . "$name.php";
             $namespace = str_replace('/', '\\', ($upper ? 'App/' : 'app/') . $path);
@@ -81,7 +80,7 @@ class GenServiceCommand extends Command
             }
         }
 
-        $this->createService($name, $namespace, $file);
+        $this->createDao($name, $namespace, $file);
 
         return self::SUCCESS;
     }
@@ -93,38 +92,37 @@ class GenServiceCommand extends Command
      *
      * @return void
      */
-    protected function createService($name, $namespace, $file): void
+    protected function createDao($name, $namespace, $file): void
     {
         $path = pathinfo($file, PATHINFO_DIRNAME);
         if (!is_dir($path)) {
             mkdir($path, 0777, true);
         }
 
-        // Class Name
-        $daoFullClassStr = 'Your Dao Class Name';
+        // 后缀配置
+        $daoSuffix = config('app.dao_suffix', 'Dao');
 
-        $service_content = <<<EOF
+        // 移除名称中的DAO后缀
+        $cleanName = $this->removeSuffix($name, $daoSuffix);
+
+        $dao_content = <<<EOF
 <?php
 
 namespace $namespace;
 
-use core\abstract\BaseService;
-use support\Container;
+use core\abstract\BaseDao;
 
-class $name extends BaseService
+class $name extends BaseDao
 {
-
-    public function __construct()
+     protected function setModel(): string
     {
-         // 初始化Dao实例（使用完全限定类名的::class常量）
-        \$this->dao = Container::make('{$daoFullClassStr}');
+        return $cleanName::class;
     }
-
 
 }
 
 EOF;
-        file_put_contents($file, $service_content);
+        file_put_contents($file, $dao_content);
     }
 
     /**

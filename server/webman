@@ -2,9 +2,10 @@
 <?php
 
 use Webman\Config;
-use core\command;
+use Webman\Console\Command;
 use Webman\Console\Util;
 use support\Container;
+
 if (!Phar::running()) {
     chdir(__DIR__);
 }
@@ -39,6 +40,12 @@ if (is_dir($command_path = Util::guessPath(app_path(), '/command', true))) {
     $cli->installCommands($command_path);
 }
 
+//自定义添加
+$coreCommandPath = base_path() . '/core/command';
+if (is_dir($coreCommandPath)) {
+    $cli->installCommands($coreCommandPath, 'core\\command');
+}
+
 foreach (config('plugin', []) as $firm => $projects) {
     if (isset($projects['app'])) {
         foreach (['', '/app'] as $app) {
@@ -58,12 +65,12 @@ foreach (config('plugin', []) as $firm => $projects) {
                 continue;
             }
             $properties = $reflection->getStaticProperties();
-            $name = $properties['defaultName'];
+            $name       = $properties['defaultName'];
             if (!$name) {
                 throw new RuntimeException("Command {$class_name} has no defaultName");
             }
             $description = $properties['defaultDescription'] ?? '';
-            $command = Container::get($class_name);
+            $command     = Container::get($class_name);
             $command->setName($name)->setDescription($description);
             $cli->add($command);
         }
