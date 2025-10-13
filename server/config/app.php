@@ -14,14 +14,15 @@
 use support\Request;
 
 return [
-    'debug'                    => env('APP_DEBUG', false),
-    "lang"                     => 'zh_CN',//默认语言
-    'error_reporting'          => E_ALL,
-    'default_timezone'         => 'Asia/Shanghai',
-    'request_class'            => Request::class,
-    'public_path'              => base_path() . DIRECTORY_SEPARATOR . 'public',
-    'runtime_path'             => base_path(false) . DIRECTORY_SEPARATOR . 'runtime',
-    'controller_suffix'        => 'Controller',
-    'controller_reuse'         => false,
-    'store_in_recycle_bin'     => env('RECYCLE_BIN_ENABLED', false),//是否开启回站模式
+    'debug'                => env('APP_DEBUG', false),
+    "lang"                 => 'zh_CN',//默认语言
+    'error_reporting'      => E_ALL,
+    'default_timezone'     => 'Asia/Shanghai',
+    'request_class'        => Request::class,
+    'public_path'          => base_path() . DIRECTORY_SEPARATOR . 'public',
+    'runtime_path'         => base_path(false) . DIRECTORY_SEPARATOR . 'runtime',
+    'controller_suffix'    => 'Controller',
+    'controller_reuse'     => false,
+    'store_in_recycle_bin' => env('RECYCLE_BIN_ENABLED', false),//是否开启回站模式
+    'module_market_host'   => 'https://www.madong.tech',
 ];

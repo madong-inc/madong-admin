@@ -1,4 +1,0 @@
-<?php
-
-use Webman\Route;
-
