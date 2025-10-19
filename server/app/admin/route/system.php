@@ -22,6 +22,7 @@ Route::group(function () {
     Route::get('/system/captcha', [\app\admin\controller\LoginController::class, 'captcha'])->name('验证码');
     Route::get('/system/get-captcha-open-flag', [\app\admin\controller\LoginController::class, 'getCaptchaOpenFlag'])->name('是否开启验证码');
     Route::get('/system/config/info', [\app\admin\controller\system\SysConfigController::class, 'getConfigInfo'])->name('配置获取');
+    Route::get('/system/auth/public-key', [\app\admin\controller\LoginController::class, 'generateRSAKeyPair'])->name('获取公钥');
 
 });
 

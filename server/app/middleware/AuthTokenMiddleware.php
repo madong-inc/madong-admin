@@ -45,6 +45,7 @@ class AuthTokenMiddleware implements MiddlewareInterface
             '/platform/account-sets',                       //租户获取
             '/system/get-captcha-open-flag',
             '/system/captcha',
+            '/system/auth/public-key',                       //公钥获取
         ];
         if (in_array($rule, $uncontrolledRoutes)) {
             return $handler($request);
@@ -55,7 +56,7 @@ class AuthTokenMiddleware implements MiddlewareInterface
             if (0 === $userId) {
                 throw new UnauthorizedHttpException();
             }
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             return Json::fail($e->getMessage(), [], 401);
         }
         return $handler($request);

@@ -89,6 +89,11 @@ class SysAuthController extends Crud
     public function getPermissions(Request $request): \support\Response
     {
         try {
+            $format = input('format', 'default');
+            if ($format == 'mixture') {
+                //兼容Art菜单
+                return $this->getArtDesignMenu();
+            }
             $dict = new Dict();
             $dict->putAll(getCurrentUser(true, true));
             $data = $this->service->getMenusByUserRoles($dict, true);
@@ -188,8 +193,8 @@ class SysAuthController extends Crud
     {
         try {
             [$where, $format, $limit, $field, $order, $page] = $this->selectInput($request);
-            $where['role_id']  = $request->input('role_id');
-            /** @var SysAdminService  $systemUserService */
+            $where['role_id'] = $request->input('role_id');
+            /** @var SysAdminService $systemUserService */
             $systemUserService = Container::make(SysAdminService::class);
             $data              = $systemUserService->getUsersListByRoleId($where, $field, $page, $limit);
             return Json::success('ok', $data);
@@ -258,7 +263,6 @@ class SysAuthController extends Crud
         }
     }
 
-
     /**
      * 刷新Token
      *
@@ -274,6 +278,231 @@ class SysAuthController extends Crud
             return Json::success('ok', $data['access_token']);
         } catch (\Throwable $e) {
             throw new UnauthorizedHttpException();
+        }
+    }
+
+    /**
+     * ArtDesignMenu
+     *
+     * @return \support\Response
+     */
+    private function getArtDesignMenu(): \support\Response
+    {
+        try {
+            $dict = new Dict();
+            $dict->putAll(getCurrentUser(true, true));
+
+            $data = [
+                [
+                    'name'      => "Dashboard",
+                    'path'      => "/dashboard",
+                    'component' => "/layout",
+                    'meta'      => [
+                        'order' => 1,
+                        'title' => "menus.dashboard.title",
+                        'icon'  => "&#xe721;",
+                        'roles' => [
+                            "R_SUPER",
+                            "R_ADMIN",
+                        ],
+                    ],
+                    'children'  => [
+                        [
+                            'path'      => "/dashboard/console",
+                            'name'      => "Console",
+                            'component' => "/dashboard/console",
+                            'meta'      => [
+                                'title'     => "menus.dashboard.console",
+                                'keepAlive' => false,
+                                'fixedTab'  => true,
+                            ],
+                            'children'  => [],
+                        ],
+                        [
+                            'path'      => "/dashboard/analysis",
+                            'name'      => "Analysis",
+                            'component' => "/dashboard/analysis",
+                            'meta'      => [
+                                'title'     => "menus.dashboard.analysis",
+                                'keepAlive' => false,
+                            ],
+                            'children'  => [],
+                        ],
+                        [
+                            'path'      => "/dashboard/ecommerce",
+                            'name'      => "Ecommerce",
+                            'component' => "/dashboard/ecommerce",
+                            'meta'      => [
+                                'title'     => "menus.dashboard.ecommerce",
+                                'keepAlive' => false,
+                            ],
+                            'children'  => [],
+                        ],
+                    ],
+                ],
+                [
+                    'path'      => "/system/manager",
+                    'name'      => "system:manager",
+                    'component' => "/layout",
+                    'meta'      => [
+                        'order' => 10,
+                        'title' => "系统设置",
+                        'icon'  => "ant-design:setting-outlined",
+                    ],
+                    'children'  => [
+                        [
+                            'path'      => "/examples/form/index",
+                            'name'      => "examples:form",
+                            'component' => "/examples/form/index",
+                            'meta'      => [
+                                'title' => "表单示例",
+                                'icon'  => "ant-design:form-outlined",
+                            ],
+                            'children'  => [],
+                        ],
+                        [
+                            'path'      => "/system/user/index",
+                            'name'      => "system:user",
+                            'component' => "/system/user/index",
+                            'meta'      => [
+                                'title'     => "用户管理",
+                                'icon'      => "ant-design:user-outlined",
+                                'keepAlive' => true,
+                                'authList'  => [
+                                    [
+                                        'title'    => "超级管理员",
+                                        'authMark' => "admin",
+                                    ],
+                                ],
+                            ],
+                            'children'  => [],
+                        ],
+                        [
+                            'path'      => "/system/user/online-user-list",
+                            'name'      => "system:onlineUserList",
+                            'component' => "/system/user/online-user-list",
+                            'meta'      => [
+                                'title'     => "在线用户",
+                                'icon'      => "ant-design:cloud-server-outlined",
+                                'keepAlive' => true,
+                                'authList'  => [
+                                    [
+                                        'title'    => "超级管理员",
+                                        'authMark' => "admin",
+                                    ],
+                                ],
+                            ],
+                            'children'  => [],
+                        ],
+                        [
+                            'path'      => "/system/role/index",
+                            'name'      => "system:role",
+                            'component' => "/system/role/index",
+                            'meta'      => [
+                                'title'     => "角色管理",
+                                'icon'      => "ant-design:team-outlined",
+                                'keepAlive' => true,
+                                'authList'  => [
+                                    [
+                                        'title'    => "超级管理员",
+                                        'authMark' => "admin",
+                                    ],
+                                ],
+                            ],
+                            'children'  => [],
+                        ],
+                        [
+                            'path'      => "/system/menu/index",
+                            'name'      => "system:menu",
+                            'component' => "/system/menu/index",
+                            'meta'      => [
+                                'title'     => "菜单管理",
+                                'icon'      => "ant-design:menu-outlined",
+                                'keepAlive' => true,
+                                'authList'  => [
+                                    [
+                                        'title'    => "超级管理员",
+                                        'authMark' => "admin",
+                                    ],
+                                ],
+                            ],
+                            'children'  => [],
+                        ],
+                        [
+                            'path'      => "/system/post/index",
+                            'name'      => "system:post",
+                            'component' => "/system/post/index",
+                            'meta'      => [
+                                'title'     => "岗位管理",
+                                'icon'      => "ant-design:share-alt-outlined",
+                                'keepAlive' => true,
+                                'authList'  => [
+                                    [
+                                        'title'    => "超级管理员",
+                                        'authMark' => "admin",
+                                    ],
+                                ],
+                            ],
+                            'children'  => [],
+                        ],
+                        [
+                            'path'      => "/system/dept/index",
+                            'name'      => "system:dept",
+                            'component' => "/system/dept/index",
+                            'meta'      => [
+                                'title'     => "部门管理",
+                                'icon'      => "ant-design:deployment-unit-outlined",
+                                'keepAlive' => true,
+                                'authList'  => [
+                                    [
+                                        'title'    => "超级管理员",
+                                        'authMark' => "admin",
+                                    ],
+                                ],
+                            ],
+                            'children'  => [],
+                        ],
+                        [
+                            'path'      => "/system/dict/index",
+                            'name'      => "system:dict",
+                            'component' => "/system/dict/index",
+                            'meta'      => [
+                                'title'     => "数据字典",
+                                'icon'      => "ant-design:database-outlined",
+                                'keepAlive' => true,
+                                'authList'  => [
+                                    [
+                                        'title'    => "超级管理员",
+                                        'authMark' => "admin",
+                                    ],
+                                ],
+                            ],
+                            'children'  => [],
+                        ],
+                        [
+                            'path'      => "/system/config/index",
+                            'name'      => "system:config",
+                            'component' => "/system/config/index",
+                            'meta'      => [
+                                'title'     => "参数配置",
+                                'icon'      => "ant-design:file-text-outlined",
+                                'keepAlive' => true,
+                                'authList'  => [
+                                    [
+                                        'title'    => "超级管理员",
+                                        'authMark' => "admin",
+                                    ],
+                                ],
+                            ],
+                            'children'  => [],
+                        ],
+                    ],
+                ],
+            ];
+
+            return Json::success('ok', $data);
+        } catch (\Throwable $e) {
+            return Json::fail($e->getMessage(), [], $e->getCode());
         }
     }
 }

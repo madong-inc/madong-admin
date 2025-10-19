@@ -57,6 +57,7 @@ class PermissionMiddleware implements MiddlewareInterface
             '/system/get-captcha-open-flag',                //是否启用验证码
             '/system/captcha',                              //验证码获取
             '/system/login',                                //登录
+            '/system/auth/public-key'                       //公钥获取
         ];
 
         // 直接跳过不受控接口

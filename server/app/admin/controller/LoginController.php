@@ -188,4 +188,25 @@ class LoginController extends Crud
         return Json::success('ok', []);
     }
 
+    /**
+     * 生成RSA密钥对
+     *
+     * @param \support\Request $request
+     *
+     * @return \support\Response
+     */
+    public function generateRSAKeyPair(Request $request): \support\Response
+    {
+        try {
+            // 生成密钥对
+            $cache = Container::make(CacheService::class, []);
+            $keyId = md5(UUIDGenerator::generate());
+            $keys  = RSAService::generateKeys();
+            // 存储私钥到缓存，用于解密密码
+            $cache->set("rsa_private_key_$keyId", $keys['private'], 60); // 5分钟过期
+            return Json::success('ok', ['public_key' => $keys['public'],'key_id' => $keyId]);
+        } catch (\Throwable $e) {
+            return Json::fail($e->getMessage());
+        }
+    }
 }
