@@ -155,12 +155,14 @@ class SysAdminDao extends BaseDao
         }
         $where['enabled']  = 1;//有效用户
         $where['is_super'] = 0;//非顶级管理员
-        $query             = $this->getModel()->with(['roles'])
+
+        $query = $this->getModel()->with(['roles'])
             ->whereHas('roles', function ($query) use ($roleId) {
                 $query->where('id', $roleId);
             });
 
         if (!empty($where)) {
+            unset($where['role_id']);
             $query->where($where);
         }
 

@@ -59,6 +59,7 @@ class SysAdminRoleService extends BaseService
      * @param array $data
      *
      * @return void
+     * @throws \core\exception\handler\AdminException
      */
     public function saveUserRoles(array $data): void
     {

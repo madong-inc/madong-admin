@@ -46,6 +46,7 @@ class AuthTokenMiddleware implements MiddlewareInterface
             '/system/get-captcha-open-flag',
             '/system/captcha',
             '/system/auth/public-key',                       //公钥获取
+            '/system/config/info',                           //系统配置
         ];
         if (in_array($rule, $uncontrolledRoutes)) {
             return $handler($request);

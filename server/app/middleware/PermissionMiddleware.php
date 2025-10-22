@@ -57,7 +57,8 @@ class PermissionMiddleware implements MiddlewareInterface
             '/system/get-captcha-open-flag',                //是否启用验证码
             '/system/captcha',                              //验证码获取
             '/system/login',                                //登录
-            '/system/auth/public-key'                       //公钥获取
+            '/system/auth/public-key',                       //公钥获取
+            '/system/config/info',                           //系统配置
         ];
 
         // 直接跳过不受控接口
@@ -70,7 +71,7 @@ class PermissionMiddleware implements MiddlewareInterface
             if (0 === $userId) {
                 throw new UnauthorizedHttpException();
             }
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             return Json::fail($e->getMessage(), [], 401);
         }
         $userData = JwtToken::getExtend();
@@ -88,9 +89,9 @@ class PermissionMiddleware implements MiddlewareInterface
             return $handler($request);
         }
 
-        $uid      = PolicyPrefix::USER->value . $userId;
-        $domain   = '*';
-        $policy   = PolicyPrefix::ROUTE->value . $rule;
+        $uid    = PolicyPrefix::USER->value . $userId;
+        $domain = '*';
+        $policy = PolicyPrefix::ROUTE->value . $rule;
 
         // 权限检查
         try {

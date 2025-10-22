@@ -31,6 +31,7 @@ class SysDeptService extends BaseService
      * @param array $data
      *
      * @return mixed
+     * @throws \core\exception\handler\AdminException
      */
     public function save(array $data): mixed
     {

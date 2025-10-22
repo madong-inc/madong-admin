@@ -54,9 +54,7 @@ class SysMenuController extends Crud
     public function destroy(Request $request): \support\Response
     {
         try {
-            $id   = $request->route->param('id');
-            $data = $request->input('data', []);
-            $data = !empty($id) && $id !== '0' ? $id : $data;
+            $data = $this->getDeleteIds($request);
             if (empty($data)) {
                 throw new AdminException('参数错误');
             }

@@ -12,7 +12,6 @@
 
 namespace app\admin\controller;
 
-
 use core\exception\handler\AdminException;
 use core\excel\ExcelExportService;
 use core\utils\Json;
@@ -66,8 +65,10 @@ class Crud extends Base
      */
     public function select(Request $request): \support\Response
     {
+
         try {
             [$where, $format, $limit, $field, $order, $page] = $this->selectInput($request);
+
             $data = $this->service->selectList($where, $field, 0, 99999, $order, [], true);
             return Json::success('ok', $data);
         } catch (\Throwable $e) {
@@ -271,12 +272,11 @@ class Crud extends Base
     public function destroy(Request $request): \support\Response
     {
         try {
-            $id = $request->route->param('id'); // 获取路由地址 id从
+            // 获取要删除的ID集合
+            $data = $this->getDeleteIds($request);
 
-            $data = $request->input('data', []);
-            $data = !empty($id) && $id !== '0' ? $id : $data;
             if (empty($data)) {
-                throw new AdminException('参数错误');
+                throw new AdminException('删除参数不能为空');
             }
             $result = $this->service->transaction(function () use ($data) {
                 $data       = is_array($data) ? $data : explode(',', $data);
@@ -296,6 +296,47 @@ class Crud extends Base
         } catch (\Throwable $e) {
             return Json::fail($e->getMessage());
         }
+    }
+
+    /**
+     * 获取要删除的ID集合
+     * 支持多种参数来源：
+     * 1. 路由参数中的 'id'
+     * 2. 请求体中的 'ids' 数组
+     * 3. 请求体中的 'data' 数组（兼容旧版）
+     *
+     * @param Request $request
+     *
+     * @return array
+     */
+    protected function getDeleteIds(Request $request): array
+    {
+        // 优先从路由参数获取单个ID
+        $routeId = $request->route->param('id');
+
+        if (!empty($routeId) && $routeId !== '0') {
+            return [$routeId];
+        }
+
+        // 尝试从请求体中获取 'ids' 参数
+        $ids = $request->input('ids', []);
+
+        // 如果 'ids' 不存在，尝试兼容旧版的 'data' 参数
+        if (empty($ids)) {
+            $ids = $request->input('data', []);
+        }
+
+        // 确保返回数组格式
+        if (is_array($ids)) {
+            return $ids;
+        }
+
+        // 处理逗号分隔的字符串
+        if (is_string($ids) && !empty($ids)) {
+            return explode(',', $ids);
+        }
+
+        return [];
     }
 
     /**
