@@ -498,6 +498,124 @@ class SysAuthController extends Crud
                         ],
                     ],
                 ],
+                [
+                    'name'      => "Dev",
+                    'path'      => "/dev",
+                    'component' => "/layout",
+                    'meta'      => [
+                        'order' => 1,
+                        'title' => "开发平台",
+                        'icon'  => "ant-design:appstore-add-outlined",
+                        'roles' => [
+                            "R_SUPER",
+                            "R_ADMIN",
+                        ],
+                    ],
+                    'children'  => [
+                        [
+                            'path'     => "/gateway",
+                            'name'     => "dev:gateway",
+                            'meta'     => [
+                                'title'     => "网关管理",
+                                'keepAlive' => false,
+                                'fixedTab'  => false,
+                                'icon'=>'ant-design:gateway-outlined'
+                            ],
+                            'children' => [
+                                [
+                                    'path'      => "/limiter",
+                                    'name'      => "dev:gateway:limit",
+                                    'component' => "/dev/gateway/limiter",
+                                    'meta'      => [
+                                        'title'     => "限流规则",
+                                        'keepAlive' => false,
+                                    ],
+                                    'children'  => [],
+                                ],
+                                [
+                                    'path'      => "/blacklist",
+                                    'name'      => "dev:gateway:blacklist",
+                                    'component' => "/dev/gateway/blacklist",
+                                    'meta'      => [
+                                        'title'     => "限访名单",
+                                        'keepAlive' => false,
+                                    ],
+                                    'children'  => [],
+                                ],
+
+                            ],
+                        ],
+                        [
+                            'path'      => "/crontab",
+                            'name'      => "dev:crontab",
+                            'component' => "/dev/crontab/index",
+                            'meta'      => [
+                                'title'     => "定时任务",
+                                'keepAlive' => false,
+                                'icon'=>'ant-design:desktop-outlined'
+                            ],
+                            'children'  => [],
+                        ],
+                    ],
+                ],
+                [
+                    'name'      => "Monitor",
+                    'path'      => "/monitor",
+                    'component' => "/layout",
+                    'meta'      => [
+                        'order' => 1,
+                        'title' => "系统监控",
+                        'icon'  => "ant-design:line-chart-outlined",
+                        'roles' => [
+                            "R_SUPER",
+                            "R_ADMIN",
+                        ],
+                    ],
+                    'children'  => [
+                        [
+                            'path'      => "/logs/login",
+                            'name'      => "monitor:logs:login",
+                            'component' => "/monitor/logs/login/index",
+                            'meta'      => [
+                                'title'     => "登录日志",
+                                'keepAlive' => false,
+                                'fixedTab'  => false,
+                            ],
+                            'children'  => [],
+                        ],
+                        [
+                            'path'      => "/logs/operate",
+                            'name'      => "monitor:logs:operate",
+                            'component' => "/monitor/logs/operate/index",
+                            'meta'      => [
+                                'title'     => "操作日志",
+                                'keepAlive' => false,
+                                'fixedTab'  => false,
+                            ],
+                            'children'  => [],
+                        ],
+                        [
+                            'path'      => "/server",
+                            'name'      => "monitor:server",
+                            'component' => "/monitor/server/index",
+                            'meta'      => [
+                                'title'     => "性能监控",
+                                'keepAlive' => false,
+                            ],
+                            'children'  => [],
+                        ],
+                        [
+                            'path'      => "/redis",
+                            'name'      => "monitor:redis",
+                            'component' => "/monitor/redis/index",
+                            'meta'      => [
+                                'title'     => "Redis监控",
+                                'keepAlive' => false,
+                            ],
+                            'children'  => [],
+                        ],
+                    ],
+                ],
             ];
 
             return Json::success('ok', $data);
