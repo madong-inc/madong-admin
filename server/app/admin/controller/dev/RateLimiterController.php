@@ -125,9 +125,7 @@ class RateLimiterController extends Crud
     public function destroy(Request $request): \support\Response
     {
         try {
-            $id   = $request->route->param('id'); // 获取路由地址 id从
-            $data = $request->input('data', []);
-            $data = !empty($id) && $id !== '0' ? $id : $data;
+            $data= $this->getDeleteIds($request);
             if (empty($data)) {
                 throw new AdminException('参数错误');
             }

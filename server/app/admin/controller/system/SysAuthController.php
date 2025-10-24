@@ -575,7 +575,7 @@ class SysAuthController extends Crud
                         [
                             'path'      => "/logs/login",
                             'name'      => "monitor:logs:login",
-                            'component' => "/monitor/logs/login/index",
+                            'component' => "/system/logs/login/index",
                             'meta'      => [
                                 'title'     => "登录日志",
                                 'keepAlive' => false,
@@ -586,7 +586,7 @@ class SysAuthController extends Crud
                         [
                             'path'      => "/logs/operate",
                             'name'      => "monitor:logs:operate",
-                            'component' => "/monitor/logs/operate/index",
+                            'component' => "/system/logs/operate/index",
                             'meta'      => [
                                 'title'     => "操作日志",
                                 'keepAlive' => false,
