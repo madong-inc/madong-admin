@@ -484,7 +484,41 @@ class SysAuthController extends Crud
                             'name'      => "system:config",
                             'component' => "/system/config/index",
                             'meta'      => [
-                                'title'     => "参数配置",
+                                'title'     => "系统设置",
+                                'icon'      => "ant-design:file-text-outlined",
+                                'keepAlive' => true,
+                                'authList'  => [
+                                    [
+                                        'title'    => "超级管理员",
+                                        'authMark' => "admin",
+                                    ],
+                                ],
+                            ],
+                            'children'  => [],
+                        ],
+                        [
+                            'path'      => "/system/files",
+                            'name'      => "system:files",
+                            'component' => "/system/files/index",
+                            'meta'      => [
+                                'title'     => "附件管理",
+                                'icon'      => "ant-design:file-text-outlined",
+                                'keepAlive' => true,
+                                'authList'  => [
+                                    [
+                                        'title'    => "超级管理员",
+                                        'authMark' => "admin",
+                                    ],
+                                ],
+                            ],
+                            'children'  => [],
+                        ],
+                        [
+                            'path'      => "/system/recycle-bin",
+                            'name'      => "system:recycle-bin",
+                            'component' => "/system/recycle-bin/index",
+                            'meta'      => [
+                                'title'     => "数据回收",
                                 'icon'      => "ant-design:file-text-outlined",
                                 'keepAlive' => true,
                                 'authList'  => [
@@ -519,7 +553,7 @@ class SysAuthController extends Crud
                                 'title'     => "网关管理",
                                 'keepAlive' => false,
                                 'fixedTab'  => false,
-                                'icon'=>'ant-design:gateway-outlined'
+                                'icon'      => 'ant-design:gateway-outlined',
                             ],
                             'children' => [
                                 [
@@ -552,7 +586,7 @@ class SysAuthController extends Crud
                             'meta'      => [
                                 'title'     => "定时任务",
                                 'keepAlive' => false,
-                                'icon'=>'ant-design:desktop-outlined'
+                                'icon'      => 'ant-design:desktop-outlined',
                             ],
                             'children'  => [],
                         ],
