@@ -1,2 +1,11 @@
+/runtime
 /.idea
 /.vscode
+/vendor
+*.log
+.env
+/tests/tmp
+/tests/.phpunit.result.cache
+/public/assets
+/public/index.html
+install.lock

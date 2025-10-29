@@ -1,81 +1,69 @@
-中文 | [English](./README-en.md)
-# 项目概述
 
-<p align="center">
-    <img src="https://madong.tech/app/kbase/upload/avatar/202503/67e75c135c1f.md.png" width="120" />
-</p>
-<p align="center">
-    <a href="https://www.madong.tech" target="_blank">官网</a> |
-    <a href="https://madong.tech/kbase/doc?name=md" target="_blank">文档</a> | 
-    <a href="https://admin.madong.tech" target="_blank">演示</a> |
-    <a href="https://www.workerman.net/doc/webman/" target="_blank">Webman官方文档</a> 
-</p>
+# madong-admin
 
-## 开源单用户独立版本快速开发框架
-我们致力于提供一个卓越、简约且美观的开源单用户独立应用开发框架。秉持“取之于开源，回馈于开源”的理念，我们希望为开发者节省宝贵时间，让他们能够享受生活的每一刻——无论是休闲放松、自我提升、陪伴家人、健身锻炼，还是邂逅美好。
 
-## 与SaaS版本的区别
-本项目为单用户独立版本，适合需要独立部署和单一用户管理的场景。如需多租户SaaS版本，请访问以下仓库：
-[SaaS多租户版本仓库](https://gitcode.com/motion-code/madong) 
+#### 介绍
+madong-admin基于Webman快速开发平台框架搭建的后端工程
 
-## 技术特性
-- ✅ 优雅布局系统：简洁界面+多套主题+导览模式，自由组合随心配
-- ✅ 企业级功能栈：开箱即用的RBAC权限体系
-- ✅ 智能消息推送：基于WebSocket+Redis的分布式消息系统
-- ✅ 高效流量管控：完备的流量控制与黑名单机制
-- ✅ 模块化设计：核心工程+可选插件，不需要的组件直接删除即可
 
-## 性能表现
-⚡ 极致响应：2M网络环境下接口响应<300ms，普遍保持在10-150ms区间
 
-## 功能矩阵
-### 基础架构
-- 多租户体系：产品订阅、初始数据、独立数据源等企业级功能
-- 权限管理：完整的RBAC权限控制系统
+#### 运行环境
+`Nignx/Apache
+PHP 8.2 ~ 8.4 
+MySQL 8.0
+Redis`
 
-### 组织架构
-- 用户管理：系统操作者配置中心
-- 部门架构：树形组织管理，支持数据权限
-- 岗位管理：职务体系配置
 
-### 系统管理
-- 菜单权限：菜单/操作/按钮权限精细控制
-- 角色管理：菜单权限分配+数据范围划分
-- 字典系统：常用数据标准化维护
+#### 后端安装
+- cd server 
+- composer install
+- http://127.0.0.1:8899/app/install/index 
 
-### 监控审计
-- 通知公告：系统消息发布平台
-- 操作日志：完整记录正常与异常操作
-- 登录审计：包含异常登录监控
 
-### 设计哲学
-大道至简 —— 我们坚持：
+#### 系统演示
 
-- 代码优雅简洁
-- 开发高效快捷
-- 架构清晰明了
-- 无论是前端还是后端开发，都能享受**"快就完事了"**的编程体验。
+管理后台： http://admin.madong.tech 账号：admin 密码：123456
 
-## 环境需求
-为了确保系统的正常运行，请确保您的服务器环境满足以下要求：
-- **PHP**：版本需 >= 8.1，并开启以下扩展：
-  - mbstring：用于多字节字符串处理。
-  - json：支持JSON数据的编码和解码。
-  - pdo：提供统一的数据库访问接口。
-  - openssl：用于加密和解密操作，保障数据传输安全。
-  - redis：支持Redis缓存和数据存储。
-  - pcntl：用于多进程控制。
-- **Mysql**：版本需 >= 5.7，作为系统的主要数据库存储数据。
-- **Redis**：版本需 >= 4.0，用于缓存数据，提高系统性能。
-- **Git**：版本需 >= 2.x，方便代码的版本管理和协作开发。
-- **Composer**：版本需 >= 2.x，用于PHP依赖管理。
 
-## 体验地址
-[体验地址](https://admin.madong.tech) https://admin.madong.tech
-- 账号：admin
-- 密码：123456
 
-期待您的使用和反馈，我们将不断优化和完善系统，为您提供更优质的服务。
+#### 官方论坛
 
-## 官方社区
-欢迎加入我们的官方社区交流互动<img src="https://svg.hamm.cn/badge.svg?key=QQ 频道&value= pd52261144"/>
+产品BUG、优化建议，欢迎社区反馈：http://www.madong.tech
+
+#### 更新日志
+
+[CHANGELOG](https://gitee.com/motion-code/madong/commits/master)
+
+#### 如何贡献
+
+非常欢迎你的加入！[提一个 Issue](https://gitee.com/motion-code/madong/issues) 或者提交一个 Pull Request。
+
+**Pull Request:**
+
+1. Fork 代码!
+2. 创建自己的分支: `git checkout -b feature/xxxx`
+3. 提交你的修改: `git commit -am 'feat(function): add xxxxx'`
+4. 推送您的分支: `git push origin feature/xxxx`
+5. 提交`pull request`
+
+#### Git 贡献提交规范
+
+- 参考规范([Git](https://www.conventionalcommits.org/) [Vue](https://github.com/vuejs/vue/blob/dev/.github/COMMIT_CONVENTION.md) [Angular](https://github.com/conventional-changelog/conventional-changelog/tree/master/packages/conventional-changelog-angular))
+
+  - `feat` 增加新功能
+  - `fix` 修复问题/BUG
+  - `style` 代码风格相关无影响运行结果的
+  - `perf` 优化/性能提升
+  - `refactor` 重构
+  - `revert` 撤销修改
+  - `test` 测试相关
+  - `docs` 文档/注释
+  - `chore` 依赖更新/脚手架配置修改等
+  - `ci` 持续集成
+  - `types` 类型定义文件更改
+  - `wip` 开发中
+
+
+#### 维护者
+
+[Mr.April](https://gitee.com/liu_guan_qing)
