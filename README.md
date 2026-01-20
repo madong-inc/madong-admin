@@ -7,7 +7,7 @@
 <p align="center">
     <a href="https://madong.tech" target="_blank">官网</a> |
     <a href="https://madong.tech/doc/main" target="_blank">文档</a> | 
-    <a href="https://admin.madong.tech" target="_blank">演示</a> |
+    <a href="https://demo.madong.tech" target="_blank">演示</a> |
     <a href="https://www.workerman.net/doc/webman/" target="_blank">Webman官方文档</a> 
 </p>
 
@@ -71,7 +71,7 @@
 - **Composer**：版本需 >= 2.x，用于PHP依赖管理。
 
 ## 体验地址
-[体验地址](https://admin.madong.tech) https://admin.madong.tech
+[体验地址](https://demo.madong.tech) https://demo.madong.tech
 - 账号：admin
 - 密码：123456
 
