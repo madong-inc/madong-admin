@@ -293,7 +293,7 @@ class AdminService extends BaseService
     {
         if (!in_array($grantType, ['sms', 'refresh_token']) && !password_verify($password, $adminInfo->password)) {
             $msg = '账号或密码错误，请重新输入!';
-            $this->emitLoginFailedEvent($adminInfo->user_name, $msg);
+            $this->emitLoginFailedEvent($adminInfo->toArray(), $msg);
             throw new AdminException($msg);
         }
     }
@@ -380,11 +380,10 @@ class AdminService extends BaseService
     /**
      * 登录失败-事件发起
      *
-     * @param string $username
+     * @param array  $adminInfo
      * @param string $message
-     * @param int    $status
      */
-    private function emitLoginFailedEvent(string $username, string $message, int $status = 0): void
+    private function emitLoginFailedEvent(array $adminInfo, string $message): void
     {
         $loginIp = request()->getRealIp();
         $event = new LoginLogEvent(
@@ -396,8 +395,8 @@ class AdminService extends BaseService
             $this->getOs(request()->header('user-agent', '')),
             -1,
             $message,
-            $username,
-            0,
+            $adminInfo['user_name'],
+            $adminInfo['id'],
             time(),
             '',
             time()
@@ -463,14 +462,22 @@ class AdminService extends BaseService
         if (empty($ip) || in_array($ip, ['127.0.0.1', '::1', 'localhost', '0.0.0.0'])) {
             return '本地';
         }
-        
+
         // 使用新浪API获取IP归属地
         try {
-            $response = file_get_contents("http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=json&ip=" . $ip);
-            if ($response === false) {
-                return '未知';
-            }
-            $data = json_decode($response, true);
+            // 创建Guzzle HTTP客户端
+            $client = new \GuzzleHttp\Client([
+                'timeout' => 2,
+                'connect_timeout' => 1,
+                'verify' => false
+            ]);
+
+            $url = "http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=json&ip=" . $ip;
+            $response = $client->get($url);
+
+            $content = $response->getBody()->getContents();
+
+            $data = json_decode($content, true);
             if (isset($data['ret']) && $data['ret'] === 1 && !empty($data['city'])) {
                 $location = $data['city'];
                 if (!empty($data['province']) && strpos($data['province'], $data['city']) === false) {
@@ -481,7 +488,7 @@ class AdminService extends BaseService
         } catch (\Throwable $e) {
             // 忽略异常
         }
-        
+
         return '未知';
     }
 

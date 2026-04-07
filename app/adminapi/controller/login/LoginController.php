@@ -72,8 +72,6 @@ final class LoginController extends Crud
             $result  = $captcha->captcha($request, $type);
             return Json::success('ok', $result);
         } catch (\Throwable $e) {
-        var_dump($e->getMessage());
-
             return Json::fail($e->getMessage());
         }
     }
@@ -121,7 +119,7 @@ final class LoginController extends Crud
             $code      = $request->input('code', '');
             $uuid      = $request->input('uuid', '');
             $type      = $request->input('type', 'admin');
-            $grantType = $request->input('grant_type', 'default');//refresh_token   sms   default 可以自行定义拓展登录方式
+            $grantType = $request->input('grant_type', 'deafult');//refresh_token   sms   default 可以自行定义拓展登录方式
             $keyId     = $request->input('key_id', '');//获取公钥Id
 
 
