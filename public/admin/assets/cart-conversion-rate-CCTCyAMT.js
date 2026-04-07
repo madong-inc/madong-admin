@@ -1,0 +1,1 @@
+import{_ as e}from"./index.vue_vue_type_script_setup_true_lang-CnN7wSPe.js";import{_ as a,g as t,o as r}from"./index-CLBpCc8n.js";const s=a({},[["render",function(a,s){const o=e;return r(),t(o,{class:"mb-5 max-sm:mb-4",value:2545,label:"购物车转化率",percentage:1.2,height:13.5,chartData:[120,132,101,134,90,230,210],showAreaColor:!0})}]]);export{s as default};

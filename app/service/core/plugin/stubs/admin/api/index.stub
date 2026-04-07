@@ -1,0 +1,19 @@
+import request from '@/api/request';
+
+/**
+ * {{pluginName}} 插件 API
+ */
+export default {
+  /**
+   * 测试 API
+   * @param params 查询参数
+   * @returns 响应数据
+   */
+  async test(params = {}) {
+    return request({
+      url: '/{{pluginKey}}/test',
+      method: 'get',
+      params
+    });
+  }
+};

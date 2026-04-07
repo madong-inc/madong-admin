@@ -1,0 +1,1 @@
+import{_ as n,c as s,o as a,a as t}from"./index-CLBpCc8n.js";const e={class:"page-content"};const o=n({},[["render",function(n,o){return a(),s("div",e,[...o[0]||(o[0]=[t("h1",null,"菜单-1",-1)])])}]]);export{o as default};

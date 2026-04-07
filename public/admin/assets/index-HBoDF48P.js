@@ -1,0 +1,1 @@
+import{U as e}from"./index-CLBpCc8n.js";const o={...e({baseUrl:"/web/menu",allowedMethods:[],forbiddenMethods:[]})},d={...e({baseUrl:"/web/link",allowedMethods:[],forbiddenMethods:[]})};export{d as L,o as M};

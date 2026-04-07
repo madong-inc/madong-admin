@@ -1,0 +1,26 @@
+import { AppRouteRecord } from '@/types/router'
+import { RoutesAlias } from '@/router/routesAlias'
+
+export default {
+  path: '/{{pluginName}}',
+  name: '{{camelPluginName}}',
+  component: RoutesAlias.Layout,
+  meta: {
+    title: '{{pluginTitle}}',
+    icon: 'ri:plugin-line',
+    module: '{{pluginName}}'
+  },
+  children: [
+    {
+      path: 'index',
+      name: '{{camelPluginName}}Index',
+      component: '/index/index',
+      meta: {
+        title: '首页',
+        icon: 'ri:home-line',
+        keepAlive: false,
+        module: '{{pluginName}}'
+      }
+    }
+  ]
+} as AppRouteRecord

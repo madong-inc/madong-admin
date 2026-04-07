@@ -1,0 +1,1 @@
+import{by as t,Z as i,bz as n,bA as m}from"./Bu2vDAsr.js";const c=t((r,a)=>{const e=i(),o=n(),s=r.meta.permissions;if(!s)return;if(!e.info)return e.logOpen(),!1;if(!o.checkMenuPermission({id:0,meta:{permissions:s}}))return m("/member/profile",{replace:!0})});export{c as default};

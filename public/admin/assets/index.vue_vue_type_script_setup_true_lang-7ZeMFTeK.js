@@ -1,0 +1,1 @@
+import{d as s,p as n,g as a,q as o,s as e,u as i,e as t,I as c,o as r}from"./index-CLBpCc8n.js";const l=s({name:"ArtSvgIcon",inheritAttrs:!1,__name:"index",props:{icon:{}},setup(s){const l=n(),p=t(()=>({class:l.class||"",style:l.style||""}));return(n,t)=>s.icon?(r(),a(i(c),e({key:0,icon:s.icon},i(p),{class:"art-svg-icon inline"}),null,16,["icon"])):o("",!0)}});export{l as _};

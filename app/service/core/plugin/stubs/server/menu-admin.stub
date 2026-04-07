@@ -1,0 +1,20 @@
+<?php
+
+/**
+ * 后台菜单配置
+ * 安装时会自动加载
+ */
+
+return [
+    [
+        'name'      => '{{pluginTitle}}',
+        'path'      => '/{{pluginKey}}',
+        'icon'      => 'plugin',
+        'children'  => [
+            [
+                'name'  => '列表',
+                'path'  => '/{{pluginKey}}/index',
+            ],
+        ],
+    ],
+];

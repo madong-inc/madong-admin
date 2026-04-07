@@ -1,0 +1,1 @@
+import{U as t,V as a}from"./index-CLBpCc8n.js";const e="/message",s={...t({baseUrl:e}),updateRead(t){const s={id:t,status:"read"};return a.put({url:`${e}/${t}/update-read`,data:s})},emptyMessage(t){const s={id:t,status:"deleted"};return a.put({url:`${e}/empty`,data:s})},notifyOnFirstLoginToAll:t=>a.post({url:`${e}/notify-on-first-login-to-all`,data:t})};export{s as M};
