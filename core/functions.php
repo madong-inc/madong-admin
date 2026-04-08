@@ -664,3 +664,35 @@ if (!function_exists('resource_path')) {
         return base_path('resources' . $subPath);
     }
 }
+
+if (!function_exists('str_starts_with')) {
+    /**
+     * 检查字符串是否以指定前缀开始
+     *
+     * @param string $haystack 要检查的字符串
+     * @param string $needle 要查找的前缀
+     * @return bool
+     */
+    function str_starts_with(string $haystack, string $needle): bool
+    {
+        return substr($haystack, 0, strlen($needle)) === $needle;
+    }
+}
+
+if (!function_exists('str_ends_with')) {
+    /**
+     * 检查字符串是否以指定后缀结束
+     *
+     * @param string $haystack 要检查的字符串
+     * @param string $needle 要查找的后缀
+     * @return bool
+     */
+    function str_ends_with(string $haystack, string $needle): bool
+    {
+        $length = strlen($needle);
+        if ($length === 0) {
+            return true;
+        }
+        return substr($haystack, -$length) === $needle;
+    }
+}

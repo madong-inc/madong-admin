@@ -12,8 +12,6 @@
 
 namespace core\monitor;
 
-use function core\monitor\str_starts_with;
-
 /**
  * 系统监控服务类
  *

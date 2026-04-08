@@ -17,8 +17,6 @@ use core\utils\Exception;
 use Throwable;
 use Workerman\Timer;
 use Workerman\Worker;
-use function core\utils\str_ends_with;
-use function core\utils\str_starts_with;
 
 class Util
 {
