@@ -1,1 +1,0 @@
-import{bl as o,bm as i}from"./index-CLBpCc8n.js";function e(i,e,r){return void 0===r&&(r=e,e=void 0),void 0!==r&&(r=(r=o(r))==r?r:0),void 0!==e&&(e=(e=o(e))==e?e:0),function(o,i,e){return o==o&&(void 0!==e&&(o=o<=e?o:e),void 0!==i&&(o=o>=i?o:i)),o}(o(i),e,r)}const r=(o="")=>o.replace(/[|\\{}()[\]^$+*?.]/g,"\\$&").replace(/-/g,"\\x2d"),a=o=>i(o);export{e as a,a as c,r as e};

@@ -1,2 +1,0 @@
-const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["assets/index-DPWa07uu.js","assets/index-CLBpCc8n.js","assets/index-C8Sn7uEU.css","assets/el-empty-3nyA8R3N.js","assets/el-empty-D4ZqTl4F.css"])))=>i.map(i=>d[i]);
-import{d as a,c as e,o as s,b as t,u as n,aN as o,aO as m}from"./index-CLBpCc8n.js";const d={class:"page-content mb-5","element-loading-text":"加载中..."},i=a({name:"TemplateMap",__name:"index",setup(a){const i=o(()=>m(()=>import("./index-DPWa07uu.js"),__vite__mapDeps([0,1,2,3,4])));return(a,o)=>(s(),e("div",d,[t(n(i))]))}});export{i as default};

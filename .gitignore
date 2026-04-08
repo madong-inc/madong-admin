@@ -8,4 +8,6 @@
 /tests/.phpunit.result.cache
 install.lock
 /tests
+/public/admin
+/public/web
 

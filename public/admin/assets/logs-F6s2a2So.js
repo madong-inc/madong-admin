@@ -1,1 +1,0 @@
-import{U as e}from"./index-CLBpCc8n.js";const o={...e({baseUrl:"/logs/login",allowedMethods:["list","get","remove"]})},s={...e({baseUrl:"/logs/operate",allowedMethods:["list","get","remove"]})};export{o as L,s as O};

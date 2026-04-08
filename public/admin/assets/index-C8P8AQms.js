@@ -1,1 +1,0 @@
-import{_ as e,c as a,o as s}from"./index-CLBpCc8n.js";const t={class:"dev-page art-full-height"};const d=e({},[["render",function(e,d){return s(),a("div",t," 开发中..... ")}],["__scopeId","data-v-75de3eda"]]);export{d as default};

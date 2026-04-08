@@ -1,1 +1,0 @@
-import{x as a,o as s,c as o,a as r,bF as i,q as l,bG as c}from"./Bu2vDAsr.js";const p=a({__name:"dark-toggle",setup(u){const t=l(()=>c());function n(){i(!t.value)}return(k,e)=>(s(),o("button",{class:"inline-flex justify-center items-center",onClick:n},[...e[0]||(e[0]=[r("div",{class:"i-ri-sun-line dark:i-ri-moon-line"},null,-1)])]))}});export{p as default};

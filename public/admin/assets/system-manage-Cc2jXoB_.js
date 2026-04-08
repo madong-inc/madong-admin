@@ -1,1 +1,0 @@
-import{V as r}from"./index-CLBpCc8n.js";function t(t){return r.get({url:"/api/user/list",params:t})}function a(t){return r.get({url:"/api/role/list",params:t})}function s(){return r.get({url:"/system/auth/user-menus",params:{format:"art"}})}export{s as a,a as b,t as f};
