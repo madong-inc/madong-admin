@@ -91,25 +91,23 @@ class DemoEnvRouteRestrictionMiddleware implements MiddlewareInterface
         foreach ($restrictedRoutes as $pattern) {
             if (preg_match("#^$pattern$#", $currentPath)) {
                 // 检查是否为 root 用户
-                $payload = (new JwtToken())->getPayloadFromRequest();
-                $userName = $payload['extra']['user_name'] ?? '';
-                if ($userName === 'root') {
+                if ($this->isRootUser()) {
                     return $handler($request);
                 }
-                
+
                 // 检查是否为SSE请求
                 $isSseRequest = SseHelper::isSseRequest($request);
-                
+
                 // SSE请求需要单独处理
                 if ($isSseRequest) {
                     return SseHelper::sendSseErrorViaConnection($request, '演示环境,不支持当前操作');
                 }
-                
+
                 // 非SSE的写操作（PUT, POST, DELETE）也限制
                 if (in_array(strtoupper($method), ['PUT', 'POST', 'DELETE'])) {
                     return Json::fail('演示环境,不支持当前操作');
                 }
-                
+
                 // 对于GET请求，如果不是SSE，默认允许（演示环境可能允许查看）
             }
         }
@@ -117,5 +115,24 @@ class DemoEnvRouteRestrictionMiddleware implements MiddlewareInterface
     // 继续处理请求
     return $handler($request);
 }
+
+    /**
+     * 检查是否为 root 用户
+     */
+    private function isRootUser(): bool
+    {
+        $payload = (new JwtToken())->getPayloadFromRequest();
+        $extra    = is_array($payload) ? ($payload['extra'] ?? null) : (is_object($payload) ? ($payload->extra ?? null) : null);
+
+        if (is_object($extra)) {
+            return ($extra->user_name ?? '') === 'root';
+        }
+
+        if (is_array($extra)) {
+            return ($extra['user_name'] ?? '') === 'root';
+        }
+
+        return false;
+    }
 
 }
