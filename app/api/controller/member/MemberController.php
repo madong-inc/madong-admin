@@ -221,8 +221,12 @@ final class MemberController extends Base
     #[AllowAnonymous(requireToken: false, requirePermission: false, description: '公共接口')]
     public function getAddressList(): Response
     {
-        $result = $this->service->getAddressList();
-        return json($result);
+        try {
+            $result = $this->service->getAddressList();
+            return Json::success('获取成功', $result);
+        } catch (\Exception $e) {
+            return Json::fail($e->getMessage());
+        }
     }
 
     #[OA\Post(
@@ -254,9 +258,13 @@ final class MemberController extends Base
     #[AllowAnonymous(requireToken: false, requirePermission: false, description: '公共接口')]
     public function createAddress(Request $request): Response
     {
-        $data   = $request->post();
-        $result = $this->service->createAddress($data);
-        return json($result);
+        try {
+            $data   = $request->post();
+            $result = $this->service->createAddress($data);
+            return Json::success('创建成功', $result);
+        } catch (\Exception $e) {
+            return Json::fail($e->getMessage());
+        }
     }
 
     #[OA\Put(
@@ -290,9 +298,13 @@ final class MemberController extends Base
     #[SimpleResponse(schema: [], example: [])]
     public function updateAddress(int $id, Request $request): Response
     {
-        $data   = $request->post();
-        $result = $this->service->updateAddress($id, $data);
-        return json($result);
+        try {
+            $data   = $request->post();
+            $result = $this->service->updateAddress($id, $data);
+            return Json::success('更新成功', $result);
+        } catch (\Exception $e) {
+            return Json::fail($e->getMessage());
+        }
     }
 
     #[OA\Delete(
@@ -309,11 +321,15 @@ final class MemberController extends Base
         ]
     )]
     #[SimpleResponse(schema: [], example: [])]
-    #[AllowAnonymous(requireToken: false, requirePermission: false, description: '公共接口')]
+    #[AllowAnonymous(requireToken: true, requirePermission: false, description: '公共接口')]
     public function deleteAddress(int $id): Response
     {
-        $result = $this->service->deleteAddress($id);
-        return json($result);
+        try {
+            $result = $this->service->deleteAddress($id);
+            return Json::success('删除成功', $result);
+        } catch (\Exception $e) {
+            return Json::fail($e->getMessage());
+        }
     }
 
 }

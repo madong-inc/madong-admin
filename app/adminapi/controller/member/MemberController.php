@@ -18,6 +18,7 @@ use app\adminapi\middleware\AccessTokenMiddleware;
 use app\adminapi\middleware\OperationMiddleware;
 use app\adminapi\middleware\PermissionMiddleware;
 use app\adminapi\validate\member\MemberValidate;
+use app\api\CurrentMember;
 use app\schema\request\BatchDeleteRequest;
 use app\schema\request\IdRequest;
 use app\service\admin\member\MemberService;
@@ -26,6 +27,7 @@ use madong\swagger\annotation\response\SimpleResponse;
 use madong\swagger\attribute\Permission;
 use OpenApi\Attributes as OA;
 use support\annotation\Middleware;
+use support\Container;
 use support\Request;
 use WebmanTech\Swagger\DTO\SchemaConstants;
 

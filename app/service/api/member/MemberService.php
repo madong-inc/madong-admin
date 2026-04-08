@@ -149,11 +149,7 @@ class MemberService extends BaseService
             ->orderBy('id', 'desc')
             ->get();
 
-        return [
-            'code' => 200,
-            'msg'  => '获取成功',
-            'data' => $addresses->toArray(),
-        ];
+        return $addresses->toArray();
     }
 
     /**
@@ -189,11 +185,7 @@ class MemberService extends BaseService
 
         $address = MemberAddress::create($addressData);
 
-        return [
-            'code' => 200,
-            'msg'  => '创建成功',
-            'data' => ['id' => $address->id],
-        ];
+        return ['id' => $address->id];
     }
 
     /**
@@ -234,10 +226,7 @@ class MemberService extends BaseService
 
         $address->update($updateData);
 
-        return [
-            'code' => 200,
-            'msg'  => '更新成功',
-        ];
+        return [];
     }
 
     /**
@@ -258,10 +247,7 @@ class MemberService extends BaseService
         $address->enabled = EnabledStatus::DISABLED->value;
         $address->save();
 
-        return [
-            'code' => 200,
-            'msg'  => '删除成功',
-        ];
+        return [];
     }
 
     /**

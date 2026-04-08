@@ -21,10 +21,10 @@ return [
         "default_environment"     => "dev",
         "dev" => [
             "adapter" => "mysql",
-            "host"    => "43.138.153.216",
+            "host"    => "127.0.0.1",
             "name"    => "md_admin",
-            "user"    => "md_admin",
-            "pass"    => "Mk38f7mh8mia6ZL4",
+            "user"    => "root",
+            "pass"    => "root",
             "port"    => "3306",
             "charset" => "utf8"
         ]
