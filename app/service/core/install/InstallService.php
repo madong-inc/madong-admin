@@ -276,7 +276,7 @@ final class InstallService
             $this->copyDatabaseTemplateAndCreateEnv($dbParams);
 
             // 完成安装 (100%)
-            yield Sse::completed('安装完成', [], $sessionUuid);
+           yield Sse::completed('安装完成', [], $sessionUuid);
             Util::reloadWebman();
             return;
         } catch (Throwable $e) {
@@ -318,6 +318,9 @@ final class InstallService
         // 处理不同项目的构建目录路径
         $sourceDir = $config['source_dir'] ?? '';
 
+        // 替换路径变量
+        $sourceDir = $this->replacePathVariables($sourceDir);
+
         // 标准化路径分隔符（Windows兼容）
         $sourceDir = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $sourceDir);
 
@@ -354,6 +357,8 @@ final class InstallService
         }
 
         $sourceDir = $config['source_dir'] ?? '';
+        // 替换路径变量
+        $sourceDir = $this->replacePathVariables($sourceDir);
         $sourceDir = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $sourceDir);
 
         // 等待构建目录创建
@@ -527,7 +532,7 @@ final class InstallService
             $progressStep = 61;
             foreach ($availableProjects as $project) {
                 yield Sse::progress("迁移{$project}前端构建文件...", $progressStep, [], $sessionUuid);
-                $this->getTerminal()->migrateFrontendProgram($project);
+                $this->migrateFrontendProgram($project);
                 $progressStep++;
             }
 
@@ -535,6 +540,245 @@ final class InstallService
         } catch (Exception $e) {
             throw new Exception('前端构建文件迁移失败: ' . $e->getMessage());
         }
+    }
+
+    /**
+     * 迁移前端构建文件
+     *
+     * @param string $frontendType 前端类型（admin/web/uni-app）
+     * @return bool
+     */
+    private function migrateFrontendProgram(string $frontendType): bool
+    {
+        $config = config('terminal.frontend_programs', []);
+        
+        if (!isset($config[$frontendType]) || !$config[$frontendType]['enabled']) {
+            return false;
+        }
+
+        // 处理uni-app等多平台程序
+        $programConfig = $config[$frontendType];
+
+        $sourceDir = $programConfig['source_dir'] ?? '';
+        $targetDir = $programConfig['target_dir'] ?? '';
+        $copyMappings = $programConfig['copy_mappings'] ?? [];
+        $cleanTarget = $programConfig['clean_target'] ?? true;
+        $preserveFiles = $programConfig['preserve_files'] ?? [];
+        $copyOptions = $programConfig['copy_options'] ?? [];
+
+        // 替换路径变量
+        $sourceDir = $this->replacePathVariables($sourceDir);
+        $targetDir = $this->replacePathVariables($targetDir);
+
+        if (empty($sourceDir) || empty($targetDir)) {
+            return false;
+        }
+
+        try {
+            // 复制构建文件
+            return $this->copyBuildFiles($sourceDir, $targetDir, $copyMappings, $cleanTarget, $preserveFiles, $copyOptions);
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+
+    /**
+     * 替换路径中的变量
+     *
+     * @param string $path 路径
+     *
+     * @return string
+     */
+    private function replacePathVariables(string $path): string
+    {
+        // 后端根目录（server目录）
+        $backendRoot = base_path();
+        // 项目根目录（包含server、admin、web等目录的父目录）
+        $projectRoot = dirname($backendRoot);
+        
+        $variables = [
+            '{backend_root}' => $backendRoot,
+            '{project_root}' => $projectRoot,
+        ];
+        
+        foreach ($variables as $variable => $value) {
+            $path = str_replace($variable, $value, $path);
+        }
+        
+        return $path;
+    }
+
+    /**
+     * 复制构建文件
+     *
+     * @param string $sourceDir 源目录
+     * @param string $targetDir 目标目录
+     * @param array $copyMappings 复制映射
+     * @param bool $cleanTarget 是否清理目标目录
+     * @param array $preserveFiles 保留的文件
+     * @param array $copyOptions 复制选项
+     *
+     * @return bool
+     */
+    private function copyBuildFiles(string $sourceDir, string $targetDir, array $copyMappings = [], bool $cleanTarget = true, array $preserveFiles = [], array $copyOptions = []): bool
+    {
+        if (!is_dir($sourceDir)) {
+            return false;
+        }
+
+        // 确保目标目录存在
+        if (!is_dir($targetDir)) {
+            mkdir($targetDir, 0755, true);
+        }
+
+        // 清理目标目录（如果需要）
+        if ($cleanTarget && is_dir($targetDir)) {
+            $this->cleanDirectory($targetDir, $preserveFiles);
+        }
+
+        // 如果没有配置复制映射，默认复制所有文件
+        if (empty($copyMappings)) {
+            $copyMappings = ['*' => '.'];
+        }
+
+        // 执行复制
+        foreach ($copyMappings as $source => $target) {
+            $sourcePath = $sourceDir . DIRECTORY_SEPARATOR . $source;
+            $targetPath = $targetDir . DIRECTORY_SEPARATOR . $target;
+
+            // 确保目标路径存在
+            if (!is_dir($targetPath)) {
+                mkdir($targetPath, 0755, true);
+            }
+
+            // 处理通配符复制
+            if (str_contains($source, '*')) {
+                // 转换路径分隔符为正斜杠，确保 glob 函数在 Windows 上正常工作
+                $globPath = str_replace(DIRECTORY_SEPARATOR, '/', $sourcePath);
+                $files = glob($globPath);
+                if (!empty($files)) {
+                    foreach ($files as $file) {
+                        $destFile = $targetPath . DIRECTORY_SEPARATOR . basename($file);
+                        if (is_dir($file)) {
+                            // 递归复制目录
+                            $this->copyDirectory($file, $destFile);
+                        } else {
+                            // 复制文件
+                            copy($file, $destFile);
+                        }
+                    }
+                }
+            } elseif (is_dir($sourcePath)) {
+                // 复制目录
+                $this->copyDirectory($sourcePath, $targetPath);
+            } else {
+                // 复制单个文件
+                if (file_exists($sourcePath)) {
+                    copy($sourcePath, $targetPath);
+                }
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * 复制目录
+     *
+     * @param string $source 源目录
+     * @param string $target 目标目录
+     *
+     * @return bool
+     */
+    private function copyDirectory(string $source, string $target): bool
+    {
+        if (!is_dir($source)) {
+            return false;
+        }
+
+        // 创建目标目录
+        if (!is_dir($target)) {
+            mkdir($target, 0755, true);
+        }
+
+        $iterator = new \RecursiveIteratorIterator(
+            new \RecursiveDirectoryIterator($source, \RecursiveDirectoryIterator::SKIP_DOTS),
+            \RecursiveIteratorIterator::SELF_FIRST
+        );
+
+        foreach ($iterator as $item) {
+            $sourcePath = $item->getPathname();
+            $targetPath = $target . DIRECTORY_SEPARATOR . $iterator->getSubPathName();
+
+            if ($item->isDir()) {
+                if (!is_dir($targetPath)) {
+                    mkdir($targetPath, 0755, true);
+                }
+            } else {
+                copy($sourcePath, $targetPath);
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * 清理目录
+     *
+     * @param string $directory 目录路径
+     * @param array $preserveFiles 保留的文件
+     */
+    private function cleanDirectory(string $directory, array $preserveFiles = []): void
+    {
+        if (!is_dir($directory)) {
+            return;
+        }
+
+        $files = scandir($directory);
+        foreach ($files as $file) {
+            if ($file === '.' || $file === '..') {
+                continue;
+            }
+
+            $path = $directory . DIRECTORY_SEPARATOR . $file;
+            if (in_array($file, $preserveFiles)) {
+                continue;
+            }
+
+            if (is_dir($path)) {
+                $this->deleteDirectory($path);
+            } else {
+                unlink($path);
+            }
+        }
+    }
+
+    /**
+     * 删除目录
+     *
+     * @param string $directory 目录路径
+     */
+    private function deleteDirectory(string $directory): void
+    {
+        if (!is_dir($directory)) {
+            return;
+        }
+
+        $files = scandir($directory);
+        foreach ($files as $file) {
+            if ($file === '.' || $file === '..') {
+                continue;
+            }
+
+            $path = $directory . DIRECTORY_SEPARATOR . $file;
+            if (is_dir($path)) {
+                $this->deleteDirectory($path);
+            } else {
+                unlink($path);
+            }
+        }
+
+        rmdir($directory);
     }
 
     /**
