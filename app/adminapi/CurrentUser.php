@@ -21,6 +21,7 @@ use core\exception\handler\ForbiddenHttpException;
 use core\jwt\JwtToken;
 use core\logger\Logger;
 use madong\swagger\attribute\Permission;
+use support\Container;
 
 final  readonly class CurrentUser
 {

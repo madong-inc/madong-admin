@@ -12,7 +12,7 @@
 
 namespace core\base;
 
-
+use app\adminapi\CurrentUser;
 use app\model\system\RecycleBin;
 use app\scope\global\AccessPermissionScope;
 use app\service\admin\system\RecycleBinService;
@@ -246,7 +246,7 @@ class BaseModel extends Model
      */
     private static function setCreatedBy(Model $model): void
     {
-        $uid = getCurrentUser();
+        $uid = Container::make(CurrentUser::class)->id();
         if ($uid && $model->isFillable('created_by')) {
             $model->setAttribute('created_by', $uid);
         }
@@ -261,7 +261,7 @@ class BaseModel extends Model
      */
     private static function setUpdatedBy(Model $model): void
     {
-        $uid = getCurrentUser();
+        $uid = Container::make(CurrentUser::class)->id();
         if ($uid && $model->isFillable('updated_by')) {
             $model->setAttribute('updated_by', $uid);
         }
@@ -276,7 +276,7 @@ class BaseModel extends Model
             'table_prefix' => $prefix,
             'enabled'      => 0,
             'ip'           => request()->getRealIp(),
-            'operate_id'   => getCurrentUser(),
+            'operate_id'   => Container::make(CurrentUser::class)->id(),
         ];
     }
 

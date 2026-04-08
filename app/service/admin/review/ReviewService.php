@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace app\service\admin\review;
 
+use app\adminapi\CurrentUser;
 use app\dao\review\ReviewDao;
 use app\enum\review\ReviewStatus;
 use app\adminapi\event\ReviewApprovedEvent;
@@ -233,7 +234,7 @@ class ReviewService extends BaseService
                 return 0;
             }
 
-            $reviewerId = getCurrentUser();
+            $reviewerId = Container::make(CurrentUser::class)->id();
             $reviewerId = $reviewerId ? (int)$reviewerId : null;
             $count      = 0;
 
@@ -320,7 +321,7 @@ class ReviewService extends BaseService
                 return 0;
             }
 
-            $reviewerId = getCurrentUser();
+            $reviewerId = Container::make(CurrentUser::class)->id();
             $reviewerId = $reviewerId ? (int)$reviewerId : null;
             $count      = 0;
 

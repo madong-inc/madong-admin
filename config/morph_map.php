@@ -35,9 +35,5 @@ return [
         // 系统管理
         'admin' => \app\model\system\Admin::class,
         'menu' => \app\model\system\Menu::class,
-
-        // 官方插件 - 社区模块
-        'question' => \plugin\official\app\model\question\Question::class,
-        'comment' => \plugin\official\app\model\question\Comment::class,
     ],
 ];

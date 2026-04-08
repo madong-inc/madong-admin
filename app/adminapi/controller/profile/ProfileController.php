@@ -59,7 +59,7 @@ final class ProfileController extends Crud
     public function show(Request $request): \support\Response
     {
         try {
-            $userId = getCurrentUser();
+            $userId = Container::make(CurrentUser::class)->id();
             $data   = $this->service->get($userId);
             return Json::success('ok', $data);
         } catch (\Exception $e) {
@@ -83,7 +83,7 @@ final class ProfileController extends Crud
     public function update(Request $request): \support\Response
     {
         try {
-            $userId = getCurrentUser();
+            $userId = Container::make(CurrentUser::class)->id();
             $data   = $this->inputFilter($request->all());
 
             // 验证数据
@@ -114,7 +114,7 @@ final class ProfileController extends Crud
     public function updatePassword(Request $request): \support\Response
     {
         try {
-            $userId = getCurrentUser();
+            $userId = Container::make(CurrentUser::class)->id();
             $data   = $this->inputFilter($request->all(), ['old_password', 'new_password', 'confirm_password']);
 
             // 验证数据
@@ -141,7 +141,7 @@ final class ProfileController extends Crud
     public function updateAvatar(Request $request): \support\Response
     {
         try {
-            $userId = getCurrentUser();
+            $userId = Container::make(CurrentUser::class)->id();
             $avatar = $request->input('avatar');
 
             // 验证数据
@@ -288,7 +288,7 @@ final class ProfileController extends Crud
     public function updatePreferences(Request $request): \support\Response
     {
         try {
-            $uid  = getCurrentUser();
+            $uid  = Container::make(CurrentUser::class)->id();
             $data = $request->all();
             if (isset($this->validate) && $this->validate) {
                 $data['id'] = $uid;

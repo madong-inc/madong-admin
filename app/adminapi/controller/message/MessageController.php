@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace app\adminapi\controller\message;
 
+use app\adminapi\CurrentUser;
 use app\adminapi\controller\Crud;
 use app\adminapi\middleware\AccessTokenMiddleware;
 use app\adminapi\middleware\OperationMiddleware;
@@ -34,6 +35,7 @@ use OpenApi\Attributes as OA;
 use OpenApi\Attributes\RequestBody;
 use support\Request;
 use support\annotation\Middleware;
+use support\Container;
 use WebmanTech\Swagger\DTO\SchemaConstants;
 
 #[Middleware(AccessTokenMiddleware::class, PermissionMiddleware::class, OperationMiddleware::class)]
@@ -57,7 +59,7 @@ final class MessageController extends Crud
     #[PageResponse(MessageResponse::class)]
     public function index(Request $request): \support\Response
     {
-        $uid                 = getCurrentUser();
+        $uid = Container::make(CurrentUser::class)->id();
         $data                = $request->get();
         $data['receiver_id'] = $uid;//消息接收人
         $request->setGet($data);
@@ -231,7 +233,7 @@ final class MessageController extends Crud
     public function notifyOnFirstLoginToAll(Request $request): \support\Response
     {
         try {
-            $id = getCurrentUser();
+            $id = Container::make(CurrentUser::class)->id();
             $this->service->notifyOnFirstLoginToAll($id);
             return Json::success('ok');
         } catch (\Throwable $e) {

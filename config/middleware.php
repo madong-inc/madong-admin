@@ -22,8 +22,7 @@ return [
     '@'        => [
         \app\middleware\AllowCrossOriginMiddleware::class,//跨域中间件
         \app\middleware\Lang::class,//多语言切换中间件
-//        \app\middleware\DemoEnvRouteRestrictionMiddleware::class,// 演示过滤中间件
-
+        \app\middleware\DemoEnvRouteRestrictionMiddleware::class,// 演示过滤中间件
     ],
     // 全局中间件-主项目有效
     ''         => [
