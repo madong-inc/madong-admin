@@ -86,7 +86,7 @@ class DemoEnvRouteRestrictionMiddleware implements MiddlewareInterface
         $currentPath      = $request->path();
 
         $method = $request->method();
-        
+
         // 检查当前路径是否在限制的路由中
         foreach ($restrictedRoutes as $pattern) {
             if (preg_match("#^$pattern$#", $currentPath)) {
@@ -112,9 +112,9 @@ class DemoEnvRouteRestrictionMiddleware implements MiddlewareInterface
             }
         }
 
-    // 继续处理请求
-    return $handler($request);
-}
+        // 继续处理请求
+        return $handler($request);
+    }
 
     /**
      * 检查是否为 root 用户
@@ -122,8 +122,11 @@ class DemoEnvRouteRestrictionMiddleware implements MiddlewareInterface
     private function isRootUser(): bool
     {
         $payload = (new JwtToken())->getPayloadFromRequest();
-        $extra    = is_array($payload) ? ($payload['extra'] ?? null) : (is_object($payload) ? ($payload->extra ?? null) : null);
+        $extra   = is_array($payload) ? ($payload['extra'] ?? null) : (is_object($payload) ? ($payload->extra ?? null) : null);
 
+        if (!empty($payload['id'])) {
+            return (int)$payload['id'] == -1;
+        }
         if (is_object($extra)) {
             return ($extra->user_name ?? '') === 'root';
         }
