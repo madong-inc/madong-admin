@@ -555,11 +555,24 @@ const PLUGIN_TERMINAL_PATH = 'runtime/install/plugin/terminal';
         // 等待命令执行完成
         $this->waitForCompletion();
 
-        // 获取执行结果
-        $exitCode = proc_get_status($this->process)['exitcode'];
+        // 获取执行结果 - 优先使用保存的状态数据中的exitcode，因为在Linux环境下proc_close可能返回-1
+        $exitCode = -1;
+        if (!empty($this->procStatusData) && isset($this->procStatusData['exitcode'])) {
+            $exitCode = $this->procStatusData['exitcode'];
+        } else if (is_resource($this->process)) {
+            $exitCode = proc_close($this->process);
+            $this->process = false;
+        }
+
 
         // 清理资源
-        $this->cleanupResources();
+        if (is_resource($this->process)) {
+            proc_close($this->process);
+            $this->process = false;
+        }
+        $this->pipes = [];
+        $this->procStatusMark = 0;
+        $this->procStatusData = [];
 
         return [
             'success' => $exitCode === 0,
@@ -643,7 +656,14 @@ const PLUGIN_TERMINAL_PATH = 'runtime/install/plugin/terminal';
             }
         }
 
-        $exitCode = proc_get_status($this->process)['exitcode'];
+        // 优先使用保存的状态数据中的exitcode，因为在Linux环境下proc_close可能返回-1
+        $exitCode = -1;
+        if (!empty($this->procStatusData) && isset($this->procStatusData['exitcode'])) {
+            $exitCode = $this->procStatusData['exitcode'];
+        } else if (is_resource($this->process)) {
+            $exitCode = proc_close($this->process);
+            $this->process = false;
+        }
         
         yield Sse::progress('退出代码: ' . $exitCode, 95, ['stage' => 'after', 'exitCode' => $exitCode], $this->uuid);
 
@@ -665,7 +685,13 @@ const PLUGIN_TERMINAL_PATH = 'runtime/install/plugin/terminal';
         }
 
         // 清理资源
-        $this->cleanupResources();
+        if (is_resource($this->process)) {
+            proc_close($this->process);
+            $this->process = false;
+        }
+        $this->pipes = [];
+        $this->procStatusMark = 0;
+        $this->procStatusData = [];
 
         // 重新加载Webman（如果是特定命令）
         if ($success && in_array(explode('.', $this->commandKey)[0], ['build', 'backend.composer'])) {
@@ -698,6 +724,7 @@ const PLUGIN_TERMINAL_PATH = 'runtime/install/plugin/terminal';
         $status = proc_get_status($this->process);
         if (!$status['running']) {
             $this->procStatusMark = 2;
+            $this->procStatusData = $status; // 保存完整的状态数据，包括exitcode
             return false;
         }
 
