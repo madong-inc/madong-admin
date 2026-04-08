@@ -13,7 +13,7 @@
 namespace app\middleware;
 
 use app\adminapi\middleware\helper\SseHelper;
-use core\jwt2\JwtToken;
+use core\jwt\JwtToken;
 use core\tool\Json;
 use Webman\Http\Request;
 use Webman\Http\Response;
@@ -90,16 +90,18 @@ class DemoEnvRouteRestrictionMiddleware implements MiddlewareInterface
         // 检查当前路径是否在限制的路由中
         foreach ($restrictedRoutes as $pattern) {
             if (preg_match("#^$pattern$#", $currentPath)) {
-                if (JwtToken::getExtendVal('user_name') == 'root') {
+                // 检查是否为 root 用户
+                $payload = (new JwtToken())->getPayloadFromRequest();
+                $userName = $payload['extra']['user_name'] ?? '';
+                if ($userName === 'root') {
                     return $handler($request);
                 }
                 
                 // 检查是否为SSE请求
                 $isSseRequest = SseHelper::isSseRequest($request);
                 
-                // SSE请求（GET方法）需要单独处理
+                // SSE请求需要单独处理
                 if ($isSseRequest) {
-                    // 直接通过连接发送SSE错误消息
                     return SseHelper::sendSseErrorViaConnection($request, '演示环境,不支持当前操作');
                 }
                 
@@ -109,7 +111,6 @@ class DemoEnvRouteRestrictionMiddleware implements MiddlewareInterface
                 }
                 
                 // 对于GET请求，如果不是SSE，默认允许（演示环境可能允许查看）
-                // 可以根据需要调整这个逻辑
             }
         }
 

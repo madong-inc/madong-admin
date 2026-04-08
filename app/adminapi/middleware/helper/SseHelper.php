@@ -93,12 +93,16 @@ class SseHelper
             // 发送SSE错误消息，传递uuid
             $connection->send(Sse::error($message, null, $uuid));
             
-        } catch (\Exception) {
+            // 发送空数据表示结束，防止前端等待更多数据
+            $connection->send(new Response(200, [], ""));
+            
+        } catch (\Exception $e) {
             // 忽略连接异常，返回普通响应
+            return self::createSseErrorResponse($message, $uuid);
         }
         
-        // 返回一个空的200响应，连接已经通过connection发送了消息
-        return new Response(200);
+        // 返回空响应结束请求
+        return new Response(200, [], '');
     }
 
     /**
