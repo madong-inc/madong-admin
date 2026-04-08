@@ -17,6 +17,7 @@ use app\api\controller\Base;
 use app\service\api\web\AdvertisementService;
 use core\tool\Json;
 use madong\swagger\annotation\response\SimpleResponse;
+use madong\swagger\attribute\AllowAnonymous;
 use OpenApi\Attributes as OA;
 use support\Request;
 use Webman\Http\Response;
@@ -43,6 +44,7 @@ final class AdvertisementController extends Base
         ]
     )]
     #[SimpleResponse(schema: [], example: '[]')]
+    #[AllowAnonymous(requireToken: false, requirePermission: false, description: '公共接口')]
     public function index(): Response
     {
         try {
@@ -57,6 +59,7 @@ final class AdvertisementController extends Base
      * 获取广告位信息
      *
      * @param Request $request
+     *
      * @return Response
      */
     #[OA\Get(
@@ -70,13 +73,14 @@ final class AdvertisementController extends Base
                 in: 'query',
                 required: false,
                 schema: new OA\Schema(type: 'string')
-            )
+            ),
         ],
         responses: [
             new OA\Response(response: 200, description: '获取成功'),
         ]
     )]
     #[SimpleResponse(schema: [], example: '[]')]
+    #[AllowAnonymous(requireToken: false, requirePermission: false, description: '公共接口')]
     public function getInfo(Request $request): Response
     {
         try {

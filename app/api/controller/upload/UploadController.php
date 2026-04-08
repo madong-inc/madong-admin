@@ -18,6 +18,7 @@ use app\service\api\upload\UploadService;
 use core\exception\handler\AdminException;
 use core\tool\Json;
 use madong\swagger\annotation\response\SimpleResponse;
+use madong\swagger\attribute\AllowAnonymous;
 use OpenApi\Attributes as OA;
 use OpenApi\Attributes\RequestBody;
 use support\Request;
@@ -59,6 +60,7 @@ final class UploadController extends Base
         )
     )]
     #[SimpleResponse(schema: [], example: [])]
+    #[AllowAnonymous(requireToken: false, requirePermission: false, description: '公共接口')]
     public function image(Request $request): \support\Response
     {
         try {
@@ -100,6 +102,7 @@ final class UploadController extends Base
         )
     )]
     #[SimpleResponse(schema: [], example: [])]
+    #[AllowAnonymous(requireToken: false, requirePermission: false, description: '公共接口')]
     public function video(Request $request): \support\Response
     {
         try {
@@ -141,6 +144,7 @@ final class UploadController extends Base
         )
     )]
     #[SimpleResponse(schema: [], example: [])]
+    #[AllowAnonymous(requireToken: false, requirePermission: false, description: '公共接口')]
     public function file(Request $request): \support\Response
     {
         try {
@@ -173,6 +177,7 @@ final class UploadController extends Base
         )
     )]
     #[SimpleResponse(schema: [], example: [])]
+    #[AllowAnonymous(requireToken: false, requirePermission: false, description: '公共接口')]
     public function fetchImage(Request $request): \support\Response
     {
         try {
@@ -206,7 +211,8 @@ final class UploadController extends Base
             ]
         )
     )]
-     #[SimpleResponse(schema: [], example: [])]
+    #[SimpleResponse(schema: [], example: [])]
+    #[AllowAnonymous(requireToken: false, requirePermission: false, description: '公共接口')]
     public function base64Image(Request $request): \support\Response
     {
         try {

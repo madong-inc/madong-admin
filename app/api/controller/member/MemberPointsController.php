@@ -19,6 +19,7 @@ use app\service\api\member\MemberPointsService;
 use core\exception\handler\UnauthorizedHttpException;
 use core\tool\Json;
 use madong\swagger\annotation\response\SimpleResponse;
+use madong\swagger\attribute\AllowAnonymous;
 use OpenApi\Attributes as OA;
 use support\Container;
 use Webman\Http\Request;
@@ -48,6 +49,7 @@ final class MemberPointsController extends Base
         ]
     )]
     #[SimpleResponse(schema: [], example: [])]
+    #[AllowAnonymous(requireToken: false, requirePermission: false, description: '公共接口')]
     public function record(Request $request): Response
     {
         $params = $request->all();
@@ -75,6 +77,7 @@ final class MemberPointsController extends Base
         ]
     )]
     #[SimpleResponse(schema: [], example: [])]
+    #[AllowAnonymous(requireToken: false, requirePermission: false, description: '公共接口')]
     public function total(): Response
     {
         try {
@@ -100,6 +103,7 @@ final class MemberPointsController extends Base
         ]
     )]
     #[SimpleResponse(schema: [], example: [])]
+    #[AllowAnonymous(requireToken: false, requirePermission: false, description: '公共接口')]
     public function getMemberLevel(): Response
     {
         try {
@@ -125,7 +129,8 @@ final class MemberPointsController extends Base
             new OA\Response(response: 400, description: '今日已签到'),
         ]
     )]
-     #[SimpleResponse(schema: [], example: [])]
+    #[SimpleResponse(schema: [], example: [])]
+    #[AllowAnonymous(requireToken: false, requirePermission: false, description: '公共接口')]
     public function memberSign(): Response
     {
         try {

@@ -8,6 +8,7 @@ use app\api\validate\auth\ThirdPartyAuthValidate;
 use app\service\api\auth\ThirdPartyAuthService;
 use core\tool\Json;
 use madong\swagger\annotation\response\SimpleResponse;
+use madong\swagger\attribute\AllowAnonymous;
 use support\Request;
 use support\Response;
 
@@ -32,6 +33,7 @@ class ThirdPartyAuthController extends Base
         ]
     )]
     #[SimpleResponse(schema: [], example: [])]
+    #[AllowAnonymous(requireToken: false, requirePermission: false, description: '公共接口')]
     public function qqCallback(Request $request): Response
     {
         try {
@@ -59,6 +61,7 @@ class ThirdPartyAuthController extends Base
         ]
     )]
     #[SimpleResponse(schema: [], example: [])]
+    #[AllowAnonymous(requireToken: false, requirePermission: false, description: '公共接口')]
     public function wechatCallback(Request $request): Response
     {
         try {
@@ -86,6 +89,7 @@ class ThirdPartyAuthController extends Base
         ]
     )]
     #[SimpleResponse(schema: [], example: [])]
+    #[AllowAnonymous(requireToken: false, requirePermission: false, description: '公共接口')]
     public function weiboCallback(Request $request): Response
     {
         try {
@@ -113,6 +117,7 @@ class ThirdPartyAuthController extends Base
         ]
     )]
     #[SimpleResponse(schema: [], example: [])]
+    #[AllowAnonymous(requireToken: false, requirePermission: false, description: '公共接口')]
     public function douyinCallback(Request $request): Response
     {
         try {
@@ -134,6 +139,7 @@ class ThirdPartyAuthController extends Base
         tags: ['第三方认证'],
     )]
     #[SimpleResponse(schema: [], example: [])]
+    #[AllowAnonymous(requireToken: false, requirePermission: false, description: '公共接口')]
     public function getThirdPartyList(): Response
     {
         try {
@@ -171,6 +177,7 @@ class ThirdPartyAuthController extends Base
         tags: ['第三方认证']
     )]
     #[SimpleResponse(schema: [], example: [])]
+    #[AllowAnonymous(requireToken: false, requirePermission: false, description: '公共接口')]
     public function bindThirdParty(Request $request): Response
     {
         try {
@@ -195,6 +202,7 @@ class ThirdPartyAuthController extends Base
         ]
     )]
     #[SimpleResponse(schema: [], example: [])]
+    #[AllowAnonymous(requireToken: false, requirePermission: false, description: '公共接口')]
     public function unbindThirdParty(Request $request, int $platform): Response
     {
         try {
@@ -222,6 +230,7 @@ class ThirdPartyAuthController extends Base
         tags: ['第三方认证'],
     )]
     #[SimpleResponse(schema: [], example: [])]
+    #[AllowAnonymous(requireToken: false, requirePermission: false, description: '公共接口')]
     public function generateBindQrCode(Request $request): Response
     {
         try {
@@ -246,6 +255,7 @@ class ThirdPartyAuthController extends Base
         ],
     )]
     #[SimpleResponse(schema: [], example: [])]
+    #[AllowAnonymous(requireToken: false, requirePermission: false, description: '公共接口')]
     public function checkBindQrStatus(Request $request): Response
     {
         try {

@@ -7,6 +7,7 @@ use app\api\controller\Base;
 use app\service\api\auth\WechatService;
 use core\tool\Json;
 use madong\swagger\annotation\response\SimpleResponse;
+use madong\swagger\attribute\AllowAnonymous;
 use OpenApi\Attributes as OA;
 use Webman\Http\Request;
 use Webman\Http\Response;
@@ -41,6 +42,7 @@ final class WechatController extends Base
         ]
     )]
     #[SimpleResponse(schema: [], example: [])]
+    #[AllowAnonymous(requireToken: false, requirePermission: false, description: '公共接口')]
     public function wechatLogin(Request $request): Response
     {
         $data   = $request->post();
@@ -70,6 +72,7 @@ final class WechatController extends Base
         ]
     )]
     #[SimpleResponse(schema: [], example: [])]
+    #[AllowAnonymous(requireToken: false, requirePermission: false, description: '公共接口')]
     public function weappLogin(Request $request): Response
     {
         $data   = $request->post();
@@ -101,6 +104,7 @@ final class WechatController extends Base
         ]
     )]
     #[SimpleResponse(schema: [], example: [])]
+    #[AllowAnonymous(requireToken: false, requirePermission: false, description: '公共接口')]
     public function checkWechatScanStatus(Request $request): Response
     {
         try {
@@ -124,6 +128,7 @@ final class WechatController extends Base
         ]
     )]
     #[SimpleResponse(schema: [], example: [])]
+    #[AllowAnonymous(requireToken: false, requirePermission: false, description: '公共接口')]
     public function checkWechatAvailability(): Response
     {
         $result = $this->service->checkWechatAvailability();

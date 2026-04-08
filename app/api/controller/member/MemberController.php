@@ -10,6 +10,7 @@ use app\service\api\member\MemberService;
 use core\exception\handler\UnauthorizedHttpException;
 use core\tool\Json;
 use madong\swagger\annotation\response\SimpleResponse;
+use madong\swagger\attribute\AllowAnonymous;
 use OpenApi\Attributes as OA;
 use support\Container;
 use Webman\Http\Request;
@@ -37,6 +38,7 @@ final class MemberController extends Base
         ]
     )]
     #[SimpleResponse(schema: [], example: [])]
+    #[AllowAnonymous(requireToken: false, requirePermission: false, description: '公共接口')]
     public function getProfile(): Response
     {
         try {
@@ -88,6 +90,7 @@ final class MemberController extends Base
         ]
     )]
     #[SimpleResponse(schema: [], example: [])]
+    #[AllowAnonymous(requireToken: false, requirePermission: false, description: '公共接口')]
     public function update(Request $request): Response
     {
         try {
@@ -127,6 +130,7 @@ final class MemberController extends Base
         ]
     )]
     #[SimpleResponse(schema: [], example: [])]
+    #[AllowAnonymous(requireToken: false, requirePermission: false, description: '公共接口')]
     public function uploadAvatar(Request $request): Response
     {
         try {
@@ -163,6 +167,7 @@ final class MemberController extends Base
         ]
     )]
     #[SimpleResponse(schema: [], example: [])]
+    #[AllowAnonymous(requireToken: false, requirePermission: false, description: '公共接口')]
     public function bindPhone(Request $request): Response
     {
         $data   = $request->post();
@@ -191,6 +196,7 @@ final class MemberController extends Base
         ]
     )]
     #[SimpleResponse(schema: [], example: [])]
+    #[AllowAnonymous(requireToken: false, requirePermission: false, description: '公共接口')]
     public function changePassword(Request $request): Response
     {
         try {
@@ -212,6 +218,7 @@ final class MemberController extends Base
         ]
     )]
     #[SimpleResponse(schema: [], example: [])]
+    #[AllowAnonymous(requireToken: false, requirePermission: false, description: '公共接口')]
     public function getAddressList(): Response
     {
         $result = $this->service->getAddressList();
@@ -244,6 +251,7 @@ final class MemberController extends Base
         ]
     )]
     #[SimpleResponse(schema: [], example: [])]
+    #[AllowAnonymous(requireToken: false, requirePermission: false, description: '公共接口')]
     public function createAddress(Request $request): Response
     {
         $data   = $request->post();
@@ -301,6 +309,7 @@ final class MemberController extends Base
         ]
     )]
     #[SimpleResponse(schema: [], example: [])]
+    #[AllowAnonymous(requireToken: false, requirePermission: false, description: '公共接口')]
     public function deleteAddress(int $id): Response
     {
         $result = $this->service->deleteAddress($id);

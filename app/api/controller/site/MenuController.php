@@ -7,9 +7,9 @@ use app\api\controller\Base;
 use app\service\api\web\MenuService;
 use core\tool\Json;
 use madong\swagger\annotation\response\SimpleResponse;
+use madong\swagger\attribute\AllowAnonymous;
 use OpenApi\Attributes as OA;
 use Webman\Http\Response;
-
 
 #[OA\Tag(name: '导航菜单模块')]
 final class MenuController extends Base
@@ -33,6 +33,7 @@ final class MenuController extends Base
         ]
     )]
     #[SimpleResponse(schema: [], example: '[]')]
+    #[AllowAnonymous(requireToken: false, requirePermission: false, description: '公共接口')]
     public function index(): Response
     {
         try {

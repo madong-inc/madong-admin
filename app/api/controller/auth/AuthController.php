@@ -11,6 +11,7 @@ use core\captcha\Captcha;
 use core\tool\Json;
 use Exception;
 use madong\swagger\annotation\response\SimpleResponse;
+use madong\swagger\attribute\AllowAnonymous;
 use OpenApi\Attributes as OA;
 use support\Container;
 use Webman\Http\Request;
@@ -49,6 +50,7 @@ final class AuthController extends Base
         ]
     )]
     #[SimpleResponse(schema: [], example: ['token' => 'string'])]
+    #[AllowAnonymous(requireToken: false, requirePermission: false, description: '公共接口')]
     public function login(Request $request): Response
     {
         try {
@@ -85,6 +87,7 @@ final class AuthController extends Base
         tags: ['认证'],
     )]
     #[SimpleResponse(schema: [], example: ['token' => 'string'])]
+    #[AllowAnonymous(requireToken: false, requirePermission: false, description: '公共接口')]
     public function loginWithMobile(Request $request): Response
     {
         $data   = $request->post();
@@ -104,6 +107,7 @@ final class AuthController extends Base
         ]
     )]
     #[SimpleResponse(schema: [], example: [])]
+    #[AllowAnonymous(requireToken: false, requirePermission: false, description: '公共接口')]
     /** @Route(methods=["POST"], path="/auth/logout") */
     public function logout(): Response
     {
@@ -133,6 +137,7 @@ final class AuthController extends Base
         tags: ['认证'],
     )]
     #[SimpleResponse(schema: [], example: [])]
+    #[AllowAnonymous(requireToken: false, requirePermission: false, description: '公共接口')]
     public function register(Request $request): Response
     {
         try {
@@ -174,6 +179,7 @@ final class AuthController extends Base
         tags: ['认证']
     )]
     #[SimpleResponse(schema: [], example: [])]
+    #[AllowAnonymous(requireToken: false, requirePermission: false, description: '公共接口')]
     public function registerWithMobile(Request $request): Response
     {
         try {
@@ -205,6 +211,7 @@ final class AuthController extends Base
         tags: ['认证']
     )]
     #[SimpleResponse(schema: [], example: [])]
+    #[AllowAnonymous(requireToken: false, requirePermission: false, description: '公共接口')]
     public function bindMobile(Request $request): Response
     {
         $data   = $request->post();
@@ -232,6 +239,7 @@ final class AuthController extends Base
         tags: ['认证']
     )]
     #[SimpleResponse(schema: [], example: [])]
+    #[AllowAnonymous(requireToken: false, requirePermission: false, description: '公共接口')]
     public function verifyEmail(Request $request): Response
     {
         try {
@@ -263,11 +271,12 @@ final class AuthController extends Base
         tags: ['认证']
     )]
     #[SimpleResponse(schema: [], example: [])]
+    #[AllowAnonymous(requireToken: false, requirePermission: false, description: '公共接口')]
     public function sendEmailCode(Request $request): Response
     {
         try {
-            $email = $request->post('email');
-            $captchaKey = $request->post('captcha_key');
+            $email       = $request->post('email');
+            $captchaKey  = $request->post('captcha_key');
             $captchaCode = $request->post('captcha_code');
 
             // 验证图片验证码
@@ -280,7 +289,7 @@ final class AuthController extends Base
                 throw new Exception('图片验证码错误', 400);
             }
             $this->service->sendEmailCode($email);
-            return Json::success('success',[]);
+            return Json::success('success', []);
         } catch (Exception $e) {
             return Json::fail($e->getMessage());
         }
@@ -307,12 +316,13 @@ final class AuthController extends Base
         tags: ['认证']
     )]
     #[SimpleResponse(schema: [], example: [])]
+    #[AllowAnonymous(requireToken: false, requirePermission: false, description: '公共接口')]
     public function forgetPassword(Request $request): Response
     {
         try {
-            $data   = $request->post();
+            $data = $request->post();
             $this->service->forgetPassword($data);
-            return Json::success('操作成功',[]);
+            return Json::success('操作成功', []);
         } catch (Exception $e) {
             return Json::fail($e->getMessage());
         }
@@ -331,17 +341,17 @@ final class AuthController extends Base
         ]
     )]
     #[SimpleResponse(schema: [], example: ['access_token' => 'string', 'refresh_token' => 'string'])]
+    #[AllowAnonymous(requireToken: false, requirePermission: false, description: '公共接口')]
     public function refresh(): Response
     {
         try {
-            $jwt = new \core\jwt\JwtToken();
+            $jwt   = new \core\jwt\JwtToken();
             $token = $jwt->refresh();
             return Json::success('ok', [
-                'access_token' => $token->accessToken,
-                'refresh_token' => $token->refreshToken
+                'access_token'  => $token->accessToken,
+                'refresh_token' => $token->refreshToken,
             ]);
         } catch (\Throwable $e) {
-            var_dump($e->getMessage());
             return Json::fail($e->getMessage(), [], 401);
         }
     }

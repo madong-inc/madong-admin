@@ -6,6 +6,7 @@ namespace app\api\controller\system;
 use app\api\controller\Base;
 use app\service\api\system\WechatService;
 use madong\swagger\annotation\response\SimpleResponse;
+use madong\swagger\attribute\AllowAnonymous;
 use OpenApi\Attributes as OA;
 use Webman\Http\Request;
 use Webman\Http\Response;
@@ -34,6 +35,7 @@ final class WechatController extends Base
         ]
     )]
     #[SimpleResponse(schema: [], example: [])]
+    #[AllowAnonymous(requireToken: false, requirePermission: false, description: '公共接口')]
     public function getWechatAuthCode(Request $request): Response
     {
         $params = $request->get();
@@ -57,6 +59,7 @@ final class WechatController extends Base
         ]
     )]
     #[SimpleResponse(schema: [], example: [])]
+    #[AllowAnonymous(requireToken: false, requirePermission: false, description: '公共接口')]
     public function syncWechatUserInfo(Request $request): Response
     {
         $params = $request->get();
@@ -77,6 +80,7 @@ final class WechatController extends Base
         ]
     )]
     #[SimpleResponse(schema: [], example: [])]
+    #[AllowAnonymous(requireToken: false, requirePermission: false, description: '公共接口')]
     public function getWechatJssdkConfig(Request $request): Response
     {
         $params = $request->get();

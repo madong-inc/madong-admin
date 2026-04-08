@@ -17,6 +17,7 @@ use app\api\controller\Base;
 use app\service\api\web\LinkService;
 use core\tool\Json;
 use madong\swagger\annotation\response\SimpleResponse;
+use madong\swagger\attribute\AllowAnonymous;
 use OpenApi\Attributes as OA;
 use support\Request;
 use Webman\Http\Response;
@@ -33,6 +34,7 @@ final class LinkController extends Base
      * 获取链接列表
      *
      * @param Request $request
+     *
      * @return Response
      */
     #[OA\Get(
@@ -46,17 +48,18 @@ final class LinkController extends Base
                 in: 'query',
                 required: false,
                 schema: new OA\Schema(type: 'string', default: 'footer')
-            )
+            ),
         ],
         responses: [
             new OA\Response(response: 200, description: '获取成功'),
         ]
     )]
     #[SimpleResponse(schema: [], example: '[]')]
+    #[AllowAnonymous(requireToken: false, requirePermission: false, description: '公共接口')]
     public function index(Request $request): Response
     {
         try {
-            $type = $request->get('type', 'footer');
+            $type   = $request->get('type', 'footer');
             $result = $this->service->getLinksByType($type);
             return Json::success('获取成功', $result);
         } catch (\Exception $e) {
@@ -78,6 +81,7 @@ final class LinkController extends Base
         ]
     )]
     #[SimpleResponse(schema: [], example: '[]')]
+    #[AllowAnonymous(requireToken: false, requirePermission: false, description: '公共接口')]
     public function getAll(): Response
     {
         try {

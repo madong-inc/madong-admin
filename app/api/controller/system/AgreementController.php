@@ -6,6 +6,7 @@ namespace app\api\controller\system;
 use app\api\controller\Base;
 use app\service\api\system\AgreementService;
 use madong\swagger\annotation\response\SimpleResponse;
+use madong\swagger\attribute\AllowAnonymous;
 use OpenApi\Attributes as OA;
 use Webman\Http\Response;
 
@@ -30,6 +31,7 @@ final class AgreementController extends Base
         ]
     )]
     #[SimpleResponse(schema: [], example: [])]
+    #[AllowAnonymous(requireToken: false, requirePermission: false, description: '公共接口')]
     public function getAgreementContent(string $key): Response
     {
         $result = $this->service->getAgreementContent($key);

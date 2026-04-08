@@ -8,6 +8,7 @@ use app\service\api\system\CaptchaService;
 use core\captcha\Captcha;
 use core\tool\Json;
 use madong\swagger\annotation\response\SimpleResponse;
+use madong\swagger\attribute\AllowAnonymous;
 use OpenApi\Attributes as OA;
 use support\Request;
 use Webman\Http\Response;
@@ -35,6 +36,7 @@ final class CaptchaController extends Base
         ]
     )]
     #[SimpleResponse(schema: [], example: [])]
+    #[AllowAnonymous(requireToken: false, requirePermission: false, description: '公共接口')]
     public function captcha(Request $request): \support\Response
     {
         try {

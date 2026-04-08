@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace app\api\controller\system;
 
-
-
 use app\api\controller\Base;
 use app\api\middleware\ApiAccessTokenMiddleware;
 use app\api\schema\request\system\ConfigGroupQueryRequest;
@@ -55,6 +53,7 @@ final class ConfigController extends Base
         ]
     )]
     #[SimpleResponse(schema: [], example: '{"site_open": "1","site_url": "http://127.0.0.1:8001","site_name": "madong-admin","site_logo": "https://madong.tech/assets/images/logo.svg","site_network_security": "2024042441号-2","site_description": "快速开发框架","site_record_no": "2024042442","site_icp_url": "https://beian.miit.gov.cn/","site_network_security_url": ""}')]
+    #[AllowAnonymous(requireToken: false, requirePermission: false, description: '公共接口')]
     public function getByGroup(Request $request, string $group_code): \support\Response
     {
         try {
@@ -91,10 +90,10 @@ final class ConfigController extends Base
         schema: new OA\Schema(type: "string"),
     )]
     #[SimpleResponse(schema: [], example: ' {"site_open": "1","site_url": "http://127.0.0.1:8001"}')]
+    #[AllowAnonymous(requireToken: false, requirePermission: false, description: '公共接口')]
     public function getByCode(Request $request, string $code): \support\Response
     {
         try {
-            var_dump('执行');
             // 参数验证
             if (empty($code)) {
                 return Json::fail('配置编码不能为空');
@@ -130,6 +129,7 @@ final class ConfigController extends Base
         ]
     )]
     #[SimpleResponse(schema: [], example: [])]
+    #[AllowAnonymous(requireToken: false, requirePermission: false, description: '公共接口')]
     public function getValue(Request $request, string $code): \support\Response
     {
         try {
@@ -208,6 +208,7 @@ final class ConfigController extends Base
         schema: new OA\Schema(type: "boolean", default: false),
     )]
     #[SimpleResponse(schema: [], example: '{"site": {"site_name": "网站名称"}, "oss": {"accessKeyId": "xxx"}}')]
+    #[AllowAnonymous(requireToken: false, requirePermission: false, description: '公共接口')]
     public function getAllGrouped(Request $request): \support\Response
     {
         try {

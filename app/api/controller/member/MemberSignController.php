@@ -20,6 +20,7 @@ use app\service\api\member\MemberSignService;
 use core\exception\handler\UnauthorizedHttpException;
 use core\tool\Json;
 use madong\swagger\annotation\response\SimpleResponse;
+use madong\swagger\attribute\AllowAnonymous;
 use OpenApi\Attributes as OA;
 use support\annotation\Middleware;
 use support\Container;
@@ -46,6 +47,7 @@ final class MemberSignController extends Base
         ]
     )]
     #[SimpleResponse(schema: [], example: [])]
+    #[AllowAnonymous(requireToken: false, requirePermission: false, description: '公共接口')]
     public function sign(): Response
     {
         try {
@@ -63,8 +65,6 @@ final class MemberSignController extends Base
                 'ip' => request()->getRealIp(),
                 'ua' => request()->header('user-agent'),
             ];
-            var_dump(89);
-
             // 调用服务层执行签到
             $result = $this->service->sign($memberId, $deviceInfo);
 
@@ -93,6 +93,7 @@ final class MemberSignController extends Base
         ]
     )]
     #[SimpleResponse(schema: [], example: [])]
+    #[AllowAnonymous(requireToken: false, requirePermission: false, description: '公共接口')]
     public function getStatus(): Response
     {
         try {
@@ -125,6 +126,7 @@ final class MemberSignController extends Base
         ]
     )]
     #[SimpleResponse(schema: [], example: [])]
+    #[AllowAnonymous(requireToken: false, requirePermission: false, description: '公共接口')]
     public function getCalendar(Request $request): Response
     {
         try {
@@ -166,6 +168,7 @@ final class MemberSignController extends Base
         ]
     )]
     #[SimpleResponse(schema: [], example: [])]
+    #[AllowAnonymous(requireToken: false, requirePermission: false, description: '公共接口')]
     public function getStatistics(Request $request): Response
     {
         try {
