@@ -32,14 +32,14 @@ return [
     'commands' => [
         'test' => [
             'default' => [
-                'cwd' => '{project_root}/admin',
+                'cwd' => '{project_root}/frontend/admin',
                 'command' => 'pnpm run test',
                 'description' => '运行测试命令',
             ],
         ],
         'install' => [
             'admin' => [
-                'cwd' => '{project_root}/admin',
+                'cwd' => '{project_root}/frontend/admin',
                 'command' => '{package_manager} install',
                 'description' => '安装Admin前端依赖',
                 'variables' => [
@@ -47,7 +47,7 @@ return [
                 ],
             ],
             'web' => [
-                'cwd' => '{project_root}/web',
+                'cwd' => '{project_root}/frontend/web',
                 'command' => '{package_manager} install',
                 'description' => '安装Web前端依赖',
                 'variables' => [
@@ -55,7 +55,7 @@ return [
                 ],
             ],
             'h5' => [
-                'cwd' => '{project_root}/uni-app',
+                'cwd' => '{project_root}/frontend/uni-app',
                 'command' => '{package_manager} install',
                 'description' => '安装H5前端依赖',
                 'variables' => [
@@ -63,7 +63,7 @@ return [
                 ],
             ],
             'app' => [
-                'cwd' => '{project_root}/uni-app',
+                'cwd' => '{project_root}/frontend/uni-app',
                 'command' => '{package_manager} install',
                 'description' => '安装App前端依赖',
                 'variables' => [
@@ -78,7 +78,7 @@ return [
         ],
         'build' => [
             'admin' => [
-                'cwd' => '{project_root}/admin',
+                'cwd' => '{project_root}/frontend/admin',
                 'command' => '{package_manager} run build',
                 'description' => '构建Admin前端',
                 'variables' => [
@@ -90,7 +90,7 @@ return [
                 ],
             ],
             'web' => [
-                'cwd' => '{project_root}/web',
+                'cwd' => '{project_root}/frontend/web',
                 'command' => '{package_manager} run build',
                 'description' => '构建Web前端',
                 'variables' => [
@@ -102,7 +102,7 @@ return [
                 ],
             ],
             'h5' => [
-                'cwd' => '{project_root}/uni-app',
+                'cwd' => '{project_root}/frontend/uni-app',
                 'command' => '{package_manager} run build:h5',
                 'description' => '构建H5前端',
                 'variables' => [
@@ -114,7 +114,7 @@ return [
                 ],
             ],
             'app' => [
-                'cwd' => '{project_root}/uni-app',
+                'cwd' => '{project_root}/frontend/uni-app',
                 'command' => '{package_manager} run build:app',
                 'description' => '构建App前端',
                 'variables' => [
@@ -197,7 +197,7 @@ return [
     'frontend_programs' => [
         'admin' => [
             'enabled' => true,
-            'source_dir' => '{project_root}/admin/dist',
+            'source_dir' => '{project_root}/frontend/admin/dist',
             'target_dir' => '{backend_root}/public/admin',
             'copy_mappings' => [
                 '*' => '.',
@@ -214,7 +214,7 @@ return [
         ],
         'web' => [
             'enabled' => true,
-            'source_dir' => '{project_root}/web/.output/public',
+            'source_dir' => '{project_root}/frontend/web/.output/public',
             'target_dir' => '{backend_root}/public/web',
             'copy_mappings' => [
                 '*' => '.',
@@ -231,7 +231,7 @@ return [
         ],
         'h5' => [
             'enabled' => true,
-            'source_dir' => '{project_root}/uni-app/dist/build/h5',
+            'source_dir' => '{project_root}/frontend/uni-app/dist/build/h5',
             'target_dir' => '{backend_root}/public/h5',
             'copy_mappings' => [
                 '*' => '.',
@@ -248,7 +248,7 @@ return [
         ],
         'app' => [
             'enabled' => true,
-            'source_dir' => '{project_root}/uni-app/dist/build/app',
+            'source_dir' => '{project_root}/frontend/uni-app/dist/build/app',
             'target_dir' => '{backend_root}/public/app',
             'copy_mappings' => [
                 '*' => '.',
@@ -267,21 +267,21 @@ return [
             'enabled' => true,
             'platforms' => [
                 'h5' => [
-                    'source_dir' => '{project_root}/uni-app/dist/build/h5',
+                    'source_dir' => '{project_root}/frontend/uni-app/dist/build/h5',
                     'target_dir' => '{backend_root}/public/uni-app/h5',
                     'copy_mappings' => [
                         '*' => '.',
                     ],
                 ],
                 'mp-weixin' => [
-                    'source_dir' => '{project_root}/uni-app/dist/build/mp-weixin',
+                    'source_dir' => '{project_root}/frontend/uni-app/dist/build/mp-weixin',
                     'target_dir' => '{backend_root}/public/uni-app/mp-weixin',
                     'copy_mappings' => [
                         '*' => '.',
                     ],
                 ],
                 'app-plus' => [
-                    'source_dir' => '{project_root}/uni-app/dist/build/app-plus',
+                    'source_dir' => '{project_root}/frontend/uni-app/dist/build/app-plus',
                     'target_dir' => '{backend_root}/public/uni-app/app-plus',
                     'copy_mappings' => [
                         '*' => '.',

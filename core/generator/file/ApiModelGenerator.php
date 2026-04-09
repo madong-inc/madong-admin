@@ -62,7 +62,7 @@ class ApiModelGenerator implements FileGeneratorInterface
             }
         }
         
-        $content = $this->templateRenderer->render('admin/api/model.stub', [
+        $content = $this->templateRenderer->render('admin/api/types.stub', [
             'class_name' => $className,
             'module_name' => $moduleName,
             'row_type_name' => $rowTypeName,

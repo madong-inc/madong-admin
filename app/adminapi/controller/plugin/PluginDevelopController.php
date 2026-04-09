@@ -92,11 +92,11 @@ final class PluginDevelopController extends Crud
     #[Permission(code: 'plugin:develop:list')]
     #[PageResponse(schema: [], example: [[
                                              "id"           => "2032735331152958596",
-                                             "title"        => "官网管理",
+                                             "name"        => "官网管理",
                                              "icon"         => null,
-                                             "key"          => "official",
-                                             "desc"         => "官网管理插件，用于搭建和管理企业官方网站",
-                                             "status"       => 1,
+                                             "code"          => "official",
+                                             "description"         => "官网管理插件，用于搭建和管理企业官方网站",
+                                             "enabled"       => 1,
                                              "author"       => "Mr.April",
                                              "version"      => "1.0.0",
                                              "cover"        => null,

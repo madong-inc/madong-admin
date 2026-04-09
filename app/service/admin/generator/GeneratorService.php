@@ -197,13 +197,13 @@ class GeneratorService extends BaseService
     /**
      * 更新代码生成器表
      *
-     * @param int   $id
-     * @param array $data
+     * @param string $id
+     * @param array  $data
      *
      * @throws \Throwable
      * @throws \core\exception\handler\AdminException
      */
-    public function update(int $id, array $data): void
+    public function update(string $id, array $data): void
     {
         $this->transaction(function () use ($id, $data) {
             try {

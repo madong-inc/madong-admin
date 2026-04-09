@@ -68,7 +68,7 @@ class PluginDevelopService extends PluginBaseService
                 'code'    => 200,
                 'message' => '插件模板生成成功',
                 'data'    => [
-                    'frontend_path' => $this->getFrontendPath($pluginName, $frontendType),
+                    'frontend_path' => $this->getPluginFrontendPath($pluginName, $frontendType),
                     'backend_path'  => $this->getBackendPath($pluginName),
                 ],
             ];
@@ -89,7 +89,7 @@ class PluginDevelopService extends PluginBaseService
      */
     private function generateFrontendStructure(string $pluginName, string $frontendType): void
     {
-        $frontendPath = $this->getFrontendPath($pluginName, $frontendType);
+        $frontendPath = $this->getPluginFrontendPath($pluginName, $frontendType);
 
         // 创建前端目录结构（参考 official 模块）
         $directories = [
@@ -161,7 +161,7 @@ class PluginDevelopService extends PluginBaseService
      */
     private function generateFrontendFiles(string $pluginName, string $pluginTitle, string $pluginDescription, string $frontendType): void
     {
-        $frontendPath    = $this->getFrontendPath($pluginName, $frontendType);
+        $frontendPath    = $this->getPluginFrontendPath($pluginName, $frontendType);
         $camelPluginName = $this->toCamelCase($pluginName);
         $pluginKey       = $this->toKebabCase($pluginName);
 
@@ -580,14 +580,14 @@ class PluginDevelopService extends PluginBaseService
     }
 
     /**
-     * 获取前端路径
+     * 获取插件前端路径
      *
      * @param string $pluginName   插件名称
      * @param string $frontendType 前端类型，默认为 admin
      *
      * @return string
      */
-    private function getFrontendPath(string $pluginName, string $frontendType = 'admin'): string
+    private function getPluginFrontendPath(string $pluginName, string $frontendType = 'admin'): string
     {
         // 使用 base_path() 获取项目根目录
         $basePath = base_path();
@@ -623,7 +623,7 @@ class PluginDevelopService extends PluginBaseService
             $foundFrontendType = null;
 
             foreach ($frontendTypes as $type) {
-                $path = $this->getFrontendPath($pluginName, $type);
+                $path = $this->getPluginFrontendPath($pluginName, $type);
                 if (is_dir($path)) {
                     $foundFrontendPath = $path;
                     $foundFrontendType = $type;

@@ -31,7 +31,7 @@ trait TemplateTrait
     protected function copyTemplateDir(string $endpoint): void
     {
         $resourceDir = $this->getConfig('resource.template', 'template');
-        $targetBase = $this->getConfig("template.{$endpoint}", "resource/view/{$endpoint}/plugin");
+        $targetBase = $this->getConfig("template.{$endpoint}");
 
         $sourceDir = $this->pluginPath . '/resource/' . $resourceDir . '/' . $endpoint;
         $targetDir = $this->getProjectRoot() . '/' . $targetBase . '/' . $this->pluginName;
@@ -96,7 +96,7 @@ trait TemplateTrait
      */
     protected function deleteTemplateDir(string $endpoint): void
     {
-        $targetBase = $this->getConfig("template.{$endpoint}", "resource/view/{$endpoint}/plugin");
+        $targetBase = $this->getConfig("template.{$endpoint}");
 
         $targetDir = $this->getProjectRoot() . '/' . $targetBase . '/' . $this->pluginName;
 
@@ -150,5 +150,25 @@ trait TemplateTrait
     protected function getProjectRoot(): string
     {
         return dirname(base_path());
+    }
+
+    /**
+     * 获取前端基础目录
+     * 前端代码统一在 frontend 目录下
+     */
+    protected function getFrontendPath(): string
+    {
+        return $this->getProjectRoot() . DIRECTORY_SEPARATOR . 'frontend';
+    }
+
+    /**
+     * 获取前端指定项目目录
+     *
+     * @param string $frontendType 前端类型（admin/web/uni-app）
+     * @return string 前端项目目录
+     */
+    protected function getFrontendProjectPath(string $frontendType): string
+    {
+        return $this->getFrontendPath() . DIRECTORY_SEPARATOR . $frontendType;
     }
 }

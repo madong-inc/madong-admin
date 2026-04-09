@@ -213,7 +213,7 @@ final class PluginBuildService extends PluginBaseService
      */
     public function packageAdmin(): true
     {
-        $sourcePath = $this->project_path . 'admin' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'addon' . DIRECTORY_SEPARATOR . $this->plugin . DIRECTORY_SEPARATOR;
+        $sourcePath = $this->getFrontendProjectPath('admin') . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'addon' . DIRECTORY_SEPARATOR . $this->plugin . DIRECTORY_SEPARATOR;
         if (!is_dir($sourcePath)) {
             return true;
         }
@@ -222,7 +222,7 @@ final class PluginBuildService extends PluginBaseService
         $this->copyDirectoryWithCleanup($sourcePath, $targetPath);
 
         // 打包admin icon文件
-        $iconSourcePath = $this->project_path . 'admin' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'styles' . DIRECTORY_SEPARATOR . 'icon' . DIRECTORY_SEPARATOR . 'addon' . DIRECTORY_SEPARATOR . $this->plugin;
+        $iconSourcePath = $this->getFrontendProjectPath('admin') . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'styles' . DIRECTORY_SEPARATOR . 'icon' . DIRECTORY_SEPARATOR . 'addon' . DIRECTORY_SEPARATOR . $this->plugin;
         $iconTargetPath = $targetPath . 'icon' . DIRECTORY_SEPARATOR;
 
         if (is_dir($iconSourcePath)) {
@@ -239,7 +239,7 @@ final class PluginBuildService extends PluginBaseService
      */
     public function packageUniapp(): true
     {
-        $sourcePath = $this->project_path . 'uni-app' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'addon' . DIRECTORY_SEPARATOR . $this->plugin . DIRECTORY_SEPARATOR;
+        $sourcePath = $this->getFrontendProjectPath('uni-app') . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'addon' . DIRECTORY_SEPARATOR . $this->plugin . DIRECTORY_SEPARATOR;
         if (!is_dir($sourcePath)) {
             return true;
         }
@@ -258,7 +258,7 @@ final class PluginBuildService extends PluginBaseService
      */
     public function buildUniappPagesJson(): true
     {
-        $pagesJsonPath = $this->project_path . 'uni-app' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'pages.json';
+        $pagesJsonPath = $this->getFrontendProjectPath('uni-app') . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'pages.json';
         if (!file_exists($pagesJsonPath)) {
             return true;
         }
@@ -303,8 +303,8 @@ final class PluginBuildService extends PluginBaseService
      */
     public function buildUniappLangJson(): true
     {
-        $zhJsonPath = $this->project_path . 'uni-app' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'locale' . DIRECTORY_SEPARATOR . 'zh-Hans.json';
-        $enJsonPath = $this->project_path . 'uni-app' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'locale' . DIRECTORY_SEPARATOR . 'en.json';
+        $zhJsonPath = $this->getFrontendProjectPath('uni-app') . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'locale' . DIRECTORY_SEPARATOR . 'zh-Hans.json';
+        $enJsonPath = $this->getFrontendProjectPath('uni-app') . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'locale' . DIRECTORY_SEPARATOR . 'en.json';
 
         if (!file_exists($zhJsonPath) || !file_exists($enJsonPath)) {
             return true;
@@ -349,7 +349,7 @@ final class PluginBuildService extends PluginBaseService
      */
     public function packageWeb(): true
     {
-        $sourcePath = $this->project_path . 'web' . DIRECTORY_SEPARATOR . 'addon' . DIRECTORY_SEPARATOR . $this->plugin . DIRECTORY_SEPARATOR;
+        $sourcePath = $this->getFrontendProjectPath('web') . DIRECTORY_SEPARATOR . 'addon' . DIRECTORY_SEPARATOR . $this->plugin . DIRECTORY_SEPARATOR;
         if (!is_dir($sourcePath)) {
             return true;
         }
@@ -358,7 +358,7 @@ final class PluginBuildService extends PluginBaseService
         $this->copyDirectoryWithCleanup($sourcePath, $targetPath);
 
         // 处理布局文件
-        $layoutSourcePath = $this->project_path . 'web' . DIRECTORY_SEPARATOR . 'layouts' . DIRECTORY_SEPARATOR . $this->plugin;
+        $layoutSourcePath = $this->getFrontendProjectPath('web') . DIRECTORY_SEPARATOR . 'layouts' . DIRECTORY_SEPARATOR . $this->plugin;
         if (is_dir($layoutSourcePath)) {
             $layoutTargetPath = $targetPath . 'layouts' . DIRECTORY_SEPARATOR . $this->plugin;
             $this->copyDirectoryWithCleanup($layoutSourcePath, $layoutTargetPath);

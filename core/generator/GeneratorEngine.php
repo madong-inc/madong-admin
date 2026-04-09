@@ -425,9 +425,9 @@ class GeneratorEngine
         if ($sceneType === 'admin') {
             // 前端场景
             $template = $this->config['template'] ?? 'app';
-            // 无论是 app 模式还是插件模式，前端代码都生成在后端代码根目录的兄弟节点 admin 目录下
-            $frontendRoot = dirname(base_path()) . DS . 'admin';
-            $path = 'admin' . str_replace($frontendRoot, '', $fullPath);
+            // 无论是 app 模式还是插件模式，前端代码都统一生成在 frontend/admin 目录下
+            $frontendRoot = dirname(base_path()) . DS . 'frontend' . DS . 'admin';
+            $path = 'frontend/admin' . str_replace($frontendRoot, '', $fullPath);
         } else {
             // 后端场景，使用当前后端根目录名称作为前缀
             $backendRootName = basename(base_path());

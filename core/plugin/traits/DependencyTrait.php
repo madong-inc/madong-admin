@@ -79,10 +79,10 @@ trait DependencyTrait
 
         $projectRoot = $this->getProjectRoot();
         
-        // 合并 Admin 端依赖
+        // 合并 Admin 端依赖（前端代码统一在 frontend 目录下）
         $adminConfig = $this->getConfig('dependencies.admin', []);
         if (!empty($adminConfig['enabled'])) {
-            $adminPath = $projectRoot . '/admin';
+            $adminPath = $this->getFrontendProjectPath('admin');
             $this->mergeNpmDeps($npmRequire['admin'] ?? [], $adminPath, 'Admin', $adminConfig);
             $this->mergeNpmDeps($npmRequire['common'] ?? [], $adminPath, 'Admin (common)', $adminConfig);
         }
@@ -90,7 +90,7 @@ trait DependencyTrait
         // 合并 Web 端依赖
         $webConfig = $this->getConfig('dependencies.web', []);
         if (!empty($webConfig['enabled'])) {
-            $webPath = $projectRoot . '/web';
+            $webPath = $this->getFrontendProjectPath('web');
             $this->mergeNpmDeps($npmRequire['web'] ?? [], $webPath, 'Web', $webConfig);
             $this->mergeNpmDeps($npmRequire['common'] ?? [], $webPath, 'Web (common)', $webConfig);
         }
@@ -168,13 +168,12 @@ trait DependencyTrait
         // 移除 NPM 依赖
         $npmRequire = $pluginInfo['npm_require'] ?? [];
         if (!empty($npmRequire)) {
-            $projectRoot = $this->getProjectRoot();
+            // 前端代码统一在 frontend 目录下
+            $this->removeNpmDeps($npmRequire['admin'] ?? [], $this->getFrontendProjectPath('admin'), 'Admin');
+            $this->removeNpmDeps($npmRequire['common'] ?? [], $this->getFrontendProjectPath('admin'), 'Admin (common)');
 
-            $this->removeNpmDeps($npmRequire['admin'] ?? [], $projectRoot . '/admin', 'Admin');
-            $this->removeNpmDeps($npmRequire['common'] ?? [], $projectRoot . '/admin', 'Admin (common)');
-
-            $this->removeNpmDeps($npmRequire['web'] ?? [], $projectRoot . '/web', 'Web');
-            $this->removeNpmDeps($npmRequire['common'] ?? [], $projectRoot . '/web', 'Web (common)');
+            $this->removeNpmDeps($npmRequire['web'] ?? [], $this->getFrontendProjectPath('web'), 'Web');
+            $this->removeNpmDeps($npmRequire['common'] ?? [], $this->getFrontendProjectPath('web'), 'Web (common)');
         }
 
         $this->output("  ✅ Dependencies removed. Run 'composer install' or 'npm install' to update.");

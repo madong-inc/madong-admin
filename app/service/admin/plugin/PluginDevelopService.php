@@ -38,10 +38,11 @@ class PluginDevelopService extends BaseService
         $this->dao       = $dao;
         $basePath      = base_path();
         $projectPath  = dirname($basePath);
+        $frontendPath = $projectPath . '/frontend';
 
         $this->pluginDir = $basePath . '/plugin';
-        $this->adminDir  = $projectPath . '/admin/src/apps';
-        $this->webDir    = $projectPath . '/web/app/apps';
+        $this->adminDir  = $frontendPath . '/admin/src/apps';
+        $this->webDir    = $frontendPath . '/web/app/apps';
     }  
 
     /**

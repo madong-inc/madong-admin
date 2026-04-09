@@ -33,7 +33,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  * @since 1.0.0
  */
 #[AsCommand(
-    name: 'madong-download-frontend-code',
+    name: 'madong-download:frontend',
     description: 'Download frontend code to the root directory',
     aliases: ['madong-download:frontend'],
     hidden: false
@@ -41,16 +41,17 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class DownloadCommand extends BaseCommand
 {
     // 前端配置信息 - 支持灵活配置下载项目和重命名
+    // 所有前端代码统一下载到 frontend 目录下
     private array $frontendConfigs = [
         'admin' => [
             'name'     => '后台下载',
             'git_url'  => 'https://gitee.com/motion-code/madong-vue.git',
-            'dir_name' => 'admin',
+            'dir_name' => 'frontend' . DIRECTORY_SEPARATOR . 'admin',
         ],
         'web' => [
             'name'     => '前台下载',
             'git_url'  => 'https://gitee.com/motion-code/madong-nuxt.git',
-            'dir_name' => 'web',
+            'dir_name' => 'frontend' . DIRECTORY_SEPARATOR . 'web',
         ],
     ];
 
@@ -111,6 +112,17 @@ class DownloadCommand extends BaseCommand
         // 获取当前项目根目录
         $rootDir = dirname(base_path());
         $io->info("Project root directory: {$rootDir}");
+
+        // 确保 frontend 目录存在
+        $frontendDir = $rootDir . DIRECTORY_SEPARATOR . 'frontend';
+        if (!is_dir($frontendDir)) {
+            if (!mkdir($frontendDir, 0755, true)) {
+                $io->error("Failed to create frontend directory");
+                return $this->outputError($io, 'Failed to create frontend directory');
+            }
+            $io->info("Created frontend directory");
+        }
+
         $io->info("Using git mode for downloading code");
 
         // 初始化统计信息

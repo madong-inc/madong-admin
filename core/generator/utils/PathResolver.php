@@ -52,7 +52,7 @@ class PathResolver
             
             // 前端文件路径映射
             'api' => 'api/' . ($processedModuleName ? $processedModuleName . '/' : '') . 'index.ts',
-            'api_model' => 'api/' . ($processedModuleName ? $processedModuleName . '/' : '') . 'model.ts',
+            'api_model' => 'api/' . ($processedModuleName ? $processedModuleName . '/' : '') . 'types.ts',
             'view' => 'views/' . ($processedModuleName ? $processedModuleName . '/' : '') . 'index.vue',
             'view_schema' => 'views/' . ($processedModuleName ? $processedModuleName . '/' : '') . 'schemas/index.tsx',
             'lang' => 'lang/zh-cn/' . $processedModuleName . '.json',

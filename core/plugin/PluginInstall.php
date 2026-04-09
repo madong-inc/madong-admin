@@ -200,6 +200,9 @@ class PluginInstall
         // 安装前端依赖
         $this->installNpmDeps();
 
+        // 复制前端模板到各端
+        $this->copyTemplates();
+
         // 执行各端安装命令
         $this->runInstallCommands();
 
@@ -269,6 +272,9 @@ class PluginInstall
 
         // 卸载后回调
         $this->afterUninstall($version);
+
+        // 删除前端模板
+        $this->deleteTemplates();
 
         // 检查配置决定是否移除合并的依赖
         $globalUninstallConfig = $this->getConfig('uninstall', []);

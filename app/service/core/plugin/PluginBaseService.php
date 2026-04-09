@@ -59,6 +59,8 @@ abstract class PluginBaseService extends BaseService
 
     /**
      * 项目根目录（前端和后端的父级目录）
+     * 注意：此路径已不再直接指向前端目录
+     * 前端目录统一在 $project_path/frontend 下，如 admin、web、uni-app 等
      */
     protected string $project_path;
 
@@ -72,6 +74,28 @@ abstract class PluginBaseService extends BaseService
         $this->plugin_path = base_path('plugin');
         $this->project_path = dirname(base_path()); // 项目根目录（前端和后端的父级）
         $this->server_path = base_path(); // 后端根目录
+    }
+
+    /**
+     * 获取前端基础目录
+     * 前端代码统一在 frontend 目录下
+     *
+     * @return string 前端基础目录
+     */
+    public function getFrontendPath(): string
+    {
+        return $this->project_path . DIRECTORY_SEPARATOR . 'frontend';
+    }
+
+    /**
+     * 获取前端指定项目目录
+     *
+     * @param string $frontendType 前端类型（admin/web/uni-app）
+     * @return string 前端项目目录
+     */
+    public function getFrontendProjectPath(string $frontendType): string
+    {
+        return $this->getFrontendPath() . DIRECTORY_SEPARATOR . $frontendType;
     }
 
     /**

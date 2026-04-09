@@ -287,6 +287,7 @@ final class InstallService
 
     /**
      * 检查前端项目目录是否存在
+     * 前端代码统一在 frontend 目录下
      *
      * @param string $projectType
      *
@@ -295,7 +296,7 @@ final class InstallService
     private function checkFrontendProjectExists(string $projectType): bool
     {
         $baseDir     = dirname(base_path());
-        $projectDir  = $baseDir . '/' . $projectType;
+        $projectDir  = $baseDir . '/frontend/' . $projectType;
         $packageJson = $projectDir . '/package.json';
 
         return is_dir($projectDir) && file_exists($packageJson);
@@ -593,12 +594,15 @@ final class InstallService
     {
         // 后端根目录（server目录）
         $backendRoot = base_path();
-        // 项目根目录（包含server、admin、web等目录的父目录）
+        // 项目根目录（包含server、frontend等目录的父目录）
         $projectRoot = dirname($backendRoot);
+        // 前端根目录（frontend目录）
+        $frontendRoot = $projectRoot . DIRECTORY_SEPARATOR . 'frontend';
         
         $variables = [
             '{backend_root}' => $backendRoot,
             '{project_root}' => $projectRoot,
+            '{frontend_root}' => $frontendRoot,
         ];
         
         foreach ($variables as $variable => $value) {

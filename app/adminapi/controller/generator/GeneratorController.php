@@ -84,7 +84,7 @@ final class GeneratorController extends Crud
         $data   = $request->all();
         $page   = $request->input('page', 1);
         $limit  = $request->input('limit', 10);
-        $result = $this->service->tableList($data, $page, $limit);
+        $result = $this->service->tableList($data, (int)$page, (int)$limit);
         return Json::success($result);
     }
 

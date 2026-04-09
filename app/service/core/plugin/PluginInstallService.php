@@ -240,14 +240,14 @@ final class PluginInstallService extends PluginBaseService
         $checks = [];
 
         try {
-            // 1. 核心目录存在性检查
+            // 1. 核心目录存在性检查（前端目录统一在 frontend 下）
             $coreDirectories = [
                 'admin' => [
-                    'path' => $this->project_path . DIRECTORY_SEPARATOR . 'admin' . DIRECTORY_SEPARATOR,
+                    'path' => $this->getFrontendProjectPath('admin') . DIRECTORY_SEPARATOR,
                     'name' => 'Admin目录',
                 ],
                 'web'   => [
-                    'path' => $this->project_path . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR,
+                    'path' => $this->getFrontendProjectPath('web') . DIRECTORY_SEPARATOR,
                     'name' => 'Web目录',
                 ],
             ];
@@ -277,9 +277,9 @@ final class PluginInstallService extends PluginBaseService
                 }
             }
 
-            // 2. 插件安装目录权限检查
-            $adminPluginDirectory = $this->project_path . DIRECTORY_SEPARATOR . 'admin' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'apps' . DIRECTORY_SEPARATOR;
-            $webPluginDirectory   = $this->project_path . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'apps' . DIRECTORY_SEPARATOR;
+            // 2. 插件安装目录权限检查（前端目录统一在 frontend 下）
+            $adminPluginDirectory = $this->getFrontendProjectPath('admin') . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'apps' . DIRECTORY_SEPARATOR;
+            $webPluginDirectory   = $this->getFrontendProjectPath('web') . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'apps' . DIRECTORY_SEPARATOR;
             $resourceDirectory    = public_path() . DIRECTORY_SEPARATOR;
 
             $permissionChecks = [

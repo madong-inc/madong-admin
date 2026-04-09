@@ -42,10 +42,10 @@ return [
      * 结构: ['端' => '相对路径']
      */
     'template'     => [
-        // 后台模板目标路径（相对于项目根目录，server 的兄弟节点）
-        'admin' => 'admin/src/apps',
+        // 后台模板目标路径（相对于项目根目录）
+        'admin' => 'frontend/admin/src/apps',
         // 前台模板目标路径
-        'web'   => 'web/app/apps',
+        'web'   => 'frontend/web/app/apps',
     ],
 
     /**

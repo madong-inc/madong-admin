@@ -75,8 +75,8 @@ class AdminSceneGenerator implements SceneGeneratorInterface
     {
         $template = $this->config['template'] ?? 'app';
         
-        // 无论是 app 模式还是插件模式，前端代码都生成在后端代码根目录的兄弟节点 admin 目录下
-        // 前端类型插件-默认起始位置依然后端service兄弟节点admin
-        return dirname(base_path()) . DS . 'admin';
+        // 无论是 app 模式还是插件模式，前端代码都统一生成在 frontend 目录下的 admin 目录中
+        // 前端目录结构：project_root/frontend/admin 或 project_root/frontend/web 等
+        return dirname(base_path()) . DS . 'frontend' . DS . 'admin';
     }
 }
