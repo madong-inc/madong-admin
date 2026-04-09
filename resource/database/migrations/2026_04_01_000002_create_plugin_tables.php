@@ -19,18 +19,21 @@ return new class {
         if (!$schema->hasTable('plugin')) {
             $schema->create('plugin', function (Blueprint $table) {
                 $table->bigInteger('id')->primary()->comment('主键');
-                $table->string('name', 64)->comment('插件名称');
-                $table->string('code', 64)->unique()->comment('插件编码');
-                $table->string('version', 20)->comment('插件版本');
+                $table->string('title', 128)->comment('插件标题');
+                $table->longText('icon')->nullable()->comment('插件图标');
+                $table->string('key', 64)->unique()->comment('插件标识');
+                $table->string('desc', 255)->nullable()->comment('插件描述');
+                $table->tinyInteger('status')->default(1)->comment('状态: 1启用 0禁用');
                 $table->string('author', 64)->nullable()->comment('作者');
-                $table->string('description', 255)->nullable()->comment('插件描述');
-                $table->string('homepage', 255)->nullable()->comment('插件官网');
-                $table->string('icon', 255)->nullable()->comment('插件图标');
-                $table->tinyInteger('enabled')->default(0)->comment('状态: 1启用 0禁用');
-                $table->tinyInteger('installed')->default(1)->comment('是否安装: 1是 0否');
+                $table->string('version', 20)->comment('插件版本');
+                $table->string('type', 32)->default('custom')->comment('插件类型');
+                $table->longText('cover')->nullable()->comment('插件封面');
+                $table->longText('variables')->nullable()->comment('插件变量配置');
+                $table->string('support_app', 32)->default('admin')->comment('支持的终端');
+                $table->bigInteger('installed_at')->nullable()->comment('安装时间');
                 $table->bigInteger('created_at')->nullable()->comment('创建时间');
                 $table->bigInteger('updated_at')->nullable()->comment('修改时间');
-                $table->index('code');
+                $table->index('key');
             });
         }
 
@@ -38,12 +41,13 @@ return new class {
         if (!$schema->hasTable('plugin_log')) {
             $schema->create('plugin_log', function (Blueprint $table) {
                 $table->bigInteger('id')->primary()->comment('主键');
-                $table->bigInteger('plugin_id')->comment('插件ID');
                 $table->string('action', 32)->comment('操作类型');
-                $table->string('version', 20)->comment('操作版本');
-                $table->longText('content')->nullable()->comment('操作内容');
+                $table->string('key', 64)->comment('插件标识');
+                $table->string('pre_upgrade_version', 20)->nullable()->comment('升级前版本');
+                $table->string('post_upgrade_version', 20)->nullable()->comment('升级后版本');
                 $table->bigInteger('created_at')->nullable()->comment('创建时间');
-                $table->index('plugin_id');
+                $table->bigInteger('updated_at')->nullable()->comment('修改时间');
+                $table->index('key');
                 $table->index('action');
             });
         }
