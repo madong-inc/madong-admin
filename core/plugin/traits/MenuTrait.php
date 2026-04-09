@@ -11,6 +11,14 @@ use support\Db;
 trait MenuTrait
 {
     /**
+     * 预加载系统菜单的 code 映射（用于智能关联父级）
+     *
+     * @var array
+     */
+    protected array $_admin_menu_codes = [];
+    protected array $_web_menu_codes = [];
+
+    /**
      * 加载菜单文件
      */
     protected function loadMenus(): void
@@ -28,9 +36,86 @@ trait MenuTrait
         $files = scandir($menuDir);
         $this->output("📂 Menu files found: " . implode(', ', array_diff($files, ['.', '..'])));
 
+        // 预加载系统菜单的 code 映射（用于智能关联父级）
+        $this->preloadSystemMenuCodes('admin');
+        $this->preloadSystemMenuCodes('web');
+
+        // 只加载 admin 和 web 两种类型的菜单
         $this->loadMenuFile($menuDir . '/admin.php', 'admin');
-        $this->loadMenuFile($menuDir . '/frontend.php', 'frontend');
         $this->loadMenuFile($menuDir . '/web.php', 'web');
+    }
+
+    /**
+     * 预加载系统菜单的 code 映射
+     * 用于插件菜单关联到系统已有菜单
+     *
+     * @param string $type 菜单类型 (admin/web)
+     */
+    protected function preloadSystemMenuCodes(string $type): void
+    {
+        $tableName = $type === 'admin' ? 'sys_menu' : 'web_menu';
+        $connection = $this->connection ?? null;
+
+        try {
+            // 获取系统中非插件来源的菜单 code -> id 映射
+            $menus = Db::connection($connection)
+                ->table($tableName)
+                ->where('source', 'system')
+                ->whereNotNull('code')
+                ->where('code', '!=', '')
+                ->select(['id', 'code', 'pid', 'type'])
+                ->get()
+                ->toArray();
+
+            $key = $type === 'admin' ? '_admin_menu_codes' : '_web_menu_codes';
+            $this->$key = [];
+
+            foreach ($menus as $menu) {
+                $code = $menu->code;
+                $this->$key[$code] = [
+                    'id'   => $menu->id,
+                    'pid'  => $menu->pid,
+                    'type' => $menu->type,
+                ];
+            }
+
+            $this->output("  📋 Preloaded {$type} system menus: " . count($this->$key) . " codes");
+        } catch (\Throwable $e) {
+            $this->output("  ⚠️ Failed to preload {$type} system menus: {$e->getMessage()}");
+        }
+    }
+
+    /**
+     * 根据 pid_code 查找父级 ID
+     *
+     * @param string|null $pidCode 父级菜单的 code
+     * @param string $type 菜单类型
+     * @return int 父级 ID，0 表示顶级菜单
+     */
+    protected function findParentIdByCode(?string $pidCode, string $type): int
+    {
+        if (empty($pidCode)) {
+            return 0;
+        }
+
+        $key = $type === 'admin' ? '_admin_menu_codes' : '_web_menu_codes';
+        $codes = $this->$key ?? [];
+
+        if (!isset($codes[$pidCode])) {
+            return 0;
+        }
+
+        $parentInfo = $codes[$pidCode];
+
+        // 如果父级是目录类型(type=1)，则返回其 ID
+        // 否则作为顶级菜单
+        if ($type === 'admin') {
+            // admin: 1=目录 2=菜单 3=按钮
+            return in_array($parentInfo['type'], [1]) ? $parentInfo['id'] : 0;
+        } else {
+            // web 菜单类型判断
+            return $parentInfo['id'];
+        }
     }
 
     /**
@@ -100,6 +185,11 @@ trait MenuTrait
 
     /**
      * 插入后台菜单项
+     *
+     * @param string $tableName 表名
+     * @param array $items 菜单项
+     * @param string $plugin 插件标识
+     * @param int $parentId 父级ID
      */
     protected function insertAdminMenuItems(string $tableName, array $items, string $plugin, int $parentId = 0): void
     {
@@ -108,11 +198,18 @@ trait MenuTrait
         foreach ($items as $item) {
             $menuId = (int)Snowflake::generate();
 
+            // 智能获取父级 ID（仅顶级菜单使用 pid_code）
+            // 子菜单通过 parentId（children 嵌套）确定父级
+            if ($parentId === 0 && isset($item['pid_code'])) {
+                $parentId = $this->findParentIdByCode($item['pid_code'], 'admin');
+            }
+
             $data = [
                 'id'         => $menuId,
                 'pid'        => $parentId,
                 'app'        => 'admin',
-                'title'      => $item['name'] ?? '',
+                'source'     => 'plugin',
+                'title'      => $item['name'] ?? $item['title'] ?? '',
                 'code'       => $item['code'] ?? '',
                 'level'      => $item['level'] ?? 1,
                 'type'       => $item['type'] ?? 1,
@@ -124,13 +221,21 @@ trait MenuTrait
                 'is_link'   => $item['is_link'] ?? 0,
                 'is_cache'  => $item['is_cache'] ?? 0,
                 'is_sync'   => $item['is_sync'] ?? 0,
-                'source'     => 'plugin',
-                'platform'   => $plugin,
                 'created_at' => time(),
                 'updated_at' => time(),
             ];
 
             Db::connection($connection)->table($tableName)->insert($data);
+
+            // 记录本次插入菜单的 code -> id 映射（供子菜单使用）
+            $currentCode = $item['code'] ?? '';
+            if ($currentCode) {
+                $this->_admin_menu_codes[$currentCode] = [
+                    'id'   => $menuId,
+                    'pid'  => $parentId,
+                    'type' => $data['type'],
+                ];
+            }
 
             if (!empty($item['children'])) {
                 $this->insertAdminMenuItems($tableName, $item['children'], $plugin, $menuId);
@@ -166,6 +271,11 @@ trait MenuTrait
 
     /**
      * 插入前台菜单项
+     *
+     * @param string $tableName 表名
+     * @param array $items 菜单项
+     * @param string $plugin 插件标识
+     * @param int $parentId 父级ID
      */
     protected function insertWebMenuItems(string $tableName, array $items, string $plugin, int $parentId = 0): void
     {
@@ -174,19 +284,31 @@ trait MenuTrait
         foreach ($items as $item) {
             $menuId = (int)Snowflake::generate();
 
+            // 智能获取父级 ID（仅顶级菜单使用 pid_code）
+            // 子菜单通过 parentId（children 嵌套）确定父级
+            if ($parentId === 0 && isset($item['pid_code'])) {
+                $parentId = $this->findParentIdByCode($item['pid_code'], 'web');
+            }
+
+            // target: 1=当前窗口 2=新窗口
+            $targetValue = 1; // 默认当前窗口
+            if (isset($item['target'])) {
+                $targetValue = $item['target'] === '_self' || $item['target'] === 1 || $item['target'] === '1' ? 1 : 2;
+            }
+
             $data = [
                 'id'         => $menuId,
                 'app'        => 'web',
-                'category'   => $item['category'] ?? 1,
+                'category'   => $item['category'] ?? '1',
                 'source'     => 'plugin',
                 'code'       => $item['code'] ?? '',
-                'name'       => $item['name'] ?? '',
+                'name'       => $item['name'] ?? $item['title'] ?? '',
                 'url'        => $item['path'] ?? $item['url'] ?? '',
                 'pid'        => $parentId,
                 'level'      => $item['level'] ?? 1,
                 'type'       => $item['type'] ?? 1,
                 'sort'       => $item['sort'] ?? 0,
-                'target'     => $item['target'] ?? '_self',
+                'target'     => $targetValue,
                 'icon'       => $item['icon'] ?? '',
                 'is_show'   => $item['is_show'] ?? 1,
                 'enabled'   => $item['enabled'] ?? 1,
@@ -195,6 +317,16 @@ trait MenuTrait
             ];
 
             Db::connection($connection)->table($tableName)->insert($data);
+
+            // 记录本次插入菜单的 code -> id 映射（供子菜单使用）
+            $currentCode = $item['code'] ?? '';
+            if ($currentCode) {
+                $this->_web_menu_codes[$currentCode] = [
+                    'id'   => $menuId,
+                    'pid'  => $parentId,
+                    'type' => $data['type'],
+                ];
+            }
 
             if (!empty($item['children'])) {
                 $this->insertWebMenuItems($tableName, $item['children'], $plugin, $menuId);
@@ -222,10 +354,12 @@ trait MenuTrait
                 return;
             }
 
-            $column = $tableName === 'sys_menu' ? 'platform' : 'source';
-            $value = $tableName === 'sys_menu' ? $plugin : 'plugin';
+            // 使用 source 字段来标识插件菜单
+            $deleted = Db::connection($connection)
+                ->table($tableName)
+                ->where('source', 'plugin')
+                ->delete();
 
-            $deleted = Db::connection($connection)->table($tableName)->where($column, $value)->delete();
             if ($deleted > 0) {
                 $this->output("  🗑️ Cleared {$deleted} menus from {$tableName}");
             }

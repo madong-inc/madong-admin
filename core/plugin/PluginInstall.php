@@ -229,6 +229,9 @@ class PluginInstall
     protected function afterInstall(string $version): void
     {
         $this->log("  🔄 Running afterInstall...");
+
+        // 加载插件菜单
+        $this->loadMenus();
     }
 
     /**
@@ -245,6 +248,9 @@ class PluginInstall
     protected function afterUninstall(string $version): void
     {
         $this->log("  🔄 Running afterUninstall...");
+
+        // 删除插件菜单
+        $this->clearMenus();
     }
 
     /**
