@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace app\command\plugin;
 
 use app\command\BaseCommand;
-use app\service\core\plugin\PluginUnInstallService;
+use app\service\core\plugin\PluginUninstallService;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -72,7 +72,7 @@ class DeleteCommand extends BaseCommand
 
         try {
             // 创建删除服务实例（统一入口）
-            $deleteService = new PluginUnInstallService();
+            $deleteService = new PluginUninstallService();
 
             // 执行删除流程
             $result = $deleteService->delete($name);

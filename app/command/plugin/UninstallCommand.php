@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace app\command\plugin;
 
 use app\command\BaseCommand;
-use app\service\core\plugin\PluginUnInstallService;
+use app\service\core\plugin\PluginUninstallService;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -67,7 +67,7 @@ class UninstallCommand extends BaseCommand
 
         try {
             // 创建卸载服务实例（统一入口）
-            $uninstallService = new PluginUnInstallService();
+            $uninstallService = new PluginUninstallService();
 
             // 执行卸载流程（使用基类的流式处理）
             return $this->executeStream($uninstallService->uninstall($name), $io, $name);

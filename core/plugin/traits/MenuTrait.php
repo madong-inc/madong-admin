@@ -190,12 +190,13 @@ trait MenuTrait
      * @param array $items 菜单项
      * @param string $plugin 插件标识
      * @param int $parentId 父级ID
+     * @param int $level 当前层级
      */
-    protected function insertAdminMenuItems(string $tableName, array $items, string $plugin, int $parentId = 0): void
+    protected function insertAdminMenuItems(string $tableName, array $items, string $plugin, int $parentId = 0, int $level = 1): void
     {
         $connection = $this->connection ?? null;
 
-        foreach ($items as $item) {
+        foreach ($items as $index => $item) {
             $menuId = (int)Snowflake::generate();
 
             // 智能获取父级 ID（仅顶级菜单使用 pid_code）
@@ -204,23 +205,26 @@ trait MenuTrait
                 $parentId = $this->findParentIdByCode($item['pid_code'], 'admin');
             }
 
+            // 规范化菜单数据：自动生成缺失的 code
+            $normalizedItem = $this->normalizeMenuItem($item, $plugin, $level, $index);
+
             $data = [
                 'id'         => $menuId,
                 'pid'        => $parentId,
                 'app'        => 'admin',
                 'source'     => 'plugin',
-                'title'      => $item['name'] ?? $item['title'] ?? '',
-                'code'       => $item['code'] ?? '',
-                'level'      => $item['level'] ?? 1,
-                'type'       => $item['type'] ?? 1,
-                'sort'       => $item['sort'] ?? 0,
-                'path'       => $item['path'] ?? '',
-                'component'  => $item['component'] ?? '',
-                'icon'       => $item['icon'] ?? '',
-                'is_show'   => $item['is_show'] ?? 1,
-                'is_link'   => $item['is_link'] ?? 0,
-                'is_cache'  => $item['is_cache'] ?? 0,
-                'is_sync'   => $item['is_sync'] ?? 0,
+                'title'      => $normalizedItem['title'],
+                'code'       => $normalizedItem['code'],
+                'level'      => $level,
+                'type'       => $normalizedItem['type'],
+                'sort'       => $normalizedItem['sort'],
+                'path'       => $normalizedItem['path'],
+                'component'  => $normalizedItem['component'],
+                'icon'       => $normalizedItem['icon'],
+                'is_show'   => $normalizedItem['is_show'],
+                'is_link'   => $normalizedItem['is_link'],
+                'is_cache'  => $normalizedItem['is_cache'],
+                'is_sync'   => $normalizedItem['is_sync'],
                 'created_at' => time(),
                 'updated_at' => time(),
             ];
@@ -228,19 +232,65 @@ trait MenuTrait
             Db::connection($connection)->table($tableName)->insert($data);
 
             // 记录本次插入菜单的 code -> id 映射（供子菜单使用）
-            $currentCode = $item['code'] ?? '';
-            if ($currentCode) {
-                $this->_admin_menu_codes[$currentCode] = [
+            if ($normalizedItem['code']) {
+                $this->_admin_menu_codes[$normalizedItem['code']] = [
                     'id'   => $menuId,
                     'pid'  => $parentId,
                     'type' => $data['type'],
                 ];
             }
 
+            // 递归处理子菜单，层级 +1
             if (!empty($item['children'])) {
-                $this->insertAdminMenuItems($tableName, $item['children'], $plugin, $menuId);
+                $this->insertAdminMenuItems($tableName, $item['children'], $plugin, $menuId, $level + 1);
             }
         }
+    }
+
+    /**
+     * 规范化菜单项数据
+     * 确保必要字段存在，自动生成缺失的 code
+     *
+     * @param array $item 菜单项
+     * @param string $plugin 插件标识
+     * @param int $level 当前层级
+     * @param int $index 当前索引
+     * @return array 规范化后的菜单项
+     */
+    protected function normalizeMenuItem(array $item, string $plugin, int $level, int $index): array
+    {
+        // 获取菜单名称
+        $title = $item['name'] ?? $item['title'] ?? '';
+        // 获取路径
+        $path = $item['path'] ?? '';
+
+        // 自动生成 code：如果没有 code 字段，根据插件名和路径生成
+        $code = $item['code'] ?? '';
+        if (empty($code)) {
+            // 从 path 生成 code: /test-plugin/index -> test-plugin:index
+            if (!empty($path)) {
+                $code = trim($path, '/');
+                $code = str_replace('/', ':', $code);
+            }
+            // 如果路径也为空，使用插件名+层级+索引生成唯一 code
+            if (empty($code)) {
+                $code = $plugin . ':level' . $level . '_' . $index;
+            }
+        }
+
+        return [
+            'title'     => $title,
+            'code'      => $code,
+            'type'      => $item['type'] ?? ($level === 1 ? 1 : 2), // 1=目录 2=菜单
+            'sort'      => $item['sort'] ?? 0,
+            'path'      => $path,
+            'component' => $item['component'] ?? ($level === 1 ? '/layout' : ''),
+            'icon'      => $item['icon'] ?? '',
+            'is_show'   => $item['is_show'] ?? 1,
+            'is_link'   => $item['is_link'] ?? 0,
+            'is_cache'  => $item['is_cache'] ?? 0,
+            'is_sync'   => $item['is_sync'] ?? 0,
+        ];
     }
 
     /**
@@ -276,12 +326,13 @@ trait MenuTrait
      * @param array $items 菜单项
      * @param string $plugin 插件标识
      * @param int $parentId 父级ID
+     * @param int $level 当前层级
      */
-    protected function insertWebMenuItems(string $tableName, array $items, string $plugin, int $parentId = 0): void
+    protected function insertWebMenuItems(string $tableName, array $items, string $plugin, int $parentId = 0, int $level = 1): void
     {
         $connection = $this->connection ?? null;
 
-        foreach ($items as $item) {
+        foreach ($items as $index => $item) {
             $menuId = (int)Snowflake::generate();
 
             // 智能获取父级 ID（仅顶级菜单使用 pid_code）
@@ -289,6 +340,9 @@ trait MenuTrait
             if ($parentId === 0 && isset($item['pid_code'])) {
                 $parentId = $this->findParentIdByCode($item['pid_code'], 'web');
             }
+
+            // 规范化菜单数据：自动生成缺失的 code
+            $normalizedItem = $this->normalizeWebMenuItem($item, $plugin, $level, $index);
 
             // target: 1=当前窗口 2=新窗口
             $targetValue = 1; // 默认当前窗口
@@ -301,17 +355,17 @@ trait MenuTrait
                 'app'        => 'web',
                 'category'   => $item['category'] ?? '1',
                 'source'     => 'plugin',
-                'code'       => $item['code'] ?? '',
-                'name'       => $item['name'] ?? $item['title'] ?? '',
-                'url'        => $item['path'] ?? $item['url'] ?? '',
+                'code'       => $normalizedItem['code'],
+                'name'       => $normalizedItem['name'],
+                'url'        => $normalizedItem['url'],
                 'pid'        => $parentId,
-                'level'      => $item['level'] ?? 1,
-                'type'       => $item['type'] ?? 1,
-                'sort'       => $item['sort'] ?? 0,
+                'level'      => $level,
+                'type'       => $normalizedItem['type'],
+                'sort'       => $normalizedItem['sort'],
                 'target'     => $targetValue,
-                'icon'       => $item['icon'] ?? '',
-                'is_show'   => $item['is_show'] ?? 1,
-                'enabled'   => $item['enabled'] ?? 1,
+                'icon'       => $normalizedItem['icon'],
+                'is_show'   => $normalizedItem['is_show'],
+                'enabled'   => $normalizedItem['enabled'],
                 'created_at' => time(),
                 'updated_at' => time(),
             ];
@@ -319,19 +373,62 @@ trait MenuTrait
             Db::connection($connection)->table($tableName)->insert($data);
 
             // 记录本次插入菜单的 code -> id 映射（供子菜单使用）
-            $currentCode = $item['code'] ?? '';
-            if ($currentCode) {
-                $this->_web_menu_codes[$currentCode] = [
+            if ($normalizedItem['code']) {
+                $this->_web_menu_codes[$normalizedItem['code']] = [
                     'id'   => $menuId,
                     'pid'  => $parentId,
                     'type' => $data['type'],
                 ];
             }
 
+            // 递归处理子菜单，层级 +1
             if (!empty($item['children'])) {
-                $this->insertWebMenuItems($tableName, $item['children'], $plugin, $menuId);
+                $this->insertWebMenuItems($tableName, $item['children'], $plugin, $menuId, $level + 1);
             }
         }
+    }
+
+    /**
+     * 规范化前台菜单项数据
+     * 确保必要字段存在，自动生成缺失的 code
+     *
+     * @param array $item 菜单项
+     * @param string $plugin 插件标识
+     * @param int $level 当前层级
+     * @param int $index 当前索引
+     * @return array 规范化后的菜单项
+     */
+    protected function normalizeWebMenuItem(array $item, string $plugin, int $level, int $index): array
+    {
+        // 获取菜单名称
+        $name = $item['name'] ?? $item['title'] ?? '';
+        // 获取 URL
+        $url = $item['path'] ?? $item['url'] ?? '';
+
+        // 自动生成 code：如果没有 code 字段，根据插件名和 URL 生成
+        $code = $item['code'] ?? '';
+        if (empty($code)) {
+            // 从 url 生成 code
+            if (!empty($url)) {
+                $code = trim($url, '/');
+                $code = str_replace('/', ':', $code);
+            }
+            // 如果 URL 也为空，使用插件名+层级+索引生成唯一 code
+            if (empty($code)) {
+                $code = $plugin . ':level' . $level . '_' . $index;
+            }
+        }
+
+        return [
+            'name'     => $name,
+            'code'     => $code,
+            'url'      => $url,
+            'type'     => $item['type'] ?? 1,
+            'sort'     => $item['sort'] ?? 0,
+            'icon'     => $item['icon'] ?? '',
+            'is_show'  => $item['is_show'] ?? 1,
+            'enabled'  => $item['enabled'] ?? 1,
+        ];
     }
 
     /**

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace app\command\plugin;
 
 use app\command\BaseCommand;
-use app\service\core\plugin\PluginUnInstallService;
+use app\service\core\plugin\PluginUninstallService;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -124,15 +124,15 @@ class RunCommand extends BaseCommand
 
                 case 'uninstall':
                     // 使用统一的卸载服务（会检查 undeletable 配置）
-                    $io->info('>>> Calling uninstall via PluginUnInstallService...');
-                    $uninstallService = new PluginUnInstallService();
+                    $io->info('>>> Calling uninstall via PluginUninstallService...');
+                    $uninstallService = new PluginUninstallService();
                     return $this->executeStream($uninstallService->uninstall($name), $io, $name);
 
                 case 'delete':
                     // 使用统一的删除服务（会检查卸载状态）
-                    $io->info('>>> Calling delete via PluginUnInstallService...');
+                    $io->info('>>> Calling delete via PluginUninstallService...');
                     $io->note("Plugin must be uninstalled before deletion");
-                    $deleteService = new PluginUnInstallService();
+                    $deleteService = new PluginUninstallService();
                     $result = $deleteService->delete($name);
                     if ($result) {
                         $io->success("Plugin '{$name}' deleted successfully!");

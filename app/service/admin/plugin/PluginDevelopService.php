@@ -280,7 +280,7 @@ class PluginDevelopService extends BaseService
                 $service           = Container::make(\app\service\core\plugin\PluginDevelopService::class);
                 $pluginName        = $model->key;
                 $pluginTitle       = $model->title;
-                $pluginDescription = $model->desc;
+                $pluginDescription = $model->desc ?? '';
                 $frontendType      = $data['frontend_type'] ?? 'admin';
                 $result            = $service->generatePluginTemplate($pluginName, $pluginTitle, $pluginDescription, $frontendType);
                 if ($result['code'] !== 200) {

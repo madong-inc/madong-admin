@@ -21,7 +21,7 @@ use app\adminapi\middleware\PermissionMiddleware;
 use app\service\core\plugin\PluginDownloadService;
 use app\service\core\plugin\PluginInstallService;
 use app\service\core\plugin\PluginRemoteService;
-use app\service\core\plugin\PluginUnInstallService;
+use app\service\core\plugin\PluginUninstallService;
 use app\service\core\plugin\PluginService;
 use core\tool\Sse;
 use madong\swagger\annotation\response\PageResponse;
@@ -398,7 +398,7 @@ final class PluginController extends Base
 
         try {
             // 调用卸载服务（统一入口）
-            $generator = (new PluginUnInstallService())->uninstall($code);
+            $generator = (new PluginUninstallService())->uninstall($code);
             foreach ($generator as $chunk) {
                 $connection->send($chunk);
             }
@@ -430,8 +430,8 @@ final class PluginController extends Base
                 return Json::fail('参数错误：缺少name参数', []);
             }
 
-            /** @var PluginUnInstallService $service */
-            $service = Container::get(PluginUnInstallService::class);
+            /** @var PluginUninstallService $service */
+            $service = Container::get(PluginUninstallService::class);
             $service->delete($name);
             return Json::success('common.operation.delete.success', []);
         } catch (\Throwable $e) {
