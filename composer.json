@@ -23,7 +23,7 @@
         "wiki": "https://workerman.net/doc/webman",
         "source": "https://github.com/walkor/webman"
     },
-    "repositories": {},
+    "repositories": [],
     "require": {
         "php": ">=8.2",
         "workerman/webman-framework": "~2.2",
@@ -81,7 +81,8 @@
         "ext-zip": "*",
         "symfony/console": "^7.4",
         "madong/swagger": "^2.0",
-        "madong/query": "^1.0"
+        "madong/query": "^1.0",
+        "ramsey/test": "^4.7"
     },
     "suggest": {
         "ext-event": "For better performance. "
