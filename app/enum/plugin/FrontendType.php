@@ -22,15 +22,16 @@ enum FrontendType: string
 
     /**
      * 获取相对路径模板（含一个插件名占位符）
+     * 注意：路径是相对于项目根目录（backend 的父目录）
      */
     public function pathTemplate(): string
     {
         return match($this) {
-            self::WEB => 'web/app/apps/%s',
-            self::ADMIN => 'admin/src/apps/%s',
-            self::MOBILE => 'mobile/src/apps/%s',
-            self::H5 => 'h5/public/apps/%s',
-            self::DESKTOP => 'desktop/build/apps/%s',
+            self::WEB => 'frontend/web/app/apps/%s',
+            self::ADMIN => 'frontend/admin/src/apps/%s',
+            self::MOBILE => 'frontend/mobile/src/apps/%s',
+            self::H5 => 'frontend/h5/public/apps/%s',
+            self::DESKTOP => 'frontend/desktop/build/apps/%s',
         };
     }
 
