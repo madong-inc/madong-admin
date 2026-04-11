@@ -211,7 +211,7 @@ trait MenuTrait
             $data = [
                 'id'         => $menuId,
                 'pid'        => $parentId,
-                'app'        => 'admin',
+                'app'        => $item['app'] ?? 'admin',
                 'source'     => 'plugin',
                 'title'      => $normalizedItem['title'],
                 'code'       => $normalizedItem['code'],
@@ -352,7 +352,7 @@ trait MenuTrait
 
             $data = [
                 'id'         => $menuId,
-                'app'        => 'web',
+                'app'        => $item['app'] ?? 'web',
                 'category'   => $item['category'] ?? '1',
                 'source'     => 'plugin',
                 'code'       => $normalizedItem['code'],

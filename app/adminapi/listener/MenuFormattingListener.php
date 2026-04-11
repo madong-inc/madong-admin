@@ -125,6 +125,7 @@ class MenuFormattingListener
         $buildMenu = function ($parentId = 0) use (&$buildMenu, $grouped) {
             $menuItems    = [];
             $currentItems = $grouped[$parentId] ?? collect();
+            
 
             foreach ($currentItems as $item) {
                 // 跳过按钮(3)和接口(4)类型，它们不直接作为菜单项
@@ -154,6 +155,11 @@ class MenuFormattingListener
                     'isFirstLevel' => $parentId === 0, // 顶级菜单标记为一级菜单
                     'roles'        => $item->variable ? explode(',', $item->variable) : [], // 假设variable存储角色列表（逗号分隔）
                 ];
+
+                // 插件菜单添加 module 字段，值为 app 字段
+                if (($item->source ?? '') === 'plugin' && !empty($item->app)) {
+                    $meta['module'] = $item->app;
+                }
 
                 $component = $item->component;
                 $path      = $item->path;

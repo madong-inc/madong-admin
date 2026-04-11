@@ -10,7 +10,7 @@ trait SeedTrait
     /**
      * 插件临时目录路径
      */
-    const RUNTIME_PLUGIN_PATH = 'runtime/install/plugin';
+    const RUNTIME_PLUGIN_PATH = 'install/plugin';
 
     /**
      * 运行种子

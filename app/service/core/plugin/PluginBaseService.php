@@ -26,7 +26,7 @@ abstract class PluginBaseService extends BaseService
     /**
      * 插件临时目录基础路径
      */
-    const RUNTIME_PLUGIN_PATH = 'runtime/install/plugin';
+    const RUNTIME_PLUGIN_PATH = 'install/plugin';
 
     /**
      * 获取插件构建目录

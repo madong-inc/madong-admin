@@ -142,6 +142,11 @@ final class PluginInstallService extends PluginBaseService
 
             // 创建临时输出文件
             $outputFile = runtime_path(self::RUNTIME_PLUGIN_PATH . '/install_' . $sessionUuid . '.log');
+            // 确保目录存在
+            $outputDir = dirname($outputFile);
+            if (!is_dir($outputDir)) {
+                mkdir($outputDir, 0777, true);
+            }
             file_put_contents($outputFile, '');
 
             // 定义进度回调，将插件的安装进度实时写入文件
