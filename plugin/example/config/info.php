@@ -14,7 +14,7 @@ return [
         'website' => 'https://www.madong.tech',
         'require' => [
             'composer' => [
-                'ramsey/test' => '^4.7',
+                'ramsey/uuid' => '^4.7',
             ],
         ],
         'npm_require' => [

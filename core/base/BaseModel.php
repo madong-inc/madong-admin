@@ -28,10 +28,20 @@ class BaseModel extends Model
 
     /**
      * 指明模型的ID是否自动递增。
+     * false = 雪花ID（默认）；true = 数据库自增ID
+     * 子类如需自增ID，覆盖为: public $incrementing = true;
      *
      * @var bool
      */
     public $incrementing = false;
+
+    /**
+     * 主键类型
+     * 雪花ID默认为 'string'，自增ID子类应覆盖为: protected $keyType = 'int';
+     *
+     * @var string
+     */
+    protected $keyType = 'string';
 
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
@@ -45,7 +55,7 @@ class BaseModel extends Model
      *
      * @var array
      */
-    protected $hidden = ['tenant_id'];
+    protected $hidden = [];
 
     /**
      * 模型日期字段的存储格式。
@@ -60,7 +70,6 @@ class BaseModel extends Model
      * @var bool
      */
     public $timestamps = true;
-
 
     public function __construct(array $data = [])
     {
@@ -78,8 +87,9 @@ class BaseModel extends Model
         parent::boot();
         //注册创建事件
         static::creating(function ($model) {
-            if (!isset($model->{$model->getKeyName()})) {
-                $model->{$model->getKeyName()} = Snowflake::generate() ; // 生成雪花 ID
+            // 仅非自增主键时自动生成雪花ID
+            if (!$model->getIncrementing() && !isset($model->{$model->getKeyName()})) {
+                $model->{$model->getKeyName()} = (string)Snowflake::generate();
             }
             self::setCreatedBy($model);
         });
