@@ -16,7 +16,7 @@ return [
         'code'       => 'local',
         'name'       => '本地存储配置',
         'content'    => [
-            'root'    => 'runtime',
+            'root'    => 'public',
             'dirname' => 'upload',
             'domain'  => 'http://127.0.0.1:8001',
         ],
