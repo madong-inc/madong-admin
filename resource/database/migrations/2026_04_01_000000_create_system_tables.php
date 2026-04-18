@@ -2,7 +2,6 @@
 
 /**
  * 创建系统基础表
- * 
  * 表:
  * - sys_admin (用户信息表)
  * - sys_admin_casbin (用户与策略关联表)
@@ -76,11 +75,16 @@ return new class {
             });
         }
 
-        // 2. 用户与策略关联表
-        if (!$schema->hasTable('sys_admin_casbin')) {
-            $schema->create('sys_admin_casbin', function (Blueprint $table) {
-                $table->bigInteger('admin_id')->primary()->comment('管理员主键');
-                $table->string('admin_casbin_id', 120)->comment('对应casbin策略表');
+        // 2. 用户与部门职位关联表
+        if (!$schema->hasTable('sys_admin_main')) {
+            $schema->create('sys_admin_main', function (Blueprint $table) {
+                $table->bigIncrements('id')->comment('主键');
+                $table->bigInteger('admin_id')->comment('用户ID(外键)');
+                $table->bigInteger('main_dept_id')->nullable()->comment('主部门ID');
+                $table->bigInteger('main_pos_id')->nullable()->comment('主职位ID');
+                $table->index('admin_id', 'idx_admin_id');
+                $table->index('main_dept_id', 'idx_main_dept_id');
+                $table->index('main_pos_id', 'idx_main_pos_id');
             });
         }
 
@@ -576,7 +580,6 @@ return new class {
         $schema->dropIfExists('sys_role_scope_dept');
         $schema->dropIfExists('sys_role_menu');
         $schema->dropIfExists('sys_role_dept');
-        $schema->dropIfExists('sys_role_casbin');
         $schema->dropIfExists('sys_role');
         $schema->dropIfExists('sys_review');
         $schema->dropIfExists('sys_recycle_bin');
@@ -595,11 +598,10 @@ return new class {
         $schema->dropIfExists('sys_crontab_log');
         $schema->dropIfExists('sys_crontab');
         $schema->dropIfExists('sys_config');
-        $schema->dropIfExists('sys_casbin_rule');
         $schema->dropIfExists('sys_admin_role');
         $schema->dropIfExists('sys_admin_post');
         $schema->dropIfExists('sys_admin_dept');
-        $schema->dropIfExists('sys_admin_casbin');
+        $schema->dropIfExists('sys_admin_main');
         $schema->dropIfExists('sys_admin');
     }
 };

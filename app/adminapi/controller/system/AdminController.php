@@ -138,7 +138,7 @@ final class AdminController extends Crud
     public function store(Request $request): \support\Response
     {
         try {
-            $data = $this->inputFilter($request->all(), ['post_id_list', 'role_id_list', 'dept_id']);
+            $data = $this->inputFilter($request->all(), ['post_id_list', 'role_id_list', 'dept_id_list', 'main_dept_id', 'main_post_id']);
             if (isset($this->validate) && $this->validate) {
                 if (!$this->validate->scene('store')->check($data)) {
                     throw new \Exception($this->validate->getError());
@@ -169,7 +169,7 @@ final class AdminController extends Crud
     {
         try {
             $id   = $request->route->param('id');
-            $data = $this->inputFilter($request->all(), ['post_id_list', 'role_id_list', 'dept_id']);
+            $data = $this->inputFilter($request->all(), ['post_id_list', 'role_id_list', 'dept_id_list', 'main_dept_id', 'main_post_id']);
             if (isset($this->validate) && $this->validate) {
                 if (!$this->validate->scene('update')->check($data)) {
                     throw new \Exception($this->validate->getError());

@@ -54,7 +54,6 @@ class Admin extends BaseModel
         'avatar',
         'signed',
         'dashboard',
-        'dept_id',
         'enabled',
         'login_ip',
         'login_time',
@@ -130,6 +129,16 @@ class Admin extends BaseModel
     public function setBackendSettingAttr($value): bool|string
     {
         return json_encode($value, JSON_UNESCAPED_UNICODE);
+    }
+
+    /**
+     * 关联-主归属信息（1:1）
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function mainInfo(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(AdminMain::class, 'admin_id', 'id');
     }
 
     /**

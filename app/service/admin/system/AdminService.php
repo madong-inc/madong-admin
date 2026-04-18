@@ -54,16 +54,18 @@ class AdminService extends BaseService
     {
         try {
             return $this->transaction(function () use ($data) {
-                //1.0 添加用户数据
                 $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
                 $roles            = $data['role_id_list'] ?? [];
                 $posts            = $data['post_id_list'] ?? [];
-                $depts            = array_filter(explode(',', $data['dept_id'] ?? ''));
-                unset($data['role_id_list'], $data['post_id_list'], $data['dept_id']);
+                $depts            = array_filter(explode(',', $data['dept_id_list'] ?? ''));
+                $mainDeptId       = $data['main_dept_id'] ?? null;
+                $mainPosId        = $data['main_post_id'] ?? null;
+                unset($data['role_id_list'], $data['post_id_list'], $data['dept_id_list'], $data['main_dept_id'], $data['main_post_id']);
                 $model = $this->dao->save($data);
 
                 $this->updateModel($model, $data, $depts, $posts, $roles);
                 $this->syncRoles($model, $roles);
+                $this->syncMainInfo($model, $mainDeptId, $mainPosId);
                 return $model;
             });
         } catch (\Throwable $e) {
@@ -84,16 +86,18 @@ class AdminService extends BaseService
     {
         try {
             return $this->transaction(function () use ($id, $data) {
-                // 更新用户基础数据
                 $this->updatePasswordIfNeeded($data);
                 $roles = $data['role_id_list'] ?? [];
                 $posts = $data['post_id_list'] ?? [];
-                $depts = array_filter(explode(',', $data['dept_id'] ?? ''));
-                unset($data['role_id_list'], $data['post_id_list'], $data['dept_id']);
+                $depts = $data['dept_id_list'] ?? [];
+                $mainDeptId = $data['main_dept_id'] ?? null;
+                $mainPosId  = $data['main_post_id'] ?? null;
+                unset($data['role_id_list'], $data['post_id_list'], $data['dept_id_list'], $data['main_dept_id'], $data['main_post_id']);
                 $model = $this->dao->getModel()
                     ->findOrFail($id);
                 $this->updateModel($model, $data, $depts, $posts, $roles);
                 $this->syncRoles($model, $roles);
+                $this->syncMainInfo($model, $mainDeptId, $mainPosId);
                 return $model;
             });
         } catch (\Throwable $e) {
@@ -139,9 +143,18 @@ class AdminService extends BaseService
      */
     private function syncRoles(Admin $model, array $roles): void
     {
-        // 只需要更新角色关联，权限缓存会在 CurrentUser 中使用时自动处理
-        // 使用 Eloquent 的 sync 方法会自动更新中间表
         $model->roles()->sync($roles);
+    }
+
+    private function syncMainInfo(Admin $model, ?string $mainDeptId, ?string $mainPosId): void
+    {
+        $mainInfo = \app\model\system\AdminMain::updateOrCreate(
+            ['admin_id' => (string)$model->id],
+            [
+                'main_dept_id' => $mainDeptId,
+                'main_post_id'  => $mainPosId,
+            ]
+        );
     }
 
     /**

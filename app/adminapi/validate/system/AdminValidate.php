@@ -66,12 +66,10 @@ class AdminValidate extends BaseValidate
         'store'              => [
             'user_name',
             'password',
-            'dept_id',
             'mobile_phone',
         ],
         'update'             => [
             'user_name',
-            'dept_id',
             'mobile_phone',
         ],
         'update-info'        => [

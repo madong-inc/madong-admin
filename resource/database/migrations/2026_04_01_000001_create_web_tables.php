@@ -2,7 +2,6 @@
 
 /**
  * 创建Web相关表
- * 
  * 表:
  * - web_menu (Web菜单表)
  * - web_link (友情链接表)
@@ -32,6 +31,7 @@ return new class {
                 $table->integer('type')->default(1)->comment('菜单类型: 1目录 2菜单 3按钮 4接口 5内链 6外链');
                 $table->bigInteger('sort')->default(999)->comment('排序');
                 $table->integer('target')->default(1)->comment('打开方式: 1当前窗口 2新窗口');
+                $table->json('extra')->nullable()->comment('扩展数据:JSON格式任意配置');
                 $table->tinyInteger('is_show')->default(1)->comment('是否显示: 0否 1是');
                 $table->tinyInteger('enabled')->default(1)->comment('状态: 1正常 0停用');
                 $table->bigInteger('created_at')->nullable()->comment('创建时间');

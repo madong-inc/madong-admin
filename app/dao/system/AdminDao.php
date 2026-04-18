@@ -47,13 +47,13 @@ class AdminDao extends BaseDao
 
         // 添加with关联
         $query->with([
-            'depts'        => function ($query) use ($withoutScopes) {
+            'depts' => function ($query) use ($withoutScopes) {
                 $this->applyScopeRemoval($query, $withoutScopes);
             },
-            'posts'        => function ($query) use ($withoutScopes) {
+            'posts' => function ($query) use ($withoutScopes) {
                 $this->applyScopeRemoval($query, $withoutScopes);
             },
-            'roles'        => function ($query) use ($withoutScopes) {
+            'roles' => function ($query) use ($withoutScopes) {
                 $this->applyScopeRemoval($query, $withoutScopes);
             },
         ]);
@@ -96,7 +96,7 @@ class AdminDao extends BaseDao
     /**
      * 获取用户列表
      *
-     * @param array      $where     查询条件数组(标准格式或三元素数组)
+     * @param array      $where 查询条件数组(标准格式或三元素数组)
      * @param string     $field
      * @param int        $page
      * @param int        $limit
@@ -119,7 +119,7 @@ class AdminDao extends BaseDao
             foreach ($where['filters'] as $key => $value) {
                 if ($key === 'dept_id') {
                     // 解析 dept_id 值
-                    $parts = explode(':', $value, 2);
+                    $parts  = explode(':', $value, 2);
                     $deptId = $parts[1] ?? $value;
                     // 移除这个条件
                     unset($where['filters'][$key]);
@@ -312,13 +312,13 @@ class AdminDao extends BaseDao
     {
         $query = $this->getModel()
             ->where('id', $id)
-            ->with(['depts'   => function ($query) use ($withoutScopes) {
+            ->with(['depts' => function ($query) use ($withoutScopes) {
                 $this->applyScopeRemoval($query, $withoutScopes);
-            }, 'posts'        => function ($query) use ($withoutScopes) {
+            }, 'posts'      => function ($query) use ($withoutScopes) {
                 $this->applyScopeRemoval($query, $withoutScopes);
-            }, 'roles'        => function ($query) use ($withoutScopes) {
+            }, 'roles'      => function ($query) use ($withoutScopes) {
                 $this->applyScopeRemoval($query, $withoutScopes);
-            }]);
+            }, 'mainInfo']);
 
         // 应用作用域移除
         $this->applyScopeRemoval($query, $withoutScopes);
@@ -329,21 +329,25 @@ class AdminDao extends BaseDao
             $result->makeHidden(['password', 'backend_setting']);
             $result->role_id_list = [];
             $result->post_id_list = [];
-            $result->dept_id      = '';
+            $result->dept_id_list = [];
+            $result->main_dept_id = null;
+            $result->main_post_id = null;
 
-            // 处理角色关系
             if (!empty($result->roles)) {
                 $result->role_id_list = $result->roles->pluck('id')->all();
             }
 
-            // 处理 posts 关系
             if ($result->posts) {
                 $result->post_id_list = $result->posts->pluck('id')->all();
             }
 
-            // 处理 depts 关系
             if ($result->depts && $result->depts->isNotEmpty()) {
-                $result->dept_id = $result->depts->first()->id;
+                $result->dept_id_list = $result->depts->pluck('id')->all();
+            }
+
+            if ($result->mainInfo) {
+                $result->main_dept_id = $result->mainInfo->main_dept_id;
+                $result->main_post_id = $result->mainInfo->main_post_id;
             }
         }
         return $result;
@@ -362,11 +366,11 @@ class AdminDao extends BaseDao
     {
         $query = $this->getModel()
             ->where('user_name', $name)
-            ->with(['depts'   => function ($query) use ($withoutScopes) {
+            ->with(['depts' => function ($query) use ($withoutScopes) {
                 $this->applyScopeRemoval($query, $withoutScopes);
-            }, 'posts'        => function ($query) use ($withoutScopes) {
+            }, 'posts'      => function ($query) use ($withoutScopes) {
                 $this->applyScopeRemoval($query, $withoutScopes);
-            }, 'roles'        => function ($query) use ($withoutScopes) {
+            }, 'roles'      => function ($query) use ($withoutScopes) {
                 $this->applyScopeRemoval($query, $withoutScopes);
             }]);
 

@@ -1067,6 +1067,83 @@
         "summary": "设置插件授权信息"
     },
     {
+        "code": "admin:profile:info",
+        "controller": "ProfileController",
+        "method": "show",
+        "module": "adminapi",
+        "route": "\/adminapi\/profile\/profile\/show",
+        "tags": [
+            "个人中心"
+        ],
+        "summary": "获取当前用户信息"
+    },
+    {
+        "code": "admin:profile:update_info",
+        "controller": "ProfileController",
+        "method": "update",
+        "module": "adminapi",
+        "route": "\/adminapi\/profile\/profile\/update",
+        "tags": [
+            "个人中心"
+        ],
+        "summary": "更新个人信息"
+    },
+    {
+        "code": "admin:profile:password",
+        "controller": "ProfileController",
+        "method": "updatePassword",
+        "module": "adminapi",
+        "route": "\/adminapi\/profile\/profile\/update-password",
+        "tags": [
+            "个人中心"
+        ],
+        "summary": "修改密码"
+    },
+    {
+        "code": "admin:profile:avatar",
+        "controller": "ProfileController",
+        "method": "updateAvatar",
+        "module": "adminapi",
+        "route": "\/adminapi\/profile\/profile\/update-avatar",
+        "tags": [
+            "个人中心"
+        ],
+        "summary": "更新头像"
+    },
+    {
+        "code": "admin:profile:sessions",
+        "controller": "ProfileController",
+        "method": "getSessions",
+        "module": "adminapi",
+        "route": "\/adminapi\/profile\/profile\/get-sessions",
+        "tags": [
+            "个人中心"
+        ],
+        "summary": "获取在线设备列表"
+    },
+    {
+        "code": "admin:profile:kickout",
+        "controller": "ProfileController",
+        "method": "kickoutSession",
+        "module": "adminapi",
+        "route": "\/adminapi\/profile\/profile\/kickout-session",
+        "tags": [
+            "个人中心"
+        ],
+        "summary": "强制下线指定设备"
+    },
+    {
+        "code": "system:admin:update_preferences",
+        "controller": "ProfileController",
+        "method": "updatePreferences",
+        "module": "adminapi",
+        "route": "\/adminapi\/profile\/profile\/update-preferences",
+        "tags": [
+            "用户管理"
+        ],
+        "summary": "更新用户前端偏好设置"
+    },
+    {
         "code": "review:list",
         "controller": "ReviewController",
         "method": "index",
@@ -1241,72 +1318,6 @@
             "用户管理"
         ],
         "summary": "授权角色"
-    },
-    {
-        "code": "system:admin:update_info",
-        "controller": "AdminController",
-        "method": "updateInfo",
-        "module": "adminapi",
-        "route": "\/adminapi\/system\/admin\/update-info",
-        "tags": [
-            "个人中心"
-        ],
-        "summary": "更新个人信息"
-    },
-    {
-        "code": "system:admin:update_avatar",
-        "controller": "AdminController",
-        "method": "updateAvatar",
-        "module": "adminapi",
-        "route": "\/adminapi\/system\/admin\/update-avatar",
-        "tags": [
-            "个人中心"
-        ],
-        "summary": "更新头像"
-    },
-    {
-        "code": "system:admin:update_pwd",
-        "controller": "AdminController",
-        "method": "updatePwd",
-        "module": "adminapi",
-        "route": "\/adminapi\/system\/admin\/update-pwd",
-        "tags": [
-            "个人中心"
-        ],
-        "summary": "更新个人密码"
-    },
-    {
-        "code": "system:admin:update_preferences",
-        "controller": "AdminController",
-        "method": "updatePreferences",
-        "module": "adminapi",
-        "route": "\/adminapi\/system\/admin\/update-preferences",
-        "tags": [
-            "用户管理"
-        ],
-        "summary": "更新用户前端偏好设置"
-    },
-    {
-        "code": "system:user:online",
-        "controller": "AdminController",
-        "method": "onlineDevice",
-        "module": "adminapi",
-        "route": "\/adminapi\/system\/admin\/online-device",
-        "tags": [
-            "个人中心"
-        ],
-        "summary": "我的在线用户"
-    },
-    {
-        "code": "system:user:kickout",
-        "controller": "AdminController",
-        "method": "kickoutByTokenValue",
-        "module": "adminapi",
-        "route": "\/adminapi\/system\/admin\/kickout-by-token-value",
-        "tags": [
-            "个人中心"
-        ],
-        "summary": "强制下线"
     },
     {
         "code": "system:admin:delete",
@@ -1494,6 +1505,50 @@
             "系统配置"
         ],
         "summary": "更新特定配置项的特定键值"
+    },
+    {
+        "code": "system:config:create",
+        "controller": "ConfigController",
+        "method": "createItem",
+        "module": "adminapi",
+        "route": "\/adminapi\/system\/config\/create-item",
+        "tags": [
+            "系统配置"
+        ],
+        "summary": "创建配置项"
+    },
+    {
+        "code": "system:config:update",
+        "controller": "ConfigController",
+        "method": "updateItem",
+        "module": "adminapi",
+        "route": "\/adminapi\/system\/config\/update-item",
+        "tags": [
+            "系统配置"
+        ],
+        "summary": "更新配置项"
+    },
+    {
+        "code": "system:config:update",
+        "controller": "ConfigController",
+        "method": "toggleItem",
+        "module": "adminapi",
+        "route": "\/adminapi\/system\/config\/toggle-item",
+        "tags": [
+            "系统配置"
+        ],
+        "summary": "切换配置项状态"
+    },
+    {
+        "code": "system:config:delete",
+        "controller": "ConfigController",
+        "method": "delete",
+        "module": "adminapi",
+        "route": "\/adminapi\/system\/config\/delete",
+        "tags": [
+            "系统配置"
+        ],
+        "summary": "删除配置项"
     },
     {
         "code": "system:menu:list",
@@ -1718,35 +1773,35 @@
         "summary": "切换状态"
     },
     {
-        "code": "system:rule_scan:cate",
-        "controller": "RuleScanController",
+        "code": "system:rule:cate",
+        "controller": "RuleController",
         "method": "cate",
         "module": "adminapi",
-        "route": "\/adminapi\/system\/rule-scan\/cate",
+        "route": "\/adminapi\/system\/rule\/cate",
         "tags": [
-            "接口扫描管理"
+            "接口管理"
         ],
         "summary": "获取接口分类（基于tags）"
     },
     {
-        "code": "system:rule_scan:list",
-        "controller": "RuleScanController",
+        "code": "system:rule:list",
+        "controller": "RuleController",
         "method": "list",
         "module": "adminapi",
-        "route": "\/adminapi\/system\/rule-scan\/list",
+        "route": "\/adminapi\/system\/rule\/list",
         "tags": [
-            "接口扫描管理"
+            "接口管理"
         ],
         "summary": "获取接口列表（支持分类和搜索）"
     },
     {
-        "code": "system:rule_scan:refresh",
-        "controller": "RuleScanController",
+        "code": "system:rule:refresh",
+        "controller": "RuleController",
         "method": "refresh",
         "module": "adminapi",
-        "route": "\/adminapi\/system\/rule-scan\/refresh",
+        "route": "\/adminapi\/system\/rule\/refresh",
         "tags": [
-            "接口扫描管理"
+            "接口管理"
         ],
         "summary": "刷新接口扫描缓存"
     },
@@ -1927,6 +1982,17 @@
         "summary": "下载导出的excel"
     },
     {
+        "code": "upload:files:wangeditor",
+        "controller": "FilesController",
+        "method": "wangeditor",
+        "module": "adminapi",
+        "route": "\/adminapi\/upload\/files\/wangeditor",
+        "tags": [
+            "附件管理"
+        ],
+        "summary": "适配wangeditor编辑器上传接口"
+    },
+    {
         "code": "test:schema:data",
         "description": "DataResponse 实例模式测试权限",
         "controller": "InstanceResponseController",
@@ -1985,5 +2051,646 @@
             "Response测试"
         ],
         "summary": "简单响应测试（使用Schema类）"
+    },
+    {
+        "code": "apps:market:category:list",
+        "controller": "AppCategoryController",
+        "method": "index",
+        "module": "plugin",
+        "route": "\/plugin\/index",
+        "tags": [
+            "应用市场分类"
+        ],
+        "summary": "列表"
+    },
+    {
+        "code": "apps:market:category:read",
+        "controller": "AppCategoryController",
+        "method": "show",
+        "module": "plugin",
+        "route": "\/plugin\/show",
+        "tags": [
+            "应用市场分类"
+        ],
+        "summary": "详情"
+    },
+    {
+        "code": "apps:market:category:create",
+        "controller": "AppCategoryController",
+        "method": "store",
+        "module": "plugin",
+        "route": "\/plugin\/store",
+        "tags": [
+            "应用市场分类"
+        ],
+        "summary": "新增"
+    },
+    {
+        "code": "apps:market:category:update",
+        "controller": "AppCategoryController",
+        "method": "update",
+        "module": "plugin",
+        "route": "\/plugin\/update",
+        "tags": [
+            "应用市场分类"
+        ],
+        "summary": "更新"
+    },
+    {
+        "code": "apps:market:category:delete",
+        "controller": "AppCategoryController",
+        "method": "destroy",
+        "module": "plugin",
+        "route": "\/plugin\/destroy",
+        "tags": [
+            "应用市场分类"
+        ],
+        "summary": "删除"
+    },
+    {
+        "code": "apps:market:category:delete",
+        "controller": "AppCategoryController",
+        "method": "batchDestroy",
+        "module": "plugin",
+        "route": "\/plugin\/batch-destroy",
+        "tags": [
+            "应用市场分类"
+        ],
+        "summary": "批量删除"
+    },
+    {
+        "code": "apps:market:list",
+        "controller": "AppController",
+        "method": "index",
+        "module": "plugin",
+        "route": "\/plugin\/index",
+        "tags": [
+            "应用市场"
+        ],
+        "summary": "列表"
+    },
+    {
+        "code": "apps:market:read",
+        "controller": "AppController",
+        "method": "show",
+        "module": "plugin",
+        "route": "\/plugin\/show",
+        "tags": [
+            "应用市场"
+        ],
+        "summary": "详情"
+    },
+    {
+        "code": "apps:market:create",
+        "controller": "AppController",
+        "method": "store",
+        "module": "plugin",
+        "route": "\/plugin\/store",
+        "tags": [
+            "应用市场"
+        ],
+        "summary": "新增"
+    },
+    {
+        "code": "apps:market:update",
+        "controller": "AppController",
+        "method": "update",
+        "module": "plugin",
+        "route": "\/plugin\/update",
+        "tags": [
+            "应用市场"
+        ],
+        "summary": "更新"
+    },
+    {
+        "code": "apps:market:delete",
+        "controller": "AppController",
+        "method": "destroy",
+        "module": "plugin",
+        "route": "\/plugin\/destroy",
+        "tags": [
+            "应用市场"
+        ],
+        "summary": "删除"
+    },
+    {
+        "code": "apps:market:delete",
+        "controller": "AppController",
+        "method": "batchDestroy",
+        "module": "plugin",
+        "route": "\/plugin\/batch-destroy",
+        "tags": [
+            "应用市场"
+        ],
+        "summary": "批量删除"
+    },
+    {
+        "code": "apps:market:publish_version",
+        "controller": "AppController",
+        "method": "publishVersion",
+        "module": "plugin",
+        "route": "\/plugin\/publish-version",
+        "tags": [
+            "应用市场"
+        ],
+        "summary": "发布新版本"
+    },
+    {
+        "code": "doc:list",
+        "description": "文档列表",
+        "controller": "ProjectController",
+        "method": "index",
+        "module": "plugin",
+        "route": "\/plugin\/index",
+        "tags": [
+            "文档管理"
+        ],
+        "summary": "列表"
+    },
+    {
+        "code": "doc:read",
+        "description": "文档详情",
+        "controller": "ProjectController",
+        "method": "show",
+        "module": "plugin",
+        "route": "\/plugin\/show",
+        "tags": [
+            "文档管理"
+        ],
+        "summary": "详情"
+    },
+    {
+        "code": "doc:create",
+        "description": "文档新增",
+        "controller": "ProjectController",
+        "method": "store",
+        "module": "plugin",
+        "route": "\/plugin\/store",
+        "tags": [
+            "文档管理"
+        ],
+        "summary": "新增"
+    },
+    {
+        "code": "doc:update",
+        "description": "文档更新",
+        "controller": "ProjectController",
+        "method": "update",
+        "module": "plugin",
+        "route": "\/plugin\/update",
+        "tags": [
+            "文档管理"
+        ],
+        "summary": "更新"
+    },
+    {
+        "code": "doc:delete",
+        "description": "文档删除",
+        "controller": "ProjectController",
+        "method": "destroy",
+        "module": "plugin",
+        "route": "\/plugin\/destroy",
+        "tags": [
+            "文档管理"
+        ],
+        "summary": "删除"
+    },
+    {
+        "code": "doc:delete",
+        "description": "文档删除",
+        "controller": "ProjectController",
+        "method": "batchDestroy",
+        "module": "plugin",
+        "route": "\/plugin\/batch-destroy",
+        "tags": [
+            "文档管理"
+        ],
+        "summary": "批量删除"
+    },
+    {
+        "code": "doc:copy",
+        "description": "文档克隆",
+        "controller": "ProjectController",
+        "method": "clone",
+        "module": "plugin",
+        "route": "\/plugin\/clone",
+        "tags": [
+            "文档管理"
+        ],
+        "summary": "克隆项目"
+    },
+    {
+        "code": "doc:item",
+        "description": "文档章节",
+        "controller": "ProjectPageController",
+        "method": "index",
+        "module": "plugin",
+        "route": "\/plugin\/index",
+        "tags": [
+            "文档章节"
+        ],
+        "summary": "列表"
+    },
+    {
+        "code": "doc:item:read",
+        "description": "章节详情",
+        "controller": "ProjectPageController",
+        "method": "show",
+        "module": "plugin",
+        "route": "\/plugin\/show",
+        "tags": [
+            "文档章节"
+        ],
+        "summary": "详情"
+    },
+    {
+        "code": "doc:item:create",
+        "description": "章节新增",
+        "controller": "ProjectPageController",
+        "method": "store",
+        "module": "plugin",
+        "route": "\/plugin\/store",
+        "tags": [
+            "文档章节"
+        ],
+        "summary": "新增"
+    },
+    {
+        "code": "doc:item:update",
+        "description": "章节更新",
+        "controller": "ProjectPageController",
+        "method": "update",
+        "module": "plugin",
+        "route": "\/plugin\/update",
+        "tags": [
+            "文档章节"
+        ],
+        "summary": "更新"
+    },
+    {
+        "code": "doc:item:delete",
+        "description": "章节删除",
+        "controller": "ProjectPageController",
+        "method": "destroy",
+        "module": "plugin",
+        "route": "\/plugin\/destroy",
+        "tags": [
+            "文档章节"
+        ],
+        "summary": "删除"
+    },
+    {
+        "code": "doc:item:delete",
+        "description": "章节删除",
+        "controller": "ProjectPageController",
+        "method": "batchDestroy",
+        "module": "plugin",
+        "route": "\/plugin\/batch-destroy",
+        "tags": [
+            "文档章节"
+        ],
+        "summary": "批量删除"
+    },
+    {
+        "code": "doc:permission",
+        "description": "获取会员Tag列表",
+        "controller": "ProjectPermissionController",
+        "method": "index",
+        "module": "plugin",
+        "route": "\/plugin\/index",
+        "tags": [
+            "权限管理"
+        ],
+        "summary": "获取会员tag列表"
+    },
+    {
+        "code": "doc:permission:grant",
+        "controller": "ProjectPermissionController",
+        "method": "saveTagAuth",
+        "module": "plugin",
+        "route": "\/plugin\/save-tag-auth",
+        "tags": [
+            "权限管理"
+        ],
+        "summary": "保存会员标签授权文档"
+    },
+    {
+        "code": "ask:question:answer:list",
+        "controller": "AnswerController",
+        "method": "index",
+        "module": "plugin",
+        "route": "\/plugin\/index",
+        "tags": [
+            "问答社区-回答"
+        ],
+        "summary": "列表"
+    },
+    {
+        "code": "ask:question:answer:read",
+        "controller": "AnswerController",
+        "method": "show",
+        "module": "plugin",
+        "route": "\/plugin\/show",
+        "tags": [
+            "问答社区-回答"
+        ],
+        "summary": "详情"
+    },
+    {
+        "code": "ask:question:answer:delete",
+        "controller": "AnswerController",
+        "method": "destroy",
+        "module": "plugin",
+        "route": "\/plugin\/destroy",
+        "tags": [
+            "问答社区-回答"
+        ],
+        "summary": "删除"
+    },
+    {
+        "code": "ask:question:answer:delete",
+        "controller": "AnswerController",
+        "method": "batchDestroy",
+        "module": "plugin",
+        "route": "\/plugin\/batch-destroy",
+        "tags": [
+            "问答社区-回答"
+        ],
+        "summary": "批量删除"
+    },
+    {
+        "code": "ask:question:answer:best",
+        "controller": "AnswerController",
+        "method": "setBest",
+        "module": "plugin",
+        "route": "\/plugin\/set-best",
+        "tags": [
+            "问答社区-回答"
+        ],
+        "summary": "设置\/取消最佳答案"
+    },
+    {
+        "code": "ask:question:category:list",
+        "controller": "CategoryController",
+        "method": "index",
+        "module": "plugin",
+        "route": "\/plugin\/index",
+        "tags": [
+            "问答社区-分类"
+        ],
+        "summary": "列表"
+    },
+    {
+        "code": "ask:question:category:read",
+        "controller": "CategoryController",
+        "method": "show",
+        "module": "plugin",
+        "route": "\/plugin\/show",
+        "tags": [
+            "问答社区-分类"
+        ],
+        "summary": "详情"
+    },
+    {
+        "code": "ask:question:category:create",
+        "controller": "CategoryController",
+        "method": "store",
+        "module": "plugin",
+        "route": "\/plugin\/store",
+        "tags": [
+            "问答社区-分类"
+        ],
+        "summary": "新增"
+    },
+    {
+        "code": "ask:question:category:update",
+        "controller": "CategoryController",
+        "method": "update",
+        "module": "plugin",
+        "route": "\/plugin\/update",
+        "tags": [
+            "问答社区-分类"
+        ],
+        "summary": "更新"
+    },
+    {
+        "code": "ask:question:category:delete",
+        "controller": "CategoryController",
+        "method": "destroy",
+        "module": "plugin",
+        "route": "\/plugin\/destroy",
+        "tags": [
+            "问答社区-分类"
+        ],
+        "summary": "删除"
+    },
+    {
+        "code": "ask:question:category:delete",
+        "controller": "CategoryController",
+        "method": "batchDestroy",
+        "module": "plugin",
+        "route": "\/plugin\/batch-destroy",
+        "tags": [
+            "问答社区-分类"
+        ],
+        "summary": "批量删除"
+    },
+    {
+        "code": "ask:question:list",
+        "controller": "QuestionController",
+        "method": "index",
+        "module": "plugin",
+        "route": "\/plugin\/index",
+        "tags": [
+            "问答社区-问题"
+        ],
+        "summary": "列表"
+    },
+    {
+        "code": "ask:question:read",
+        "controller": "QuestionController",
+        "method": "show",
+        "module": "plugin",
+        "route": "\/plugin\/show",
+        "tags": [
+            "问答社区-问题"
+        ],
+        "summary": "详情"
+    },
+    {
+        "code": "ask:question:delete",
+        "controller": "QuestionController",
+        "method": "destroy",
+        "module": "plugin",
+        "route": "\/plugin\/destroy",
+        "tags": [
+            "问答社区-问题"
+        ],
+        "summary": "删除"
+    },
+    {
+        "code": "ask:question:delete",
+        "controller": "QuestionController",
+        "method": "batchDestroy",
+        "module": "plugin",
+        "route": "\/plugin\/batch-destroy",
+        "tags": [
+            "问答社区-问题"
+        ],
+        "summary": "批量删除"
+    },
+    {
+        "code": "ask:question:stacky",
+        "controller": "QuestionController",
+        "method": "setSticky",
+        "module": "plugin",
+        "route": "\/plugin\/set-sticky",
+        "tags": [
+            "问答社区-问题"
+        ],
+        "summary": "设置\/取消置顶"
+    },
+    {
+        "code": "ask:question:excellent",
+        "controller": "QuestionController",
+        "method": "setExcellent",
+        "module": "plugin",
+        "route": "\/plugin\/set-excellent",
+        "tags": [
+            "问答社区-问题"
+        ],
+        "summary": "设置\/取消精华"
+    },
+    {
+        "code": "ask:question:tag:list",
+        "controller": "TagController",
+        "method": "index",
+        "module": "plugin",
+        "route": "\/plugin\/index",
+        "tags": [
+            "问答社区-标签"
+        ],
+        "summary": "列表"
+    },
+    {
+        "code": "ask:question:tag:read",
+        "controller": "TagController",
+        "method": "show",
+        "module": "plugin",
+        "route": "\/plugin\/show",
+        "tags": [
+            "问答社区-标签"
+        ],
+        "summary": "详情"
+    },
+    {
+        "code": "ask:question:tag:read",
+        "controller": "TagController",
+        "method": "store",
+        "module": "plugin",
+        "route": "\/plugin\/store",
+        "tags": [
+            "问答社区-标签"
+        ],
+        "summary": "新增"
+    },
+    {
+        "code": "ask:question:tag:update",
+        "controller": "TagController",
+        "method": "update",
+        "module": "plugin",
+        "route": "\/plugin\/update",
+        "tags": [
+            "问答社区-标签"
+        ],
+        "summary": "更新"
+    },
+    {
+        "code": "ask:question:tag:delete",
+        "controller": "TagController",
+        "method": "destroy",
+        "module": "plugin",
+        "route": "\/plugin\/destroy",
+        "tags": [
+            "问答社区-标签"
+        ],
+        "summary": "删除"
+    },
+    {
+        "code": "ask:question:tag:delete",
+        "controller": "TagController",
+        "method": "batchDestroy",
+        "module": "plugin",
+        "route": "\/plugin\/batch-destroy",
+        "tags": [
+            "问答社区-标签"
+        ],
+        "summary": "批量删除"
+    },
+    {
+        "code": "\"rich_text:template:list",
+        "controller": "TemplateController",
+        "method": "index",
+        "module": "plugin",
+        "route": "\/plugin\/index",
+        "tags": [
+            "富文本模板"
+        ],
+        "summary": "列表"
+    },
+    {
+        "code": "\"rich_text:template:read",
+        "controller": "TemplateController",
+        "method": "show",
+        "module": "plugin",
+        "route": "\/plugin\/show",
+        "tags": [
+            "富文本模板"
+        ],
+        "summary": "详情"
+    },
+    {
+        "code": "\"rich_text:template:create",
+        "controller": "TemplateController",
+        "method": "store",
+        "module": "plugin",
+        "route": "\/plugin\/store",
+        "tags": [
+            "富文本模板"
+        ],
+        "summary": "新增"
+    },
+    {
+        "code": "\"rich_text:template:update",
+        "controller": "TemplateController",
+        "method": "update",
+        "module": "plugin",
+        "route": "\/plugin\/update",
+        "tags": [
+            "富文本模板"
+        ],
+        "summary": "更新"
+    },
+    {
+        "code": "\"rich_text:template:delete",
+        "controller": "TemplateController",
+        "method": "destroy",
+        "module": "plugin",
+        "route": "\/plugin\/destroy",
+        "tags": [
+            "富文本模板"
+        ],
+        "summary": "删除"
+    },
+    {
+        "code": "\"rich_text:template:delete",
+        "controller": "TemplateController",
+        "method": "batchDestroy",
+        "module": "plugin",
+        "route": "\/plugin\/batch-destroy",
+        "tags": [
+            "富文本模板"
+        ],
+        "summary": "批量删除"
     }
 ]
