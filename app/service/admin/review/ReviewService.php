@@ -46,10 +46,10 @@ class ReviewService extends BaseService
     public function createReview(string $reviewableType, int|string $reviewableId, array $options = []): ?\Illuminate\Database\Eloquent\Model
     {
         try {
-            // 检查是否已存在待审核记录
+            // 检查是否已存在审核记录（无论状态，避免重复创建）
             $exists = $this->dao->getByReviewable($reviewableType, $reviewableId);
-            if ($exists && $exists->status === ReviewStatus::PENDING->value) {
-                throw new AdminException('该记录已在审核中');
+            if ($exists) {
+                throw new AdminException('该记录已有审核记录');
             }
 
             $data = [
@@ -139,7 +139,88 @@ class ReviewService extends BaseService
 
         $review->save();
 
+        // 触发审核通过事件
+        $event = new ReviewApprovedEvent($review);
+        $event->dispatch();
+
+        // 执行审核通过回调（配置中的回调）
+        $this->executeApprovedCallbacks($review);
+
         return true;
+    }
+
+    /**
+     * 执行审核通过回调
+     *
+     * @param \app\model\review\Review $review
+     * @return void
+     */
+    protected function executeApprovedCallbacks($review): void
+    {
+        try {
+            // 通过反射获取 ReviewFieldMapper 的 configCache（包含完整插件配置）
+            $typeKey = $this->getReviewTypeKey($review);
+            $typeConfig = $this->getReviewTypeConfigFromMapper($typeKey);
+
+            if (empty($typeConfig['callbacks']['approved'])) {
+                return;
+            }
+
+            $callbacks = $typeConfig['callbacks']['approved'];
+
+            // 支持单个类名或类名数组
+            if (is_string($callbacks)) {
+                $callbacks = [$callbacks];
+            }
+
+            foreach ($callbacks as $class) {
+                if (!class_exists($class)) {
+                    continue;
+                }
+
+                $instance = new $class();
+
+                if (method_exists($instance, 'handle')) {
+                    $instance->handle($review);
+                }
+            }
+        } catch (\Throwable $e) {
+            // 回调执行失败不影响审核流程
+        }
+    }
+
+    /**
+     * 获取审核类型 key
+     */
+    protected function getReviewTypeKey($review): string
+    {
+        // 尝试通过 morph_map 查找别名
+        $morphMap = config('morph_map.map', []);
+        $alias = array_search($review->reviewable_type, $morphMap, true);
+        
+        return $alias !== false ? $alias : $review->reviewable_type;
+    }
+
+    /**
+     * 从 ReviewFieldMapper 获取完整类型配置
+     */
+    protected function getReviewTypeConfigFromMapper(string $typeKey): ?array
+    {
+        try {
+            // 先调用 getTypeConfig 确保 init() 被执行，configCache 被填充
+            ReviewFieldMapper::getTypeConfig($typeKey);
+            
+            // 使用反射获取 configCache
+            $reflection = new \ReflectionClass(ReviewFieldMapper::class);
+            $property = $reflection->getProperty('configCache');
+            $property->setAccessible(true);
+            $configCache = $property->getValue();
+            
+            // configCache 结构: ['types' => [...], 'field_mappings' => [...]]
+            return $configCache['types'][$typeKey] ?? null;
+        } catch (\Throwable $e) {
+            return null;
+        }
     }
 
     /**
