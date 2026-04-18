@@ -18,6 +18,7 @@ use app\adminapi\middleware\AccessTokenMiddleware;
 use app\adminapi\middleware\OperationMiddleware;
 use app\adminapi\middleware\PermissionMiddleware;
 use app\adminapi\validate\web\MenuValidate;
+use app\schema\request\IdRequest;
 use app\service\admin\web\MenuService;
 use madong\swagger\attribute\Permission;
 use core\tool\Json;
@@ -25,6 +26,7 @@ use madong\swagger\annotation\response\SimpleResponse;
 use OpenApi\Attributes as OA;
 use support\annotation\Middleware;
 use support\Request;
+use WebmanTech\Swagger\DTO\SchemaConstants;
 
 #[Middleware(AccessTokenMiddleware::class, PermissionMiddleware::class, OperationMiddleware::class)]
 final class MenuController extends Crud
@@ -52,13 +54,13 @@ final class MenuController extends Crud
     {
         try {
             [$where, $format, $limit, $field, $order, $page] = $this->selectInput($request);
-            $methods         = [
+            $methods = [
                 'select'     => 'formatSelect',
                 'tree'       => 'formatTree',
                 'table_tree' => 'formatTableTree',
                 'normal'     => 'formatNormal',
             ];
-            if(empty($order)) {
+            if (empty($order)) {
                 $order = 'sort asc';
             }
             $format_function = $methods[$format] ?? 'formatNormal';
@@ -76,10 +78,6 @@ final class MenuController extends Crud
         tags: ['菜单管理'],
         parameters: [
             new OA\Parameter(name: "id", description: "菜单ID", in: "path", required: true, schema: new OA\Schema(type: "integer")),
-        ],
-        x: [
-            SchemaConstants::X_PROPERTY_IN => 'id',
-            SchemaConstants::X_SCHEMA_REQUEST => IdRequest::class,
         ],
         responses: [
             new OA\Response(
@@ -100,6 +98,10 @@ final class MenuController extends Crud
                     ], type: "object"),
                 ])
             ),
+        ],
+        x: [
+            SchemaConstants::X_PROPERTY_IN    => 'id',
+            SchemaConstants::X_SCHEMA_REQUEST => IdRequest::class,
         ]
     )]
     #[Permission("web:menu:read")]
@@ -162,15 +164,11 @@ final class MenuController extends Crud
     }
 
     #[OA\Delete(
-        path: '/web/menu/{id}',
+        path: '/web/menu',
         summary: '删除菜单',
         tags: ['菜单管理'],
         parameters: [
             new OA\Parameter(name: "id", description: "菜单ID", in: "path", required: true, schema: new OA\Schema(type: "integer")),
-        ],
-        x: [
-            SchemaConstants::X_PROPERTY_IN => 'id',
-            SchemaConstants::X_SCHEMA_REQUEST => IdRequest::class,
         ],
         responses: [
             new OA\Response(
@@ -179,15 +177,28 @@ final class MenuController extends Crud
                 content: new OA\JsonContent(properties: [
                     new OA\Property(property: "code", type: "integer", example: 0),
                     new OA\Property(property: "msg", type: "string", example: "删除成功"),
+                    new OA\Property(property: "data", properties: [
+                        new OA\Property(property: "ids", type: "array", items: new OA\Items(type: "integer")),
+                    ]),
                 ])
             ),
+        ],
+        x: [
+            SchemaConstants::X_PROPERTY_IN    => 'id',
+            SchemaConstants::X_SCHEMA_REQUEST => IdRequest::class,
         ]
     )]
     #[Permission("web:menu:delete")]
     #[SimpleResponse(schema: [], example: [])]
     public function destroy(Request $request): \support\Response
     {
-        return parent::destroy($request);
+        try {
+            $ids = $request->input('ids',[]);
+            $this->service->batchDelete($ids);
+            return Json::success('删除成功');
+        } catch (\Throwable $e) {
+            return Json::fail($e->getMessage());
+        }
     }
 }
 

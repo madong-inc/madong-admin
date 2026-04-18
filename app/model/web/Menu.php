@@ -45,6 +45,7 @@ class Menu extends BaseModel
         'is_show',
         'enabled',
         'permissions',
+        'extra',
         'created_at',
         'updated_at',
         'deleted_at',
@@ -61,9 +62,10 @@ class Menu extends BaseModel
         'category_text',
     ];
 
-    protected $casts=[
-        'id'=>'string',
-        'pid'=>'string',
+    protected $casts = [
+        'id'     => 'string',
+        'pid'    => 'string',
+        'extra'  => 'json',
     ];
 
     /**
@@ -109,5 +111,58 @@ class Menu extends BaseModel
     {
         $category = MenuCategory::tryFrom((int)$this->category);
         return $category?->label() ?? '未知';
+    }
+
+    /**
+     * 定义子级关系
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function children(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(self::class, 'pid');
+    }
+
+    /**
+     * 获取所有子级ID（递归）
+     *
+     * @return array
+     */
+    protected function getAllChildrenIds(): array
+    {
+        $childIds = $this->children()->pluck('id')->toArray();
+        foreach ($this->children as $child) {
+            $childIds = array_merge($childIds, $child->getAllChildrenIds());
+        }
+        return array_unique($childIds);
+    }
+
+    /**
+     * 删除菜单及所有子级
+     *
+     * @return array|bool 成功删除的ID数组或false
+     */
+    public function deleteWithAllChildren(): array|bool
+    {
+        $allIds = array_merge([$this->id], $this->getAllChildrenIds());
+
+        if (empty($allIds)) {
+            return false;
+        }
+
+        $successIds = [];
+
+        // 分块处理以避免内存问题
+        collect($allIds)->chunk(100)->each(function ($chunk) use (&$successIds) {
+            $chunk->each(function ($id) use (&$successIds) {
+                if ($model = self::find($id)) {
+                    if ($model->delete()) {
+                        $successIds[] = $id;
+                    }
+                }
+            });
+        });
+
+        return !empty($successIds) ? $successIds : false;
     }
 }
