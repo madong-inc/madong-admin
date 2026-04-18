@@ -7,7 +7,24 @@
 /tests/tmp
 /tests/.phpunit.result.cache
 install.lock
-/tests
-/public/admin
-/public/web
+.rnd
+
+
+# 忽略 public目录下除了install,favicon.ico,logo.png之外的内容
+public/*
+!public/install/
+!public/favicon.ico
+!public/logo.png
+
+# 忽略 plugin目录下除了example,demo除外
+plugin/*
+!plugin/example/
+!plugin/demo/
+
+
+
+
+
+
+
 
