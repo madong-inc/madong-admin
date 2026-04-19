@@ -78,7 +78,7 @@ return new class {
         // 2. 用户与部门职位关联表
         if (!$schema->hasTable('sys_admin_main')) {
             $schema->create('sys_admin_main', function (Blueprint $table) {
-                $table->bigIncrements('id')->comment('主键');
+                $table->bigInteger('id')->primary()->comment('主键');
                 $table->bigInteger('admin_id')->comment('用户ID(外键)');
                 $table->bigInteger('main_dept_id')->nullable()->comment('主部门ID');
                 $table->bigInteger('main_pos_id')->nullable()->comment('主职位ID');
