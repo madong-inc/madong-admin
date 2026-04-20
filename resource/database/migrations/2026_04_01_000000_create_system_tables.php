@@ -43,7 +43,7 @@ return new class {
 
     public function up(Builder $schema): void
     {
-        // 1. 用户信息表
+        // 用户信息表
         if (!$schema->hasTable('sys_admin')) {
             $schema->create('sys_admin', function (Blueprint $table) {
                 $table->bigInteger('id')->primary()->comment('用户ID');
@@ -75,7 +75,7 @@ return new class {
             });
         }
 
-        // 2. 用户与部门职位关联表
+        // 用户与部门职位关联表
         if (!$schema->hasTable('sys_admin_main')) {
             $schema->create('sys_admin_main', function (Blueprint $table) {
                 $table->bigInteger('id')->primary()->comment('主键');
@@ -86,11 +86,11 @@ return new class {
                 $table->bigInteger('updated_at')->nullable()->comment('修改时间');
                 $table->index('admin_id', 'idx_admin_id');
                 $table->index('main_dept_id', 'idx_main_dept_id');
-                $table->index('main_pos_id', 'idx_main_pos_id');
+                $table->index('main_post_id', 'idx_main_post_id');
             });
         }
 
-        // 3. 用户与部门关联表
+        // 用户与部门关联表
         if (!$schema->hasTable('sys_admin_dept')) {
             $schema->create('sys_admin_dept', function (Blueprint $table) {
                 $table->bigInteger('admin_id')->comment('用户主键');
@@ -99,7 +99,7 @@ return new class {
             });
         }
 
-        // 4. 用户与岗位关联表
+        // 用户与岗位关联表
         if (!$schema->hasTable('sys_admin_post')) {
             $schema->create('sys_admin_post', function (Blueprint $table) {
                 $table->bigInteger('admin_id')->comment('管理员主键');
@@ -108,7 +108,7 @@ return new class {
             });
         }
 
-        // 5. 用户与角色关联表
+        // 用户与角色关联表
         if (!$schema->hasTable('sys_admin_role')) {
             $schema->create('sys_admin_role', function (Blueprint $table) {
                 $table->bigInteger('admin_id')->comment('管理员主键');
@@ -117,7 +117,7 @@ return new class {
             });
         }
 
-        // 7. 配置表
+        // 配置表
         if (!$schema->hasTable('sys_config')) {
             $schema->create('sys_config', function (Blueprint $table) {
                 $table->bigInteger('id')->primary()->comment('配置ID');
@@ -138,7 +138,7 @@ return new class {
             });
         }
 
-        // 8. 定时任务表
+        // 定时任务表
         if (!$schema->hasTable('sys_crontab')) {
             $schema->create('sys_crontab', function (Blueprint $table) {
                 $table->bigInteger('id')->primary()->comment('主键');
@@ -166,7 +166,7 @@ return new class {
             });
         }
 
-        // 9. 定时任务日志表
+        // 定时任务日志表
         if (!$schema->hasTable('sys_crontab_log')) {
             $schema->create('sys_crontab_log', function (Blueprint $table) {
                 $table->bigInteger('id')->primary()->comment('主键');
@@ -182,7 +182,7 @@ return new class {
             });
         }
 
-        // 10. 部门信息表
+        // 部门信息表
         if (!$schema->hasTable('sys_dept')) {
             $schema->create('sys_dept', function (Blueprint $table) {
                 $table->bigInteger('id')->primary()->comment('主键');
@@ -204,7 +204,7 @@ return new class {
             });
         }
 
-        // 11. 部门领导关联表
+        // 部门领导关联表
         if (!$schema->hasTable('sys_dept_leader')) {
             $schema->create('sys_dept_leader', function (Blueprint $table) {
                 $table->bigInteger('dept_id')->comment('部门主键');
@@ -213,7 +213,7 @@ return new class {
             });
         }
 
-        // 12. 字典类型表
+        // 字典类型表
         if (!$schema->hasTable('sys_dict')) {
             $schema->create('sys_dict', function (Blueprint $table) {
                 $table->bigInteger('id')->primary()->comment('主键');
@@ -232,7 +232,7 @@ return new class {
             });
         }
 
-        // 13. 字典数据表
+        // 字典数据表
         if (!$schema->hasTable('sys_dict_item')) {
             $schema->create('sys_dict_item', function (Blueprint $table) {
                 $table->bigInteger('id')->primary()->comment('主键');
@@ -254,7 +254,7 @@ return new class {
             });
         }
 
-        // 14. 登录日志表
+        // 登录日志表
         if (!$schema->hasTable('sys_login_log')) {
             $schema->create('sys_login_log', function (Blueprint $table) {
                 $table->bigInteger('id')->primary()->comment('主键');
@@ -276,7 +276,7 @@ return new class {
             });
         }
 
-        // 15. 菜单表
+        // 菜单表
         if (!$schema->hasTable('sys_menu')) {
             $schema->create('sys_menu', function (Blueprint $table) {
                 $table->bigInteger('id')->primary()->comment('菜单ID');
@@ -314,7 +314,7 @@ return new class {
             });
         }
 
-        // 16. 系统消息表
+        // 系统消息表
         if (!$schema->hasTable('sys_message')) {
             $schema->create('sys_message', function (Blueprint $table) {
                 $table->bigInteger('id')->primary()->comment('主键');
@@ -338,7 +338,7 @@ return new class {
             });
         }
 
-        // 17. 通知公告表
+        // 通知公告表
         if (!$schema->hasTable('sys_notice')) {
             $schema->create('sys_notice', function (Blueprint $table) {
                 $table->bigInteger('id')->primary()->comment('公告ID');
@@ -357,7 +357,7 @@ return new class {
             });
         }
 
-        // 18. 系统操作日志表
+        // 系统操作日志表
         if (!$schema->hasTable('sys_operate_log')) {
             $schema->create('sys_operate_log', function (Blueprint $table) {
                 $table->bigInteger('id')->primary()->comment('主键');
@@ -379,7 +379,7 @@ return new class {
             });
         }
 
-        // 19. 岗位信息表
+        // 岗位信息表
         if (!$schema->hasTable('sys_post')) {
             $schema->create('sys_post', function (Blueprint $table) {
                 $table->bigInteger('id')->primary()->comment('主键');
@@ -397,7 +397,7 @@ return new class {
             });
         }
 
-        // 20. 限流规则表
+        // 限流规则表
         if (!$schema->hasTable('sys_rate_limiter')) {
             $schema->create('sys_rate_limiter', function (Blueprint $table) {
                 $table->bigInteger('id')->primary()->comment('主键');
@@ -422,7 +422,7 @@ return new class {
             });
         }
 
-        // 21. 限制访问名单表
+        // 限制访问名单表
         if (!$schema->hasTable('sys_rate_restrictions')) {
             $schema->create('sys_rate_restrictions', function (Blueprint $table) {
                 $table->bigInteger('id')->primary()->comment('主键');
@@ -445,7 +445,7 @@ return new class {
             });
         }
 
-        // 22. 数据回收记录表
+        // 数据回收记录表
         if (!$schema->hasTable('sys_recycle_bin')) {
             $schema->create('sys_recycle_bin', function (Blueprint $table) {
                 $table->bigInteger('id')->primary()->comment('ID');
@@ -461,7 +461,7 @@ return new class {
             });
         }
 
-        // 23. 审核记录表
+        // 审核记录表
         if (!$schema->hasTable('sys_review')) {
             $schema->create('sys_review', function (Blueprint $table) {
                 $table->bigInteger('id')->primary()->comment('雪花ID主键');
@@ -486,7 +486,7 @@ return new class {
             });
         }
 
-        // 24. 角色信息表
+        // 角色信息表
         if (!$schema->hasTable('sys_role')) {
             $schema->create('sys_role', function (Blueprint $table) {
                 $table->bigInteger('id')->primary()->comment('主键');
@@ -507,16 +507,7 @@ return new class {
             });
         }
 
-        // 25. 角色与策略关联表
-        if (!$schema->hasTable('sys_role_casbin')) {
-            $schema->create('sys_role_casbin', function (Blueprint $table) {
-                $table->bigInteger('role_id')->comment('管理员主键');
-                $table->string('role_casbin_id', 50)->comment('对应casbin策略表');
-                $table->primary(['role_id', 'role_casbin_id']);
-            });
-        }
-
-        // 26. 角色与部门关联表
+        // 角色与部门关联表
         if (!$schema->hasTable('sys_role_dept')) {
             $schema->create('sys_role_dept', function (Blueprint $table) {
                 $table->bigInteger('role_id')->comment('用户主键');
@@ -525,7 +516,7 @@ return new class {
             });
         }
 
-        // 27. 角色与菜单关联表
+        // 角色与菜单关联表
         if (!$schema->hasTable('sys_role_menu')) {
             $schema->create('sys_role_menu', function (Blueprint $table) {
                 $table->bigInteger('role_id')->comment('角色主键');
@@ -534,7 +525,7 @@ return new class {
             });
         }
 
-        // 28. 角色与部门关联表
+        // 角色与部门关联表
         if (!$schema->hasTable('sys_role_scope_dept')) {
             $schema->create('sys_role_scope_dept', function (Blueprint $table) {
                 $table->bigInteger('role_id')->comment('用户主键');
@@ -543,7 +534,7 @@ return new class {
             });
         }
 
-        // 31. 文件信息表
+        // 文件信息表
         if (!$schema->hasTable('sys_upload')) {
             $schema->create('sys_upload', function (Blueprint $table) {
                 $table->bigInteger('id')->primary()->comment('文件信息ID');

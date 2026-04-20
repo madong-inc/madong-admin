@@ -15,6 +15,7 @@ public/*
 !public/install/
 !public/favicon.ico
 !public/logo.png
+!public/upload/logo.png
 
 # 忽略 plugin目录下除了example,demo除外
 plugin/*
