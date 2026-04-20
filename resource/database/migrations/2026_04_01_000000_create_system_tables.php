@@ -81,7 +81,9 @@ return new class {
                 $table->bigInteger('id')->primary()->comment('主键');
                 $table->bigInteger('admin_id')->comment('用户ID(外键)');
                 $table->bigInteger('main_dept_id')->nullable()->comment('主部门ID');
-                $table->bigInteger('main_pos_id')->nullable()->comment('主职位ID');
+                $table->bigInteger('main_post_id')->nullable()->comment('主职位ID');
+                $table->bigInteger('created_at')->nullable()->comment('创建时间');
+                $table->bigInteger('updated_at')->nullable()->comment('修改时间');
                 $table->index('admin_id', 'idx_admin_id');
                 $table->index('main_dept_id', 'idx_main_dept_id');
                 $table->index('main_pos_id', 'idx_main_pos_id');
