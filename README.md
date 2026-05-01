@@ -316,8 +316,8 @@ return [
   - `wip` 开发中
 
 ## 社区支持
-官方文档：https://madong.tech
-讨论交流：[点击链接加入群聊：690671595](https://qm.qq.com/q/dEfMqYL42c)
+- 官方文档：https://madong.tech
+- 讨论交流：[点击链接加入群聊：690671595](https://qm.qq.com/q/dEfMqYL42c)
 
 
 ## 许可证
