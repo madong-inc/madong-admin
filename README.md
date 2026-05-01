@@ -315,9 +315,10 @@ return [
   - `types` 类型定义文件更改
   - `wip` 开发中
 
-## 维护者
+## 社区支持
+官方文档：https://madong.tech
+讨论交流：[点击链接加入群聊：690671595](https://qm.qq.com/q/dEfMqYL42c)
 
-[Mr.April](https://gitee.com/liu_guan_qing)
 
 ## 许可证
 
